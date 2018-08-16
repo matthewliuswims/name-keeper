@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
 
 export default class LeftHeaderComponent extends React.Component {
-    render() {
-      return (
-        <Text> LEFT TEXT </Text>
-      );
-    }
+  render() {
+    return (
+      <Text> LEFT TEXT </Text>
+    );
   }
-  
+}
