@@ -16,6 +16,13 @@
         "react/prefer-stateless-function": "off", // for now only
         "react/prop-types": "off", // for now only too hopefully
         "react/jsx-one-expression-per-line": "off",
-        "object-curly-newline": "off"
+        "object-curly-newline": "off",
+        "consistent-return": "off",
+        "react/sort-comp": "off",
+        "class-methods-use-this": "off",
+        "react/jsx-closing-bracket-location": "off",
+        "no-use-before-define": "off",
+        "arrow-body-style": "off",
+        "max-len": "off"
     }
 }

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from 'react-native';
-import RightHeaderComponent from '../components/screen/RightHeaderComponent';
-import LeftHeaderComponent from '../components/screen/LeftHeaderComponent';
+import { Text, View, Button, StyleSheet } from 'react-native';
+import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
+import LeftHeaderComponent from '../../components/screen/LeftHeaderComponent';
+import { container } from '../../styles/base';
 
 export default class UserScreen extends Component {
   static navigationOptions = {
-    title: 'GROUPS STUFFF',
+    title: 'User Screen',
     headerRight: <RightHeaderComponent />,
     headerLeft: <LeftHeaderComponent />,
   };
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>a user</Text>
         <Button
           title="Go to group screen via navigate"
@@ -26,3 +27,12 @@ export default class UserScreen extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: container.flex,
+    paddingTop: container.paddingTop,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
