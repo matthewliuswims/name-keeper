@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
+import GroupsDB from '../../database/GroupsDB';
 
 type Props = {
   navigation: () => void,
@@ -25,6 +26,11 @@ const options = {
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
 export default class AddGroupScreen extends Component<Props> {
+  constructor(props) {
+    super(props);
+    this.groupsDB = GroupsDB.getInstance();
+  }
+
   /**
    * @tutorial https://reactnavigation.org/docs/en/header-buttons.html#header-interaction-with-its-screen-component
    * for onPress we need a noOp, otherwise we'd get an error, because React Navigation does NOT guarantee
@@ -32,8 +38,9 @@ export default class AddGroupScreen extends Component<Props> {
    */
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'adding group',
+      title: 'Add Group',
       headerRight: (
+        // getParam('groupSubmit') refers to the 'groupSubmit' function below
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
           <View style={styles.saveButton}>
             <Text style={styles.saveButtonText}> Save</Text>
@@ -56,8 +63,11 @@ export default class AddGroupScreen extends Component<Props> {
   );
 
   groupSubmit = () => {
-    const value = this.formRef.getValue();
-    if (value) {
+    const groupStruct = this.formRef.getValue();
+    // remember below Form type is group
+    const { name: groupName } = groupStruct;
+    if (groupName) {
+      this.groupsDB.addGroup(groupName);
       this.props.navigation.navigate('GroupsScreen');
     }
   }
