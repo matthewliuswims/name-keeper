@@ -1,6 +1,9 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
+/**
+ * use redux for this...so here's we'll be dispatching actions setting status of the error thing?
+ */
 export default class GroupsDB extends React.Component {
     static singletonInstance;
 
@@ -40,7 +43,7 @@ export default class GroupsDB extends React.Component {
             date TEXT
           );`,
         );
-      }, err => console.log('creating table err', err));
+      }, err => console.log('ERROR: GroupsDB.js creating table err', err));
     }
 
     addGroup(groupName) {
@@ -49,7 +52,7 @@ export default class GroupsDB extends React.Component {
         (tx) => {
           tx.executeSql('INSERT INTO groups (name, date) values (?, ?)', [groupName, timeGroupAdded]);
         },
-        err => console.log('adding groups error', err),
+        err => console.log('ERROR: GroupsDB.js adding groups', err),
       );
     }
 
@@ -58,7 +61,7 @@ export default class GroupsDB extends React.Component {
         (tx) => {
           tx.executeSql('SELECT * FROM groups', [], (_, { rows }) => console.log(JSON.stringify(rows)));
         },
-        err => console.log('Listing groups error', err),
+        err => console.log('ERROR: GroupsDB.js Listing groups', err),
       );
     }
 }
