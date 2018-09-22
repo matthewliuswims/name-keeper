@@ -46,14 +46,17 @@ export default class GroupsDB extends React.Component {
       }, err => console.log('ERROR: GroupsDB.js creating table err', err));
     }
 
-    addGroup(groupName) {
+    addGroup(groupName) { // LET'S SEE HOW THIS GOES
       const timeGroupAdded = new Date();
-      GroupsDB.singletonInstance.dbConnection.transaction(
-        (tx) => {
-          tx.executeSql('INSERT INTO groups (name, date) values (?, ?)', [groupName, timeGroupAdded]);
-        },
-        err => console.log('ERROR: GroupsDB.js adding groups', err),
-      );
+      return new Promise((resolve, reject) => {
+        GroupsDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            tx.executeSql('INSERT INTO groups (name, date) values (?, ?)', [groupName, timeGroupAdded]);
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
     }
 
     listGroups() {

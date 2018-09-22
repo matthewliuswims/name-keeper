@@ -2,11 +2,14 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
+import { connect } from 'react-redux';
+
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
-import GroupsDB from '../../database/GroupsDB';
+import { addGroup } from '../../../redux/actions/groups';
 
 type Props = {
   navigation: () => void,
+  addGroup: () => void,
 };
 
 const { Form } = t.form;
@@ -25,12 +28,7 @@ const options = {
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-export default class AddGroupScreen extends Component<Props> {
-  constructor(props) {
-    super(props);
-    this.groupsDB = GroupsDB.getInstance();
-  }
-
+class AddGroupScreen extends Component<Props> {
   /**
    * @tutorial https://reactnavigation.org/docs/en/header-buttons.html#header-interaction-with-its-screen-component
    * for onPress we need a noOp, otherwise we'd get an error, because React Navigation does NOT guarantee
@@ -40,7 +38,7 @@ export default class AddGroupScreen extends Component<Props> {
     return {
       title: 'Add Group',
       headerRight: (
-        // getParam('groupSubmit') refers to the 'groupSubmit' function below
+        // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
           <View style={styles.saveButton}>
             <Text style={styles.saveButtonText}> Save</Text>
@@ -67,7 +65,7 @@ export default class AddGroupScreen extends Component<Props> {
     // remember below Form type is group
     const { name: groupName } = groupStruct;
     if (groupName) {
-      this.groupsDB.addGroup(groupName);
+      this.props.addGroup(groupName); // NEED TO DO CHECKS HERE?
       this.props.navigation.navigate('GroupsScreen');
     }
   }
@@ -98,3 +96,12 @@ const styles = StyleSheet.create({
     fontWeight: topRightSaveButtonText.fontWeight,
   },
 });
+
+const mapDispatchToProps = dispatch => (
+  {
+    addGroup: groupName => dispatch(addGroup(groupName)),
+  }
+);
+
+
+export default connect(null, mapDispatchToProps)(AddGroupScreen);

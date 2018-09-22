@@ -1,34 +1,15 @@
-import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { Provider } from 'react-redux';
 
-import { sectionHeader } from './src/assets/styles/base';
+import React, { Component } from 'react';
+import Navigator from './src/AppNavigation';
+import store from './src/redux/configureStore';
 
-import AddGroupScreen from './src/assets/screens/groups/AddGroupScreen';
-import GroupsScreen from './src/assets/screens/groups/GroupsScreen';
-import UsersScreen from './src/assets/screens/users/UsersScreen';
-import UserScreen from './src/assets/screens/users/UserScreen';
-
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
     return (
-      <AppNavigator />
+      <Provider store={store}>
+        <Navigator />
+      </Provider>
     );
   }
 }
-
-const AppNavigator = createStackNavigator({
-  GroupsScreen: { screen: GroupsScreen },
-  AddGroupScreen: { screen: AddGroupScreen },
-  UsersScreen: { screen: UsersScreen },
-  UserScreen: { screen: UserScreen },
-}, {
-  navigationOptions: {
-    headerStyle: {
-      backgroundColor: sectionHeader.backgroundColor, // commmon to everything, can also add other stuff too
-    },
-    headerTitleStyle: {
-      color: sectionHeader.color,
-    },
-  },
-  headerLayoutPreset: sectionHeader.headerLayoutPreset,
-});
