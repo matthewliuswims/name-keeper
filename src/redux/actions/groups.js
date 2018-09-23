@@ -31,14 +31,12 @@ export function addGroup(groupName) {
     dispatch(addGroupStart(groupName));
 
     const dbInstance = GroupsDB.getInstance();
-    const addGroupDB = dbInstance.addGroup; // TODO: check does this actually work?
+    const addGroupDB = dbInstance.addGroup;
 
     return addGroupDB(groupName)
-      .then((successReturn) => {
-        console.log('successReturn addGroupDB is', successReturn);
+      .then(() => {
         dispatch(addGroupSuccess(groupName));
       }).catch((err) => {
-        console.log('err addGroupDB is', err);
         dispatch(addGroupFail(err));
       });
   };

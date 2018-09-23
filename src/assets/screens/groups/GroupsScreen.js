@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { Text, View, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container } from '../../styles/base';
+import ErrorModal from '../../components/modal/Error';
 import GroupsDB from '../../database/GroupsDB';
 
 type Props = {
   navigation: () => void,
+  groupsState : {
+    error: Object,
+  }
 };
 
 const styles = StyleSheet.create({
@@ -20,7 +26,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class GroupsScreen extends Component<Props> {
+class GroupsScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.groupsDB = GroupsDB.getInstance();
@@ -56,7 +62,7 @@ export default class GroupsScreen extends Component<Props> {
   );
 
   updateGroupsList = () => {
-    console.log('updatelistgroups', this.groupsDB.listGroups());
+    this.groupsDB.listGroups();
   }
 
   render() { // make flat list it's own component
@@ -83,11 +89,20 @@ export default class GroupsScreen extends Component<Props> {
         />
 
         <Button
-          onPress = {this.updateGroupsList}
+          onPress = {this.updateGroupsList} // TODO: bug, why is this firing everytime? i click anywhere on screen
           title = 'List groups'
         />
-
+        {this.props.groupsState.error && <ErrorModal message={this.props.groupsState.error.message} />}
       </View>
     );
   }
 }
+
+const mapStateToProps = state => (
+  {
+    groupsState: state.groups,
+  }
+);
+
+
+export default connect(mapStateToProps)(GroupsScreen);
