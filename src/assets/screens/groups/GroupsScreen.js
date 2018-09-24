@@ -7,10 +7,14 @@ import { container } from '../../styles/base';
 import ErrorModal from '../../components/modal/Error';
 import GroupsDB from '../../database/GroupsDB';
 
+import { listGroups } from '../../../redux/actions/groups';
+
 type Props = {
   navigation: () => void,
+  listGroups: () => Promise<Object>,
   groupsState : {
     error: Object,
+    groups: Array<Object>,
   }
 };
 
@@ -30,22 +34,9 @@ class GroupsScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.groupsDB = GroupsDB.getInstance();
-    this.state = {
-      groups: [
-        { key: 'Work' },
-        { key: 'Jazz Band' },
-        { key: 'Swimming' },
-        { key: '1' },
-        { key: '2' },
-        { key: '3' },
-        { key: '4' },
-        { key: '5' },
-        { key: '6' },
-        { key: '7' },
-        { key: '8' },
-        { key: '9' },
-      ],
-    };
+    this.props.listGroups().catch(() => {
+      // redux will already have error, which will boil error up to UI via modal
+    });
   }
 
   static navigationOptions = {
@@ -62,18 +53,21 @@ class GroupsScreen extends Component<Props> {
   );
 
   updateGroupsList = () => {
-    this.groupsDB.listGroups();
+    this.props.listGroups().catch(() => {
+      // redux will already have error, which will boil error up to UI via modal
+    });
   }
 
-  render() { // make flat list it's own component
-  // TODO: how to pass something without invoking callback?
+  render() {
     return (
       <View style={styles.container}>
         <Text>Groups Screen hi yahz</Text>
+        { !this.props.groupsState.loading && (
         <FlatList
-          data={this.state.groups}
-          renderItem={({ item }) => <Text style={styles.item}>{item.key}</Text>}
-        />
+          data={this.props.groupsState.groups}
+          renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+          keyExtractor={(item => `${item.id}`)}
+        />) }
         <Button
           onPress = {() => this.props.navigation.navigate('UsersScreen',
             {
@@ -89,7 +83,7 @@ class GroupsScreen extends Component<Props> {
         />
 
         <Button
-          onPress = {this.updateGroupsList} // TODO: bug, why is this firing everytime? i click anywhere on screen
+          onPress = {this.updateGroupsList}
           title = 'List groups'
         />
         {this.props.groupsState.error && <ErrorModal message={this.props.groupsState.error.message} />}
@@ -103,6 +97,10 @@ const mapStateToProps = state => (
     groupsState: state.groups,
   }
 );
+const mapDispatchToProps = dispatch => (
+  {
+    listGroups: () => dispatch(listGroups()),
+  }
+);
 
-
-export default connect(mapStateToProps)(GroupsScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupsScreen);

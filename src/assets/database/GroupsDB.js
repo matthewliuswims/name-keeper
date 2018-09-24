@@ -20,7 +20,9 @@ export default class GroupsDB extends React.Component {
       // this.singletonInstance -> class instance
       if (!GroupsDB.singletonInstance) {
         GroupsDB.singletonInstance = new GroupsDB();
-        this.singletonInstance.createTable();
+        this.singletonInstance.createTable().then(() => {
+          return this.singletonInstance;
+        });
       }
       return this.singletonInstance;
     }
@@ -35,18 +37,22 @@ export default class GroupsDB extends React.Component {
      * this.singletonInstance -> UNDEFINED
      */
     createTable() {
-      GroupsDB.singletonInstance.dbConnection.transaction((tx) => {
-        tx.executeSql(
-          `CREATE TABLE IF NOT EXISTS groups (
-            id INTEGER PRIMARY KEY NOT NULL, 
-            name TEXT, 
-            date TEXT
-          );`,
-        );
-      }, err => console.log('ERROR: GroupsDB.js creating table err', err));
+      return new Promise((resolve, reject) => {
+        GroupsDB.singletonInstance.dbConnection.transaction((tx) => {
+          tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS groups (
+              id INTEGER PRIMARY KEY NOT NULL, 
+              name TEXT, 
+              date TEXT
+            );`,
+          );
+        },
+        err => reject(err),
+        () => resolve('success'));
+      });
     }
 
-    addGroup(groupName) { // LET'S SEE HOW THIS GOES
+    addGroup(groupName) {
       const timeGroupAdded = new Date();
       return new Promise((resolve, reject) => {
         GroupsDB.singletonInstance.dbConnection.transaction(
@@ -60,11 +66,17 @@ export default class GroupsDB extends React.Component {
     }
 
     listGroups() {
-      GroupsDB.singletonInstance.dbConnection.transaction(
-        (tx) => {
-          tx.executeSql('SELECT * FROM groups', [], (_, { rows }) => console.log(JSON.stringify(rows)));
-        },
-        err => console.log('ERROR: GroupsDB.js Listing groups', err),
-      );
+      return new Promise((resolve, reject) => {
+        GroupsDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            // can get from executeSql
+            tx.executeSql('SELECT * FROM groups', [], (_, { rows }) => {
+              resolve(rows._array); //eslint-disable-line 
+            });
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
     }
 }

@@ -4,8 +4,11 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
+import ErrorModal from '../../components/modal/Error';
+
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
-import { addGroup } from '../../../redux/actions/groups';
+import { addGroup, listGroups } from '../../../redux/actions/groups';
+
 
 type Props = {
   navigation: () => void,
@@ -65,8 +68,13 @@ class AddGroupScreen extends Component<Props> {
     // remember below Form type is group
     const { name: groupName } = groupStruct;
     if (groupName) {
-      this.props.addGroup(groupName); // NEED TO DO CHECKS HERE?
-      this.props.navigation.navigate('GroupsScreen');
+      this.props.addGroup(groupName).then(() => {
+        this.props.listGroups();
+      }).then(() => {
+        this.props.navigation.navigate('GroupsScreen');
+      }).catch(() => {
+        // redux will already have error, which will boil error up to UI via modal
+      });
     }
   }
 
@@ -76,6 +84,7 @@ class AddGroupScreen extends Component<Props> {
         <View>
           <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         </View>
+        {this.props.groupsState.error && <ErrorModal message={this.props.groupsState.error.message} />}
       </View>
     );
   }
@@ -100,8 +109,14 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => (
   {
     addGroup: groupName => dispatch(addGroup(groupName)),
+    listGroups: () => dispatch(listGroups()),
   }
 );
 
+const mapStateToProps = state => (
+  {
+    groupsState: state.groups,
+  }
+);
 
-export default connect(null, mapDispatchToProps)(AddGroupScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AddGroupScreen);
