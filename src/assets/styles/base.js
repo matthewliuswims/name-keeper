@@ -1,5 +1,9 @@
+// @tutorial https://medium.com/@tommylackemann/managing-styles-in-react-native-3546d3482d73
+
 import { Dimensions } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp, } from 'react-native-responsive-screen';
+
+// @tutorial https://medium.com/react-native-training/build-responsive-react-native-views-for-any-device-and-support-orientation-change-1c8beba5bc23
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export const dimensions = {
   fullHeight: Dimensions.get('window').height,
@@ -16,6 +20,9 @@ export const sectionHeader = {
 export const container = {
   flex: 1,
   paddingTop: hp('3%'),
+  backgroundColor: '#FFFFFF',
+  paddingLeft: wp('3%'),
+  paddingRight: wp('3%'),
 };
 
 export const topRightSaveButton = {

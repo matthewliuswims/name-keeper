@@ -72,8 +72,6 @@ class AddGroupScreen extends Component<Props> {
         this.props.listGroups();
       }).then(() => {
         this.props.navigation.navigate('GroupsScreen');
-      }).catch(() => {
-        // redux will already have error, which will boil error up to UI via modal
       });
     }
   }
@@ -94,6 +92,9 @@ const styles = StyleSheet.create({
   container: {
     flex: container.flex,
     paddingTop: container.paddingTop,
+    paddingLeft: container.paddingLeft,
+    paddingRight: container.paddingRight,
+    backgroundColor: container.backgroundColor,
   },
   saveButton: {
     paddingLeft: topRightSaveButton.paddingLeft,

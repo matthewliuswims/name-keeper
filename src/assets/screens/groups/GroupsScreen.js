@@ -8,6 +8,7 @@ import ErrorModal from '../../components/modal/Error';
 import GroupsDB from '../../database/GroupsDB';
 
 import { listGroups } from '../../../redux/actions/groups';
+import Group from '../../components/groups/Group';
 
 type Props = {
   navigation: () => void,
@@ -18,25 +19,11 @@ type Props = {
   }
 };
 
-const styles = StyleSheet.create({
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-  },
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-  },
-});
-
 class GroupsScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.groupsDB = GroupsDB.getInstance();
-    this.props.listGroups().catch(() => {
-      // redux will already have error, which will boil error up to UI via modal
-    });
+    this.props.listGroups();
   }
 
   static navigationOptions = {
@@ -53,19 +40,23 @@ class GroupsScreen extends Component<Props> {
   );
 
   updateGroupsList = () => {
-    this.props.listGroups().catch(() => {
-      // redux will already have error, which will boil error up to UI via modal
-    });
+    this.props.listGroups();
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Groups Screen hi yahz</Text>
         { !this.props.groupsState.loading && (
         <FlatList
           data={this.props.groupsState.groups}
-          renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
+          renderItem={({ item }) => (
+            <Group
+              style={styles.item}
+              groupName={item.name}
+              firstUsername = 'asd'
+              secondUsername = 'asd'
+               />
+          )}
           keyExtractor={(item => `${item.id}`)}
         />) }
         <Button
@@ -77,10 +68,12 @@ class GroupsScreen extends Component<Props> {
           title = 'Go to users screen'
         />
 
-        <Button
+        <TouchableOpacity
+          style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
-          title = 'Go to add group screen'
-        />
+        >
+          <Text> Go to add group screen </Text>
+        </TouchableOpacity>
 
         <Button
           onPress = {this.updateGroupsList}
@@ -91,6 +84,23 @@ class GroupsScreen extends Component<Props> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: container.flex,
+    paddingTop: container.paddingTop,
+    paddingLeft: container.paddingLeft,
+    paddingRight: container.paddingRight,
+    backgroundColor: container.backgroundColor,
+  },
+  // PUT BUTTON IN SEPARATE LOGIC
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    borderRadius: 10,
+  },
+});
 
 const mapStateToProps = state => (
   {
