@@ -5,6 +5,7 @@ import { sectionHeader } from './assets/styles/base';
 
 import AddGroupScreen from './assets/screens/groups/AddGroupScreen';
 import GroupsScreen from './assets/screens/groups/GroupsScreen';
+import GroupScreen from './assets/screens/groups/GroupScreen';
 import UsersScreen from './assets/screens/users/UsersScreen';
 import UserScreen from './assets/screens/users/UserScreen';
 
@@ -18,17 +19,20 @@ export default class AppNavigation extends React.Component {
 
 const AppNavigator = createStackNavigator({
   GroupsScreen: { screen: GroupsScreen },
+  GroupScreen: { screen: GroupScreen },
   AddGroupScreen: { screen: AddGroupScreen },
-  UsersScreen: { screen: UsersScreen },
+  UsersScreen: { screen: UsersScreen }, // prolly don't need?
   UserScreen: { screen: UserScreen },
 }, {
   navigationOptions: {
     headerStyle: {
       backgroundColor: sectionHeader.backgroundColor, // commmon to everything, can also add other stuff too
     },
-    headerTitleStyle: {
+    headerTitleStyle: { color: sectionHeader.color },
+    headerBackTitleStyle: {
       color: sectionHeader.color,
     },
+    headerTintColor: sectionHeader.color,
   },
   headerLayoutPreset: sectionHeader.headerLayoutPreset,
 });

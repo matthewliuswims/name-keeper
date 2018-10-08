@@ -8,7 +8,7 @@ import ErrorModal from '../../components/modal/Error';
 import GroupsDB from '../../database/GroupsDB';
 
 import { listGroups } from '../../../redux/actions/groups';
-import Group from '../../components/groups/Group';
+import Group from '../../components/groups/GroupBox';
 
 type Props = {
   navigation: () => void,
@@ -50,12 +50,16 @@ class GroupsScreen extends Component<Props> {
         <FlatList
           data={this.props.groupsState.groups}
           renderItem={({ item }) => (
-            <Group
-              style={styles.item}
-              groupName={item.name}
-              firstUsername = 'asd'
-              secondUsername = 'asd'
-               />
+            <TouchableOpacity
+              onPress = {() => this.props.navigation.navigate('GroupScreen')}
+            >
+              <Group
+                style={styles.item}
+                groupName={item.name}
+                firstUsername = 'asd' // @TODO: get usernames from redux state
+                secondUsername = 'asd'
+                />
+            </TouchableOpacity>
           )}
           keyExtractor={(item => `${item.id}`)}
         />) }
@@ -72,7 +76,7 @@ class GroupsScreen extends Component<Props> {
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
         >
-          <Text> Go to add group screen </Text>
+          <Text> Add Group </Text>
         </TouchableOpacity>
 
         <Button
@@ -99,6 +103,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#979797',
+    shadowColor: '#979797',
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 2,
+      width: 2,
+    },
   },
 });
 

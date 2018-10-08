@@ -5,6 +5,8 @@ import { Dimensions } from 'react-native';
 // @tutorial https://medium.com/react-native-training/build-responsive-react-native-views-for-any-device-and-support-orientation-change-1c8beba5bc23
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
+import colors from './colors';
+
 export const dimensions = {
   fullHeight: Dimensions.get('window').height,
   fullWidth: Dimensions.get('window').width,
@@ -12,7 +14,7 @@ export const dimensions = {
 
 export const sectionHeader = {
   color: 'white',
-  backgroundColor: '#499EFF',
+  backgroundColor: colors.appThemeColor,
   headerLayoutPreset: 'center',
 };
 

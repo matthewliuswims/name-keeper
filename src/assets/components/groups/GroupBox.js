@@ -1,16 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { groupContainerStyle, groupTextStyle } from '../../styles/group';
-// given an id, have to be able to find the group and first 2 users (might as well just find all users)
-// or maybe not...
-// and put into redux state...
-// just start by loading all the users...
-// naive way first
-// will ahve children ijust spilled into it..
-// like a first child anda s econd child? or and array...
-// doesn't matter though
-// parent is concerned wiht state
-// should have 2 children...want a sepcific compontn..
 
 type Props = {
   groupName: string,
