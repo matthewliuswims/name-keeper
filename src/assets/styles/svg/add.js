@@ -1,4 +1,4 @@
-/* eslint no-eval: 0 */
+/* eslint no-eval: 0 indent: 0 */
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../colors';
 
