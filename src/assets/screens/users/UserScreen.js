@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
-import LeftHeaderComponent from '../../components/screen/LeftHeaderComponent';
 import { container } from '../../styles/base';
 
 export default class UserScreen extends Component {
   static navigationOptions = {
     title: 'User Screen',
     headerRight: <RightHeaderComponent />,
-    headerLeft: <LeftHeaderComponent />,
+    headerBackTitle: null,
   };
 
   render() {

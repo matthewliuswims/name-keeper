@@ -7,6 +7,7 @@ import Footer from '../../components/footer/footer';
 export default class GroupScreen extends Component {
   static navigationOptions = {
     title: 'Group Screen',
+    headerBackTitle: null, // @TODO change
   };
 
   render() {

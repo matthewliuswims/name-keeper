@@ -88,7 +88,7 @@ class Footer extends React.Component {
   plusComponent() {
     return (
       <View style={styles.addContainer}>
-        <TouchableOpacity onPress = {() => this.props.navigation.navigate('UserScreen')}
+        <TouchableOpacity onPress = {() => this.props.navigation.navigate('AddUserScreen')}
         >
           <Svg
             height={addSvgHeightOrWidth}

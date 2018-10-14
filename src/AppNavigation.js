@@ -8,6 +8,7 @@ import GroupsScreen from './assets/screens/groups/GroupsScreen';
 import GroupScreen from './assets/screens/groups/GroupScreen';
 import UsersScreen from './assets/screens/users/UsersScreen';
 import UserScreen from './assets/screens/users/UserScreen';
+import AddUserScreen from './assets/screens/users/AddUserScreen';
 
 export default class AppNavigation extends React.Component {
   render() {
@@ -23,6 +24,7 @@ const AppNavigator = createStackNavigator({
   AddGroupScreen: { screen: AddGroupScreen },
   UsersScreen: { screen: UsersScreen }, // prolly don't need?
   UserScreen: { screen: UserScreen },
+  AddUserScreen: { screen: AddUserScreen },
 }, {
   navigationOptions: {
     headerStyle: {

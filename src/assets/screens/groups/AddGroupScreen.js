@@ -25,6 +25,7 @@ const options = {
   fields: {
     name: {
       error: 'Please enter a group name',
+      placeholder: 'Group Name',
     },
   },
 };
@@ -55,19 +56,16 @@ class AddGroupScreen extends Component<Props> {
     this.props.navigation.setParams({ groupSubmit: this.groupSubmit });
   }
 
-  renderButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.saveButton}>
-        <Text>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
   groupSubmit = () => {
+    /**
+     * Calling getValue will cause the validation of all the fields of the form,
+     *  including some side effects like highlighting the errors.
+     * @tutorial https://github.com/gcanti/tcomb-form-native
+     */
     const groupStruct = this.formRef.getValue();
     // remember below Form type is group
-    const { name: groupName } = groupStruct;
-    if (groupName) {
+    if (groupStruct) {
+      const { name: groupName } = groupStruct;
       this.props.addGroup(groupName).then(() => {
         this.props.listGroups();
       }).then(() => {

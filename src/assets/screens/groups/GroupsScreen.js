@@ -31,14 +31,6 @@ class GroupsScreen extends Component<Props> {
     headerRight: <RightHeaderComponent />,
   };
 
-  renderButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.button}>
-        <Text>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
   updateGroupsList = () => {
     this.props.listGroups();
   }
