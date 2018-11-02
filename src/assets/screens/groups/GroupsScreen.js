@@ -64,7 +64,7 @@ class GroupsScreen extends Component<Props> {
               <Group
                 style={styles.item}
                 groupName={item.name}
-                firstUsername = 'asd' // @TODO: get usernames from redux state
+                firstUsername = 'asd' // @TODO: get usernames from redux state, who have latest edit date
                 secondUsername = 'asd'
                 />
             </TouchableOpacity>
