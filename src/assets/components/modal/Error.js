@@ -2,8 +2,19 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
+import getErrMsg from '../../../lib/errors/errors';
+import { PLACE_HOLDER_DEFAULT } from '../../../lib/errors/overrides';
+
 type Props = {
-  message: string,
+  error: Object,
+  clearError: Function,
+  overrides?: Object,
+  /**
+   * we need currentFocusedScreen because react-navigation keeps the screens in the stack
+   * mounted - if we didn't check which screen is in focus, all screens will render an err modal
+   * and clobbering will happen.
+   */
+  currentFocusedScreen: Boolean,
 }
 
 export default class ErrorModal extends Component<Props> {
@@ -19,20 +30,27 @@ export default class ErrorModal extends Component<Props> {
     </TouchableOpacity>
   );
 
-  renderModalContent = () => (
-    <View style={styles.modalContent}>
-      <Text>{`
-      We are Sorry! There was a problem.
-
-
-      ${this.props.message}
-      `}
-      </Text>
-      {this.renderButton('Close', () => this.setState({ visibleModal: false }))}
-    </View>
-  );
+  renderModalContent = () => {
+    if (this.props.error) {
+      const msg = getErrMsg(this.props.error, this.props.overrides);
+      return (
+        <View style={styles.modalContent}>
+          <Text>
+            {msg}
+          </Text>
+          {this.renderButton('Close', () => {
+            this.setState({ visibleModal: false });
+            this.props.clearError();
+          })}
+        </View>
+      );
+    }
+  };
 
   render() {
+    if (!this.props.currentFocusedScreen) {
+      return null;
+    }
     return (
       <View style={styles.container}>
         <Modal isVisible={this.state.visibleModal}>
@@ -67,3 +85,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
 });
+
+ErrorModal.defaultProps = {
+  overrides: PLACE_HOLDER_DEFAULT,
+};

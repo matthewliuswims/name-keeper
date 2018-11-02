@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import t from 'tcomb-form-native';
+import tComb from 'tcomb-form-native';
 
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
 
@@ -8,12 +8,12 @@ type Props = {
   navigation: () => void,
 };
 
-const { Form } = t.form;
+const { Form } = tComb.form;
 
-const userForm = t.struct({
-  name: t.String,
-  location: t.maybe(t.String),
-  description: t.String,
+const userForm = tComb.struct({
+  name: tComb.String,
+  location: tComb.maybe(tComb.String),
+  description: tComb.String,
 });
 
 const options = {

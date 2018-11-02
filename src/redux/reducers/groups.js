@@ -49,6 +49,11 @@ const groups = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       };
+    case ActionTypes.CLEAR_ERRS_GROUP:
+      return {
+        ...state,
+        error: null,
+      };
     default:
       return state;
   }

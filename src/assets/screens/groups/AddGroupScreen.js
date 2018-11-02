@@ -1,24 +1,25 @@
-
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import t from 'tcomb-form-native';
+
+
+import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
 import ErrorModal from '../../components/modal/Error';
 
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
-import { addGroup, listGroups } from '../../../redux/actions/groups';
-
+import { addGroup, listGroups, clearGroupsErr } from '../../../redux/actions/groups';
+import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
 
 type Props = {
   navigation: () => void,
   addGroup: () => void,
 };
 
-const { Form } = t.form;
+const { Form } = tComb.form;
 
-const group = t.struct({
-  name: t.String,
+const group = tComb.struct({
+  name: tComb.String,
 });
 
 const options = {
@@ -56,6 +57,19 @@ class AddGroupScreen extends Component<Props> {
     this.props.navigation.setParams({ groupSubmit: this.groupSubmit });
   }
 
+  noAmpersandsAdd = (err) => {
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearGroupsErr}
+          overrides={DUPLICATE_GROUP_NAME}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
+  }
+
   groupSubmit = () => {
     /**
      * Calling getValue will cause the validation of all the fields of the form,
@@ -67,20 +81,24 @@ class AddGroupScreen extends Component<Props> {
     if (groupStruct) {
       const { name: groupName } = groupStruct;
       this.props.addGroup(groupName).then(() => {
-        this.props.listGroups();
-      }).then(() => {
-        this.props.navigation.navigate('GroupsScreen');
+        if (!this.props.groupsState.error) {
+          this.props.listGroups(); // update redux from sql
+          this.props.navigation.navigate('GroupsScreen');
+        }
       });
     }
   }
 
   render() {
+    // if (!this.props.navigation.isFocused()) {
+    //   return null;
+    // }
     return (
       <View style={styles.container}>
         <View>
           <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         </View>
-        {this.props.groupsState.error && <ErrorModal message={this.props.groupsState.error.message} />}
+        {this.noAmpersandsAdd(this.props.groupsState.error)}
       </View>
     );
   }
@@ -109,6 +127,7 @@ const mapDispatchToProps = dispatch => (
   {
     addGroup: groupName => dispatch(addGroup(groupName)),
     listGroups: () => dispatch(listGroups()),
+    clearGroupsErr: () => dispatch(clearGroupsErr()),
   }
 );
 

@@ -41,8 +41,8 @@ export default class GroupsDB extends React.Component {
         GroupsDB.singletonInstance.dbConnection.transaction((tx) => {
           tx.executeSql(
             `CREATE TABLE IF NOT EXISTS groups (
-              id INTEGER PRIMARY KEY NOT NULL, 
-              name TEXT, 
+              group_id INTEGER PRIMARY KEY NOT NULL, 
+              name TEXT NOT NULL UNIQUE, 
               date TEXT
             );`,
           );

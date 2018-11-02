@@ -7,7 +7,7 @@ import { container } from '../../styles/base';
 import ErrorModal from '../../components/modal/Error';
 import GroupsDB from '../../database/GroupsDB';
 
-import { listGroups } from '../../../redux/actions/groups';
+import { listGroups, clearGroupsErr } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
 
 type Props = {
@@ -21,6 +21,7 @@ type Props = {
 
 class GroupsScreen extends Component<Props> {
   constructor(props) {
+    console.log('groups screen created');
     super(props);
     this.groupsDB = GroupsDB.getInstance();
     this.props.listGroups();
@@ -35,10 +36,25 @@ class GroupsScreen extends Component<Props> {
     this.props.listGroups();
   }
 
+  noAmpersands = (err) => {
+    // don't want err to render if we're not even on the
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearGroupsErr}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
+  }
+
   render() {
+    const { error: groupsStateErr } = this.props.groupsState;
+
     return (
       <View style={styles.container}>
-        { !this.props.groupsState.loading && (
+        {!this.props.groupsState.loading && (
         <FlatList
           data={this.props.groupsState.groups}
           renderItem={({ item }) => (
@@ -53,7 +69,7 @@ class GroupsScreen extends Component<Props> {
                 />
             </TouchableOpacity>
           )}
-          keyExtractor={(item => `${item.id}`)}
+          keyExtractor={(item => `${item.group_id}`)}
         />) }
         <Button
           onPress = {() => this.props.navigation.navigate('UsersScreen',
@@ -63,19 +79,17 @@ class GroupsScreen extends Component<Props> {
             })}
           title = 'Go to users screen'
         />
-
         <TouchableOpacity
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
         >
           <Text> Add Group </Text>
         </TouchableOpacity>
-
         <Button
           onPress = {this.updateGroupsList}
           title = 'List groups'
         />
-        {this.props.groupsState.error && <ErrorModal message={this.props.groupsState.error.message} />}
+        {this.noAmpersands(groupsStateErr)}
       </View>
     );
   }
@@ -115,6 +129,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     listGroups: () => dispatch(listGroups()),
+    clearGroupsErr: () => dispatch(clearGroupsErr()),
   }
 );
 

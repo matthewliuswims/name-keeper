@@ -10,7 +10,11 @@ export const LIST_GROUPS_START = 'LIST_GROUPS_START';
 export const LIST_GROUPS_SUCCESS = 'LIST_GROUPS_SUCCESS';
 export const LIST_GROUPS_FAIL = 'LIST_GROUPS_FAIL';
 
+export const CLEAR_ERRS_GROUP = 'CLEAR_ERRS_GROUP';
+
 /**
+ * note: action creator != action. Action creators are exactly that—functions that create actions.
+ * @tutorial https://redux.js.org/basics/actions
  * below action creators do NOT use a payload pattern (whereas the function makeAction does )
  * -> this has implications for the reducer
  */
@@ -21,6 +25,7 @@ function addGroupStart(groupName) {
   };
 }
 
+// in reducer we do groupName: action.groupName instead of action.payload
 function addGroupSuccess(groupName) {
   return {
     type: ADD_GROUPS_SUCCESS,
@@ -47,7 +52,8 @@ export function addGroup(groupName) {
         dispatch(addGroupSuccess(groupName));
       }).catch((err) => {
         dispatch(addGroupFail(err));
-        throw err; // so UI can deal with the error
+        // no need to throw err in this particular instance because
+        // ui won't do anything explictly if this part fails
       });
   };
 }
@@ -62,7 +68,14 @@ export function listGroups() {
         dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
       }).catch((error) => {
         dispatch(makeAction(LIST_GROUPS_FAIL, error));
-        throw error;
+        // no need to throw err in this particular instance
       });
+  };
+}
+
+
+export function clearGroupsErr() {
+  return (dispatch) => {
+    dispatch(makeAction(CLEAR_ERRS_GROUP));
   };
 }
