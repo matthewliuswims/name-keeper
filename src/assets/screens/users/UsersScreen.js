@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, Button, StyleSheet } from 'react-native';
 import { container } from '../../styles/base';
 
+// THIS WILL PROBABLY NOT BE NEEDED - KEEPING IT HERE AS REFFERENCE FOR NAVIGATION
 export default class UsersScreen extends Component {
   static navigationOptions = {
     title: 'Users Screen',
