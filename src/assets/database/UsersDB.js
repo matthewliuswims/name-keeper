@@ -5,7 +5,6 @@ import databaseConnection from './DatabaseConnection';
 export default class UsersDB extends React.Component {
     static singletonInstance;
 
-    // HAVE TO CHANGE THIS LOGIC <-- see groupsdb
     static getInstance() {
       if (!UsersDB.singletonInstance) {
         UsersDB.singletonInstance = new UsersDB();

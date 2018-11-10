@@ -21,12 +21,9 @@ export default class GroupsDB extends React.Component {
         GroupsDB.singletonInstance = new GroupsDB();
         this.singletonInstance.createTable().then(() => {
           return this.singletonInstance;
-        }).catch((err) => {
-          throw err;
         });
-      } else {
-        return this.singletonInstance;
       }
+      return this.singletonInstance;
     }
 
     get dbConnection() {

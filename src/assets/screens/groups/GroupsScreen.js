@@ -23,8 +23,8 @@ class GroupsScreen extends Component<Props> {
   constructor(props) {
     console.log('groups screen created');
     super(props);
-    // this.groupsDB = GroupsDB.getInstance().catch();
-    // this.props.listGroups();
+    this.groupsDB = GroupsDB.getInstance();
+    this.props.listGroups();
   }
 
   static navigationOptions = {
