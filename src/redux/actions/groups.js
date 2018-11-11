@@ -44,35 +44,31 @@ export function addGroup(groupName) {
   return (dispatch) => {
     dispatch(addGroupStart(groupName));
 
-    const dbInstance = GroupsDB.getInstance();
-    const addGroupDB = dbInstance.addGroup;
-
-    return addGroupDB(groupName)
-      .then(() => {
-        dispatch(addGroupSuccess(groupName));
-      }).catch((err) => {
-        dispatch(addGroupFail(err));
-        // no need to throw err in this particular instance because
-        // ui won't do anything explictly if this part fails
-      });
+    return GroupsDB.getInstance().then((groupsDBInstance) => {
+      return groupsDBInstance.addGroup(groupName);
+    }).then(() => {
+      dispatch(addGroupSuccess(groupName));
+    }).catch((err) => {
+      dispatch(addGroupFail(err));
+      // no need to throw err in this particular instance because
+      // ui won't do anything explictly if this part fails
+    });
   };
 }
 
 export function listGroups() {
   return (dispatch) => {
     dispatch(makeAction(LIST_GROUPS_START));
-    const dbInstance = GroupsDB.getInstance();
-    const listGroupsDB = dbInstance.listGroups;
-    return listGroupsDB()
-      .then((groupsList) => {
-        dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
-      }).catch((error) => {
-        dispatch(makeAction(LIST_GROUPS_FAIL, error));
-        // no need to throw err in this particular instance
-      });
+    return GroupsDB.getInstance().then((groupDBInstance) => {
+      return groupDBInstance.listGroups();
+    }).then((groupsList) => {
+      dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
+    }).catch((error) => {
+      dispatch(makeAction(LIST_GROUPS_FAIL, error));
+      // no need to throw err in this particular instance
+    });
   };
 }
-
 
 export function clearGroupsErr() {
   return (dispatch) => {

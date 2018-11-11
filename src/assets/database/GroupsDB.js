@@ -10,6 +10,7 @@ export default class GroupsDB extends React.Component {
      * BELOW IS IMPORTANT!!!
      *  When in context of a static method in JS or getter there is no "current instance" by intention and so
         'this' refers to the definition of current class
+        @return {Promise<Object>} - promise that will resolve with the instance
      */
     static getInstance() {
       // BELOW IS IMPORANT!!!!!!!!!!!!!!
@@ -17,13 +18,22 @@ export default class GroupsDB extends React.Component {
       // GroupsDB.singletonInstance (once defined) -> class instance (i.e. instance of class)
       // this.singletonInstance -> class instance
       // i.e. GroupsDB.singletonInstance === this.singletonInstance
+
+      // everytime the app is loaded, the below block of code will be loaded
+      // but afterwards (for the duration of the app session) we will go to the
+      // return New Promise code block
       if (!GroupsDB.singletonInstance) {
         GroupsDB.singletonInstance = new GroupsDB();
-        this.singletonInstance.createTable().then(() => {
+        return this.singletonInstance.createTable().then((success) => {
+          console.log('created table code', success);
           return this.singletonInstance;
+        }).catch((err) => {
+          throw err;
         });
       }
-      return this.singletonInstance;
+      return new Promise((res) => {
+        res(this.singletonInstance);
+      });
     }
 
     get dbConnection() {
@@ -45,7 +55,7 @@ export default class GroupsDB extends React.Component {
           );
         },
         err => reject(err),
-        () => resolve('success'));
+        () => resolve('successfully created table or successfully did not create table because it was already there'));
       });
     }
 
