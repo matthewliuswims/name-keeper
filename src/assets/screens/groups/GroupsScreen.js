@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container } from '../../styles/base';
 import ErrorModal from '../../components/modal/Error';
-import GroupsDB from '../../database/GroupsDB';
 
 import { listGroups, clearGroupsErr } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
@@ -23,7 +22,6 @@ class GroupsScreen extends Component<Props> {
   constructor(props) {
     console.log('groups screen created');
     super(props);
-    this.groupsDB = GroupsDB.getInstance();
     this.props.listGroups();
   }
 
