@@ -35,7 +35,7 @@ class GroupsScreen extends Component<Props> {
   }
 
   noAmpersands = (err) => {
-    // don't want err to render if we're not even on the
+    // don't want err to render if we're not even on the screen
     if (err) {
       return (
         <ErrorModal

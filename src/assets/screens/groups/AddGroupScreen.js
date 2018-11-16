@@ -90,9 +90,6 @@ class AddGroupScreen extends Component<Props> {
   }
 
   render() {
-    // if (!this.props.navigation.isFocused()) {
-    //   return null;
-    // }
     return (
       <View style={styles.container}>
         <View>
