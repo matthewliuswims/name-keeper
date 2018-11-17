@@ -31,7 +31,7 @@ export function addUser(user) {
 /**
  * @param {string} groupName - all group names are unique, so we can use to find the users
  */
-export function listUsers(groupName) {
+export function listUsersByGroup(groupName) {
   return (dispatch) => {
     dispatch(makeAction(LIST_USERS_START));
 
@@ -44,5 +44,11 @@ export function listUsers(groupName) {
       // no need to throw err in this particular instance because
       // ui won't do anything explictly if this part fails
     });
+  };
+}
+
+export function clearUsersErr() {
+  return (dispatch) => {
+    dispatch(makeAction(CLEAR_ERRS_USER));
   };
 }

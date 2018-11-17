@@ -2,9 +2,9 @@
 import GroupsDB from '../../assets/database/GroupsDB';
 import makeAction from '../../lib/actions';
 
-export const ADD_GROUPS_START = 'ADD_GROUPS_START';
-export const ADD_GROUPS_SUCCESS = 'ADD_GROUPS_SUCCESS';
-export const ADD_GROUPS_FAIL = 'ADD_GROUPS_FAIL';
+export const ADD_GROUP_START = 'ADD_GROUP_START';
+export const ADD_GROUP_SUCCESS = 'ADD_GROUP_SUCCESS';
+export const ADD_GROUP_FAIL = 'ADD_GROUP_FAIL';
 
 export const LIST_GROUPS_START = 'LIST_GROUPS_START';
 export const LIST_GROUPS_SUCCESS = 'LIST_GROUPS_SUCCESS';
@@ -20,7 +20,7 @@ export const CLEAR_ERRS_GROUP = 'CLEAR_ERRS_GROUP';
  */
 function addGroupStart(groupName) {
   return {
-    type: ADD_GROUPS_START,
+    type: ADD_GROUP_START,
     groupName,
   };
 }
@@ -28,14 +28,14 @@ function addGroupStart(groupName) {
 // in reducer we do groupName: action.groupName instead of action.payload
 function addGroupSuccess(groupName) {
   return {
-    type: ADD_GROUPS_SUCCESS,
+    type: ADD_GROUP_SUCCESS,
     groupName,
   };
 }
 
 function addGroupFail(error) {
   return {
-    type: ADD_GROUPS_FAIL,
+    type: ADD_GROUP_FAIL,
     error,
   };
 }

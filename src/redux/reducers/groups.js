@@ -9,23 +9,22 @@ const initialState = {
 
 const groups = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.ADD_GROUPS_START:
+    case ActionTypes.ADD_GROUP_START:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case ActionTypes.ADD_GROUPS_SUCCESS:
+    case ActionTypes.ADD_GROUP_SUCCESS:
       return {
         ...state,
         groupName: action.groupName,
         error: null,
         loading: false,
       };
-    case ActionTypes.ADD_GROUPS_FAIL:
+    case ActionTypes.ADD_GROUP_FAIL:
       return {
         ...state,
-        groupName: action.groupName,
         error: action.error,
         loading: false,
       };
@@ -45,7 +44,6 @@ const groups = (state = initialState, action) => {
     case ActionTypes.LIST_GROUPS_FAIL:
       return {
         ...state,
-        groups: [...state.groups],
         error: action.payload,
         loading: false,
       };
