@@ -26,14 +26,10 @@ class AppNavContainerWrapper extends React.Component {
 
           /**
            * for some reason onNavigationStateChange gets called
-           * twice - once for the transition and once we're already the page (and prevScreen === current screen)
-           * since we don't want care about the second time, we have below if statement
+           * twice - once for the transition and once we're already on the page (and prevScreen === current screen)
+           * we want the second time, so we're already off the screen
            */
-          if (currentScreen === prevScreen) {
-            return;
-          }
-
-          if (currentScreen === 'GroupsScreen') {
+          if (currentScreen === prevScreen && currentScreen === 'GroupsScreen') {
             this.props.clearGroupFocus();
           }
         }}

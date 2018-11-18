@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { container } from '../../styles/base';
 
@@ -20,12 +21,14 @@ class GroupScreen extends Component<Props> {
     //   left: (<Ionicons name='chevron-left' onPress={() => { goBack(); }} />),
     // }),
   };
+  // @TODO: USE LODASH GET BELOW INSTEAD OF THE &&
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.groupContents}>
-          <Text> {this.props.groupsState.focusedGroup} </Text>
+          <Text> asd </Text>
+          <Text> {get(this.props.groupsState, 'focusedGroup', null)} </Text>
         </View>
         <View style={styles.footer}>
           <Footer />
