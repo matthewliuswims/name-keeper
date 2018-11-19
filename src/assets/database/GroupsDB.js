@@ -1,6 +1,10 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
+const GROUP_NUMBER_LIMIT = 8; // need to give design justification in a screen/readme for
+// for why we set a hard limit...
+// because: a) limit clutter b) want control over specific colors
+
 export default class GroupsDB extends React.Component {
     static singletonInstance;
 
@@ -59,8 +63,20 @@ export default class GroupsDB extends React.Component {
       });
     }
 
-    addGroup(groupName) {
+    async addGroup(groupName) {
       const timeGroupAdded = new Date();
+      let groups;
+
+      try {
+        groups = await this.listGroups();
+      } catch (e) {
+        throw e;
+      }
+
+      if (groups.length >= GROUP_NUMBER_LIMIT) {
+        throw new Error(`You cannot have more than ${GROUP_NUMBER_LIMIT} groups. You CURRENTLY have ${groups.length} groups. Please delete a group to make another one`);
+      }
+
       return new Promise((resolve, reject) => {
         GroupsDB.singletonInstance.dbConnection.transaction(
           (tx) => {

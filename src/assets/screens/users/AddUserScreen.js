@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import tComb from 'tcomb-form-native';
+import { connect } from 'react-redux';
 
+
+import { addUser, listUsersByGroup, clearUsersErr } from '../../../redux/actions/users';
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
 
 type Props = {
@@ -35,7 +38,7 @@ const options = {
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-export default class AddUserScreen extends Component<Props> {
+class AddUserScreen extends Component<Props> {
   /**
    * @tutorial https://reactnavigation.org/docs/en/header-buttons.html#header-interaction-with-its-screen-component
    * for onPress we need a noOp, otherwise we'd get an error, because React Navigation does NOT guarantee
@@ -63,6 +66,14 @@ export default class AddUserScreen extends Component<Props> {
     const userStruct = this.formRef.getValue();
     if (userStruct) {
       const { name, location, description } = userStruct;
+      // const user = {
+      //   name,
+      //   description,
+      //   last_edit: Date.now(),
+      //   location,
+
+      // }
+      console.log('userStruct', userStruct);
       console.log('name is', name);
       console.log('location is', location);
       console.log('description is', description);
@@ -98,3 +109,19 @@ const styles = StyleSheet.create({
     fontWeight: topRightSaveButtonText.fontWeight,
   },
 });
+
+
+const mapStateToProps = state => (
+  {
+    groupsState: state.groups,
+  }
+);
+const mapDispatchToProps = dispatch => (
+  {
+    listGroups: () => dispatch(clearUsersErr()),
+    listUsersByGroup: group => dispatch(listUsersByGroup(group)),
+    focusGroup: user => dispatch(addUser(user)),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddUserScreen);
