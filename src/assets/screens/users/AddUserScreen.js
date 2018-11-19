@@ -9,6 +9,9 @@ import { container, topRightSaveButton, topRightSaveButtonText } from '../../sty
 
 type Props = {
   navigation: () => void,
+  groupsState : {
+    groups: Array<Object>,
+  }
 };
 
 const { Form } = tComb.form;
@@ -66,13 +69,14 @@ class AddUserScreen extends Component<Props> {
     const userStruct = this.formRef.getValue();
     if (userStruct) {
       const { name, location, description } = userStruct;
+
       // const user = {
       //   name,
       //   description,
       //   last_edit: Date.now(),
       //   location,
+      // };
 
-      // }
       console.log('userStruct', userStruct);
       console.log('name is', name);
       console.log('location is', location);

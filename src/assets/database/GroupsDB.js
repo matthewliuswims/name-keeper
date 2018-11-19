@@ -1,7 +1,7 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
-const GROUP_NUMBER_LIMIT = 8; // need to give design justification in a screen/readme for
+const GROUP_NUMBER_LIMIT = 8; // @TODO need to give design justification in a screen/readme for
 // for why we set a hard limit...
 // because: a) limit clutter b) want control over specific colors
 
