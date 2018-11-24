@@ -38,3 +38,18 @@ export const topRightSaveButtonText = {
   color: 'white',
   fontWeight: 'bold',
 };
+
+export const horizontalScreenButton = {
+  alignItems: 'center',
+  padding: 10,
+  borderRadius: 10,
+  borderWidth: 1,
+  borderColor: '#979797',
+  shadowColor: '#979797',
+  shadowOpacity: 0.8,
+  shadowRadius: 2,
+  shadowOffset: {
+    height: 2,
+    width: 2,
+  },
+};

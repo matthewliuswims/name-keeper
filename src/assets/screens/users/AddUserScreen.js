@@ -3,9 +3,8 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
-
-import { addUser, listUsersByGroup, clearUsersErr } from '../../../redux/actions/users';
-import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
+import { addUser } from '../../../redux/actions/users';
+import { container, topRightSaveButton, topRightSaveButtonText, horizontalScreenButton } from '../../styles/base';
 
 type Props = {
   navigation: () => void,
@@ -87,9 +86,14 @@ class AddUserScreen extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <View>
-          <Form ref={(c) => { this.formRef = c; }} type={userForm} options={options} />
-        </View>
+        <Form ref={(c) => { this.formRef = c; }} type={userForm} options={options} />
+        <Text> Group(s) </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress = {() => console.log('am work')}
+        >
+          <Text> Add Group </Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -103,6 +107,21 @@ const styles = StyleSheet.create({
     paddingRight: container.paddingRight,
     backgroundColor: container.backgroundColor,
   },
+
+  button: {
+    backgroundColor: 'blue',
+
+    alignItems: horizontalScreenButton.alignItems,
+    padding: horizontalScreenButton.padding,
+    borderRadius: horizontalScreenButton.borderRadius,
+    borderWidth: horizontalScreenButton.borderWidth,
+    borderColor: horizontalScreenButton.borderColor,
+    shadowColor: horizontalScreenButton.shadowColor,
+    shadowOpacity: horizontalScreenButton.shadowOpacity,
+    shadowRadius: horizontalScreenButton.shadowRadius,
+    shadowOffset: horizontalScreenButton.shadowOffset,
+  },
+
   saveButton: {
     paddingLeft: topRightSaveButton.paddingLeft,
     paddingRight: topRightSaveButton.paddingRight,
@@ -122,9 +141,7 @@ const mapStateToProps = state => (
 );
 const mapDispatchToProps = dispatch => (
   {
-    listGroups: () => dispatch(clearUsersErr()),
-    listUsersByGroup: group => dispatch(listUsersByGroup(group)),
-    focusGroup: user => dispatch(addUser(user)),
+    addUser: user => dispatch(addUser(user)),
   }
 );
 

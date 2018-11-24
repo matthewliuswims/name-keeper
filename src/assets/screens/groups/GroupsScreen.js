@@ -3,7 +3,9 @@ import { Text, View, Button, FlatList, StyleSheet, TouchableOpacity } from 'reac
 import { connect } from 'react-redux';
 
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
-import { container } from '../../styles/base';
+import { container, horizontalScreenButton } from '../../styles/base';
+import colors from '../../styles/colors';
+
 import ErrorModal from '../../components/modal/Error';
 
 import { listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
@@ -106,19 +108,17 @@ const styles = StyleSheet.create({
   },
   // PUT BUTTON IN SEPARATE LOGIC
   button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#979797',
-    shadowColor: '#979797',
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 2,
-      width: 2,
-    },
+    backgroundColor: colors.addApplyColor,
+
+    alignItems: horizontalScreenButton.alignItems,
+    padding: horizontalScreenButton.padding,
+    borderRadius: horizontalScreenButton.borderRadius,
+    borderWidth: horizontalScreenButton.borderWidth,
+    borderColor: horizontalScreenButton.borderColor,
+    shadowColor: horizontalScreenButton.shadowColor,
+    shadowOpacity: horizontalScreenButton.shadowOpacity,
+    shadowRadius: horizontalScreenButton.shadowRadius,
+    shadowOffset: horizontalScreenButton.shadowOffset,
   },
 });
 
