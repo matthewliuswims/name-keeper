@@ -3,7 +3,7 @@ import { Text, View, Button, FlatList, StyleSheet, TouchableOpacity } from 'reac
 import { connect } from 'react-redux';
 
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
-import { container, horizontalScreenButton } from '../../styles/base';
+import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
 
 import ErrorModal from '../../components/modal/Error';
@@ -65,7 +65,6 @@ class GroupsScreen extends Component<Props> {
               }}
             >
               <Group
-                style={styles.item}
                 groupName={item.name}
                 firstUsername = 'asd' // @TODO: get usernames from redux state, who have latest edit date
                 secondUsername = 'asd'
@@ -110,15 +109,18 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.addApplyColor,
 
-    alignItems: horizontalScreenButton.alignItems,
-    padding: horizontalScreenButton.padding,
-    borderRadius: horizontalScreenButton.borderRadius,
-    borderWidth: horizontalScreenButton.borderWidth,
-    borderColor: horizontalScreenButton.borderColor,
-    shadowColor: horizontalScreenButton.shadowColor,
-    shadowOpacity: horizontalScreenButton.shadowOpacity,
-    shadowRadius: horizontalScreenButton.shadowRadius,
-    shadowOffset: horizontalScreenButton.shadowOffset,
+    alignItems: horizontalGroupScreenButton.alignItems,
+    padding: horizontalGroupScreenButton.padding,
+    borderRadius: horizontalGroupScreenButton.borderRadius,
+    borderWidth: horizontalGroupScreenButton.borderWidth,
+    borderColor: horizontalGroupScreenButton.borderColor,
+    shadowColor: horizontalGroupScreenButton.shadowColor,
+    shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
+    shadowRadius: horizontalGroupScreenButton.shadowRadius,
+    shadowOffset: horizontalGroupScreenButton.shadowOffset,
+    paddingTop: horizontalGroupScreenButton.paddingTop,
+    paddingBottom: horizontalGroupScreenButton.paddingBottom,
+    marginBottom: horizontalGroupScreenButton.marginBottom,
   },
 });
 

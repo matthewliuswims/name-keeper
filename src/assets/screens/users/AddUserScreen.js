@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
 import { addUser } from '../../../redux/actions/users';
-import { container, topRightSaveButton, topRightSaveButtonText, horizontalScreenButton } from '../../styles/base';
+
+import { container, topRightSaveButton, topRightSaveButtonText, horizontalGroupScreenButton } from '../../styles/base';
 
 type Props = {
   navigation: () => void,
@@ -68,13 +69,14 @@ class AddUserScreen extends Component<Props> {
     const userStruct = this.formRef.getValue();
     if (userStruct) {
       const { name, location, description } = userStruct;
+      console.log('this.props.groupsState', this.props.groupsState);
+      const { groups } = this.props.groupsState;
 
-      // const user = {
-      //   name,
-      //   description,
-      //   last_edit: Date.now(),
-      //   location,
-      // };
+      // let groupColorIds = [];
+  
+      // groups.map((group) => {
+      //   group.color = 
+      // })
 
       console.log('userStruct', userStruct);
       console.log('name is', name);
@@ -83,17 +85,37 @@ class AddUserScreen extends Component<Props> {
     }
   }
 
+  getColorStyle(groupColor) {
+    const buttonNoColorStyle = styles.button;
+    const buttonColor = {
+      backgroundColor: groupColor,
+    };
+    const combinedStyle = StyleSheet.flatten([buttonNoColorStyle, buttonColor]); 
+    return combinedStyle;
+  }
+
   render() {
+    // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
+    // diegoprates
+
     return (
       <View style={styles.container}>
         <Form ref={(c) => { this.formRef = c; }} type={userForm} options={options} />
         <Text> Group(s) </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress = {() => console.log('am work')}
-        >
-          <Text> Add Group </Text>
-        </TouchableOpacity>
+        <FlatList
+          data={this.props.groupsState.groups}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={this.getColorStyle(item.color)}
+              onPress = {() => {
+                console.log('colorrr here', item.color);
+              }}
+            >
+              <Text> Add Group -----X </Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item => `${item.group_id}`)}
+        />
       </View>
     );
   }
@@ -109,17 +131,15 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: 'blue',
-
-    alignItems: horizontalScreenButton.alignItems,
-    padding: horizontalScreenButton.padding,
-    borderRadius: horizontalScreenButton.borderRadius,
-    borderWidth: horizontalScreenButton.borderWidth,
-    borderColor: horizontalScreenButton.borderColor,
-    shadowColor: horizontalScreenButton.shadowColor,
-    shadowOpacity: horizontalScreenButton.shadowOpacity,
-    shadowRadius: horizontalScreenButton.shadowRadius,
-    shadowOffset: horizontalScreenButton.shadowOffset,
+    alignItems: horizontalGroupScreenButton.alignItems,
+    padding: horizontalGroupScreenButton.padding,
+    borderRadius: horizontalGroupScreenButton.borderRadius,
+    borderWidth: horizontalGroupScreenButton.borderWidth,
+    borderColor: horizontalGroupScreenButton.borderColor,
+    shadowColor: horizontalGroupScreenButton.shadowColor,
+    shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
+    shadowRadius: horizontalGroupScreenButton.shadowRadius,
+    shadowOffset: horizontalGroupScreenButton.shadowOffset,
   },
 
   saveButton: {

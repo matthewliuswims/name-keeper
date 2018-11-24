@@ -1,5 +1,6 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
+import nextColor from '../../lib/groupColors';
 
 const GROUP_NUMBER_LIMIT = 8; // @TODO need to give design justification in a screen/readme for
 // for why we set a hard limit...
@@ -54,6 +55,7 @@ export default class GroupsDB extends React.Component {
             `CREATE TABLE IF NOT EXISTS groups (
               group_id INTEGER PRIMARY KEY NOT NULL, 
               name TEXT NOT NULL UNIQUE, 
+              color TEXT NOT NULL UNIQUE, 
               last_edit DATE NOT NULL
             );`,
           );
@@ -77,10 +79,18 @@ export default class GroupsDB extends React.Component {
         throw new Error(`You cannot have more than ${GROUP_NUMBER_LIMIT} groups. You CURRENTLY have ${groups.length} groups. Please delete a group to make another one`);
       }
 
+      const groupColors = [];
+
+      for (const group of groups) {
+        groupColors.push(group.color);
+      }
+
+      const nextGrpColor = nextColor(groupColors);
+
       return new Promise((resolve, reject) => {
         GroupsDB.singletonInstance.dbConnection.transaction(
           (tx) => {
-            tx.executeSql('INSERT INTO groups (name, last_edit) values (?, ?)', [groupName, timeGroupAdded]);
+            tx.executeSql('INSERT INTO groups (name, last_edit, color) values (?, ?, ?)', [groupName, timeGroupAdded, nextGrpColor]);
           },
           err => reject(err),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful

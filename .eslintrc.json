@@ -23,6 +23,8 @@
         "react/jsx-closing-bracket-location": "off",
         "no-use-before-define": "off",
         "arrow-body-style": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "no-restricted-syntax": "off",
+        "no-plusplus": "off"
     }
 }

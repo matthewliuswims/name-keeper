@@ -39,7 +39,7 @@ export const topRightSaveButtonText = {
   fontWeight: 'bold',
 };
 
-export const horizontalScreenButton = {
+export const horizontalGroupScreenButton = {
   alignItems: 'center',
   padding: 10,
   borderRadius: 10,
