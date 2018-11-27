@@ -26,6 +26,11 @@ const groups = (state = initialState, action) => {
         error: null,
         loading: false,
       };
+    case ActionTypes.GROUP_VALIDATION_FAIL:
+      return {
+        ...state,
+        error: action.payload, // error resulting from associated more than 3 groups to a user
+      };
     case ActionTypes.ADD_GROUP_FAIL:
       return {
         ...state,

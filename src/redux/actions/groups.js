@@ -6,6 +6,8 @@ export const ADD_GROUP_START = 'ADD_GROUP_START';
 export const ADD_GROUP_SUCCESS = 'ADD_GROUP_SUCCESS';
 export const ADD_GROUP_FAIL = 'ADD_GROUP_FAIL';
 
+export const GROUP_VALIDATION_FAIL = 'GROUP_VALIDATION_FAIL';
+
 export const LIST_GROUPS_START = 'LIST_GROUPS_START';
 export const LIST_GROUPS_SUCCESS = 'LIST_GROUPS_SUCCESS';
 export const LIST_GROUPS_FAIL = 'LIST_GROUPS_FAIL';
@@ -70,6 +72,12 @@ export function listGroups() {
       dispatch(makeAction(LIST_GROUPS_FAIL, error));
       // no need to throw err in this particular instance
     });
+  };
+}
+
+export function groupValidationFail(error) {
+  return (dispatch) => {
+    dispatch(makeAction(GROUP_VALIDATION_FAIL, error));
   };
 }
 

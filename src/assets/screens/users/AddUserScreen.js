@@ -6,9 +6,14 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { addUser } from '../../../redux/actions/users';
 
-import { container, topRightSaveButton, topRightSaveButtonText, horizontalGroupScreenButton } from '../../styles/base';
+import ErrorModal from '../../components/modal/Error';
 
+
+import { container, topRightSaveButton, topRightSaveButtonText, horizontalGroupScreenButton } from '../../styles/base';
+import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
 import AddGroup from '../../components/groups/AddGroup';
+
+import { MORE_THAN_3_GROUPS, NO_GROUPS_SELECTED } from '../../../lib/errors/overrides';
 
 type Props = {
   navigation: () => void,
@@ -44,11 +49,14 @@ const options = {
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
+// @TODO: investigate whether or not we will have bugs because 
+// we only initialize this.state.groups in constructor once...
 class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
       groups: this.sortedGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroup),
+      errorOverrides: null,
     };
   }
 
@@ -75,10 +83,31 @@ class AddUserScreen extends Component<Props> {
     this.props.navigation.setParams({ userSubmit: this.userSubmit });
   }
 
+  /**
+   * groupClick should guarantee that groups should never have more than 3 added groups
+   */
+  get3GroupsForUser(groups) {
+    const threeGroups = [];
+    for (const group of groups) {
+      if (group.added) {
+        threeGroups.push(group);
+      }
+    }
+    // hopefully threeGroups will NOT be over 3 lol
+    while (threeGroups.length !== 3) {
+      threeGroups.push(null);
+    }
+    return threeGroups;
+  }
+
   userSubmit = () => {
     const userStruct = this.formRef.getValue();
+
+    get3GroupsForUser(this.state.groups) // @TODO: do something with this
+
     if (userStruct) {
       const { name, location, description } = userStruct;
+      // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
       console.log('this.state.groups', this.state.groups);
 
       // let groupColorIds = [];
@@ -94,10 +123,11 @@ class AddUserScreen extends Component<Props> {
     }
   }
 
-  getColorStyle(groupColor) {
+  getColorStyle(groupColor, opacity) {
     const buttonNoColorStyle = styles.button;
     const buttonColor = {
       backgroundColor: groupColor,
+      opacity,
     };
     const combinedStyle = StyleSheet.flatten([buttonNoColorStyle, buttonColor]);
     return combinedStyle;
@@ -111,15 +141,16 @@ class AddUserScreen extends Component<Props> {
    */
   sortedGroups(groupsOriginal, focusedGroupName) {
     const groups = groupsOriginal.slice(); // because we mutate in filter logic
+
     let focusedGroup;
 
     const withFocuses = groups.map((group) => {
       const clonedGroupTarget = Object.assign({}, group);
       if (group.name !== focusedGroupName) {
-        const unfocusedGroup = Object.assign(clonedGroupTarget, { added: false });
+        const unfocusedGroup = Object.assign(clonedGroupTarget, { added: false, opacity: 0.3 });
         return unfocusedGroup;
       }
-      focusedGroup = Object.assign(clonedGroupTarget, { added: true });
+      focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1 });
       return focusedGroup;
     });
 
@@ -127,8 +158,17 @@ class AddUserScreen extends Component<Props> {
 
     noFocusGroup.unshift(focusedGroup);
     const sortedGroups = noFocusGroup; // want to make focused group first
-    console.log('SORTEDD GROUPSSS', sortedGroups);
     return sortedGroups;
+  }
+
+  isGroupAdd(groupName) {
+    let added;
+    for (const group of this.state.groups) {
+      if (group.name === groupName) {
+        added = !group.added;
+      }
+    }
+    return added;
   }
 
   /**
@@ -136,18 +176,57 @@ class AddUserScreen extends Component<Props> {
    * @param {string} groupname
    */
   groupClick(groupname) {
+    let groupCounter = 0;
+    for (const group of this.state.groups) {
+      if (group.added) groupCounter++;
+    }
+
+    if (groupCounter === 1 && !this.isGroupAdd(groupname)) {
+      const noGroupsSelected = new Error();
+      this.props.groupValidationFail(noGroupsSelected);
+      this.setState({
+        errorOverrides: NO_GROUPS_SELECTED,
+      });
+      return;
+    }
+
+    if (groupCounter >= 3 && this.isGroupAdd(groupname)) {
+      const moreThan3Groups = new Error();
+      this.props.groupValidationFail(moreThan3Groups);
+      this.setState({
+        errorOverrides: MORE_THAN_3_GROUPS,
+      });
+      return;
+    }
+
     this.setState((prevState) => {
       const { groups } = prevState;
       const updatedGroups = groups.map((group) => {
         if (group.name === groupname) {
           const clonedGroupTarget = Object.assign({}, group);
-          return Object.assign(clonedGroupTarget, { added: !group.added });
+          const added = !group.added;
+          const opacity = added ? 1 : 0.3;
+          return Object.assign(clonedGroupTarget, { added, opacity });
         }
         return group;
       });
-      console.log('updatedGroups is', updatedGroups);
       return { groups: updatedGroups };
     });
+  }
+
+
+  checkErr = (err) => {
+    // don't want err to render if we're not even on the screen
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearGroupsErr}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+          overrides={this.state.errorOverrides}
+        />
+      );
+    }
   }
 
   render() {
@@ -164,10 +243,12 @@ class AddUserScreen extends Component<Props> {
               group={item}
               onGroupClick={groupName => this.groupClick(groupName)}
               getColorStyle={this.getColorStyle}
+              innardsStyleContainer={styles.buttonInnardsContainer}
             />)
           }
           keyExtractor={(item => `${item.group_id}`)}
         />
+        {this.checkErr(this.props.groupsState.error)}
       </View>
     );
   }
@@ -182,9 +263,6 @@ const styles = StyleSheet.create({
     backgroundColor: container.backgroundColor,
   },
   button: {
-    flex: horizontalGroupScreenButton.flex,
-    flexDirection: horizontalGroupScreenButton.flexDirection,
-    padding: horizontalGroupScreenButton.padding,
     borderRadius: horizontalGroupScreenButton.borderRadius,
     borderWidth: horizontalGroupScreenButton.borderWidth,
     borderColor: horizontalGroupScreenButton.borderColor,
@@ -193,10 +271,14 @@ const styles = StyleSheet.create({
     shadowRadius: horizontalGroupScreenButton.shadowRadius,
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
 
-    justifyContent: 'space-between',
     paddingLeft: wp('39%'),
   },
-
+  buttonInnardsContainer: {
+    padding: 10,
+    flex: horizontalGroupScreenButton.flex,
+    flexDirection: horizontalGroupScreenButton.flexDirection,
+    justifyContent: 'space-between',
+  },
   saveButton: {
     paddingLeft: topRightSaveButton.paddingLeft,
     paddingRight: topRightSaveButton.paddingRight,
@@ -217,6 +299,8 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     addUser: user => dispatch(addUser(user)),
+    groupValidationFail: err => dispatch(groupValidationFail(err)),
+    clearGroupsErr: () => dispatch(clearGroupsErr()),
   }
 );
 
