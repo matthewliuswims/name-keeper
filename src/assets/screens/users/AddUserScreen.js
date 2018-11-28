@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { get } from 'lodash';
 
 import { addUser } from '../../../redux/actions/users';
 
@@ -127,41 +128,33 @@ class AddUserScreen extends Component<Props> {
   }
 
   userSubmit = () => {
-    const value = this.refs.form.getValue();
-    if (value) {
-      console.log(value);
+    if (!this.validGroupSelections()) {
+      return;
     }
-    // if (!this.validGroupSelections()) {
-    //   return;
-    // }
-    // const userStruct = this.refs.form.getValue();
-    // const threeGroups = this.get3GroupsForUser(this.state.groups); // @TODO: do something with this
-    // console.log('threeGroups', threeGroups);
-    // if (userStruct) {
-    //   const { name, location, description } = userStruct;
-    //   const firstGroup = threeGroups[0];
-    //   const secondGroup = threeGroups[1];
-    //   const thirdGroup = threeGroups[2];
+    const userStruct = this.refs.form.getValue();
+    const threeGroups = this.get3GroupsForUser(this.state.groups); // @TODO: do something with this
+    console.log('threeGroups', threeGroups);
+    if (userStruct) {
+      const { name, location, description } = userStruct;
 
-    //   // const user={
-    //   //   name,
-    //   //   description
-        
-    //   //   location
-    //   // }
-    //   // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
-    //   console.log('this.state.groups', this.state.groups);
+      const groupNameOne = get(threeGroups[0], 'name', null);
+      const groupNameTwo = get(threeGroups[1], 'name', null);
+      const groupNameThree = get(threeGroups[2], 'name', null);
 
-    //   // let groupColorIds = [];
-    //   // groups.map((group) => {
-    //   //   group.color =
-    //   // })
+      const user = {
+        name,
+        description,
+        groupNameOne,
+        groupNameTwo,
+        groupNameThree,
+        location,
+      };
 
-    //   console.log('userStruct', userStruct);
-    //   console.log('name is', name);
-    //   console.log('location is', location);
-    //   console.log('description is', description);
-    // }
+      // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
+      console.log('this.state.groups', this.state.groups);
+      console.log('userStruct', userStruct);
+      console.log('user is', user);
+    }
   }
 
   getColorStyle(groupColor, opacity) {

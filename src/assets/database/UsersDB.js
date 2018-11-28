@@ -46,9 +46,10 @@ export default class UsersDB extends React.Component {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             tx.executeSql(
-              'INSERT INTO users (name, description, last_edit, groupNameOne, groupNameTwo, groupNameThree, location) values (?, ?, ?, ?, ?, ?, ?)',
+              'INSERT INTO users (name, description, created_date, last_edit, groupNameOne, groupNameTwo, groupNameThree, location) values (?, ?, ?, ?, ?, ?, ?, ?)',
               [user.userName,
                 user.description,
+                timeUserAdded,
                 timeUserAdded,
                 user.group_id,
                 user.group_id_2,
@@ -68,7 +69,7 @@ export default class UsersDB extends React.Component {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             // can get from executeSql
-            tx.executeSql('SELECT * FROM users WHERE groupNameOne = ? OR groupNameTWO = ? OR groupNameThree = ?',
+            tx.executeSql('SELECT * FROM users WHERE groupNameOne = ? OR groupNameTWO = ? OR groupNameThree = ? ORDER BY timeUserAdded;',
               [groupName,
                 groupName,
                 groupName,
