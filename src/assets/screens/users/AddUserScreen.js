@@ -100,20 +100,57 @@ class AddUserScreen extends Component<Props> {
     return threeGroups;
   }
 
+  validGroupSelections() {
+    let groupCounter = 0;
+    for (const group of this.state.groups) {
+      if (group.added) groupCounter++;
+    }
+
+    if (groupCounter === 0) {
+      const noGroupsSelected = new Error();
+      this.props.groupValidationFail(noGroupsSelected);
+      this.setState({
+        errorOverrides: NO_GROUPS_SELECTED,
+      });
+      return false;
+    }
+
+    if (groupCounter > 3) {
+      const moreThan3Groups = new Error();
+      this.props.groupValidationFail(moreThan3Groups);
+      this.setState({
+        errorOverrides: MORE_THAN_3_GROUPS,
+      });
+      return false;
+    }
+    return true;
+  }
+
   userSubmit = () => {
+    if (!this.validGroupSelections()) {
+      return;
+    }
     const userStruct = this.formRef.getValue();
-
-    get3GroupsForUser(this.state.groups) // @TODO: do something with this
-
+    const threeGroups = this.get3GroupsForUser(this.state.groups); // @TODO: do something with this
+    console.log('threeGroups', threeGroups);
     if (userStruct) {
       const { name, location, description } = userStruct;
+      const firstGroup = threeGroups[0];
+      const secondGroup = threeGroups[1];
+      const thirdGroup = threeGroups[2];
+
+      // const user={
+      //   name,
+      //   description
+        
+      //   location
+      // }
       // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
       console.log('this.state.groups', this.state.groups);
 
       // let groupColorIds = [];
-  
       // groups.map((group) => {
-      //   group.color = 
+      //   group.color =
       // })
 
       console.log('userStruct', userStruct);
@@ -161,44 +198,11 @@ class AddUserScreen extends Component<Props> {
     return sortedGroups;
   }
 
-  isGroupAdd(groupName) {
-    let added;
-    for (const group of this.state.groups) {
-      if (group.name === groupName) {
-        added = !group.added;
-      }
-    }
-    return added;
-  }
-
   /**
    * sets state for groups, by modifiying the group that was clicked.
    * @param {string} groupname
    */
   groupClick(groupname) {
-    let groupCounter = 0;
-    for (const group of this.state.groups) {
-      if (group.added) groupCounter++;
-    }
-
-    if (groupCounter === 1 && !this.isGroupAdd(groupname)) {
-      const noGroupsSelected = new Error();
-      this.props.groupValidationFail(noGroupsSelected);
-      this.setState({
-        errorOverrides: NO_GROUPS_SELECTED,
-      });
-      return;
-    }
-
-    if (groupCounter >= 3 && this.isGroupAdd(groupname)) {
-      const moreThan3Groups = new Error();
-      this.props.groupValidationFail(moreThan3Groups);
-      this.setState({
-        errorOverrides: MORE_THAN_3_GROUPS,
-      });
-      return;
-    }
-
     this.setState((prevState) => {
       const { groups } = prevState;
       const updatedGroups = groups.map((group) => {
@@ -234,7 +238,10 @@ class AddUserScreen extends Component<Props> {
     // diegoprates
     return (
       <View style={styles.container}>
-        <Form ref={(c) => { this.formRef = c; }} type={userForm} options={options} />
+        <Form
+          ref={(c) => { this.formRef = c; }}
+          type={userForm}
+          options={options} />
         <Text> Group(s) </Text>
         <FlatList
           data={this.state.groups}
