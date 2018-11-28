@@ -257,7 +257,7 @@ class AddUserScreen extends Component<Props> {
               innardsStyleContainer={styles.buttonInnardsContainer}
             />)
           }
-          keyExtractor={(item => `${item.group_id}`)}
+          keyExtractor={(item => `${item.groupID}`)}
         />
         {this.checkErr(this.props.groupsState.error)}
       </View>

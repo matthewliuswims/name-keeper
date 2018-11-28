@@ -53,11 +53,11 @@ export default class GroupsDB extends React.Component {
         GroupsDB.singletonInstance.dbConnection.transaction((tx) => {
           tx.executeSql(
             `CREATE TABLE IF NOT EXISTS groups (
-              group_id INTEGER PRIMARY KEY NOT NULL, 
+              groupID INTEGER PRIMARY KEY NOT NULL, 
               name TEXT NOT NULL UNIQUE, 
               color TEXT NOT NULL UNIQUE, 
-              last_edit DATE NOT NULL,
-              created_date DATE NOT NULL
+              lastEdit DATE NOT NULL,
+              createdDate DATE NOT NULL
             );`,
           );
         },
@@ -91,7 +91,7 @@ export default class GroupsDB extends React.Component {
       return new Promise((resolve, reject) => {
         GroupsDB.singletonInstance.dbConnection.transaction(
           (tx) => {
-            tx.executeSql('INSERT INTO groups (name, last_edit, created_date, color) values (?, ?, ?, ?)', [groupName, timeGroupAdded, timeGroupAdded, nextGrpColor]);
+            tx.executeSql('INSERT INTO groups (name, lastEdit, createdDate, color) values (?, ?, ?, ?)', [groupName, timeGroupAdded, timeGroupAdded, nextGrpColor]);
           },
           err => reject(err),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
@@ -104,7 +104,7 @@ export default class GroupsDB extends React.Component {
         GroupsDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             // can get from executeSql
-            tx.executeSql('SELECT * FROM groups ORDER BY created_date;', [], (_, { rows }) => {
+            tx.executeSql('SELECT * FROM groups ORDER BY createdDate;', [], (_, { rows }) => {
               resolve(rows._array); //eslint-disable-line 
             });
           },

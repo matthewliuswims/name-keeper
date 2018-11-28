@@ -24,10 +24,10 @@ export default class UsersDB extends React.Component {
         UsersDB.singletonInstance.dbConnection.transaction((tx) => {
           tx.executeSql(
             `CREATE TABLE IF NOT EXISTS users (
-              user_id INTEGER PRIMARY KEY NOT NULL, 
+              userID INTEGER PRIMARY KEY NOT NULL, 
               name TEXT NOT NULL UNIQUE, 
               description TEXT NOT NULL UNIQUE,
-              last_edit NOT NULL TEXT,
+              lastEdit NOT NULL TEXT,
               groupNameOne NOT NULL TEXT,
               groupNameTwo TEXT,
               groupNameThree TEXT,
@@ -46,14 +46,14 @@ export default class UsersDB extends React.Component {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             tx.executeSql(
-              'INSERT INTO users (name, description, created_date, last_edit, groupNameOne, groupNameTwo, groupNameThree, location) values (?, ?, ?, ?, ?, ?, ?, ?)',
-              [user.userName,
+              'INSERT INTO users (name, description, createdDate, lastEdit, groupNameOne, groupNameTwo, groupNameThree, location) values (?, ?, ?, ?, ?, ?, ?, ?)',
+              [user.name,
                 user.description,
                 timeUserAdded,
                 timeUserAdded,
-                user.group_id,
-                user.group_id_2,
-                user.group_id_3,
+                user.groupNameOne,
+                user.groupNameTwo,
+                user.groupNameThree,
                 user.location,
               ],
             );

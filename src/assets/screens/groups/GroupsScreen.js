@@ -71,7 +71,7 @@ class GroupsScreen extends Component<Props> {
                 />
             </TouchableOpacity>
           )}
-          keyExtractor={(item => `${item.group_id}`)}
+          keyExtractor={(item => `${item.groupID}`)}
         />) }
         <Button
           onPress = {() => this.props.navigation.navigate('UsersScreen',
