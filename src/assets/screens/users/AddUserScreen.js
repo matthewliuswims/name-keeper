@@ -49,7 +49,7 @@ const options = {
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-// @TODO: investigate whether or not we will have bugs because 
+// @TODO: investigate whether or not we will have bugs because
 // we only initialize this.state.groups in constructor once...
 class AddUserScreen extends Component<Props> {
   constructor(props) {
@@ -127,37 +127,41 @@ class AddUserScreen extends Component<Props> {
   }
 
   userSubmit = () => {
-    if (!this.validGroupSelections()) {
-      return;
+    const value = this.refs.form.getValue();
+    if (value) {
+      console.log(value);
     }
-    const userStruct = this.formRef.getValue();
-    const threeGroups = this.get3GroupsForUser(this.state.groups); // @TODO: do something with this
-    console.log('threeGroups', threeGroups);
-    if (userStruct) {
-      const { name, location, description } = userStruct;
-      const firstGroup = threeGroups[0];
-      const secondGroup = threeGroups[1];
-      const thirdGroup = threeGroups[2];
+    // if (!this.validGroupSelections()) {
+    //   return;
+    // }
+    // const userStruct = this.refs.form.getValue();
+    // const threeGroups = this.get3GroupsForUser(this.state.groups); // @TODO: do something with this
+    // console.log('threeGroups', threeGroups);
+    // if (userStruct) {
+    //   const { name, location, description } = userStruct;
+    //   const firstGroup = threeGroups[0];
+    //   const secondGroup = threeGroups[1];
+    //   const thirdGroup = threeGroups[2];
 
-      // const user={
-      //   name,
-      //   description
+    //   // const user={
+    //   //   name,
+    //   //   description
         
-      //   location
-      // }
-      // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
-      console.log('this.state.groups', this.state.groups);
+    //   //   location
+    //   // }
+    //   // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
+    //   console.log('this.state.groups', this.state.groups);
 
-      // let groupColorIds = [];
-      // groups.map((group) => {
-      //   group.color =
-      // })
+    //   // let groupColorIds = [];
+    //   // groups.map((group) => {
+    //   //   group.color =
+    //   // })
 
-      console.log('userStruct', userStruct);
-      console.log('name is', name);
-      console.log('location is', location);
-      console.log('description is', description);
-    }
+    //   console.log('userStruct', userStruct);
+    //   console.log('name is', name);
+    //   console.log('location is', location);
+    //   console.log('description is', description);
+    // }
   }
 
   getColorStyle(groupColor, opacity) {
@@ -233,15 +237,22 @@ class AddUserScreen extends Component<Props> {
     }
   }
 
+  onChange = (value) => {
+    this.setState({ value });
+  }
+
   render() {
     // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
     // diegoprates
     return (
       <View style={styles.container}>
         <Form
-          ref={(c) => { this.formRef = c; }}
+          ref='form'
           type={userForm}
-          options={options} />
+          value={this.state.value}
+          onChange={this.onChange}
+          options={options}
+        />
         <Text> Group(s) </Text>
         <FlatList
           data={this.state.groups}
