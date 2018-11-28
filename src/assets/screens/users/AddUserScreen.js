@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { get } from 'lodash';
 
-import { addUser } from '../../../redux/actions/users';
+import { addUser, clearUsersErr } from '../../../redux/actions/users';
 
 import ErrorModal from '../../components/modal/Error';
 
@@ -150,10 +150,16 @@ class AddUserScreen extends Component<Props> {
         location,
       };
 
+      this.setState({
+        errorOverrides: null,
+      });
+
       // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
       console.log('this.state.groups', this.state.groups);
       console.log('userStruct', userStruct);
       console.log('user is', user);
+
+      this.props.addUser(user);
     }
   }
 
@@ -216,7 +222,7 @@ class AddUserScreen extends Component<Props> {
   }
 
 
-  checkErr = (err) => {
+  checkErrGrps = (err) => {
     // don't want err to render if we're not even on the screen
     if (err) {
       return (
@@ -225,6 +231,19 @@ class AddUserScreen extends Component<Props> {
           clearError={this.props.clearGroupsErr}
           currentFocusedScreen={this.props.navigation.isFocused()}
           overrides={this.state.errorOverrides}
+        />
+      );
+    }
+  }
+
+  checkErrUsrs = (err) => {
+    // don't want err to render if we're not even on the screen
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearUsersErr}
+          currentFocusedScreen={this.props.navigation.isFocused()}
         />
       );
     }
@@ -259,7 +278,8 @@ class AddUserScreen extends Component<Props> {
           }
           keyExtractor={(item => `${item.groupID}`)}
         />
-        {this.checkErr(this.props.groupsState.error)}
+        {this.checkErrGrps(this.props.groupsState.error)}
+        {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
   }
@@ -305,6 +325,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => (
   {
     groupsState: state.groups,
+    usersState: state.users,
   }
 );
 const mapDispatchToProps = dispatch => (
@@ -312,6 +333,7 @@ const mapDispatchToProps = dispatch => (
     addUser: user => dispatch(addUser(user)),
     groupValidationFail: err => dispatch(groupValidationFail(err)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
+    clearUsersErr: () => dispatch(clearUsersErr()),
   }
 );
 

@@ -30,7 +30,7 @@ export default class GroupsDB extends React.Component {
       if (!GroupsDB.singletonInstance) {
         GroupsDB.singletonInstance = new GroupsDB();
         return this.singletonInstance.createTable().then((success) => {
-          console.log('created table code', success);
+          console.log('created groups table code', success);
           return this.singletonInstance;
         }).catch((err) => {
           throw err;

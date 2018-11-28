@@ -8,11 +8,16 @@ export default class UsersDB extends React.Component {
     static getInstance() {
       if (!UsersDB.singletonInstance) {
         UsersDB.singletonInstance = new UsersDB();
-        this.singletonInstance.createTable().then(() => {
+        return this.singletonInstance.createTable().then((success) => {
+          console.log('created users table code', success);
           return this.singletonInstance;
+        }).catch((err) => {
+          throw err;
         });
       }
-      return this.singletonInstance;
+      return new Promise((res) => {
+        res(this.singletonInstance);
+      });
     }
 
     get dbConnection() {
@@ -26,9 +31,10 @@ export default class UsersDB extends React.Component {
             `CREATE TABLE IF NOT EXISTS users (
               userID INTEGER PRIMARY KEY NOT NULL, 
               name TEXT NOT NULL UNIQUE, 
-              description TEXT NOT NULL UNIQUE,
-              lastEdit NOT NULL TEXT,
-              groupNameOne NOT NULL TEXT,
+              description TEXT NOT NULL,
+              createdDate TEXT NOT NULL UNIQUE,
+              lastEdit TEXT NOT NULL,
+              groupNameOne TEXT NOT NULL,
               groupNameTwo TEXT,
               groupNameThree TEXT,
               location TEXT
