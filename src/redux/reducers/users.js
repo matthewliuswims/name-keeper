@@ -18,7 +18,6 @@ const users = (state = initialState, action) => {
     case ActionTypes.ADD_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload,
         error: null,
         loading: false,
       };

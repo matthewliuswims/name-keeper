@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native';
 import tComb from 'tcomb-form-native';
@@ -5,7 +6,7 @@ import { connect } from 'react-redux';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { get } from 'lodash';
 
-import { addUser, clearUsersErr } from '../../../redux/actions/users';
+import { addUser, clearUsersErr, listUsersByGroup } from '../../../redux/actions/users';
 
 import ErrorModal from '../../components/modal/Error';
 
@@ -20,6 +21,7 @@ type Props = {
   navigation: () => void,
   groupsState : {
     groups: Array<Object>,
+    focusedGroupName: String,
   }
 };
 
@@ -56,7 +58,7 @@ class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      groups: this.sortedGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroup),
+      groups: this.sortedGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
       errorOverrides: null,
     };
   }
@@ -127,7 +129,7 @@ class AddUserScreen extends Component<Props> {
     return true;
   }
 
-  userSubmit = () => {
+  userSubmit = async () => {
     if (!this.validGroupSelections()) {
       return;
     }
@@ -154,12 +156,10 @@ class AddUserScreen extends Component<Props> {
         errorOverrides: null,
       });
 
-      // @TODO SQL MIGHT SCREAM IF WE INSERT NULL groupNames...need to check
-      console.log('this.state.groups', this.state.groups);
-      console.log('userStruct', userStruct);
       console.log('user is', user);
-
-      this.props.addUser(user);
+      await this.props.addUser(user);
+      await this.props.listUsersByGroup(this.props.groupsState.focusedGroupName);
+      this.props.navigation.navigate('GroupScreen');
     }
   }
 
@@ -331,6 +331,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     addUser: user => dispatch(addUser(user)),
+    listUsersByGroup: groupName => dispatch(listUsersByGroup(groupName)),
     groupValidationFail: err => dispatch(groupValidationFail(err)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     clearUsersErr: () => dispatch(clearUsersErr()),

@@ -1,8 +1,12 @@
+// @flow
+
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
+
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
+import { listUsersByGroup } from '../../../redux/actions/users';
 import { container } from '../../styles/base';
 
 import Footer from '../../components/footer/footer';
@@ -10,11 +14,20 @@ import Footer from '../../components/footer/footer';
 
 type Props = {
   groupsState : {
-    focusedGroup: Object,
+    focusedGroupName: String,
+  },
+  usersState: {
+    users: Array<Object>,
+    focusedGroupName: String,
   }
 };
 
 class GroupScreen extends Component<Props> {
+  constructor(props) {
+    super(props);
+    this.props.listUsersByGroup(this.props.groupsState.focusedGroupName);
+  }
+
   static navigationOptions = {
     title: 'Group Screen',
     // header: ({ goBack }) => ({
@@ -27,8 +40,14 @@ class GroupScreen extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.groupContents}>
-          <Text> asd </Text>
-          <Text> {get(this.props.groupsState, 'focusedGroup', null)} </Text>
+          <FlatList
+            data={this.props.usersState.users}
+            renderItem={({ item }) => (
+              <Text> {item.name} </Text>
+            )}
+            keyExtractor={(item => `${item.userID}`)}
+          />
+          <Text> {get(this.props.groupsState, 'focusedGroupName', null)} </Text>
         </View>
         <View style={styles.footer}>
           <Footer />
@@ -41,10 +60,17 @@ class GroupScreen extends Component<Props> {
 const mapStateToProps = state => (
   {
     groupsState: state.groups,
+    usersState: state.users,
   }
 );
 
-export default connect(mapStateToProps)(GroupScreen);
+const mapDispatchToProps = dispatch => (
+  {
+    listUsersByGroup: groupName => dispatch(listUsersByGroup(groupName)),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupScreen);
 
 
 const styles = StyleSheet.create({

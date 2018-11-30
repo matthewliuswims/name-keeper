@@ -8,7 +8,7 @@ const initialState = {
   // all groups in add - populated by LIST_GROUPS_SUCCESS
   groups: [],
   // the group we are currently 'in' for a group or user screens
-  focusedGroup: {},
+  focusedGroupName: null,
 };
 
 const groups = (state = initialState, action) => {
@@ -59,12 +59,12 @@ const groups = (state = initialState, action) => {
     case ActionTypes.FOCUS_GROUP:
       return {
         ...state,
-        focusedGroup: action.payload,
+        focusedGroupName: action.payload,
       };
     case ActionTypes.CLEAR_GROUP_FOCUS:
       return {
         ...state,
-        focusedGroup: {},
+        focusedGroupName: null,
       };
     case ActionTypes.CLEAR_ERRS_GROUP:
       return {

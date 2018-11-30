@@ -30,7 +30,7 @@ export default class UsersDB extends React.Component {
           tx.executeSql(
             `CREATE TABLE IF NOT EXISTS users (
               userID INTEGER PRIMARY KEY NOT NULL, 
-              name TEXT NOT NULL UNIQUE, 
+              name TEXT NOT NULL, 
               description TEXT NOT NULL,
               createdDate TEXT NOT NULL UNIQUE,
               lastEdit TEXT NOT NULL,
@@ -70,19 +70,16 @@ export default class UsersDB extends React.Component {
       });
     }
 
+
     listUsers(groupName) {
+      console.log('inside groupname is', groupName);
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             // can get from executeSql
-            tx.executeSql('SELECT * FROM users WHERE groupNameOne = ? OR groupNameTWO = ? OR groupNameThree = ? ORDER BY timeUserAdded;',
-              [groupName,
-                groupName,
-                groupName,
-              ],
-              (_, { rows }) => {
-                resolve(rows._array); //eslint-disable-line 
-              });
+            tx.executeSql('SELECT * FROM users WHERE groupNameOne = ? OR groupNameTWO = ? OR groupNameThree = ? ', [groupName, groupName, groupName], (_, { rows }) => {
+              resolve(rows._array); //eslint-disable-line 
+            });
           },
           err => reject(err),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful

@@ -81,9 +81,12 @@ class AddGroupScreen extends Component<Props> {
     if (groupStruct) {
       const { name: groupName } = groupStruct;
       this.props.addGroup(groupName).then(() => {
-        if (!this.props.groupsState.error) {
-          this.props.listGroups(); // update redux from sql
-          this.props.navigation.navigate('GroupsScreen');
+        if (!this.props.groupsState.error) { // IS THIS CHECK NECESSARY?
+          this.props.listGroups().then(
+            () => {
+              this.props.navigation.navigate('GroupsScreen');
+            },
+          ); // update redux from sql
         }
       });
     }
