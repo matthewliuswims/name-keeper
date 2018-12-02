@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Text, View, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
 
 import ErrorModal from '../../components/modal/Error';
+
+import { listAllUsers } from '../../../redux/actions/users';
 
 import { listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
@@ -25,6 +28,7 @@ class GroupsScreen extends Component<Props> {
     console.log('groups screen created - only on opening of app??');
     super(props);
     this.props.listGroups();
+    this.props.listAllUsers();
   }
 
   static navigationOptions = {
@@ -49,9 +53,14 @@ class GroupsScreen extends Component<Props> {
     }
   }
 
+  getTwoUsernames(groupName, users) {
+    const parsedUsers = users.filter(user => user.groupNameOne === groupName);
+    return parsedUsers.map(user => user.name);
+  }
+
   render() {
     const { error: groupsStateErr } = this.props.groupsState;
-
+    const { users } = this.props.usersState;
     return (
       <View style={styles.container}>
         {!this.props.groupsState.loading && (
@@ -66,12 +75,12 @@ class GroupsScreen extends Component<Props> {
             >
               <Group
                 groupName={item.name}
-                firstUsername = 'asd' // @TODO: get usernames from redux state, who have latest edit date
-                secondUsername = 'asd'
+                firstTwoUsernames={this.getTwoUsernames(item.name, users)}
                 />
             </TouchableOpacity>
           )}
           keyExtractor={(item => `${item.groupID}`)}
+          extraData={this.props.usersState} // necessary to show the 2 users
         />) }
         <Button
           onPress = {() => this.props.navigation.navigate('UsersScreen',
@@ -127,6 +136,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => (
   {
     groupsState: state.groups,
+    usersState: state.users,
   }
 );
 const mapDispatchToProps = dispatch => (
@@ -134,6 +144,7 @@ const mapDispatchToProps = dispatch => (
     listGroups: () => dispatch(listGroups()),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     focusGroup: groupName => dispatch(focusGroup(groupName)),
+    listAllUsers: () => dispatch(listAllUsers()),
   }
 );
 

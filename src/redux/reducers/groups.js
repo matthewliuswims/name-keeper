@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   error: null,
   // newly added group
-  groupName: {},
+  groupName: null,
   // all groups in add - populated by LIST_GROUPS_SUCCESS
   groups: [],
   // the group we are currently 'in' for a group or user screens

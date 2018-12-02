@@ -4,8 +4,7 @@ import { groupContainerStyle, groupTextStyle } from '../../styles/group';
 
 type Props = {
   groupName: string,
-  firstUsername: string,
-  secondUsername: string,
+  firstTwoUsernames: Array<String>, // will always be 2 items
 };
 
 export default class Group extends React.Component <Props> {
@@ -13,8 +12,8 @@ export default class Group extends React.Component <Props> {
     return (
       <View style={styles.container}>
         <Text style={styles.headerText}> {this.props.groupName} </Text>
-        <Text style={styles.text}> {'\t'} { this.props.firstUsername} </Text>
-        <Text style={styles.text}> {'\t'} {this.props.secondUsername} </Text>
+        <Text style={styles.text}> {'\t'} {this.props.firstTwoUsernames[0]} </Text>
+        <Text style={styles.text}> {'\t'} {this.props.firstTwoUsernames[1]} </Text>
       </View>
     );
   }

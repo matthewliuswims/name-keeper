@@ -6,7 +6,7 @@ import { Text, View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { listUsersByGroup } from '../../../redux/actions/users';
+import { listAllUsers } from '../../../redux/actions/users';
 import { container } from '../../styles/base';
 
 import Footer from '../../components/footer/footer';
@@ -19,13 +19,14 @@ type Props = {
   usersState: {
     users: Array<Object>,
     focusedGroupName: String,
-  }
+  },
+  listAllUsers: () => Promise<Object>,
 };
 
 class GroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
-    this.props.listUsersByGroup(this.props.groupsState.focusedGroupName);
+    this.props.listAllUsers();
   }
 
   static navigationOptions = {
@@ -34,20 +35,31 @@ class GroupScreen extends Component<Props> {
     //   left: (<Ionicons name='chevron-left' onPress={() => { goBack(); }} />),
     // }),
   };
+
   // @TODO: USE LODASH GET BELOW INSTEAD OF THE &&
+  usersForGroup(groupName) {
+    const { users } = this.props.usersState;
+    if (!users) return;
+    const grpsUsers = this.props.usersState.users.filter((user) => {
+      return user.groupNameOne === groupName;
+    });
+    return grpsUsers;
+  }
+
 
   render() {
+    const groupName = get(this.props.groupsState, 'focusedGroupName', null);
     return (
       <View style={styles.container}>
         <View style={styles.groupContents}>
           <FlatList
-            data={this.props.usersState.users}
+            data={this.usersForGroup(groupName)}
             renderItem={({ item }) => (
               <Text> {item.name} </Text>
             )}
             keyExtractor={(item => `${item.userID}`)}
           />
-          <Text> {get(this.props.groupsState, 'focusedGroupName', null)} </Text>
+          <Text> {groupName} </Text>
         </View>
         <View style={styles.footer}>
           <Footer />
@@ -66,7 +78,7 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = dispatch => (
   {
-    listUsersByGroup: groupName => dispatch(listUsersByGroup(groupName)),
+    listAllUsers: () => dispatch(listAllUsers()),
   }
 );
 

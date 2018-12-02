@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { get } from 'lodash';
 
-import { addUser, clearUsersErr, listUsersByGroup } from '../../../redux/actions/users';
+import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
 
 import ErrorModal from '../../components/modal/Error';
 
@@ -156,9 +156,8 @@ class AddUserScreen extends Component<Props> {
         errorOverrides: null,
       });
 
-      console.log('user is', user);
       await this.props.addUser(user);
-      await this.props.listUsersByGroup(this.props.groupsState.focusedGroupName);
+      await this.props.listAllUsers();
       this.props.navigation.navigate('GroupScreen');
     }
   }
@@ -331,7 +330,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     addUser: user => dispatch(addUser(user)),
-    listUsersByGroup: groupName => dispatch(listUsersByGroup(groupName)),
+    listAllUsers: () => dispatch(listAllUsers),
     groupValidationFail: err => dispatch(groupValidationFail(err)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     clearUsersErr: () => dispatch(clearUsersErr()),

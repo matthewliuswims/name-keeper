@@ -71,13 +71,12 @@ export default class UsersDB extends React.Component {
     }
 
 
-    listUsers(groupName) {
-      console.log('inside groupname is', groupName);
+    listAllUsers() {
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             // can get from executeSql
-            tx.executeSql('SELECT * FROM users WHERE groupNameOne = ? OR groupNameTWO = ? OR groupNameThree = ? ', [groupName, groupName, groupName], (_, { rows }) => {
+            tx.executeSql('SELECT * FROM users', [], (_, { rows }) => {
               resolve(rows._array); //eslint-disable-line 
             });
           },

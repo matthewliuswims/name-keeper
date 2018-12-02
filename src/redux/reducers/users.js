@@ -27,20 +27,20 @@ const users = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       };
-    case ActionTypes.LIST_USERS_START:
+    case ActionTypes.LIST_ALL_USERS_START:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case ActionTypes.LIST_USERS_SUCCESS:
+    case ActionTypes.LIST_ALL_USERS_SUCCESS:
       return {
         ...state,
         users: [...action.payload],
         error: null,
         loading: false,
       };
-    case ActionTypes.LIST_USERS_FAIL:
+    case ActionTypes.LIST_ALL_USERS_FAIL:
       return {
         ...state,
         error: action.payload,

@@ -10,6 +10,11 @@ export const LIST_USERS_START = 'LIST_USERS_START';
 export const LIST_USERS_SUCCESS = 'LIST_USERS_SUCCESS';
 export const LIST_USERS_FAIL = 'LIST_USERS_FAIL';
 
+export const LIST_ALL_USERS_START = 'LIST_ALL_USERS_START';
+export const LIST_ALL_USERS_SUCCESS = 'LIST_ALL_USERS_SUCCESS';
+export const LIST_ALL_USERS_FAIL = 'LIST_ALL_USERS_FAIL';
+
+
 export const CLEAR_ERRS_USER = 'CLEAR_ERRS_USER';
 
 export function addUser(user) {
@@ -28,24 +33,20 @@ export function addUser(user) {
   };
 }
 
-/**
- * @param {string} groupName - all group names are unique, so we can use to find the users
- */
-export function listUsersByGroup(groupName) {
+export function listAllUsers() {
   return (dispatch) => {
-    dispatch(makeAction(LIST_USERS_START));
-
-    return UsersDB.getInstance().then((userDBInstance) => {
-      return userDBInstance.listUsers(groupName);
-    }).then((users) => {
-      dispatch(makeAction(LIST_USERS_SUCCESS, users));
-    }).catch((err) => {
-      dispatch(makeAction(LIST_USERS_FAIL, err));
-      // no need to throw err in this particular instance because
-      // ui won't do anything explictly if this part fails
+    dispatch(makeAction(LIST_ALL_USERS_START));
+    return UsersDB.getInstance().then((usersDBInstance) => {
+      return usersDBInstance.listAllUsers();
+    }).then((groupsList) => {
+      dispatch(makeAction(LIST_ALL_USERS_SUCCESS, groupsList));
+    }).catch((error) => {
+      dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
+      // no need to throw err in this particular instance
     });
   };
 }
+
 
 export function clearUsersErr() {
   return (dispatch) => {
