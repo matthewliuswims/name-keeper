@@ -17,6 +17,7 @@
     "lodash": "^4.17.11",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native-elements": "^1.0.0-beta7",
     "react-native-modal": "latest",
     "react-native-responsive-screen": "latest",
     "react-navigation": "latest",

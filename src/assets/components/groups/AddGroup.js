@@ -1,5 +1,8 @@
 import React from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
+import { CheckBox } from 'react-native-elements';
+
+import colors from '../../styles/colors';
 
 type Props = {
   group: Object,
@@ -14,6 +17,25 @@ type Props = {
  * NOTE: touchable highlight must take one and only 1 child, hence view wrapper
  */
 export default class AddGroup extends React.Component <Props> {
+  checkboxToRender(group, cb) {
+    if (group.isFocusedGroup) {
+      return (
+        <CheckBox
+          checked
+          checkedColor='grey'
+          onPress={() => cb(group.name)}
+        />
+      );
+    }
+    return (
+      <CheckBox
+        checked={group.added}
+        checkedColor={colors.appThemeColor}
+        onPress={() => cb(group.name)}
+      />
+    );
+  }
+
   render() {
     const { group } = this.props;
     return (
@@ -24,7 +46,7 @@ export default class AddGroup extends React.Component <Props> {
         >
           <View style={this.props.innardsStyleContainer}>
             <Text> {group.name} </Text>
-            <Text> {group.added ? 'x' : '+'}</Text>
+            {this.checkboxToRender(group, this.props.onGroupClick)}
           </View>
         </TouchableHighlight>
       </View>

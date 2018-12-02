@@ -189,7 +189,7 @@ class AddUserScreen extends Component<Props> {
         const unfocusedGroup = Object.assign(clonedGroupTarget, { added: false, opacity: 0.3 });
         return unfocusedGroup;
       }
-      focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1 });
+      focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1, isFocusedGroup: true });
       return focusedGroup;
     });
 
@@ -205,6 +205,7 @@ class AddUserScreen extends Component<Props> {
    * @param {string} groupname
    */
   groupClick(groupname) {
+    console.log('groupclick yah');
     this.setState((prevState) => {
       const { groups } = prevState;
       const updatedGroups = groups.map((group) => {
@@ -300,11 +301,9 @@ const styles = StyleSheet.create({
     shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
     shadowRadius: horizontalGroupScreenButton.shadowRadius,
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
-
-    paddingLeft: wp('39%'),
   },
   buttonInnardsContainer: {
-    padding: 10,
+    padding: 2,
     flex: horizontalGroupScreenButton.flex,
     flexDirection: horizontalGroupScreenButton.flexDirection,
     justifyContent: 'space-between',

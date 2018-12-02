@@ -9,6 +9,8 @@ import { get } from 'lodash';
 import { listAllUsers } from '../../../redux/actions/users';
 import { container } from '../../styles/base';
 
+import UserBox from '../../components/users/UserBox';
+
 import Footer from '../../components/footer/footer';
 
 
@@ -55,7 +57,11 @@ class GroupScreen extends Component<Props> {
           <FlatList
             data={this.usersForGroup(groupName)}
             renderItem={({ item }) => (
-              <Text> {item.name} </Text>
+              <UserBox
+                username={item.name}
+                userDescription='asdadasd'
+                date='sup'
+              />
             )}
             keyExtractor={(item => `${item.userID}`)}
           />
