@@ -26,7 +26,6 @@ export default class AddGroup extends React.Component <Props> {
         <CheckBox
           checked
           checkedColor='grey'
-          onPress={() => cb(group.name)}
           containerStyle={{ padding: checkBoxBase.padding, margin: checkBoxBase.margin }}
         />
       );
@@ -46,7 +45,7 @@ export default class AddGroup extends React.Component <Props> {
     return (
       <View>
         <TouchableHighlight
-          onPress = {() => this.props.onGroupClick(group.name)}
+          onPress = {group.isFocusedGroup ? null : () => this.props.onGroupClick(group.name)}
           style={groupIconContainer}
         >
           <View style={this.props.innardsStyleContainer}>

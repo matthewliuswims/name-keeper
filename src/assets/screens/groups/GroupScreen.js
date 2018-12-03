@@ -38,7 +38,10 @@ class GroupScreen extends Component<Props> {
     // }),
   };
 
-  // @TODO: USE LODASH GET BELOW INSTEAD OF THE &&
+  /**
+   * will only get the users where user.groupNameOne === groupName
+   * @param {string} groupName
+   */
   usersForGroup(groupName) {
     const { users } = this.props.usersState;
     if (!users) return;
@@ -59,8 +62,8 @@ class GroupScreen extends Component<Props> {
             renderItem={({ item }) => (
               <UserBox
                 username={item.name}
-                userDescription='asdadasd'
-                date='sup'
+                userDescription={item.description}
+                date={item.createdDate}
               />
             )}
             keyExtractor={(item => `${item.userID}`)}

@@ -329,7 +329,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     addUser: user => dispatch(addUser(user)),
-    listAllUsers: () => dispatch(listAllUsers),
+    listAllUsers: () => dispatch(listAllUsers()),
     groupValidationFail: err => dispatch(groupValidationFail(err)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     clearUsersErr: () => dispatch(clearUsersErr()),
