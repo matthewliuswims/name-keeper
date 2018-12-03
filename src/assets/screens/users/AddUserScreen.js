@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { get } from 'lodash';
 
 import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
@@ -11,7 +10,7 @@ import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/use
 import ErrorModal from '../../components/modal/Error';
 
 
-import { container, topRightSaveButton, topRightSaveButtonText, horizontalGroupScreenButton } from '../../styles/base';
+import { container, topRightSaveButton, topRightSaveButtonText, horizontalGroupScreenButton, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
 import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
 import AddGroup from '../../components/groups/AddGroup';
 
@@ -163,12 +162,12 @@ class AddUserScreen extends Component<Props> {
   }
 
   getColorStyle(groupColor, opacity) {
-    const buttonNoColorStyle = styles.button;
-    const buttonColor = {
+    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconWithColor = {
       backgroundColor: groupColor,
       opacity,
     };
-    const combinedStyle = StyleSheet.flatten([buttonNoColorStyle, buttonColor]);
+    const combinedStyle = StyleSheet.flatten([circularGroupIconNoColor, circularGroupIconWithColor]);
     return combinedStyle;
   }
 
@@ -273,7 +272,7 @@ class AddUserScreen extends Component<Props> {
               group={item}
               onGroupClick={groupName => this.groupClick(groupName)}
               getColorStyle={this.getColorStyle}
-              innardsStyleContainer={styles.buttonInnardsContainer}
+              innardsStyleContainer={styles.innardsStyleContainer}
             />)
           }
           keyExtractor={(item => `${item.groupID}`)}
@@ -293,20 +292,21 @@ const styles = StyleSheet.create({
     paddingRight: container.paddingRight,
     backgroundColor: container.backgroundColor,
   },
-  button: {
-    borderRadius: horizontalGroupScreenButton.borderRadius,
-    borderWidth: horizontalGroupScreenButton.borderWidth,
-    borderColor: horizontalGroupScreenButton.borderColor,
-    shadowColor: horizontalGroupScreenButton.shadowColor,
-    shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
-    shadowRadius: horizontalGroupScreenButton.shadowRadius,
-    shadowOffset: horizontalGroupScreenButton.shadowOffset,
+  circularGroupIcon: {
+    // borderRadius: 5,
+    width: circularGroupIcon.width,
+    height: circularGroupIcon.height,
+    borderRadius: circularGroupIcon.borderRadius,
+    marginRight: circularGroupIcon.marginRight,
+    // shadowColor: 'black',
+    // shadowOpacity: 0.8,
+    // shadowRadius: 2,
   },
-  buttonInnardsContainer: {
-    padding: 2,
-    flex: horizontalGroupScreenButton.flex,
-    flexDirection: horizontalGroupScreenButton.flexDirection,
-    justifyContent: 'space-between',
+  innardsStyleContainer: {
+    // padding: 2,
+    flex: innardsStyleContainer.flex,
+    flexDirection: innardsStyleContainer.flexDirection,
+    justifyContent: innardsStyleContainer.justifyContent,
   },
   saveButton: {
     paddingLeft: topRightSaveButton.paddingLeft,

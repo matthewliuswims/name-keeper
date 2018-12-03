@@ -48,3 +48,31 @@ export const horizontalGroupScreenButton = {
     width: 2,
   },
 };
+
+export const innardsStyleContainer = {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+};
+
+export const groupIconContainer = {
+  marginTop: hp('1%'),
+};
+
+// size?
+export const checkBoxBase = {
+  padding: 0,
+  margin: 0,
+};
+
+export const circularGroupIcon = {
+  height: wp('5%'),
+  width: wp('5%'),
+  borderRadius: wp('3%'),
+  marginRight: wp('3%'),
+};
+
+export const groupIconNameContainer = {
+  flex: 1,
+  flexDirection: 'row',
+};

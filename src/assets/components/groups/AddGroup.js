@@ -2,6 +2,9 @@ import React from 'react';
 import { Text, View, TouchableHighlight } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
+
+import { checkBoxBase, groupIconNameContainer, groupIconContainer } from '../../styles/base';
+
 import colors from '../../styles/colors';
 
 type Props = {
@@ -24,6 +27,7 @@ export default class AddGroup extends React.Component <Props> {
           checked
           checkedColor='grey'
           onPress={() => cb(group.name)}
+          containerStyle={{ padding: checkBoxBase.padding, margin: checkBoxBase.margin }}
         />
       );
     }
@@ -32,6 +36,7 @@ export default class AddGroup extends React.Component <Props> {
         checked={group.added}
         checkedColor={colors.appThemeColor}
         onPress={() => cb(group.name)}
+        containerStyle={{ padding: checkBoxBase.padding, margin: checkBoxBase.margin }}
       />
     );
   }
@@ -41,11 +46,14 @@ export default class AddGroup extends React.Component <Props> {
     return (
       <View>
         <TouchableHighlight
-          style={this.props.getColorStyle(group.color, group.opacity, group)}
           onPress = {() => this.props.onGroupClick(group.name)}
+          style={groupIconContainer}
         >
           <View style={this.props.innardsStyleContainer}>
-            <Text> {group.name} </Text>
+            <View style={groupIconNameContainer}>
+              <View style={this.props.getColorStyle(group.color, group.opacity, group)} />
+              <Text> {group.name} </Text>
+            </View>
             {this.checkboxToRender(group, this.props.onGroupClick)}
           </View>
         </TouchableHighlight>
