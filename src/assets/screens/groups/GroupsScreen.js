@@ -70,7 +70,10 @@ class GroupsScreen extends Component<Props> {
             <TouchableOpacity
               onPress = {() => {
                 this.props.focusGroup(item.name);
-                this.props.navigation.navigate('GroupScreen');
+                this.props.navigation.navigate('GroupScreen',
+                  {
+                    groupName: item.name,
+                  });
               }}
             >
               <Group

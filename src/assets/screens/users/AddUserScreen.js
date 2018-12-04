@@ -9,12 +9,13 @@ import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/use
 
 import ErrorModal from '../../components/modal/Error';
 
-
-import { container, topRightSaveButton, topRightSaveButtonText, horizontalGroupScreenButton, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
+import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
 import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
 import AddGroup from '../../components/groups/AddGroup';
 
 import { MORE_THAN_3_GROUPS, NO_GROUPS_SELECTED } from '../../../lib/errors/overrides';
+
+import { heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 type Props = {
   navigation: () => void,
@@ -69,7 +70,7 @@ class AddUserScreen extends Component<Props> {
    */
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Add User Screen',
+      title: 'Add Person',
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
@@ -264,19 +265,21 @@ class AddUserScreen extends Component<Props> {
           onChange={this.onChange}
           options={options}
         />
-        <Text> Group(s) </Text>
-        <FlatList
-          data={this.state.groups}
-          renderItem={({ item }) => (
-            <AddGroup
-              group={item}
-              onGroupClick={groupName => this.groupClick(groupName)}
-              getColorStyle={this.getColorStyle}
-              innardsStyleContainer={styles.innardsStyleContainer}
-            />)
-          }
-          keyExtractor={(item => `${item.groupID}`)}
-        />
+        <View>
+          <Text> Group(s) </Text>
+          <FlatList
+            data={this.state.groups}
+            renderItem={({ item }) => (
+              <AddGroup
+                group={item}
+                onGroupClick={groupName => this.groupClick(groupName)}
+                getColorStyle={this.getColorStyle}
+                innardsStyleContainer={styles.innardsStyleContainer}
+              />)
+            }
+            keyExtractor={(item => `${item.groupID}`)}
+          />
+        </View>
         {this.checkErrGrps(this.props.groupsState.error)}
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>
@@ -285,6 +288,9 @@ class AddUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  groups: {
+    marginTop: hp('2%'),
+  },
   container: {
     flex: container.flex,
     paddingTop: container.paddingTop,

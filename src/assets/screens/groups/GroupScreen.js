@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -31,11 +31,10 @@ class GroupScreen extends Component<Props> {
     this.props.listAllUsers();
   }
 
-  static navigationOptions = {
-    title: 'Group Screen',
-    // header: ({ goBack }) => ({
-    //   left: (<Ionicons name='chevron-left' onPress={() => { goBack(); }} />),
-    // }),
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('groupName', 'GroupScreen'),
+    };
   };
 
   /**
@@ -51,6 +50,12 @@ class GroupScreen extends Component<Props> {
     return grpsUsers;
   }
 
+  parseDate(dateAsStr) {
+    const date = new Date(dateAsStr);
+    const options = { weekday: 'short', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
+
 
   render() {
     const groupName = get(this.props.groupsState, 'focusedGroupName', null);
@@ -63,12 +68,11 @@ class GroupScreen extends Component<Props> {
               <UserBox
                 username={item.name}
                 userDescription={item.description}
-                date={item.createdDate}
+                date={this.parseDate(item.createdDate)}
               />
             )}
             keyExtractor={(item => `${item.userID}`)}
           />
-          <Text> {groupName} </Text>
         </View>
         <View style={styles.footer}>
           <Footer />

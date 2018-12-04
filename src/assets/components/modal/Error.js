@@ -35,7 +35,7 @@ export default class ErrorModal extends Component<Props> {
       const msg = getErrMsg(this.props.error, this.props.overrides);
       return (
         <View style={styles.modalContent}>
-          <Text>
+          <Text style={styles.modalMsg}>
             {msg}
           </Text>
           {this.renderButton('Close', () => {
@@ -62,6 +62,9 @@ export default class ErrorModal extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  modalMsg: {
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -71,6 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     padding: 12,
     margin: 16,
+    marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    padding: 22,
+    padding: 16,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,

@@ -23,6 +23,9 @@ export default class UserBox extends React.Component <Props> {
 }
 
 const styles = StyleSheet.create({
+  headerText: {
+    fontWeight: 'bold',
+  },
   container: {
     borderWidth: 0,
     borderBottomWidth: 1,
