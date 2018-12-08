@@ -14,6 +14,8 @@ export const LIST_ALL_USERS_START = 'LIST_ALL_USERS_START';
 export const LIST_ALL_USERS_SUCCESS = 'LIST_ALL_USERS_SUCCESS';
 export const LIST_ALL_USERS_FAIL = 'LIST_ALL_USERS_FAIL';
 
+export const FOCUS_USER = 'FOCUS_USER'; // users.js reducers for details
+export const CLEAR_USER_FOCUS = 'CLEAR_USER_FOCUS';
 
 export const CLEAR_ERRS_USER = 'CLEAR_ERRS_USER';
 
@@ -47,6 +49,20 @@ export function listAllUsers() {
   };
 }
 
+/**
+ * @param {object} user - NOT a username (different from focusGroup), because usernames are not unique
+ */
+export function focusUser(user) {
+  return (dispatch) => {
+    dispatch(makeAction(FOCUS_USER, user));
+  };
+}
+
+export function clearUserFocus() {
+  return (dispatch) => {
+    dispatch(makeAction(CLEAR_USER_FOCUS));
+  };
+}
 
 export function clearUsersErr() {
   return (dispatch) => {

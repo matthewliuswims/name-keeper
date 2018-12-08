@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import moment from 'moment';
 
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -51,14 +52,8 @@ class GroupScreen extends Component<Props> {
   }
 
   parseDate(dateAsStr) {
-    console.log('dateAsStr is', dateAsStr);
-    console.log('typo dateAsStr is', typeof dateAsStr);
-    const date = new Date(dateAsStr);
-    console.log('Z date is', date);
-    console.log('typo RR date is', typeof date);
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', options);
-    console.log('formattedDate is', formattedDate);
+    const momentDate = moment(dateAsStr);
+    const formattedDate = momentDate.format('ddd, MMM Mo');
     return formattedDate;
   }
 
@@ -72,8 +67,8 @@ class GroupScreen extends Component<Props> {
             data={this.usersForGroup(groupName)}
             renderItem={({ item }) => (
               <TouchableOpacity
+                // @TODO: focus user
                 onPress = {() => {
-                  // @TODO: need to focus user..
                   this.props.navigation.navigate('UserScreen',
                     {
                       username: item.name,

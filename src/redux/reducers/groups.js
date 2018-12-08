@@ -7,7 +7,7 @@ const initialState = {
   groupName: null,
   // all groups in add - populated by LIST_GROUPS_SUCCESS
   groups: [],
-  // the group we are currently 'in' for a group or user screens
+  // the group we are currently 'looking at' for a group or user screens
   focusedGroupName: null,
 };
 

@@ -4,10 +4,14 @@ import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container } from '../../styles/base';
 
 export default class UserScreen extends Component {
-  static navigationOptions = {
-    title: 'User Screen',
-    headerRight: <RightHeaderComponent />,
-    headerBackTitle: null,
+
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('username'),
+      headerRight: <RightHeaderComponent />,
+      headerBackTitle: null,
+    };
   };
 
   render() {
@@ -16,7 +20,10 @@ export default class UserScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>user name is: {username}</Text>
+        <View style={styles.userDateRow}>
+          <Text>user name is: {username}</Text>
+          <Text>date</Text>
+        </View>
         <Button
           title="Go to group screen via navigate"
           onPress={() => this.props.navigation.navigate('GroupsScreen')}
@@ -36,5 +43,10 @@ const styles = StyleSheet.create({
     paddingTop: container.paddingTop,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  userDateRow: {
+    flex: container.flex,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

@@ -3,8 +3,10 @@ import * as ActionTypes from '../actions/users';
 const initialState = {
   loading: false,
   error: null,
-  groupName: {},
+  // ALL our users for all groups
   users: [],
+  // the user we are currently 'looking at'
+  focusedUser: null,
 };
 
 const users = (state = initialState, action) => {
@@ -50,6 +52,16 @@ const users = (state = initialState, action) => {
       return {
         ...state,
         error: null,
+      };
+    case ActionTypes.FOCUS_USER:
+      return {
+        ...state,
+        focusedUser: action.payload,
+      };
+    case ActionTypes.CLEAR_USER_FOCUS:
+      return {
+        ...state,
+        focusedUser: null,
       };
     default:
       return state;

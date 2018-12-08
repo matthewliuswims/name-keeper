@@ -15,3 +15,4 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 3) what if the groupname and username are super long?
 4) why doesn't the date of android work?
 5) try a bunch of users and a bunch of groups
+6) see if https://native.directory/stars/popup-menu works well

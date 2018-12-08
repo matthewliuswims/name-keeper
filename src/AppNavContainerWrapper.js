@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import AppContainer from './AppNavContainer';
 
 import { clearGroupsFocus } from './redux/actions/groups';
+import { clearUserFocus } from './redux/actions/users';
 
 class AppNavContainerWrapper extends React.Component {
   getActiveRouteName(navigationState) {
@@ -31,6 +32,11 @@ class AppNavContainerWrapper extends React.Component {
            */
           if (currentScreen === prevScreen && currentScreen === 'GroupsScreen') {
             this.props.clearGroupFocus();
+            this.props.clearUserFocus();
+          }
+
+          if (currentScreen === prevScreen && currentScreen === 'UserScreen') {
+            this.props.clearUserFocus();
           }
         }}
       />
@@ -38,19 +44,16 @@ class AppNavContainerWrapper extends React.Component {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    groupsState: state.groups,
-  }
-);
-
 // DON'T HAVE ACCESS TO THUNK at this point...
 const mapDispatchToProps = (dispatch) => {
   return {
     clearGroupFocus: () => {
       dispatch(clearGroupsFocus());
     },
+    clearUserFocus: () => {
+      dispatch(clearUserFocus());
+    },
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AppNavContainerWrapper);
+export default connect(null, mapDispatchToProps)(AppNavContainerWrapper);
