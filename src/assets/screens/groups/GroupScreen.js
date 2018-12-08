@@ -7,7 +7,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { listAllUsers } from '../../../redux/actions/users';
+import { listAllUsers, focusUser } from '../../../redux/actions/users';
 import { container } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
@@ -45,10 +45,10 @@ class GroupScreen extends Component<Props> {
   usersForGroup(groupName) {
     const { users } = this.props.usersState;
     if (!users) return;
-    const grpsUsers = this.props.usersState.users.filter((user) => {
+    const usersInGroup = this.props.usersState.users.filter((user) => {
       return user.groupNameOne === groupName;
     });
-    return grpsUsers;
+    return usersInGroup;
   }
 
   parseDate(dateAsStr) {
@@ -67,8 +67,8 @@ class GroupScreen extends Component<Props> {
             data={this.usersForGroup(groupName)}
             renderItem={({ item }) => (
               <TouchableOpacity
-                // @TODO: focus user
                 onPress = {() => {
+                  this.props.focusUser(item);
                   this.props.navigation.navigate('UserScreen',
                     {
                       username: item.name,
@@ -93,22 +93,6 @@ class GroupScreen extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => (
-  {
-    groupsState: state.groups,
-    usersState: state.users,
-  }
-);
-
-const mapDispatchToProps = dispatch => (
-  {
-    listAllUsers: () => dispatch(listAllUsers()),
-  }
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(GroupScreen);
-
-
 const styles = StyleSheet.create({
   container: {
     flex: container.flex,
@@ -124,3 +108,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+const mapStateToProps = state => (
+  {
+    groupsState: state.groups,
+    usersState: state.users,
+  }
+);
+
+const mapDispatchToProps = dispatch => (
+  {
+    listAllUsers: () => dispatch(listAllUsers()),
+    focusUser: user => dispatch(focusUser(user)),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupScreen);

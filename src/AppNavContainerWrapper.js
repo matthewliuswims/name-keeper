@@ -35,7 +35,7 @@ class AppNavContainerWrapper extends React.Component {
             this.props.clearUserFocus();
           }
 
-          if (currentScreen === prevScreen && currentScreen === 'UserScreen') {
+          if (currentScreen === prevScreen && currentScreen === 'GroupScreen') {
             this.props.clearUserFocus();
           }
         }}
