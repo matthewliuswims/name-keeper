@@ -15,6 +15,7 @@ export const sectionHeader = {
 export const container = {
   flex: 1,
   paddingTop: hp('3%'),
+  paddingBottom: hp('3%'),
   backgroundColor: '#FFFFFF',
   paddingLeft: wp('3%'),
   paddingRight: wp('3%'),

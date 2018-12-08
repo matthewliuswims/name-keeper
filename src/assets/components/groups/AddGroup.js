@@ -47,6 +47,7 @@ export default class AddGroup extends React.Component <Props> {
         <TouchableHighlight
           onPress = {group.isFocusedGroup ? null : () => this.props.onGroupClick(group.name)}
           style={groupIconContainer}
+          underlayColor="white"
         >
           <View style={this.props.innardsStyleContainer}>
             <View style={groupIconNameContainer}>

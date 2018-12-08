@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
 
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container, horizontalGroupScreenButton } from '../../styles/base';
@@ -85,24 +84,12 @@ class GroupsScreen extends Component<Props> {
           keyExtractor={(item => `${item.groupID}`)}
           extraData={this.props.usersState} // necessary to show the 2 users
         />) }
-        <Button
-          onPress = {() => this.props.navigation.navigate('UsersScreen',
-            {
-              id: 86,
-              details: 'yeah',
-            })}
-          title = 'Go to users screen'
-        />
         <TouchableOpacity
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
         >
           <Text> Add Group </Text>
         </TouchableOpacity>
-        <Button
-          onPress = {this.updateGroupsList}
-          title = 'List groups'
-        />
         {this.checkErr(groupsStateErr)}
       </View>
     );
@@ -115,6 +102,7 @@ const styles = StyleSheet.create({
     paddingTop: container.paddingTop,
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
+    paddingBottom: container.paddingBottom,
     backgroundColor: container.backgroundColor,
   },
   // PUT BUTTON IN SEPARATE LOGIC

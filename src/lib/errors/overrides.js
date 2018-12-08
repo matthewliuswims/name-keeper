@@ -1,6 +1,7 @@
 export const DUPLICATE_GROUP_NAME = {
   errCode: '19',
   message: 'Enter a group name that does not already exist',
+  errHook: 'UNIQUE CONSTAINT',
 };
 
 export const MORE_THAN_3_GROUPS = {

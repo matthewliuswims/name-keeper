@@ -6,7 +6,6 @@ import { sectionHeader } from './assets/styles/base';
 import AddGroupScreen from './assets/screens/groups/AddGroupScreen';
 import GroupsScreen from './assets/screens/groups/GroupsScreen';
 import GroupScreen from './assets/screens/groups/GroupScreen';
-import UsersScreen from './assets/screens/users/UsersScreen';
 import UserScreen from './assets/screens/users/UserScreen';
 import AddUserScreen from './assets/screens/users/AddUserScreen';
 
@@ -22,7 +21,6 @@ const AppNavigator = createStackNavigator({
   GroupsScreen: { screen: GroupsScreen },
   GroupScreen: { screen: GroupScreen },
   AddGroupScreen: { screen: AddGroupScreen },
-  UsersScreen: { screen: UsersScreen }, // prolly don't need?
   UserScreen: { screen: UserScreen },
   AddUserScreen: { screen: AddUserScreen },
 }, {

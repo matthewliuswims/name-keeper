@@ -4,6 +4,7 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
 
@@ -14,8 +15,6 @@ import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/grou
 import AddGroup from '../../components/groups/AddGroup';
 
 import { MORE_THAN_3_GROUPS, NO_GROUPS_SELECTED } from '../../../lib/errors/overrides';
-
-import { heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 type Props = {
   navigation: () => void,

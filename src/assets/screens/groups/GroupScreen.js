@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -51,9 +51,15 @@ class GroupScreen extends Component<Props> {
   }
 
   parseDate(dateAsStr) {
+    console.log('dateAsStr is', dateAsStr);
+    console.log('typo dateAsStr is', typeof dateAsStr);
     const date = new Date(dateAsStr);
+    console.log('Z date is', date);
+    console.log('typo RR date is', typeof date);
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    console.log('formattedDate is', formattedDate);
+    return formattedDate;
   }
 
 
@@ -65,11 +71,21 @@ class GroupScreen extends Component<Props> {
           <FlatList
             data={this.usersForGroup(groupName)}
             renderItem={({ item }) => (
-              <UserBox
-                username={item.name}
-                userDescription={item.description}
-                date={this.parseDate(item.createdDate)}
-              />
+              <TouchableOpacity
+                onPress = {() => {
+                  // @TODO: need to focus user..
+                  this.props.navigation.navigate('UserScreen',
+                    {
+                      username: item.name,
+                    });
+                }}
+              >
+                <UserBox
+                  username={item.name}
+                  userDescription={item.description}
+                  date={this.parseDate(item.createdDate)}
+                />
+              </TouchableOpacity>
             )}
             keyExtractor={(item => `${item.userID}`)}
           />
@@ -105,6 +121,8 @@ const styles = StyleSheet.create({
     backgroundColor: container.backgroundColor,
   },
   groupContents: {
+    paddingLeft: container.paddingLeft,
+    paddingRight: container.paddingRight,
     flex: 11,
   },
   footer: {

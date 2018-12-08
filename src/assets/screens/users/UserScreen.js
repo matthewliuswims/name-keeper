@@ -11,9 +11,12 @@ export default class UserScreen extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
+    const username = navigation.getParam('username');
+
     return (
       <View style={styles.container}>
-        <Text>a user</Text>
+        <Text>user name is: {username}</Text>
         <Button
           title="Go to group screen via navigate"
           onPress={() => this.props.navigation.navigate('GroupsScreen')}
