@@ -1,4 +1,5 @@
 import { Provider } from 'react-redux';
+import { MenuProvider } from 'react-native-popup-menu';
 
 import React, { Component } from 'react';
 import Navigator from './src/AppNavContainerWrapper';
@@ -8,7 +9,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Navigator />
+        <MenuProvider>
+          <Navigator />
+        </MenuProvider>
       </Provider>
     );
   }
