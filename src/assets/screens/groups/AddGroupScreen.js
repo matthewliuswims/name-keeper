@@ -94,7 +94,7 @@ class AddGroupScreen extends Component<Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={container}>
         <View>
           <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         </View>
@@ -105,13 +105,6 @@ class AddGroupScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
-    backgroundColor: container.backgroundColor,
-  },
   saveButton: {
     paddingLeft: topRightSaveButton.paddingLeft,
     paddingRight: topRightSaveButton.paddingRight,

@@ -33,6 +33,7 @@ export const topRightSaveButtonText = {
   fontWeight: 'bold',
 };
 
+// has no colors
 export const horizontalGroupScreenButton = {
   flex: 1,
   flexDirection: 'row',

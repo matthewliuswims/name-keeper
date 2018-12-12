@@ -61,7 +61,7 @@ class GroupsScreen extends Component<Props> {
     const { error: groupsStateErr } = this.props.groupsState;
     const { users } = this.props.usersState;
     return (
-      <View style={styles.container}>
+      <View style={container}>
         {!this.props.groupsState.loading && (
         <FlatList
           data={this.props.groupsState.groups}
@@ -97,14 +97,6 @@ class GroupsScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
-    paddingBottom: container.paddingBottom,
-    backgroundColor: container.backgroundColor,
-  },
   // PUT BUTTON IN SEPARATE LOGIC
   button: {
     backgroundColor: colors.addApplyColor,

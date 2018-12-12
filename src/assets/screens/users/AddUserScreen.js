@@ -162,7 +162,7 @@ class AddUserScreen extends Component<Props> {
   }
 
   getColorStyle(groupColor, opacity) {
-    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
       opacity,
@@ -256,7 +256,7 @@ class AddUserScreen extends Component<Props> {
     // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
     // diegoprates
     return (
-      <View style={styles.container}>
+      <View style={container}>
         <Form
           ref='form'
           type={userForm}
@@ -273,7 +273,7 @@ class AddUserScreen extends Component<Props> {
                 group={item}
                 onGroupClick={groupName => this.groupClick(groupName)}
                 getColorStyle={this.getColorStyle}
-                innardsStyleContainer={styles.innardsStyleContainer}
+                innardsStyleContainer={innardsStyleContainer}
               />)
             }
             keyExtractor={(item => `${item.groupID}`)}
@@ -289,29 +289,6 @@ class AddUserScreen extends Component<Props> {
 const styles = StyleSheet.create({
   groups: {
     marginTop: hp('2%'),
-  },
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
-    backgroundColor: container.backgroundColor,
-  },
-  circularGroupIcon: {
-    // borderRadius: 5,
-    width: circularGroupIcon.width,
-    height: circularGroupIcon.height,
-    borderRadius: circularGroupIcon.borderRadius,
-    marginRight: circularGroupIcon.marginRight,
-    // shadowColor: 'black',
-    // shadowOpacity: 0.8,
-    // shadowRadius: 2,
-  },
-  innardsStyleContainer: {
-    // padding: 2,
-    flex: innardsStyleContainer.flex,
-    flexDirection: innardsStyleContainer.flexDirection,
-    justifyContent: innardsStyleContainer.justifyContent,
   },
   saveButton: {
     paddingLeft: topRightSaveButton.paddingLeft,
