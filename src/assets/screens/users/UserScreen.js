@@ -31,7 +31,7 @@ class UserScreen extends Component {
   }
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = circularGroupIcon;
+    const circularGroupIconNoColor = styles.circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -67,7 +67,7 @@ class UserScreen extends Component {
                 name='date-range'
                 containerStyle={{ marginRight: wp('5%') }}
               />
-              <Text style={styles.dateText}>{this.parseDate(user.lastEdit)}</Text>
+              <Text style={styles.rightColumn}>{this.parseDate(user.lastEdit)}</Text>
             </View>
             {user.location
             && (
@@ -76,19 +76,25 @@ class UserScreen extends Component {
                   name='location-on'
                   containerStyle={{ marginRight: wp('5%') }}
                 />
-                <Text style={styles.dateText}>{user.location}</Text>
+                <Text style={styles.rightColumn}>{user.location}</Text>
               </View>
             )
             }
-            <View style={innardsStyleContainer}>
-              <View style={groupIconNameContainer}>
+            <View style={styles.innardsStyleContainer}>
+              <Icon
+                name='group'
+                containerStyle={{ marginRight: wp('5%') }}
+              />
+              <View style={styles.groupIconNameContainer}>
                 <View style={this.getCircularColorStyle('red')} />
                 <Text> Some group </Text>
               </View>
               {this.checkboxToRender()}
             </View>
-            <View style={styles.description}>
-              <Text> I IS DESCRIPTION AND I TAKE SPACE </Text>
+            <View style={styles.infoRow}>
+              <View style={styles.description}>
+                <Text> I IS DESCRIPTION AND I TAKE SPACE </Text>
+              </View>
             </View>
           </View>
         )
@@ -105,15 +111,31 @@ const styles = StyleSheet.create({
   containerWrapper: {
     flex: 1,
   },
-  dateText: {
+  groupIconNameContainer: {
+    flex: groupIconNameContainer.flex,
+    flexDirection: groupIconNameContainer.flexDirection,
+    paddingTop: hp('0.5%'),
+  },
+  innardsStyleContainer: {
+    flexDirection: innardsStyleContainer.flexDirection,
+    justifyContent: innardsStyleContainer.justifyContent,
+    marginTop: hp('3%'),
+  },
+  rightColumn: {
     paddingTop: hp('0.5%'),
   },
   infoRow: {
     flexDirection: 'row',
-    marginTop: hp('2%'),
+    marginTop: hp('3%'),
   },
   description: {
     marginTop: hp('2%'),
+  },
+  circularGroupIcon: {
+    height: wp('4%'),
+    width: wp('4%'),
+    borderRadius: wp('3%'),
+    marginRight: wp('3%'),
   },
 });
 
