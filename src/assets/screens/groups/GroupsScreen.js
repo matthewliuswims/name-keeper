@@ -53,7 +53,7 @@ class GroupsScreen extends Component<Props> {
   }
 
   getTwoUsernames(groupName, users) {
-    const parsedUsers = users.filter(user => user.groupNameOne === groupName);
+    const parsedUsers = users.filter(user => user.primaryGroupName === groupName);
     return parsedUsers.map(user => user.name);
   }
 

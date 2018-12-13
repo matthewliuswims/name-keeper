@@ -39,14 +39,14 @@ class GroupScreen extends Component<Props> {
   };
 
   /**
-   * will only get the users where user.groupNameOne === groupName
+   * will only get the users where user.primaryGroupName === groupName
    * @param {string} groupName
    */
   usersForGroup(groupName) {
     const { users } = this.props.usersState;
     if (!users) return;
     const usersInGroup = this.props.usersState.users.filter((user) => {
-      return user.groupNameOne === groupName;
+      return user.primaryGroupName === groupName;
     });
     return usersInGroup;
   }

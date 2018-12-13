@@ -35,13 +35,42 @@ export function addUser(user) {
   };
 }
 
+
+/**
+ * @param {Array<Object>} usersList
+ * @return almost same as the @param, except that the user object in the array will
+ * have its groupNames value be an array instead of a JSON string
+ */
+function turnUsersListGroupNamesIntoArray(usersList) {
+  if (!Array.isArray(usersList)) {
+    return usersList; // hopefully we'll never get here
+  }
+  if (!usersList.length) {
+    return usersList;
+  }
+
+  const newUsers = usersList.map((user) => {
+    const userCopy = Object.assign({}, user);
+    const groupNamesArray = JSON.parse(userCopy.groupNames);
+    userCopy.groupNames = groupNamesArray; // changing groupNamesField
+    return userCopy;
+  });
+
+  return newUsers;
+}
+
+// @TODO: key primaryGroupName though? primary group
+// @TODO: get rid of "primaryGroupName": "Asfasfsaf","groupNameThree": null,   "groupNameTwo": null,
 export function listAllUsers() {
   return (dispatch) => {
     dispatch(makeAction(LIST_ALL_USERS_START));
     return UsersDB.getInstance().then((usersDBInstance) => {
       return usersDBInstance.listAllUsers();
-    }).then((groupsList) => {
-      dispatch(makeAction(LIST_ALL_USERS_SUCCESS, groupsList));
+    }).then((usersList) => {
+      console.log('users list is', usersList);
+      const newUsersList = turnUsersListGroupNamesIntoArray(usersList);
+      console.log('newUsersList list is', newUsersList);
+      dispatch(makeAction(LIST_ALL_USERS_SUCCESS, newUsersList));
     }).catch((error) => {
       dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
       // no need to throw err in this particular instance

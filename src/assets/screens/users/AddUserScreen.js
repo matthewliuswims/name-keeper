@@ -133,12 +133,12 @@ class AddUserScreen extends Component<Props> {
       return;
     }
     const userStruct = this.refs.form.getValue();
-    const threeGroups = this.get3GroupsForUser(this.state.groups); // @TODO: do something with this
+    const threeGroups = this.get3GroupsForUser(this.state.groups); // this.state.groups, first group is always primaryGroup
     console.log('threeGroups', threeGroups);
     if (userStruct) {
       const { name, location, description } = userStruct;
 
-      const groupNameOne = get(threeGroups[0], 'name', null);
+      const groupNameOne = get(threeGroups[0], 'name', null); // should never be null, as per sortedGroups()
       const groupNameTwo = get(threeGroups[1], 'name', null);
       const groupNameThree = get(threeGroups[2], 'name', null);
 
@@ -176,6 +176,11 @@ class AddUserScreen extends Component<Props> {
    * by sorted, we just mean that the current/focused group that we are in
    * is first in the list - else the list group is preserved.
    * we also added a 'added' boolean.
+   * @param groupsOriginal - this.props.groups, redux state of groups
+   * @param focusedGroupname - group we are currently looking at
+   * @return takes on form of Array of objects - where each object is a redux group WITH added fields
+   * the added fields are: added: true, opacity: 1, isFocusedGroup: true,
+   * NOTE: the focused group is ALWAYS first.
    */
   sortedGroups(groupsOriginal, focusedGroupName) {
     const groups = groupsOriginal.slice(); // because we mutate in filter logic
@@ -194,8 +199,8 @@ class AddUserScreen extends Component<Props> {
 
     const noFocusGroup = withFocuses.filter(group => group.name !== focusedGroupName);
 
-    noFocusGroup.unshift(focusedGroup);
-    const sortedGroups = noFocusGroup; // want to make focused group first
+    noFocusGroup.unshift(focusedGroup); // NOTE: HERE we make focused group first
+    const sortedGroups = noFocusGroup;
     return sortedGroups;
   }
 
