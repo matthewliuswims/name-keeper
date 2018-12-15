@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Icon, CheckBox } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { get } from 'lodash';
 
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, FlatList } from 'react-native';
 import moment from 'moment';
 
 import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
-import { container, innardsStyleContainer, circularGroupIcon, groupIconNameContainer, checkBoxBase } from '../../styles/base';
+import { container, groupIconNameContainer, horizontalGroupScreenButton } from '../../styles/base';
 
-// @TODO: have to make flex dynamic based upon number of groups and/or location presence?
-// or just use HP for the height of each rowInfo <-- proabably better (instead of flex)?
+import { getGroupColor } from '../../../lib/groupColors';
 
-
-// but to complicate things even more, the # of groups can be dynamic(ish)? if that's the case
-// flex might be really a better option to choose
 class UserScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -39,23 +36,14 @@ class UserScreen extends Component {
     return combinedStyle;
   }
 
-  /**
-   * @TODO: fill this out
-   */
-  checkboxToRender() {
-    return (
-      <CheckBox
-        checked
-        checkedColor='grey'
-        containerStyle={checkBoxBase}
-      />
-    );
-  }
-
 
   render() {
     const { usersState } = this.props;
+    const { groupsState } = this.props;
+
+    const { groups } = groupsState;
     const user = usersState.focusedUser;
+    const userGroups = get(user, 'groupNames', null);
 
     return (
       <View style={styles.containerWrapper}>
@@ -80,21 +68,25 @@ class UserScreen extends Component {
               </View>
             )
             }
-            <View style={styles.innardsStyleContainer}>
+            <View style={styles.groupsSection}>
               <Icon
                 name='group'
                 containerStyle={{ marginRight: wp('5%') }}
               />
-              <View style={styles.groupIconNameContainer}>
-                <View style={this.getCircularColorStyle('red')} />
-                <Text> Some group </Text>
-              </View>
-              {this.checkboxToRender()}
+              <FlatList
+                data={userGroups}
+                renderItem={({ item }) => (
+                  <View style={styles.groupIconNameContainer}>
+                    <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
+                    <Text> {item} </Text>
+                  </View>
+                )
+                }
+                keyExtractor={(item => item)}
+              />
             </View>
-            <View style={styles.infoRow}>
-              <View style={styles.description}>
-                <Text> I IS DESCRIPTION AND I TAKE SPACE </Text>
-              </View>
+            <View style={styles.description}>
+              <Text> {user.description} </Text>
             </View>
           </View>
         )
@@ -105,7 +97,7 @@ class UserScreen extends Component {
 }
 
 /**
- * NOTICE: infoRow is not given a flex:1, because we don't want it to expand down.
+ * NOTICE: infoRow is not given a flex: 1, because we don't want it to expand down.
  */
 const styles = StyleSheet.create({
   containerWrapper: {
@@ -116,9 +108,8 @@ const styles = StyleSheet.create({
     flexDirection: groupIconNameContainer.flexDirection,
     paddingTop: hp('0.5%'),
   },
-  innardsStyleContainer: {
-    flexDirection: innardsStyleContainer.flexDirection,
-    justifyContent: innardsStyleContainer.justifyContent,
+  groupsSection: {
+    flexDirection: 'row',
     marginTop: hp('3%'),
   },
   rightColumn: {
@@ -129,7 +120,21 @@ const styles = StyleSheet.create({
     marginTop: hp('3%'),
   },
   description: {
-    marginTop: hp('2%'),
+    flexDirection: 'row',
+    justifyContent: 'center',
+
+    paddingLeft: wp('4%'),
+    paddingRight: wp('4%'),
+    marginLeft: wp('4%'),
+    marginRight: wp('4%'),
+    paddingTop: hp('4%'),
+    paddingBottom: hp('4%'),
+    marginTop: hp('7%'),
+
+    borderRadius: horizontalGroupScreenButton.borderRadius,
+    borderWidth: horizontalGroupScreenButton.borderWidth,
+    borderColor: horizontalGroupScreenButton.borderColor,
+    shadowColor: horizontalGroupScreenButton.shadowColor,
   },
   circularGroupIcon: {
     height: wp('4%'),
@@ -142,6 +147,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => (
   {
     usersState: state.users,
+    groupsState: state.groups,
   }
 );
 

@@ -19,7 +19,7 @@ const colors = [
  * @param {Number[]} groupColors
  * @returns {Number} next group color id
  */
-export default function nextColor(groupColors) {
+export function nextColor(groupColors) {
   for (let i = 0; i < colors.length; i++) {
     if (colors[i] !== groupColors[i]) {
       return colors[i];
@@ -37,3 +37,13 @@ export default function nextColor(groupColors) {
  * 3) 1 item with id of 0 - [0]
  * 4) 1 item with id of 3 [3]
  */
+
+
+export function getGroupColor(groupName, groups) {
+  for (const group of groups) {
+    if (group.name === groupName) {
+      return group.color;
+    }
+  }
+  throw new Error('Could not get the group color for a group name');
+}

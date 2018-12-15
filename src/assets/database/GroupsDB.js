@@ -1,6 +1,6 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
-import nextColor from '../../lib/groupColors';
+import { nextColor } from '../../lib/groupColors';
 
 const GROUP_NUMBER_LIMIT = 8; // @TODO need to give design justification in a screen/readme for
 // for why we set a hard limit...

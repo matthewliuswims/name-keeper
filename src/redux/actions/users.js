@@ -59,17 +59,13 @@ function turnUsersListGroupNamesIntoArray(usersList) {
   return newUsers;
 }
 
-// @TODO: key primaryGroupName though? primary group
-// @TODO: get rid of "primaryGroupName": "Asfasfsaf","groupNameThree": null,   "groupNameTwo": null,
 export function listAllUsers() {
   return (dispatch) => {
     dispatch(makeAction(LIST_ALL_USERS_START));
     return UsersDB.getInstance().then((usersDBInstance) => {
       return usersDBInstance.listAllUsers();
     }).then((usersList) => {
-      console.log('users list is', usersList);
       const newUsersList = turnUsersListGroupNamesIntoArray(usersList);
-      console.log('newUsersList list is', newUsersList);
       dispatch(makeAction(LIST_ALL_USERS_SUCCESS, newUsersList));
     }).catch((error) => {
       dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
