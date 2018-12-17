@@ -6,8 +6,13 @@ import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 export default class GroupMenu extends React.Component {
   render() {
     return (
-      <Menu>
-        <MenuTrigger>
+      <Menu
+        opened={this.props.opened}
+        onBackdropPress={() => this.props.onBackdropPress()}
+        onSelect={value => this.props.onSelect(value)}>
+        <MenuTrigger
+          onPress={() => this.props.onTriggerPress()}
+        >
           <Icon
             name='more-vert'
             color='white'
@@ -15,11 +20,11 @@ export default class GroupMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption onSelect={() => alert(`Save`)} text='Save' />
-          <MenuOption onSelect={() => alert(`Delete`)} >
-            <Text style={{color: 'red'}}>Delete</Text>
+          <MenuOption value={1} text='One' />
+          <MenuOption value={2}>
+            <Text style={{color: 'red'}}>Two</Text>
           </MenuOption>
-          <MenuOption onSelect={() => alert(`Not called`)} disabled={true} text='Disabled' />
+          <MenuOption value={3} disabled={true} text='Three' />
         </MenuOptions>
       </Menu>
     );
