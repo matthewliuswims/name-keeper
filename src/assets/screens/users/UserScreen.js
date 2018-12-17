@@ -7,7 +7,6 @@ import { get } from 'lodash';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 import moment from 'moment';
 
-import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container, groupIconNameContainer, horizontalGroupScreenButton } from '../../styles/base';
 
 import { getGroupColor } from '../../../lib/groupColors';
@@ -16,7 +15,6 @@ class UserScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('username'),
-      headerRight: <RightHeaderComponent />,
       headerBackTitle: null,
     };
   };

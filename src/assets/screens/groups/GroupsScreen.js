@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
-import RightHeaderComponent from '../../components/screen/RightHeaderComponent';
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
 
@@ -32,7 +31,6 @@ class GroupsScreen extends Component<Props> {
 
   static navigationOptions = {
     title: 'Groups',
-    headerRight: <RightHeaderComponent />,
   };
 
   updateGroupsList = () => {

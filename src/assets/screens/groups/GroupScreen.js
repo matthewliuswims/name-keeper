@@ -13,7 +13,7 @@ import { container } from '../../styles/base';
 import UserBox from '../../components/users/UserBox';
 
 import Footer from '../../components/footer/footer';
-
+import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
 type Props = {
   groupsState : {
@@ -35,6 +35,7 @@ class GroupScreen extends Component<Props> {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('groupName', 'GroupScreen'),
+      headerRight: <RightHeaderComponent />,
     };
   };
 
