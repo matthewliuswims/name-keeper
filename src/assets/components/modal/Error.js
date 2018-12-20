@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { modalMsg, cancelButton, cancelButtonText } from '../../styles/base';
 import getErrMsg from '../../../lib/errors/errors';
 import { PLACE_HOLDER_DEFAULT } from '../../../lib/errors/overrides';
 
@@ -25,7 +26,7 @@ export default class ErrorModal extends Component<Props> {
   renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
-        <Text>{text}</Text>
+        <Text style={styles.buttonText}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -62,23 +63,14 @@ export default class ErrorModal extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  modalMsg: {
-    textAlign: 'center',
-  },
+  modalMsg,
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  button: {
-    backgroundColor: 'lightblue',
-    padding: 12,
-    marginTop: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
+  button: cancelButton,
+  buttonText: cancelButtonText,
   modalContent: {
     backgroundColor: 'white',
     padding: 16,

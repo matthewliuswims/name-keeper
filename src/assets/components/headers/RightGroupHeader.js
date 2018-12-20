@@ -14,12 +14,12 @@ export default class RightHeaderGroupComponent extends React.Component {
     // alert(`Selected number: ${value}`);
     if (value === 1) {
       console.log('1 was selected');
-      this.setState({ visibleModal: true});
+      this.setState({ visibleModal: true });
     }
     if (value === 2) {
       console.log('2 was selected');
     }
-    this.setState({ opened: false});
+    this.setState({ opened: false });
   }
 
   onTriggerPress = () => {

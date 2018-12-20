@@ -78,3 +78,48 @@ export const groupIconNameContainer = {
   flex: 1,
   flexDirection: 'row',
 };
+
+export const modalMsg = {
+  textAlign: 'center',
+  marginTop: hp('2%'),
+  marginBottom: hp('3%'),
+};
+
+export const cancelButton = {
+  backgroundColor: colors.cancelButtonBackgroundColor,
+
+  paddingLeft: wp('7%'),
+  paddingRight: wp('7%'),
+  paddingTop: hp('1%'),
+  paddingBottom: hp('1%'),
+
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 4,
+  borderColor: 'rgba(0, 0, 0, 0.1)',
+};
+
+export const cancelButtonText = {
+  color: colors.cancelButtonBackgroundText,
+};
+
+/**
+ * always is paired with a cancelButton
+ */
+export const deleteButton = {
+  backgroundColor: colors.warningColor,
+  paddingLeft: wp('7%'),
+  paddingRight: wp('7%'),
+  paddingTop: hp('1%'),
+  paddingBottom: hp('1%'),
+
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 4,
+  borderColor: 'rgba(0, 0, 0, 0.1)',
+  marginLeft: wp('2.5%'),
+};
+
+export const deleteButtonText = {
+  color: 'white',
+};

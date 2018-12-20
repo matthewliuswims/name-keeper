@@ -8,13 +8,14 @@ import { Text, View, StyleSheet, FlatList } from 'react-native';
 import moment from 'moment';
 
 import { container, groupIconNameContainer, horizontalGroupScreenButton } from '../../styles/base';
-
+import RightHeaderComponent from '../../components/headers/RightUserHeader';
 import { getGroupColor } from '../../../lib/groupColors';
 
 class UserScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('username'),
+      headerRight: <RightHeaderComponent />,
       headerBackTitle: null,
     };
   };
