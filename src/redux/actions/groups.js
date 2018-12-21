@@ -62,16 +62,16 @@ export function addGroup(groupName) {
 }
 
 export function listGroups() {
-  return (dispatch) => {
-    dispatch(makeAction(LIST_GROUPS_START));
-    return GroupsDB.getInstance().then((groupDBInstance) => {
-      return groupDBInstance.listGroups();
-    }).then((groupsList) => {
+  return async (dispatch) => {
+    try {
+      dispatch(makeAction(LIST_GROUPS_START));
+      const groupDBInstance = await GroupsDB.getInstance();
+      const groupsList = await groupDBInstance.listGroups();
       dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
-    }).catch((error) => {
-      dispatch(makeAction(LIST_GROUPS_FAIL, error));
-      // no need to throw err in this particular instance
-    });
+      return groupsList;
+    } catch (err) {
+      dispatch(makeAction(LIST_GROUPS_FAIL, err));
+    }
   };
 }
 

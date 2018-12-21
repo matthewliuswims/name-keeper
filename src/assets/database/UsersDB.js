@@ -80,6 +80,21 @@ export default class UsersDB extends React.Component {
       });
     }
 
+    deleteUser(user) {
+      const { userID } = user;
+      return new Promise((resolve, reject) => {
+        UsersDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            tx.executeSql(
+              'DELETE FROM users WHERE userID = (?)', [userID],
+            );
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
+    }
+
 
     listAllUsers() {
       return new Promise((resolve, reject) => {

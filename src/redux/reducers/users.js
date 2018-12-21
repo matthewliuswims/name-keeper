@@ -48,6 +48,25 @@ const users = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       };
+    case ActionTypes.DELETE_USER_START:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case ActionTypes.DELETE_USER_SUCCESS:
+      return {
+        ...state, // LIST_ALL_USERS needs to be called after to update users
+        focusedUser: null,
+        error: null,
+        loading: false,
+      };
+    case ActionTypes.DELETE_USER_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
     case ActionTypes.CLEAR_ERRS_USER:
       return {
         ...state,
