@@ -4,18 +4,19 @@ import { Icon } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import RF from 'react-native-responsive-fontsize';
-
+import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import { modalMsg, cancelButton, cancelButtonText, deleteButton, deleteButtonText } from '../../styles/base';
 import colors from '../../styles/colors';
 import UserMenu from '../menus/UserMenu';
-// @TODO: have 2 icons here...and give EACH a CB
-// is class currently because eventually will have state
-export default class RightUserHeader extends React.Component {
+
+import { deleteUser, listAllUsers } from '../../../redux/actions/users';
+
+class RightUserHeader extends React.Component {
   state = { opened: false, visibleModal: false };
 
   onOptionSelect = (value) => {
-    // alert(`Selected number: ${value}`);
     if (value === 1) {
       console.log('1 was selected');
       this.setState({ visibleModal: true });
@@ -78,6 +79,12 @@ export default class RightUserHeader extends React.Component {
                 this.setState({ visibleModal: false });
               })}
               {this.renderDelete('Delete', () => {
+                this.props.deleteUser(this.props.usersState.focusedUser);
+                this.props.listAllUsers();
+                this.props.navigation.navigate('GroupScreen',
+                  {
+                    groupName: this.props.groupsState.focusedGroupName,
+                  });
                 this.setState({ visibleModal: false });
               })}
             </View>
@@ -113,3 +120,19 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
 });
+
+
+const mapStateToProps = state => (
+  {
+    groupsState: state.groups,
+    usersState: state.users,
+  }
+);
+const mapDispatchToProps = dispatch => (
+  {
+    deleteUser: user => dispatch(deleteUser(user)),
+    listAllUsers: () => dispatch(listAllUsers()),
+  }
+);
+
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(RightUserHeader));
