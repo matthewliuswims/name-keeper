@@ -184,10 +184,10 @@ class AddUserScreen extends Component<Props> {
    */
   sortedGroups(groupsOriginal, focusedGroupName) {
     const groups = groupsOriginal.slice(); // because we mutate in filter logic
-
+    // @TODO: above probably not necessary
     let focusedGroup;
 
-    const withFocuses = groups.map((group) => {
+    const withFocus = groups.map((group) => {
       const clonedGroupTarget = Object.assign({}, group);
       if (group.name !== focusedGroupName) {
         const unfocusedGroup = Object.assign(clonedGroupTarget, { added: false, opacity: 0.3 });
@@ -197,7 +197,7 @@ class AddUserScreen extends Component<Props> {
       return focusedGroup;
     });
 
-    const noFocusGroup = withFocuses.filter(group => group.name !== focusedGroupName);
+    const noFocusGroup = withFocus.filter(group => group.name !== focusedGroupName);
 
     noFocusGroup.unshift(focusedGroup); // NOTE: HERE we make focused group first
     const sortedGroups = noFocusGroup;

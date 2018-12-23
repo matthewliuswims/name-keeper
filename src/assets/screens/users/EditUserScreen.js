@@ -57,8 +57,9 @@ class EditUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      groups: this.sortedGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
+      groups: this.sortedGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroupName, this.props.usersState.focusedUser.groupNames),
       errorOverrides: null,
+      value: this.getUserValue(),
     };
   }
 
@@ -80,6 +81,11 @@ class EditUserScreen extends Component<Props> {
       ),
     };
   };
+
+  getUserValue() {
+    const { location, description, name } = this.props.usersState.focusedUser;
+    return Object.assign({}, { location, description, name });
+  }
 
   componentDidMount() {
     this.props.navigation.setParams({ userSubmit: this.userSubmit });
@@ -178,30 +184,38 @@ class EditUserScreen extends Component<Props> {
    * we also added a 'added' boolean.
    * @param groupsOriginal - this.props.groups, redux state of groups
    * @param focusedGroupname - group we are currently looking at
+   * @param groupNamesArray - group name(s) user belongs to
    * @return takes on form of Array of objects - where each object is a redux group WITH added fields
    * the added fields are: added: true, opacity: 1, isFocusedGroup: true,
    * NOTE: the focused group is ALWAYS first.
    */
-  sortedGroups(groupsOriginal, focusedGroupName) {
-    const groups = groupsOriginal.slice(); // because we mutate in filter logic
-
+  sortedGroups(groups, focusedGroupName, groupNamesArray) {
     let focusedGroup;
+
+    const noPrimaryFocusGroupNames = groupNamesArray.filter(groupName => groupName !== focusedGroupName);
 
     const withFocuses = groups.map((group) => {
       const clonedGroupTarget = Object.assign({}, group);
-      if (group.name !== focusedGroupName) {
-        const unfocusedGroup = Object.assign(clonedGroupTarget, { added: false, opacity: 0.3 });
-        return unfocusedGroup;
+      if (group.name === focusedGroupName) {
+        focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1, isFocusedGroup: true });
+        return focusedGroup;
       }
-      focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1, isFocusedGroup: true });
-      return focusedGroup;
+      if (noPrimaryFocusGroupNames.includes(group.name)) {
+        const focusedGroupNotPrimary = Object.assign(clonedGroupTarget, { added: true, opacity: 1, isFocusedGroup: true });
+        return focusedGroupNotPrimary;
+      }
+      const unfocusedGroup = Object.assign(clonedGroupTarget, { added: false, opacity: 0.3 });
+      return unfocusedGroup;
     });
 
-    const noFocusGroup = withFocuses.filter(group => group.name !== focusedGroupName);
+    // by noFocusGroup, we mean not pirmary focus
+    const noPrimaryFocusGroup = withFocuses.filter(group => group.name !== focusedGroupName);
 
-    noFocusGroup.unshift(focusedGroup); // NOTE: HERE we make focused group first
-    const sortedGroups = noFocusGroup;
-    return sortedGroups;
+    noPrimaryFocusGroup.unshift(focusedGroup); // NOTE: HERE we make focused group first
+    const sortedGroups = noPrimaryFocusGroup;
+
+    const onlyAddedGroups = sortedGroups.filter(group => group.added);
+    return onlyAddedGroups;
   }
 
   /**
@@ -253,6 +267,8 @@ class EditUserScreen extends Component<Props> {
   }
 
   onChange = (value) => {
+    console.log('initial value', value);
+    console.log(this.state.value);
     this.setState({ value });
   }
 
