@@ -1,4 +1,4 @@
-// @flow
+// currentlt this jsut adds the screen...need to make ti edit screen
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native';
 import tComb from 'tcomb-form-native';
@@ -53,7 +53,7 @@ const noOp = () => { console.log('please try again in a second'); }; // eslint-d
 
 // @TODO: investigate whether or not we will have bugs because
 // we only initialize this.state.groups in constructor once...
-class AddUserScreen extends Component<Props> {
+class EditUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +69,7 @@ class AddUserScreen extends Component<Props> {
    */
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Add Person',
+      title: 'Edit Person',
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
@@ -322,4 +322,4 @@ const mapDispatchToProps = dispatch => (
   }
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUserScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditUserScreen);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
@@ -21,10 +20,7 @@ export default class UserMenu extends React.Component {
         </MenuTrigger>
         <MenuOptions>
           <MenuOption value={1} text='delete' />
-          <MenuOption value={2}>
-            <Text style={{color: 'red'}}>Two</Text>
-          </MenuOption>
-          <MenuOption value={3} disabled={true} text='Three' />
+          <MenuOption value={2} text='edit' />
         </MenuOptions>
       </Menu>
     );
