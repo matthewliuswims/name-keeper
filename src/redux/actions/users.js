@@ -21,6 +21,10 @@ export const DELETE_USER_START = 'DELETE_USER_START';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const DELETE_USER_FAIL = 'DELETE_USER_FAIL';
 
+export const EDIT_USER_START = 'EDIT_USER_START';
+export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
+export const EDIT_USER_FAIL = 'EDIT_USER_FAIL';
+
 export const CLEAR_ERRS_USER = 'CLEAR_ERRS_USER';
 
 export function addUser(user) {
@@ -91,6 +95,19 @@ export function listAllUsers() {
       dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
       // no need to throw err in this particular instance
     });
+  };
+}
+
+export function editUser(user) {
+  return async (dispatch) => {
+    try {
+      dispatch(makeAction(EDIT_USER_START));
+      const userDBInstance = await UsersDB.getInstance();
+      await userDBInstance.editUser(user);
+      dispatch(makeAction(EDIT_USER_SUCCESS));
+    } catch (err) {
+      dispatch(makeAction(EDIT_USER_FAIL, err));
+    }
   };
 }
 

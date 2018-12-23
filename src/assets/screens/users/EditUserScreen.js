@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { get } from 'lodash';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
+import { editUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
 
 import ErrorModal from '../../components/modal/Error';
 
@@ -140,15 +140,15 @@ class EditUserScreen extends Component<Props> {
     }
     const userStruct = this.refs.form.getValue();
     const threeGroups = this.get3GroupsForUser(this.state.groups); // this.state.groups, first group is always primaryGroup
-    console.log('threeGroups', threeGroups);
     if (userStruct) {
       const { name, location, description } = userStruct;
-
+      const { userID } = this.props.usersState.focusedUser;
       const groupNameOne = get(threeGroups[0], 'name', null); // should never be null, as per sortedGroups()
       const groupNameTwo = get(threeGroups[1], 'name', null);
       const groupNameThree = get(threeGroups[2], 'name', null);
 
       const user = {
+        userID,
         name,
         description,
         groupNameOne,
@@ -161,7 +161,7 @@ class EditUserScreen extends Component<Props> {
         errorOverrides: null,
       });
 
-      await this.props.addUser(user);
+      await this.props.editUser(user);
       await this.props.listAllUsers();
       this.props.navigation.navigate('GroupScreen');
     }
@@ -219,6 +219,7 @@ class EditUserScreen extends Component<Props> {
   }
 
   /**
+   * ...@TODO: not actually used...
    * sets state for groups, by modifiying the group that was clicked.
    * @param {string} groupname
    */
@@ -267,8 +268,6 @@ class EditUserScreen extends Component<Props> {
   }
 
   onChange = (value) => {
-    console.log('initial value', value);
-    console.log(this.state.value);
     this.setState({ value });
   }
 
@@ -330,7 +329,7 @@ const mapStateToProps = state => (
 );
 const mapDispatchToProps = dispatch => (
   {
-    addUser: user => dispatch(addUser(user)),
+    editUser: user => dispatch(editUser(user)),
     listAllUsers: () => dispatch(listAllUsers()),
     groupValidationFail: err => dispatch(groupValidationFail(err)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),

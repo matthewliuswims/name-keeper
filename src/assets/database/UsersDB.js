@@ -95,6 +95,22 @@ export default class UsersDB extends React.Component {
       });
     }
 
+    editUser(user) {
+      const { userID, name, description, location } = user;
+      const lastEdit = new Date();
+      return new Promise((resolve, reject) => {
+        UsersDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            tx.executeSql(
+              'UPDATE users SET name = (?), description = (?), location = (?), lastEdit = (?) WHERE userID = (?)', [name, description, location, lastEdit, userID],
+            );
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
+    }
+
 
     listAllUsers() {
       return new Promise((resolve, reject) => {

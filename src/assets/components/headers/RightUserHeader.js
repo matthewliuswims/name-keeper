@@ -24,8 +24,6 @@ class RightUserHeader extends React.Component {
     if (value === 2) {
       console.log('asdasd');
       this.props.navigation.navigate('EditUserScreen');
-      // APPARENTLY THIS DOES NOT WORK??
-      // this.props.navigation.navigate('GroupsScreen');
     }
     this.setState({ opened: false });
   }

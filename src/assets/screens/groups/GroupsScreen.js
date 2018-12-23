@@ -86,7 +86,7 @@ class GroupsScreen extends Component<Props> {
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
         >
-          <Text> Add Group </Text>
+          <Text style={{ color: 'white' }}> Add Group </Text>
         </TouchableOpacity>
         {this.checkErr(groupsStateErr)}
       </View>

@@ -1,20 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
-import Modal from 'react-native-modal';
 
 import GroupMenu from '../menus/GroupMenu';
 // @TODO: have 2 icons here...and give EACH a CB
 // is class currently because eventually will have state
 export default class RightHeaderGroupComponent extends React.Component {
-
-  state = { opened: false, visibleModal: false };
+  state = { opened: false };
 
   onOptionSelect = (value) => {
     // alert(`Selected number: ${value}`);
     if (value === 1) {
       console.log('1 was selected');
-      this.setState({ visibleModal: true });
     }
     if (value === 2) {
       console.log('2 was selected');
@@ -55,16 +52,6 @@ export default class RightHeaderGroupComponent extends React.Component {
           onSelect={this.onOptionSelect}
           onTriggerPress={this.onTriggerPress}
         />
-        <Modal isVisible={this.state.visibleModal}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalMsg}>
-              asdasd
-            </Text>
-            {this.renderButton('Close', () => {
-              this.setState({ visibleModal: false });
-            })}
-          </View>
-        </Modal>
       </View>
     );
   }

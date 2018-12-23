@@ -182,9 +182,7 @@ class AddUserScreen extends Component<Props> {
    * the added fields are: added: true, opacity: 1, isFocusedGroup: true,
    * NOTE: the focused group is ALWAYS first.
    */
-  sortedGroups(groupsOriginal, focusedGroupName) {
-    const groups = groupsOriginal.slice(); // because we mutate in filter logic
-    // @TODO: above probably not necessary
+  sortedGroups(groups, focusedGroupName) {
     let focusedGroup;
 
     const withFocus = groups.map((group) => {

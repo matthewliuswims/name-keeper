@@ -20,7 +20,7 @@ export default class GroupMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption value={1} text='One' />
+          <MenuOption value={1} text='edit' />
           <MenuOption value={2}>
             <Text style={{color: 'red'}}>Two</Text>
           </MenuOption>
