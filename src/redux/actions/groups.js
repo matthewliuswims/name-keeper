@@ -1,6 +1,6 @@
 
 import GroupsDB from '../../assets/database/GroupsDB';
-import makeAction from '../../lib/actions';
+import { makeAction } from '../../lib/actions';
 
 export const ADD_GROUP_START = 'ADD_GROUP_START';
 export const ADD_GROUP_SUCCESS = 'ADD_GROUP_SUCCESS';
@@ -11,6 +11,10 @@ export const GROUP_VALIDATION_FAIL = 'GROUP_VALIDATION_FAIL';
 export const LIST_GROUPS_START = 'LIST_GROUPS_START';
 export const LIST_GROUPS_SUCCESS = 'LIST_GROUPS_SUCCESS';
 export const LIST_GROUPS_FAIL = 'LIST_GROUPS_FAIL';
+
+export const EDIT_GROUPS_START = 'EDIT_GROUPS_START';
+export const EDIT_GROUPS_SUCCESS = 'EDIT_GROUPS_SUCCESS';
+export const EDIT_GROUPS_FAIL = 'EDIT_GROUPS_FAIL';
 
 export const FOCUS_GROUP = 'FOCUS_GROUP'; // groups.js reducers for details
 export const CLEAR_GROUP_FOCUS = 'CLEAR_GROUP_FOCUS';
@@ -74,6 +78,41 @@ export function listGroups() {
     }
   };
 }
+
+/**
+ * will update currentGroupName to be the newGroupName,
+ * will also update all users who use the currentGroupName to use
+ * the new one.
+ * @param {string} currentGroupName
+ * @param {string} newGroupName
+ */
+export function editGroup(currentGroupName, newGroupName) {
+  return async (dispatch) => {
+    try {
+      // TODO: actually implement this properly
+      dispatch(makeAction(EDIT_GROUPS_START));
+      const groupDBInstance = await GroupsDB.getInstance();
+      await groupDBInstance.editGroup(currentGroupName, newGroupName);
+      dispatch(makeAction(EDIT_GROUPS_SUCCESS));
+    } catch (err) {
+      dispatch(makeAction(EDIT_GROUPS_FAIL, err));
+    }
+  };
+}
+
+/**
+ * will delete the group and also update the users accordingly
+ */
+export function deleteGroup(groupName) {
+  return async (dispatch) => {
+    try {
+      // TODO: actually implement this properly
+    } catch (err) {
+
+    }
+  };
+}
+
 
 export function groupValidationFail(error) {
   return (dispatch) => {

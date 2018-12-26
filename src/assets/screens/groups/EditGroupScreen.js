@@ -8,8 +8,7 @@ import { connect } from 'react-redux';
 import ErrorModal from '../../components/modal/Error';
 
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
-import { addGroup, listGroups, clearGroupsErr } from '../../../redux/actions/groups';
-import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
+import { editGroup } from '../../../redux/actions/groups';
 
 type Props = {
   navigation: () => void,
@@ -63,14 +62,13 @@ class AddGroupScreen extends Component<Props> {
         <ErrorModal
           error={err}
           clearError={this.props.clearGroupsErr}
-          overrides={DUPLICATE_GROUP_NAME}
           currentFocusedScreen={this.props.navigation.isFocused()}
         />
       );
     }
   }
 
-  groupSubmit = () => {
+  groupSubmit = async () => {
     /**
      * Calling getValue will cause the validation of all the fields of the form,
      *  including some side effects like highlighting the errors.
@@ -79,16 +77,9 @@ class AddGroupScreen extends Component<Props> {
     const groupStruct = this.formRef.getValue();
     // remember below Form type is group
     if (groupStruct) {
-      const { name: groupName } = groupStruct;
-      this.props.addGroup(groupName).then(() => {
-        if (!this.props.groupsState.error) { // IS THIS CHECK NECESSARY?
-          this.props.listGroups().then(
-            () => {
-              this.props.navigation.navigate('GroupsScreen');
-            },
-          ); // update redux from sql
-        }
-      });
+      const { name: newGroupName } = groupStruct;
+      console.log('group submitted');
+      await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName);
     }
   }
 
@@ -118,9 +109,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => (
   {
-    addGroup: groupName => dispatch(addGroup(groupName)),
-    listGroups: () => dispatch(listGroups()),
-    clearGroupsErr: () => dispatch(clearGroupsErr()),
+    editGroup: (currentGroupName, newGroupName) => dispatch(editGroup(currentGroupName, newGroupName)),
   }
 );
 

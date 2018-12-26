@@ -2,6 +2,8 @@ import React from 'react';
 import databaseConnection from './DatabaseConnection';
 import { nextColor } from '../../lib/groupColors';
 
+import UsersDB from './UsersDB';
+
 const GROUP_NUMBER_LIMIT = 8; // @TODO need to give design justification in a screen/readme for
 // for why we set a hard limit...
 // because: a) limit clutter b) want control over specific colors
@@ -64,6 +66,12 @@ export default class GroupsDB extends React.Component {
         err => reject(err),
         () => resolve('successfully created table or successfully did not create table because it was already there'));
       });
+    }
+
+    async editGroup(currentGroupName, newGroupName) {
+      // @TODO: have to do own group editing stuff
+      const usersDBInstance = await UsersDB.getInstance();
+      await usersDBInstance.updateUsersWithNewGroupName(currentGroupName, newGroupName);
     }
 
     async addGroup(groupName) {

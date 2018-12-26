@@ -1,6 +1,7 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
+import { turnUsersListGroupNamesIntoArray, getRelevantUsers } from '../../lib/actions';
 // see GroupsDB for good documentation, as this class mimics GroupsDB structure
 export default class UsersDB extends React.Component {
     static singletonInstance;
@@ -94,6 +95,22 @@ export default class UsersDB extends React.Component {
         );
       });
     }
+
+    //
+    // GET ALL USERS WHERE: <-- matches
+    //   1) primaryGroupName matches groupName
+    //   2) 'like' operator for the groupNames
+
+    // update/ or reinsert?
+    // @TODO; make this much more efficient
+    async updateUsersWithNewGroupName(currentGroupName, newGroupName) {
+      const lastEdit = new Date();
+      const allUsers = await this.listAllUsers();
+      const parsedUsers = turnUsersListGroupNamesIntoArray(allUsers);
+      const relevantUsers = getRelevantUsers(currentGroupName, parsedUsers);
+      console.log('relevantUsers users are', relevantUsers);
+    }
+
 
     editUser(user) {
       const { userID, name, description, location } = user;

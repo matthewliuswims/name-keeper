@@ -19,8 +19,8 @@ export default class UserMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption value={1} text='delete' />
-          <MenuOption value={2} text='edit' />
+          <MenuOption value='edit' text='edit' />
+          <MenuOption value='delete' text='delete' />
         </MenuOptions>
       </Menu>
     );

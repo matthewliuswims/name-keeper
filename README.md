@@ -10,6 +10,8 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 ### Outstanding Issues
 0.01) add placeholder text in user screen when there are no users 'Add a person below to this group - CLICK below' also add place holder text for groups screen, explaining how app works. Something like: `Write the name of people you just met - but first, create a group!'
 
+^^^Or have boostapped material with a 'work' group with billy joe and mary har examples <-- saying how to delete stuff
+
 1) still need to fix jest...
 2) in the overflow section, have a help screen.
 2) need to fix ref warnings in AddUserScreen - I just don't understand them

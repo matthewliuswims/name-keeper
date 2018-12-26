@@ -8,6 +8,7 @@ import GroupScreen from './assets/screens/groups/GroupScreen';
 import UserScreen from './assets/screens/users/UserScreen';
 import AddUserScreen from './assets/screens/users/AddUserScreen';
 import EditUserScreen from './assets/screens/users/EditUserScreen';
+import EditGroupScreen from './assets/screens/groups/EditGroupScreen';
 
 // @tutorial: https://reactnavigation.org/docs/en/screen-tracking.html#listening-to-state-changes
 // https://reactnavigation.org/docs/en/app-containers.html#onnavigationstatechangeprevstate-newstate-action
@@ -19,6 +20,7 @@ const AppNavigator = createStackNavigator({
   UserScreen: { screen: UserScreen },
   AddUserScreen: { screen: AddUserScreen },
   EditUserScreen: { screen: EditUserScreen },
+  EditGroupScreen: { screen: EditGroupScreen },
 }, {
   defaultNavigationOptions: {
     headerStyle: {

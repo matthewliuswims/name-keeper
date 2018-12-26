@@ -55,12 +55,9 @@ class GroupsScreen extends Component<Props> {
     return parsedUsers.map(user => user.name);
   }
 
-  render() {
-    const { error: groupsStateErr } = this.props.groupsState;
-    const { users } = this.props.usersState;
+  groups = (users) => {
     return (
-      <View style={container}>
-        {!this.props.groupsState.loading && (
+      !this.props.groupsState.loading && (
         <FlatList
           data={this.props.groupsState.groups}
           renderItem={({ item }) => (
@@ -81,7 +78,16 @@ class GroupsScreen extends Component<Props> {
           )}
           keyExtractor={(item => `${item.groupID}`)}
           extraData={this.props.usersState} // necessary to show the 2 users
-        />) }
+        />)
+    );
+  }
+
+  render() {
+    const { error: groupsStateErr } = this.props.groupsState;
+    const { users } = this.props.usersState;
+    return (
+      <View style={container}>
+        {this.groups(users)}
         <TouchableOpacity
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}

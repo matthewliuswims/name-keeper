@@ -1,20 +1,32 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import GroupMenu from '../menus/GroupMenu';
-// @TODO: have 2 icons here...and give EACH a CB
-// is class currently because eventually will have state
-export default class RightHeaderGroupComponent extends React.Component {
+import deleteGroup from '../../../redux/actions/groups';
+
+
+class RightHeaderGroupComponent extends React.Component {
   state = { opened: false };
 
   onOptionSelect = (value) => {
-    // alert(`Selected number: ${value}`);
-    if (value === 1) {
-      console.log('1 was selected');
+    if (value === 'edit') {
+      /**
+       * @todo: 
+       *  1) change values  to strings
+       *  1.5) react navigation change screen.
+       */
+      console.log('edit group');
+      this.props.navigation.navigate('EditGroupScreen');
     }
-    if (value === 2) {
+    if (value === 'delete') {
       console.log('2 was selected');
+      /*
+       *  1.25) call redux action for delete
+       *  1.5) react navigation change screen.
+       */
     }
     this.setState({ opened: false });
   }
@@ -81,3 +93,17 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
 });
+
+
+const mapStateToProps = state => (
+  {
+    groupsState: state.groups,
+  }
+);
+const mapDispatchToProps = dispatch => (
+  {
+    deleteGroup: groupName => dispatch(deleteGroup(groupName)),
+  }
+);
+
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(RightHeaderGroupComponent));

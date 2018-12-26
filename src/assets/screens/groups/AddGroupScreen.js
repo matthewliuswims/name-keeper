@@ -81,7 +81,7 @@ class AddGroupScreen extends Component<Props> {
     if (groupStruct) {
       const { name: groupName } = groupStruct;
       this.props.addGroup(groupName).then(() => {
-        if (!this.props.groupsState.error) { // IS THIS CHECK NECESSARY?
+        if (!this.props.groupsState.error) {
           this.props.listGroups().then(
             () => {
               this.props.navigation.navigate('GroupsScreen');

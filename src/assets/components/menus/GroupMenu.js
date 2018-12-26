@@ -20,11 +20,8 @@ export default class GroupMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption value={1} text='edit' />
-          <MenuOption value={2}>
-            <Text style={{color: 'red'}}>Two</Text>
-          </MenuOption>
-          <MenuOption value={3} disabled={true} text='Three' />
+          <MenuOption value='edit' text='edit' />
+          <MenuOption value='delete' text='delete' />
         </MenuOptions>
       </Menu>
     );

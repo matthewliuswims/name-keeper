@@ -1,6 +1,6 @@
 
 import UsersDB from '../../assets/database/UsersDB';
-import makeAction from '../../lib/actions';
+import { makeAction, turnUsersListGroupNamesIntoArray } from '../../lib/actions';
 
 export const ADD_USER_START = 'ADD_USER_START';
 export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
@@ -57,30 +57,6 @@ export function deleteUser(user) {
       dispatch(makeAction(DELETE_USER_FAIL, err));
     }
   };
-}
-
-
-/**
- * @param {Array<Object>} usersList
- * @return almost same as the @param, except that the user object in the array will
- * have its groupNames value be an array instead of a JSON string
- */
-function turnUsersListGroupNamesIntoArray(usersList) {
-  if (!Array.isArray(usersList)) {
-    return usersList; // hopefully we'll never get here
-  }
-  if (!usersList.length) {
-    return usersList;
-  }
-
-  const newUsers = usersList.map((user) => {
-    const userCopy = Object.assign({}, user);
-    const groupNamesArray = JSON.parse(userCopy.groupNames);
-    userCopy.groupNames = groupNamesArray; // changing groupNamesField
-    return userCopy;
-  });
-
-  return newUsers;
 }
 
 export function listAllUsers() {
