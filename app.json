@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "version-4-remember-names",
+    "slug": "version-4-remember-names",
+    "privacy": "public",
+    "sdkVersion": "31.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/robot-dev.png",
+    "splash": {
+      "image": "./assets/robot-dev.png",
+      "resizeMode": "contain"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}

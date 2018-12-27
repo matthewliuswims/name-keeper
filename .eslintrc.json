@@ -1,0 +1,31 @@
+{
+    "env": {
+        "node": true,
+        "browser": true, 
+        "es6": true,
+        "jest": true
+    },
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "rules": {
+        "react/jsx-filename-extension": "off",
+        "Unexpected usage of singlequoteextension": "off",
+        "react/jsx-equals-spacing": "off",
+        "react/destructuring-assignment": "off",
+        "jsx-quotes": "off",
+        "react/prefer-stateless-function": "off", // for now only
+        "react/prop-types": "off", // for now only too hopefully
+        "react/jsx-one-expression-per-line": "off",
+        "object-curly-newline": "off",
+        "consistent-return": "off",
+        "react/sort-comp": "off",
+        "class-methods-use-this": "off",
+        "react/jsx-closing-bracket-location": "off",
+        "no-use-before-define": "off",
+        "arrow-body-style": "off",
+        "max-len": "off",
+        "no-restricted-syntax": "off",
+        "no-plusplus": "off",
+        "camelcase": "off"
+    }
+}
