@@ -18,6 +18,12 @@ test('getMessage works with a non-sql err', () => {
   expect(getMessage(err)).toBe(PLACE_HOLDER_DEFAULT.message);
 });
 
+
+test('getMessage works with a non-sql err - BUT has an err hook msg', () => {
+  const err = new Error('UNIQUE CONSTAINT FAILED');
+  expect(getMessage(err, DUPLICATE_GROUP_NAME)).toBe(DUPLICATE_GROUP_NAME.message);
+});
+
 test('getMessage works with a non-sql err and an overrides', () => {
   const err = new Error('non sql err msg');
   expect(getMessage(err, DUPLICATE_GROUP_NAME)).toBe(PLACE_HOLDER_DEFAULT.message);

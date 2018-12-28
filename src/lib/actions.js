@@ -6,7 +6,7 @@ export function makeAction(actionType, payload) {
 }
 
 /**
- * @param {Array<Object>} usersList
+ * @param {Array<Object>} usersList - return frmo USe
  * @return almost same as the @param, except that the user object in the array will
  * have its groupNames value be an array instead of a JSON string
  */
@@ -24,15 +24,14 @@ export function turnUsersListGroupNamesIntoArray(usersList) {
     userCopy.groupNames = groupNamesArray; // changing groupNamesField
     return userCopy;
   });
-
   return newUsers;
 }
 
+/**
+ * whether or not the groupname matches this.currentGroupName - used as a CB for find func
+ * @param {string} groupName - can assume is never null
+ */
 function matches(groupName) {
-
-  console.log('11');
-  console.log(this.currentGroupName);
-  console.log(groupName);
   return groupName === this.currentGroupName; // this is currentGroupName
 }
 
@@ -42,7 +41,6 @@ function matches(groupName) {
  * to the current groupname - if so, it's part of the list of users we return.
  */
 export function getRelevantUsers(currentGroupName, usersList) {
-  console.log('usersList list before is', usersList);
   if (!Array.isArray(usersList)) {
     return usersList; // hopefully we'll never get here
   }
@@ -58,6 +56,5 @@ export function getRelevantUsers(currentGroupName, usersList) {
       newUsersList.push(user);
     }
   }
-  console.log('new users list iss', newUsersList);
   return newUsersList;
 }
