@@ -21,7 +21,9 @@ class RightUserHeader extends React.Component {
       this.setState({ visibleModal: true });
     }
     if (value === 'edit') {
-      this.props.navigation.navigate('EditUserScreen');
+      this.props.navigation.navigate('EditUserScreen', {
+        focusedUserName: this.props.usersState.focusedUser.name,
+      });
     }
     this.setState({ opened: false });
   }

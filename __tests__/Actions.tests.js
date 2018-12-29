@@ -1,4 +1,4 @@
-import { turnUsersListGroupNamesIntoArray, getRelevantUsers } from '../src/lib/actions';
+import { turnUsersListGroupNamesIntoArray, getRelevantUsers, changeGroupReferences } from '../src/lib/actions';
 
 const bigUsersListFromDB = [
   {
@@ -16,9 +16,14 @@ const bigUsersListFromDB = [
     groupNames: JSON.stringify(['GroupTest11', 'Grouperoni22', 'AustinGroup33']),
     primaryGroupName: 'GroupTest11',
   },
+  {
+    name: 'iruser',
+    groupNames: JSON.stringify(['Grouperoni22', 'GroupTest11']),
+    primaryGroupName: 'Grouperoni22',
+  },
 ];
 
-const groupNamesModified = [
+const usersWithGroupNamesModified = [
   {
     name: 'Someone in group test',
     groupNames: ['GroupTest', 'Grouperoni', 'AustinGroup'],
@@ -34,11 +39,16 @@ const groupNamesModified = [
     groupNames: ['GroupTest11', 'Grouperoni22', 'AustinGroup33'],
     primaryGroupName: 'GroupTest11',
   },
+  {
+    name: 'iruser',
+    groupNames: ['Grouperoni22', 'GroupTest11'],
+    primaryGroupName: 'Grouperoni22',
+  },
 ];
 
 // turnUsersListGroupNamesIntoArray
 test('normal usersList', () => {
-  expect(turnUsersListGroupNamesIntoArray(bigUsersListFromDB)).toEqual(groupNamesModified);
+  expect(turnUsersListGroupNamesIntoArray(bigUsersListFromDB)).toEqual(usersWithGroupNamesModified);
 });
 
 const noUsers = [];
@@ -79,11 +89,63 @@ const matchingGroups = [
     groupNames: ['GroupTest11', 'Grouperoni22', 'AustinGroup33'],
     primaryGroupName: 'GroupTest11',
   },
+  {
+    name: 'iruser',
+    groupNames: ['Grouperoni22', 'GroupTest11'],
+    primaryGroupName: 'Grouperoni22',
+  },
 ];
 test('getRelevantUsers for normal case', () => {
-  expect(getRelevantUsers('GroupTest11', groupNamesModified)).toEqual(matchingGroups);
+  expect(getRelevantUsers('GroupTest11', usersWithGroupNamesModified)).toEqual(matchingGroups);
 });
 
 test('getRelevantUsers for no users', () => {
   expect(getRelevantUsers('GroupTest11', [])).toEqual([]);
+});
+
+// changeGroupReferences
+
+const usersWithChangedGroupReferences = [
+  {
+    name: 'Someone in group test',
+    groupNames: ['GroupTest', 'Grouperoni', 'AustinGroup'],
+    primaryGroupName: 'GroupTest',
+  },
+  {
+    name: 'Someone in group test',
+    groupNames: ['newgroupName!', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'newgroupName!',
+  },
+  {
+    name: 'COOLERONI',
+    groupNames: ['newgroupName!', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'newgroupName!',
+  },
+];
+
+const usersWithUpdatedGroupReferences = [
+  {
+    name: 'Someone in group test',
+    groupNames: ['GroupTest', 'Grouperoni', 'AustinGroup'],
+    primaryGroupName: 'GroupTest',
+  },
+  {
+    name: 'Someone in group test',
+    groupNames: ['newgroupName!', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'newgroupName!',
+  },
+  {
+    name: 'COOLERONI',
+    groupNames: ['newgroupName!', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'newgroupName!',
+  },
+  {
+    name: 'iruser',
+    groupNames: ['Grouperoni22', 'newgroupName!'],
+    primaryGroupName: 'Grouperoni22',
+  },
+];
+
+test('changeGroupReferences - normal case', () => {
+  expect(changeGroupReferences('GroupTest11', 'newgroupName!', usersWithGroupNamesModified)).toEqual(usersWithUpdatedGroupReferences);
 });

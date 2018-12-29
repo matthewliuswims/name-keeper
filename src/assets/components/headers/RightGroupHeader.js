@@ -13,13 +13,10 @@ class RightHeaderGroupComponent extends React.Component {
 
   onOptionSelect = (value) => {
     if (value === 'edit') {
-      /**
-       * @todo: 
-       *  1) change values  to strings
-       *  1.5) react navigation change screen.
-       */
       console.log('edit group');
-      this.props.navigation.navigate('EditGroupScreen');
+      this.props.navigation.navigate('EditGroupScreen', {
+        focusedGroupName: this.props.groupsState.focusedGroupName,
+      });
     }
     if (value === 'delete') {
       console.log('2 was selected');

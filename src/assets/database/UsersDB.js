@@ -1,7 +1,7 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
-import { turnUsersListGroupNamesIntoArray, getRelevantUsers } from '../../lib/actions';
+import { turnUsersListGroupNamesIntoArray, getRelevantUsers, changeGroupReferences } from '../../lib/actions';
 // see GroupsDB for good documentation, as this class mimics GroupsDB structure
 export default class UsersDB extends React.Component {
     static singletonInstance;
@@ -104,11 +104,31 @@ export default class UsersDB extends React.Component {
     // update/ or reinsert?
     // @TODO; make this much more efficient
     async updateUsersWithNewGroupName(currentGroupName, newGroupName) {
-      const lastEdit = new Date();
       const allUsers = await this.listAllUsers();
       const parsedUsers = turnUsersListGroupNamesIntoArray(allUsers);
       const relevantUsers = getRelevantUsers(currentGroupName, parsedUsers);
       console.log('relevantUsers users are', relevantUsers);
+      const updatedUsers = changeGroupReferences(currentGroupName, newGroupName, relevantUsers);
+      console.log('updatedUsers users are', updatedUsers);
+      const promises = updatedUsers.map(this.editUserGroupNames);
+      await Promise.all(promises);
+    }
+
+    editUserGroupNames(user) {
+      const { userID, primaryGroupName, groupNames } = user;
+      const lastEdit = new Date();
+      const groupNamesStringified = JSON.stringify(groupNames);
+      return new Promise((resolve, reject) => {
+        UsersDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            tx.executeSql(
+              'UPDATE users SET primaryGroupName = (?), groupNames = (?), lastEdit = (?) WHERE userID = (?)', [primaryGroupName, groupNamesStringified, lastEdit, userID],
+            );
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
     }
 
 

@@ -72,6 +72,22 @@ export default class GroupsDB extends React.Component {
       // @TODO: have to do own group editing stuff
       const usersDBInstance = await UsersDB.getInstance();
       await usersDBInstance.updateUsersWithNewGroupName(currentGroupName, newGroupName);
+      await this.editGroupName(currentGroupName, newGroupName);
+    }
+
+    async editGroupName(currentGroupName, newGroupName) {
+      const lastEdit = new Date();
+      return new Promise((resolve, reject) => {
+        UsersDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            tx.executeSql(
+              'UPDATE groups SET name = (?), lastEdit = (?) WHERE name = (?)', [newGroupName, lastEdit, currentGroupName],
+            );
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
     }
 
     async addGroup(groupName) {

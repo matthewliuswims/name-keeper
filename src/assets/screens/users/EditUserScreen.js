@@ -70,7 +70,7 @@ class EditUserScreen extends Component<Props> {
    */
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Edit Person',
+      title: `Edit ${navigation.getParam('focusedUserName')}`,
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>

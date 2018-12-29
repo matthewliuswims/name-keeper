@@ -8,7 +8,9 @@ import { connect } from 'react-redux';
 import ErrorModal from '../../components/modal/Error';
 
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
-import { editGroup } from '../../../redux/actions/groups';
+
+import { editGroup, listGroups } from '../../../redux/actions/groups';
+import { listAllUsers } from '../../../redux/actions/users';
 
 type Props = {
   navigation: () => void,
@@ -40,7 +42,7 @@ class AddGroupScreen extends Component<Props> {
    */
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Edit Group',
+      title: `Edit ${navigation.getParam('focusedGroupName')}`,
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
@@ -78,7 +80,10 @@ class AddGroupScreen extends Component<Props> {
     // remember below Form type is group
     if (groupStruct) {
       const { name: newGroupName } = groupStruct;
-      await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName);
+      await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName); //
+      await this.props.listGroups();
+      await this.props.listAllUsers();
+      this.props.navigation.navigate('GroupsScreen');
     }
   }
 
@@ -108,6 +113,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => (
   {
+    listGroups: () => dispatch(listGroups()),
+    listAllUsers: () => dispatch(listAllUsers()),
     editGroup: (currentGroupName, newGroupName) => dispatch(editGroup(currentGroupName, newGroupName)),
   }
 );

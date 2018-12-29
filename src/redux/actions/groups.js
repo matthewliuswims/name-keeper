@@ -12,9 +12,9 @@ export const LIST_GROUPS_START = 'LIST_GROUPS_START';
 export const LIST_GROUPS_SUCCESS = 'LIST_GROUPS_SUCCESS';
 export const LIST_GROUPS_FAIL = 'LIST_GROUPS_FAIL';
 
-export const EDIT_GROUPS_START = 'EDIT_GROUPS_START';
-export const EDIT_GROUPS_SUCCESS = 'EDIT_GROUPS_SUCCESS';
-export const EDIT_GROUPS_FAIL = 'EDIT_GROUPS_FAIL';
+export const EDIT_GROUP_START = 'EDIT_GROUP_START';
+export const EDIT_GROUP_SUCCESS = 'EDIT_GROUP_SUCCESS';
+export const EDIT_GROUP_FAIL = 'EDIT_GROUP_FAIL';
 
 export const FOCUS_GROUP = 'FOCUS_GROUP'; // groups.js reducers for details
 export const CLEAR_GROUP_FOCUS = 'CLEAR_GROUP_FOCUS';
@@ -90,12 +90,12 @@ export function editGroup(currentGroupName, newGroupName) {
   return async (dispatch) => {
     try {
       // TODO: actually implement this properly
-      dispatch(makeAction(EDIT_GROUPS_START));
+      dispatch(makeAction(EDIT_GROUP_START));
       const groupDBInstance = await GroupsDB.getInstance();
       await groupDBInstance.editGroup(currentGroupName, newGroupName);
-      dispatch(makeAction(EDIT_GROUPS_SUCCESS));
+      dispatch(makeAction(EDIT_GROUP_SUCCESS));
     } catch (err) {
-      dispatch(makeAction(EDIT_GROUPS_FAIL, err));
+      dispatch(makeAction(EDIT_GROUP_FAIL, err));
     }
   };
 }

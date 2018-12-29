@@ -56,6 +56,24 @@ const groups = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       };
+    case ActionTypes.EDIT_GROUP_START:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case ActionTypes.EDIT_GROUP_SUCCESS: // will need to still call listGourps actions to update groups redux
+      return {
+        ...state,
+        error: null,
+        loading: false,
+      };
+    case ActionTypes.EDIT_GROUP_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
     case ActionTypes.FOCUS_GROUP:
       return {
         ...state,
