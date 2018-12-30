@@ -11,7 +11,7 @@ export default class Group extends React.Component <Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.headerText}> {this.props.groupName} </Text>
+        <Text style={styles.headerText} numberOfLines={1}> {this.props.groupName} </Text>
         <Text style={styles.text}> {'\t'} {this.props.firstTwoUsernames[0]} </Text>
         <Text style={styles.text}> {'\t'} {this.props.firstTwoUsernames[1]} </Text>
       </View>

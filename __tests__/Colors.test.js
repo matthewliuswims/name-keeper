@@ -13,6 +13,18 @@ test('Next color works for an unordered case where the groupColors is NOT ordere
   expect(nextColor(['red', 'coral'])).toBe(colors[1]);
 });
 
+test('Next color works a completely unordered case', () => {
+  expect(nextColor(['lightsteelblue', 'red', 'dodgerblue'])).toBe(colors[2]);
+});
+
+test('Next color works a normal unordered case', () => {
+  expect(nextColor(['dodgerblue', 'coral', 'red'])).toBe(colors[2]);
+});
+
+test('Next color works when we only have the last color', () => {
+  expect(nextColor(['violet'])).toBe(colors[0]);
+});
+
 // getGroupColor Tests
 const oneGroup = [
   {

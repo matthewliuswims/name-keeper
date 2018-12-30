@@ -14,14 +14,51 @@ export const colors = [
   'lightsteelblue',
 ];
 
+const colorsToPosition = {
+  red: 0,
+  dodgerblue: 1,
+  forestgreen: 2,
+  coral: 3,
+  purple: 4,
+  yellow: 5,
+  violet: 6,
+  lightsteelblue: 7,
+};
+// want to turn it into below
+// const colorsToPosition = [
+//   { color: 'red', position: 0},
+//   { color: 'dodgerblue', position: 1},
+//   { color: 'forestgreen', position: 2},
+//   { color: 'coral', position: 3},
+//   { color: 'purple', position: 4},
+//   { color: 'yellow', position: 5},
+//   { color: 'violet', position: 6},
+//   { color: 'lightsteelblue', position: 7},
+// ];
+
+function orderColors(groupColors) {
+  const colorsAndPosition = [];
+  for (const color of groupColors) {
+    colorsAndPosition.push({
+      color,
+      position: colorsToPosition[color],
+    });
+  }
+  colorsAndPosition.sort((a, b) => {
+    return a.position - b.position;
+  });
+  const orderedColors = colorsAndPosition.map(colorPosition => colorPosition.color);
+  return orderedColors;
+}
 /**
- * this assumes groupCOlors is an array that is no greater than GROUP_NUMBER_LIMITå
- * @param {string[]} groupColors - current colors of all the groups (ordered)
+ * this assumes groupCOlors is an array that is no greater than GROUP_NUMBER_LIMIT
+ * @param {string[]} groupColors - current colors of all the groups (unordered from redux)
  * @returns {string} next group color
  */
 export function nextColor(groupColors) {
+  const groupColorsOrdered = orderColors(groupColors);
   for (let i = 0; i < colors.length; i++) {
-    if (colors[i] !== groupColors[i]) {
+    if (colors[i] !== groupColorsOrdered[i]) {
       return colors[i];
     }
   }
