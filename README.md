@@ -23,3 +23,8 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 7) don't have to import styles if I'm not overriding anything?
 8) change package versions from latest to numbers
 9) design decision for groupName.. was bad
+
+
+### TODO version 2:
+1) allow user to edit tags
+2) allow user to add more than 2 tags

@@ -61,7 +61,7 @@ class UserScreen extends Component {
                 name='date-range'
                 containerStyle={{ marginRight: wp('5%') }}
               />
-              <Text style={styles.rightColumn}>{this.parseDate(user.lastEdit)}</Text>
+              <Text numberOfLines={1} style={styles.rightColumn}>{this.parseDate(user.lastEdit)}</Text>
             </View>
             {user.location
             && (
@@ -70,7 +70,7 @@ class UserScreen extends Component {
                   name='location-on'
                   containerStyle={{ marginRight: wp('5%') }}
                 />
-                <Text style={styles.rightColumn}>{user.location}</Text>
+                <Text numberOfLines={1} style={styles.rightColumn}>{user.location}</Text>
               </View>
             )
             }
@@ -84,7 +84,7 @@ class UserScreen extends Component {
                 renderItem={({ item }) => (
                   <View style={styles.groupIconNameContainer}>
                     <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
-                    <Text> {item} </Text>
+                    <Text numberOfLines={1}> {item} </Text>
                   </View>
                 )
                 }
@@ -103,7 +103,7 @@ class UserScreen extends Component {
                 renderItem={({ item }) => (
                   <View style={styles.groupIconNameContainer}>
                     <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
-                    <Text> {item} </Text>
+                    <Text numberOfLines={1}> {item} </Text>
                   </View>
                 )
                 }

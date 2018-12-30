@@ -5,6 +5,11 @@ test('Next color works if no group colors - should just give 1st color', () => {
   expect(nextColor([])).toBe(colors[0]);
 });
 
+test('Next color when the first color is there', () => {
+  expect(nextColor(['red'])).toBe(colors[1]);
+});
+
+
 test('Next color works for an ordered "normal" case where the groupColors is ordered as original', () => {
   expect(nextColor(['red', 'dodgerblue'])).toBe(colors[2]);
 });

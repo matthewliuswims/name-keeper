@@ -13,6 +13,7 @@ import ErrorModal from '../../components/modal/Error';
 import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
 import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
 import AddGroup from '../../components/groups/AddGroup';
+import FocusedGroup from '../../components/groups/FocusedGroup';
 
 import { MORE_THAN_3_GROUPS, NO_GROUPS_SELECTED } from '../../../lib/errors/overrides';
 
@@ -284,18 +285,10 @@ class EditUserScreen extends Component<Props> {
           options={options}
         />
         <View>
-          <Text> Group(s) </Text>
-          <FlatList
-            data={this.state.groups}
-            renderItem={({ item }) => (
-              <AddGroup
-                group={item}
-                onGroupClick={groupName => this.groupClick(groupName)}
-                getColorStyle={this.getColorStyle}
-                innardsStyleContainer={innardsStyleContainer}
-              />)
-            }
-            keyExtractor={(item => `${item.groupID}`)}
+          <Text style={{ fontWeight: 'bold' }}> Group </Text>
+          <FocusedGroup
+            group={this.state.groups[0]}
+            getColorStyle={this.getColorStyle}
           />
         </View>
         {this.checkErrGrps(this.props.groupsState.error)}

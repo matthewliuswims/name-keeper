@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';

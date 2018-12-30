@@ -14,8 +14,8 @@ export default class UserBox extends React.Component <Props> {
       <View style={styles.container}>
         <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
         <View style={styles.descriptionAndDate}>
-          <Text> {this.props.userDescription} </Text>
-          <Text> {this.props.date} </Text>
+          <Text numberOfLines={1}> {this.props.userDescription} </Text>
+          <Text numberOfLines={1}> {this.props.date} </Text>
         </View>
       </View>
     );
