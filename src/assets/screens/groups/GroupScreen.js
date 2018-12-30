@@ -1,8 +1,10 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import moment from 'moment';
+import RF from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -45,7 +47,7 @@ class GroupScreen extends Component<Props> {
    */
   usersForGroup(groupName) {
     const { users } = this.props.usersState;
-    if (!users) return;
+    if (!users) return [];
     const usersInGroup = this.props.usersState.users.filter((user) => {
       return user.primaryGroupName === groupName;
     });
@@ -54,37 +56,57 @@ class GroupScreen extends Component<Props> {
 
   parseDate(dateAsStr) {
     const momentDate = moment(dateAsStr);
-    const formattedDate = momentDate.format('ddd, MMM Mo');
+    const formattedDate = momentDate.format('ddd, MMM Do');
     return formattedDate;
+  }
+
+  noGroupContents() {
+    return (
+      <View style={styles.noGroupContainer}>
+        <Text style={styles.noGroupHeader}>
+          Add a user below!
+        </Text>
+        <Text style={styles.noGroupMessage}>
+          Hint: if you want to delete/edit this group, click on the top right 3 vertical circles.
+        </Text>
+      </View>
+    );
+  }
+
+  groupContents(groupName) {
+    return (
+      <FlatList
+        data={this.usersForGroup(groupName)}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress = {() => {
+              this.props.focusUser(item);
+              this.props.navigation.navigate('UserScreen',
+                {
+                  username: item.name,
+                });
+            }}
+          >
+            <UserBox
+              username={item.name}
+              userDescription={item.description}
+              date={this.parseDate(item.createdDate)}
+            />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item => `${item.userID}`)}
+      />
+    );
   }
 
 
   render() {
     const groupName = get(this.props.groupsState, 'focusedGroupName', null);
+    const NumUsersForGroup = this.usersForGroup(groupName).length;
     return (
       <View style={styles.container}>
         <View style={styles.groupContents}>
-          <FlatList
-            data={this.usersForGroup(groupName)}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress = {() => {
-                  this.props.focusUser(item);
-                  this.props.navigation.navigate('UserScreen',
-                    {
-                      username: item.name,
-                    });
-                }}
-              >
-                <UserBox
-                  username={item.name}
-                  userDescription={item.description}
-                  date={this.parseDate(item.createdDate)}
-                />
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item => `${item.userID}`)}
-          />
+          {NumUsersForGroup ? this.groupContents(groupName) : this.noGroupContents()}
         </View>
         <View style={styles.footer}>
           <Footer />
@@ -95,6 +117,20 @@ class GroupScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  noGroupHeader: {
+    fontWeight: 'bold',
+    fontSize: RF(4),
+    marginTop: hp('1%'),
+    textAlign: 'center',
+  },
+  noGroupMessage: {
+    fontSize: RF(2.5),
+    marginTop: hp('2%'),
+    textAlign: 'center',
+  },
+  noGroupContainer: {
+    paddingTop: hp('25%'),
+  },
   container: {
     flex: container.flex,
     paddingTop: container.paddingTop,

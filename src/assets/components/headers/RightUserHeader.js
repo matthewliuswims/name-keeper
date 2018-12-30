@@ -73,7 +73,7 @@ class RightUserHeader extends React.Component {
               Are you sure?
             </Text>
             <Text style={styles.modalMsg}>
-              Do you want to delete this user? This process cannot be done.
+              This user will be deleted. This process cannot be done.
             </Text>
             <View style={styles.cancelDeleteContainer}>
               {this.renderCancel('Close', () => {

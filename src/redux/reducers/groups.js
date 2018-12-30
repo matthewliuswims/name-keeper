@@ -62,13 +62,31 @@ const groups = (state = initialState, action) => {
         error: null,
         loading: true,
       };
-    case ActionTypes.EDIT_GROUP_SUCCESS: // will need to still call listGourps actions to update groups redux
+    case ActionTypes.EDIT_GROUP_SUCCESS: // will need to still call listGroups actions to update groups redux
       return {
         ...state,
         error: null,
         loading: false,
       };
     case ActionTypes.EDIT_GROUP_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+    case ActionTypes.DELETE_GROUP_START:
+      return {
+        ...state,
+        error: null,
+        loading: true,
+      };
+    case ActionTypes.DELETE_GROUP_SUCCESS: // will need to still call listGroups actions to update groups redux
+      return {
+        ...state,
+        error: null,
+        loading: false,
+      };
+    case ActionTypes.DELETE_GROUP_FAIL:
       return {
         ...state,
         error: action.payload,

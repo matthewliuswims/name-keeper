@@ -81,6 +81,12 @@ export default class UsersDB extends React.Component {
       });
     }
 
+    // delete all users where primaryGroupName matches groupname
+    // if a user has a name in groupNames that matches @param groupName, need to delete it (after doing above)
+    updateUsersGroupDelete(groupName) {
+      
+    }
+
     deleteUser(user) {
       const { userID } = user;
       return new Promise((resolve, reject) => {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import RF from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
@@ -55,6 +57,19 @@ class GroupsScreen extends Component<Props> {
     return parsedUsers.map(user => user.name);
   }
 
+  noGroupsText() {
+    return (
+      <View style={styles.noGroupContainer}>
+        <Text style={styles.noGroupHeader}>
+          Add a group below!
+        </Text>
+        <Text style={styles.noGroupMessage}>
+          Once you create one: you can add the people you meet to that group.
+        </Text>
+      </View>
+    );
+  }
+
   groups = (users) => {
     return (
       !this.props.groupsState.loading && (
@@ -83,11 +98,12 @@ class GroupsScreen extends Component<Props> {
   }
 
   render() {
-    const { error: groupsStateErr } = this.props.groupsState;
+    const { error: groupsStateErr, groups } = this.props.groupsState;
     const { users } = this.props.usersState;
+    const numberGroups = groups.length;
     return (
       <View style={container}>
-        {this.groups(users)}
+        { numberGroups ? this.groups(users) : this.noGroupsText() }
         <TouchableOpacity
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
@@ -101,7 +117,21 @@ class GroupsScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  // PUT BUTTON IN SEPARATE LOGIC
+  noGroupHeader: {
+    fontWeight: 'bold',
+    fontSize: RF(4),
+    marginTop: hp('1%'),
+    textAlign: 'center',
+  },
+  noGroupMessage: {
+    fontSize: RF(2.5),
+    marginTop: hp('2%'),
+    textAlign: 'center',
+  },
+  noGroupContainer: {
+    paddingTop: hp('25%'),
+    paddingBottom: hp('40%'),
+  },
   button: {
     backgroundColor: colors.addApplyColor,
 

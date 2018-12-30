@@ -1,4 +1,3 @@
-
 import GroupsDB from '../../assets/database/GroupsDB';
 import { makeAction } from '../../lib/actions';
 
@@ -15,6 +14,10 @@ export const LIST_GROUPS_FAIL = 'LIST_GROUPS_FAIL';
 export const EDIT_GROUP_START = 'EDIT_GROUP_START';
 export const EDIT_GROUP_SUCCESS = 'EDIT_GROUP_SUCCESS';
 export const EDIT_GROUP_FAIL = 'EDIT_GROUP_FAIL';
+
+export const DELETE_GROUP_START = 'DELETE_GROUP_START';
+export const DELETE_GROUP_SUCCESS = 'DELETE_GROUP_SUCCESS';
+export const DELETE_GROUP_FAIL = 'DELETE_GROUP_FAIL';
 
 export const FOCUS_GROUP = 'FOCUS_GROUP'; // groups.js reducers for details
 export const CLEAR_GROUP_FOCUS = 'CLEAR_GROUP_FOCUS';
@@ -89,7 +92,6 @@ export function listGroups() {
 export function editGroup(currentGroupName, newGroupName) {
   return async (dispatch) => {
     try {
-      // TODO: actually implement this properly
       dispatch(makeAction(EDIT_GROUP_START));
       const groupDBInstance = await GroupsDB.getInstance();
       await groupDBInstance.editGroup(currentGroupName, newGroupName);
@@ -106,9 +108,12 @@ export function editGroup(currentGroupName, newGroupName) {
 export function deleteGroup(groupName) {
   return async (dispatch) => {
     try {
-      // TODO: actually implement this properly
+      dispatch(makeAction(DELETE_GROUP_START));
+      const groupDBInstance = await GroupsDB.getInstance();
+      await groupDBInstance.deleteGroup(groupName);
+      dispatch(makeAction(DELETE_GROUP_SUCCESS));
     } catch (err) {
-
+      dispatch(makeAction(DELETE_GROUP_FAIL, err));
     }
   };
 }

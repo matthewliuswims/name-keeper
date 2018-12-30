@@ -22,7 +22,7 @@ class UserScreen extends Component {
 
   parseDate(dateAsStr) {
     const momentDate = moment(dateAsStr);
-    const formattedDate = momentDate.format('h:mm A, dddd, MMMM Do ');
+    const formattedDate = momentDate.format('h:mm A, dddd, MMMM Do, YYYY');
     return formattedDate;
   }
 
