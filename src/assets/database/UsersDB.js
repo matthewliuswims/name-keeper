@@ -1,7 +1,14 @@
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
-import { turnUsersListGroupNamesIntoArray, getRelevantUsers, changeGroupReferences } from '../../lib/actions';
+import {
+  turnUsersListGroupNamesIntoArray,
+  getRelevantUsers,
+  changeGroupReferences,
+  usersPrimaryGroupNameMatch,
+  deleteGroupTag,
+} from '../../lib/actions';
+
 // see GroupsDB for good documentation, as this class mimics GroupsDB structure
 export default class UsersDB extends React.Component {
     static singletonInstance;
@@ -83,8 +90,21 @@ export default class UsersDB extends React.Component {
 
     // delete all users where primaryGroupName matches groupname
     // if a user has a name in groupNames that matches @param groupName, need to delete it (after doing above)
-    updateUsersGroupDelete(groupName) {
-      
+    async updateUsersGroupDelete(groupName) {
+      const allUsers = await this.listAllUsers();
+      const parsedUsers = turnUsersListGroupNamesIntoArray(allUsers);
+      const usersPrimaryGroupMatches = usersPrimaryGroupNameMatch(groupName, parsedUsers);
+      // delete any users whose primaryGroupname matches groupName
+      const deleteUserPromises = usersPrimaryGroupMatches.map(this.deleteUser);
+      await Promise.all(deleteUserPromises);
+
+      // at this point, any users with primaryGroupName === groupName should be deleted
+      // now we look at ALL remaining users and delete any tag references they have
+      const noPrimaryGroupUsers = await this.listAllUsers();
+      const parsedUsersNoPrimaryGroup = turnUsersListGroupNamesIntoArray(noPrimaryGroupUsers);
+      const usersWithDeletedTags = deleteGroupTag(groupName, parsedUsersNoPrimaryGroup);
+      const editGroupPromises = usersWithDeletedTags.map(this.editUserGroupNames);
+      await Promise.all(editGroupPromises);
     }
 
     deleteUser(user) {
@@ -116,8 +136,8 @@ export default class UsersDB extends React.Component {
       console.log('relevantUsers users are', relevantUsers);
       const updatedUsers = changeGroupReferences(currentGroupName, newGroupName, relevantUsers);
       console.log('updatedUsers users are', updatedUsers);
-      const promises = updatedUsers.map(this.editUserGroupNames);
-      await Promise.all(promises);
+      const editGroupPromises = updatedUsers.map(this.editUserGroupNames);
+      await Promise.all(editGroupPromises);
     }
 
     editUserGroupNames(user) {

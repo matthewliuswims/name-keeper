@@ -1,5 +1,3 @@
-import UsersDB from "../assets/database/UsersDB";
-
 export function makeAction(actionType, payload) {
   return {
     type: actionType,
@@ -14,7 +12,7 @@ export function makeAction(actionType, payload) {
  */
 export function turnUsersListGroupNamesIntoArray(usersList) {
   if (!Array.isArray(usersList)) {
-    return usersList; // hopefully we'll never get here
+    throw new Error('turnUsersListGroupNamesIntoArray expects usersList to be an Array');
   }
   if (!usersList.length) {
     return usersList;
@@ -37,6 +35,92 @@ function matches(groupName) {
   return groupName === this.currentGroupName; // this is currentGroupName
 }
 
+function matchesGroupName(groupName) {
+  return groupName === this.groupName; // this is currentGroupName
+}
+
+/**
+ * if a user in @usersList has it's primaryGroupName match currentGroupName
+ * then that user is returned as part of the newUsersList array.
+ * @param usersList - all users (for every group)
+ */
+export function usersPrimaryGroupNameMatch(groupName, usersList) {
+  if (!Array.isArray(usersList)) {
+    throw new Error('usersPrimaryGroupNameMatch expects usersList to be an Array');
+  }
+  if (!usersList.length) {
+    return usersList;
+  }
+
+  const newUsersList = [];
+  for (const user of usersList) {
+    if (user.primaryGroupName === groupName) {
+      newUsersList.push(user);
+    }
+  }
+  return newUsersList;
+}
+
+/**
+ * NOTE: @param usersList should only include users who DO not have
+ * their primaryGroupName matching any of their own groupNames.
+ * AKA: this function is called as part of deleteGroup, and it is called after
+ * all users whose primary groupName is currentGroupName are deleted. This function
+ * is, therefore, called as part of a parent function to update tags.
+ */
+export function usersGroupNamesMatchOnly(groupName, usersList) {
+  if (!Array.isArray(usersList)) {
+    throw new Error('usersGroupNamesMatchOnly expects usersList to be an Array');
+  }
+  if (!usersList.length) {
+    return usersList;
+  }
+
+  const newUsersList = [];
+  for (const user of usersList) {
+    if (user.primaryGroupName === groupName) {
+      throw new Error('usersList should not have any users whose users primaryGroupName matches groupName');
+    }
+    if (user.groupNames.find(matchesGroupName, { groupName })) {
+      newUsersList.push(user);
+    }
+  }
+  return newUsersList;
+}
+
+/**
+ * does not mutate @param groupNames
+ * @return {[string]} groupNames without the groupNameToDelete
+ */
+function removeGroupName(groupNameToDelete, groupNames) {
+  const newGroupNames = groupNames.filter((groupName) => {
+    return groupName !== groupNameToDelete;
+  });
+  return newGroupNames;
+}
+
+
+/**
+ * @param {string} groupName - groupTag we seek to delete from all the users in our usersList
+ * @param {[Object]} usersList - all our users
+ * @return {[Object]} a new users list where any groupTags with @param groupName are gone
+ */
+export function deleteGroupTag(groupName, usersList) {
+  const updatedUsersList = usersList.map((user) => {
+    let newUser;
+    const { groupNames } = user;
+    if (groupNames.includes(groupName)) {
+      newUser = Object.assign({}, user, {
+        groupNames: removeGroupName(groupName, groupNames),
+      });
+    } else {
+      newUser = user;
+    }
+    return newUser;
+  });
+
+  return updatedUsersList;
+}
 
 /**
  * by relevantUsers, we mean if a user in the usersList has any pointers
@@ -44,7 +128,7 @@ function matches(groupName) {
  */
 export function getRelevantUsers(currentGroupName, usersList) {
   if (!Array.isArray(usersList)) {
-    return usersList; // hopefully we'll never get here
+    throw new Error('getRelevantUsers expects usersList to be an Array');
   }
   if (!usersList.length) {
     return usersList;

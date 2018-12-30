@@ -259,7 +259,6 @@ class AddUserScreen extends Component<Props> {
     const groupTags = threeGroups.filter((group) => {
       return !group.isFocusedGroup;
     });
-    console.log('group tags are', groupTags);
     return groupTags;
   }
 
@@ -284,7 +283,7 @@ class AddUserScreen extends Component<Props> {
           { this.state.groups.length > 1
           && (
             <View>
-              <Text style={{ fontWeight: 'bold' }}> Group Tags <Text style={{ fontWeight: 'normal' }}> (optional) </Text> </Text>
+              <Text style={{ fontWeight: 'bold', marginTop: hp('1%') }}> Additional Group Tags <Text style={{ fontWeight: 'normal' }}> (optional) </Text> </Text>
               <FlatList
                 data={this.groupTagsOnly(this.state.groups)}
                 renderItem={({ item }) => (

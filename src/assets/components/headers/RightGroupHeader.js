@@ -11,8 +11,8 @@ import { withNavigation } from 'react-navigation';
 import { modalMsg, cancelButton, cancelButtonText, deleteButton, deleteButtonText } from '../../styles/base';
 import colors from '../../styles/colors';
 import GroupMenu from '../menus/GroupMenu';
-import deleteGroup from '../../../redux/actions/groups';
-
+import { deleteGroup, listGroups } from '../../../redux/actions/groups';
+import { listAllUsers } from '../../../redux/actions/users';
 
 class RightHeaderGroupComponent extends React.Component {
   state = { opened: false, visibleModal: false };
@@ -100,13 +100,11 @@ class RightHeaderGroupComponent extends React.Component {
               {this.renderCancel('Close', () => {
                 this.setState({ visibleModal: false });
               })}
-              {this.renderDelete('Delete', () => {
-                this.props.deleteUser(this.props.usersState.focusedUser);
+              {this.renderDelete('Delete', async () => {
+                await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
                 this.props.listAllUsers();
-                this.props.navigation.navigate('GroupScreen',
-                  {
-                    groupName: this.props.groupsState.focusedGroupName,
-                  });
+                this.props.listGroups();
+                this.props.navigation.navigate('GroupsScreen');
                 this.setState({ visibleModal: false });
               })}
             </View>
@@ -153,6 +151,8 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     deleteGroup: groupName => dispatch(deleteGroup(groupName)),
+    listGroups: () => dispatch(listGroups()),
+    listAllUsers: () => dispatch(listAllUsers()),
   }
 );
 

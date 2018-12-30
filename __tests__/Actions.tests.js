@@ -1,4 +1,10 @@
-import { turnUsersListGroupNamesIntoArray, getRelevantUsers, changeGroupReferences } from '../src/lib/actions';
+import {
+  turnUsersListGroupNamesIntoArray,
+  getRelevantUsers,
+  changeGroupReferences,
+  usersPrimaryGroupNameMatch,
+  deleteGroupTag,
+} from '../src/lib/actions';
 
 const bigUsersListFromDB = [
   {
@@ -104,25 +110,6 @@ test('getRelevantUsers for no users', () => {
 });
 
 // changeGroupReferences
-
-const usersWithChangedGroupReferences = [
-  {
-    name: 'Someone in group test',
-    groupNames: ['GroupTest', 'Grouperoni', 'AustinGroup'],
-    primaryGroupName: 'GroupTest',
-  },
-  {
-    name: 'Someone in group test',
-    groupNames: ['newgroupName!', 'Grouperoni22', 'AustinGroup33'],
-    primaryGroupName: 'newgroupName!',
-  },
-  {
-    name: 'COOLERONI',
-    groupNames: ['newgroupName!', 'Grouperoni22', 'AustinGroup33'],
-    primaryGroupName: 'newgroupName!',
-  },
-];
-
 const usersWithUpdatedGroupReferences = [
   {
     name: 'Someone in group test',
@@ -148,4 +135,54 @@ const usersWithUpdatedGroupReferences = [
 
 test('changeGroupReferences - normal case', () => {
   expect(changeGroupReferences('GroupTest11', 'newgroupName!', usersWithGroupNamesModified)).toEqual(usersWithUpdatedGroupReferences);
+});
+
+// usersPrimaryGroupNameMatch
+const primaryGroupNameGroupTest11Matches = [
+  {
+    name: 'Someone in group test',
+    groupNames: ['GroupTest11', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'GroupTest11',
+  },
+  {
+    name: 'COOLERONI',
+    groupNames: ['GroupTest11', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'GroupTest11',
+  },
+];
+
+test('usersPrimaryGroupNameMatch - normal case', () => {
+  expect(usersPrimaryGroupNameMatch('GroupTest11', usersWithGroupNamesModified)).toEqual(primaryGroupNameGroupTest11Matches);
+});
+test('usersPrimaryGroupNameMatch - no matches', () => {
+  expect(usersPrimaryGroupNameMatch('group name with no matches', usersWithGroupNamesModified)).toEqual([]);
+});
+
+// deleteGroupTag
+const noGroupTest11Tag = [
+  {
+    name: 'Someone in group test',
+    groupNames: ['GroupTest', 'Grouperoni', 'AustinGroup'],
+    primaryGroupName: 'GroupTest',
+  },
+  {
+    name: 'Someone in group test',
+    groupNames: ['Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'GroupTest11',
+  },
+  {
+    name: 'COOLERONI',
+    groupNames: ['Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'GroupTest11',
+  },
+  {
+    name: 'iruser',
+    groupNames: ['Grouperoni22'],
+    primaryGroupName: 'Grouperoni22',
+  },
+];
+
+
+test('deleteGroupTag - normal case', () => {
+  expect(deleteGroupTag('GroupTest11', usersWithGroupNamesModified)).toEqual(noGroupTest11Tag);
 });

@@ -97,9 +97,20 @@ export default class GroupsDB extends React.Component {
       await this.deleteGroupFromDB(groupName);
     }
 
-    async deleteGroupFromDB(groupName) {
-      // @TODO: implement.
+    deleteGroupFromDB(groupName) {
+      return new Promise((resolve, reject) => {
+        UsersDB.singletonInstance.dbConnection.transaction(
+          (tx) => {
+            tx.executeSql(
+              'DELETE FROM groups WHERE name = (?)', [groupName],
+            );
+          },
+          err => reject(err),
+          () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
+        );
+      });
     }
+
 
     async addGroup(groupName) {
       const timeGroupAdded = new Date();
