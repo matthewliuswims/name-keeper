@@ -4,9 +4,10 @@ export const DUPLICATE_GROUP_NAME = {
   errHook: 'UNIQUE CONSTAINT',
 };
 
+// 3 groups includes the primary group (but the end user doesn't know this)
 export const MORE_THAN_3_GROUPS = {
   default: true,
-  message: 'Only 3 or less groups can be associated with a user',
+  message: 'Only 2 or less additional group tags can be associated with a user',
 };
 
 export const NO_GROUPS_SELECTED = {

@@ -13,6 +13,7 @@ import ErrorModal from '../../components/modal/Error';
 import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
 import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
 import AddGroup from '../../components/groups/AddGroup';
+import FocusedGroup from '../../components/groups/FocusedGroup';
 
 import { MORE_THAN_3_GROUPS, NO_GROUPS_SELECTED } from '../../../lib/errors/overrides';
 
@@ -254,6 +255,14 @@ class AddUserScreen extends Component<Props> {
     this.setState({ value });
   }
 
+  groupTagsOnly(threeGroups) {
+    const groupTags = threeGroups.filter((group) => {
+      return !group.isFocusedGroup;
+    });
+    console.log('group tags are', groupTags);
+    return groupTags;
+  }
+
   render() {
     // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
     // diegoprates
@@ -267,19 +276,30 @@ class AddUserScreen extends Component<Props> {
           options={options}
         />
         <View>
-          <Text> Group(s) </Text>
-          <FlatList
-            data={this.state.groups}
-            renderItem={({ item }) => (
-              <AddGroup
-                group={item}
-                onGroupClick={groupName => this.groupClick(groupName)}
-                getColorStyle={this.getColorStyle}
-                innardsStyleContainer={innardsStyleContainer}
-              />)
-            }
-            keyExtractor={(item => `${item.groupID}`)}
+          <Text style={{ fontWeight: 'bold' }}> Group </Text>
+          <FocusedGroup
+            group={this.state.groups[0]}
+            getColorStyle={this.getColorStyle}
           />
+          { this.state.groups.length > 1
+          && (
+            <View>
+              <Text style={{ fontWeight: 'bold' }}> Group Tags <Text style={{ fontWeight: 'normal' }}> (optional) </Text> </Text>
+              <FlatList
+                data={this.groupTagsOnly(this.state.groups)}
+                renderItem={({ item }) => (
+                  <AddGroup
+                    group={item}
+                    onGroupClick={groupName => this.groupClick(groupName)}
+                    getColorStyle={this.getColorStyle}
+                    innardsStyleContainer={innardsStyleContainer}
+                  />)
+                }
+                keyExtractor={(item => `${item.groupID}`)}
+              />
+            </View>
+          )
+          }
         </View>
         {this.checkErrGrps(this.props.groupsState.error)}
         {this.checkErrUsrs(this.props.usersState.error)}

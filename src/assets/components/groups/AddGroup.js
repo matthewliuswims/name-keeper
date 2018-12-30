@@ -51,7 +51,7 @@ export default class AddGroup extends React.Component <Props> {
         >
           <View style={this.props.innardsStyleContainer}>
             <View style={groupIconNameContainer}>
-              <View style={this.props.getColorStyle(group.color, group.opacity, group)} />
+              <View style={this.props.getColorStyle(group.color, group.opacity)} />
               <Text> {group.name} </Text>
             </View>
             {this.checkboxToRender(group, this.props.onGroupClick)}

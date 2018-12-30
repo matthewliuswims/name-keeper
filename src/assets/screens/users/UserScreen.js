@@ -35,6 +35,13 @@ class UserScreen extends Component {
     return combinedStyle;
   }
 
+  groupTagNamesOnly(threeGroupNames) {
+    const groupTagNames = threeGroupNames.filter((groupName) => {
+      return groupName !== this.props.groupsState.focusedGroupName;
+    });
+    return groupTagNames;
+  }
+
 
   render() {
     const { usersState } = this.props;
@@ -73,7 +80,7 @@ class UserScreen extends Component {
                 containerStyle={{ marginRight: wp('5%') }}
               />
               <FlatList
-                data={userGroups}
+                data={[this.props.groupsState.focusedGroupName]}
                 renderItem={({ item }) => (
                   <View style={styles.groupIconNameContainer}>
                     <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
@@ -84,6 +91,27 @@ class UserScreen extends Component {
                 keyExtractor={(item => item)}
               />
             </View>
+            {userGroups.length > 1
+            && (
+            <View style={styles.groupsSection}>
+              <Icon
+                name='label'
+                containerStyle={{ marginRight: wp('5%') }}
+              />
+              <FlatList
+                data={this.groupTagNamesOnly(userGroups)}
+                renderItem={({ item }) => (
+                  <View style={styles.groupIconNameContainer}>
+                    <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
+                    <Text> {item} </Text>
+                  </View>
+                )
+                }
+                keyExtractor={(item => item)}
+              />
+            </View>
+            )
+            }
             <View style={styles.description}>
               <Text> {user.description} </Text>
             </View>
