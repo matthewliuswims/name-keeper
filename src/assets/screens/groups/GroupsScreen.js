@@ -13,6 +13,7 @@ import { listAllUsers } from '../../../redux/actions/users';
 
 import { listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
+import RightHeaderComponent from '../../components/headers/RightGroupsHeader';
 
 type Props = {
   navigation: () => void,
@@ -33,6 +34,7 @@ class GroupsScreen extends Component<Props> {
 
   static navigationOptions = {
     title: 'Groups',
+    headerRight: <RightHeaderComponent />,
   };
 
   updateGroupsList = () => {
@@ -64,7 +66,7 @@ class GroupsScreen extends Component<Props> {
           Add a group below!
         </Text>
         <Text style={styles.noGroupMessage}>
-          Once you create one: you can add the people you meet to that group.
+          Once you create one, you can add the people you meet to that group.
         </Text>
       </View>
     );
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
   },
   noGroupContainer: {
     paddingTop: hp('25%'),
-    paddingBottom: hp('40%'),
+    paddingBottom: hp('37%'),
   },
   button: {
     backgroundColor: colors.addApplyColor,

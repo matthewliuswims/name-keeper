@@ -15,6 +15,7 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 1) still need to fix jest..
 
 ### Outstanding Issues
+1) test deleting groups - in a mixed up way
 2) in the overflow section, have a help screen.
 2) need to fix ref warnings in AddUserScreen - I just don't understand them
 3) what if the groupname and username are super long?
@@ -23,8 +24,13 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 7) don't have to import styles if I'm not overriding anything?
 8) change package versions from latest to numbers
 9) design decision for groupName.. was bad
+10) add text explaining what a group is to "add group screen"
+11) increase click size?
+
 
 
 ### TODO version 2:
 1) allow user to edit tags
 2) allow user to add more than 2 tags
+3) maybe contribute to: https://github.com/tuantle/react-native-search-header so that
+onGetAutocompletions() can take in an object in addition to a string, so i can pass in 'metadata'?

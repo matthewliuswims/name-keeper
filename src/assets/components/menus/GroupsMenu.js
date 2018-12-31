@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
@@ -19,8 +18,7 @@ export default class GroupMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption value='edit' text='edit' />
-          <MenuOption value='delete' text='delete' />
+          <MenuOption value='FAQ' text='FAQ' />
         </MenuOptions>
       </Menu>
     );
