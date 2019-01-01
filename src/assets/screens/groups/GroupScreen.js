@@ -2,12 +2,13 @@
 
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
-import moment from 'moment';
 import RF from 'react-native-responsive-fontsize';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+
+import { parseToShortDate } from '../../../lib/dates';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
 import { container } from '../../styles/base';
@@ -46,19 +47,12 @@ class GroupScreen extends Component<Props> {
    * @param {string} groupName
    */
   usersForGroup(groupName) {
-    console.log('users group and groupName is', groupName);
     const { users } = this.props.usersState;
     if (!users) return [];
     const usersInGroup = this.props.usersState.users.filter((user) => {
       return user.primaryGroupName === groupName;
     });
     return usersInGroup;
-  }
-
-  parseDate(dateAsStr) {
-    const momentDate = moment(dateAsStr);
-    const formattedDate = momentDate.format('ddd, MMM Do');
-    return formattedDate;
   }
 
   noGroupContents() {
@@ -91,7 +85,7 @@ class GroupScreen extends Component<Props> {
             <UserBox
               username={item.name}
               userDescription={item.description}
-              date={this.parseDate(item.createdDate)}
+              date={parseToShortDate(item.createdDate)}
             />
           </TouchableOpacity>
         )}

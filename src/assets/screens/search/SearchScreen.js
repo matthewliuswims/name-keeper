@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import moment from 'moment';
 import RF from 'react-native-responsive-fontsize';
 import { connect } from 'react-redux';
 import SearchBar from 'react-native-searchbar';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import { parseToShortDate } from '../../../lib/dates';
 
 import { focusUser } from '../../../redux/actions/users';
 import UserBox from '../../components/users/UserBox';
@@ -30,19 +31,13 @@ class SearchScreen extends React.Component {
     this.setState({ results });
   }
 
-  parseDate(dateAsStr) {
-    const momentDate = moment(dateAsStr);
-    const formattedDate = momentDate.format('ddd, MMM Do');
-    return formattedDate;
-  }
-
   placeHolderText(groupName) {
     if (groupName) {
       return `Search for users in ${groupName}`;
     }
     return 'Search for ALL users';
   }
-  
+
   /**
    * the reason why the first two navigations are needed is because I want the back button the user screen
    * to be back to the appropriate group screen.
@@ -66,7 +61,6 @@ class SearchScreen extends React.Component {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress = {() => {
-              console.log('item is', item);
               this.props.focusUser(item);
               this.props.focusGroup(item.primaryGroupName);
               // so the back button is correct
@@ -84,7 +78,7 @@ class SearchScreen extends React.Component {
             <UserBox
               username={item.name}
               userDescription={item.description}
-              date={this.parseDate(item.createdDate)}
+              date={parseToShortDate(item.createdDate)}
             />
           </TouchableOpacity>
         )}
@@ -100,17 +94,6 @@ class SearchScreen extends React.Component {
         <View style={{ marginTop: hp('12%') }}>
           {this.users()}
         </View>
-        {/* <View style={{ marginTop: 110 }}>
-          {
-            this.state.results.map((result) => {
-              return (
-                <Text key={result.userID}>
-                  {result.name}
-                </Text>
-              );
-            })
-          }
-        </View> */}
         <SearchBar
           ref={function (ref) {
             this.searchBar = ref;

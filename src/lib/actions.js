@@ -6,7 +6,7 @@ export function makeAction(actionType, payload) {
 }
 
 /**
- * @param {Array<Object>} usersList - return frmo USe
+ * @param {Array<Object>} usersList - returned from SQLLITE
  * @return almost same as the @param, except that the user object in the array will
  * have its groupNames value be an array instead of a JSON string
  */
