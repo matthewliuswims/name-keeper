@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-// import { } from '../../styles/group';
 
 type Props = {
   username: string,

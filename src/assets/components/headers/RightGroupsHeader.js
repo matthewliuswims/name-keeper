@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import GroupsMenu from '../menus/GroupsMenu';
 
@@ -36,6 +37,10 @@ class RightGroupsHeader extends React.Component {
           name='search'
           underlayColor='grey'
           color='white'
+          iconStyle={{
+            padding: hp('1.5%'),
+            marginRight: wp('0.5%'),
+          }}
         />
         <GroupsMenu
           opened={opened}

@@ -73,10 +73,8 @@ class AddUserScreen extends Component<Props> {
       title: 'Add Person',
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
-        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
-          <View style={styles.saveButton}>
-            <Text style={styles.saveButtonText}> Save</Text>
-          </View>
+        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={styles.saveButton}>
+          <Text style={styles.saveButtonText}> Save</Text>
         </TouchableOpacity>
       ),
     };
@@ -312,8 +310,8 @@ const styles = StyleSheet.create({
     marginTop: hp('2%'),
   },
   saveButton: {
-    paddingLeft: topRightSaveButton.paddingLeft,
-    paddingRight: topRightSaveButton.paddingRight,
+    padding: topRightSaveButton.padding,
+    marginRight: topRightSaveButton.marginRight,
     backgroundColor: topRightSaveButton.backgroundColor,
   },
   saveButtonText: {

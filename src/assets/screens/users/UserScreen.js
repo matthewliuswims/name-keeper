@@ -5,7 +5,6 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { get } from 'lodash';
 
 import { Text, View, StyleSheet, FlatList } from 'react-native';
-import moment from 'moment';
 
 import { container, groupIconNameContainer, horizontalGroupScreenButton } from '../../styles/base';
 import RightHeaderComponent from '../../components/headers/RightUserHeader';
@@ -20,12 +19,6 @@ class UserScreen extends Component {
     };
   };
 
-  parseDate(dateAsStr) {
-    const momentDate = moment(dateAsStr);
-    const formattedDate = momentDate.format('h:mm A, dddd, MMMM Do, YYYY');
-    return formattedDate;
-  }
-
   getCircularColorStyle(groupColor) {
     const circularGroupIconNoColor = styles.circularGroupIcon;
     const circularGroupIconWithColor = {
@@ -35,9 +28,9 @@ class UserScreen extends Component {
     return combinedStyle;
   }
 
-  groupTagNamesOnly(threeGroupNames) {
+  groupTagNamesOnly(threeGroupNames, primaryGroupName) {
     const groupTagNames = threeGroupNames.filter((groupName) => {
-      return groupName !== this.props.groupsState.focusedGroupName;
+      return groupName !== primaryGroupName;
     });
     return groupTagNames;
   }
@@ -50,6 +43,7 @@ class UserScreen extends Component {
     const { groups } = groupsState;
     const user = usersState.focusedUser;
     const userGroups = get(user, 'groupNames', null);
+    const primaryGroupName = get(user, 'primaryGroupName', null);
 
     return (
       <View style={styles.containerWrapper}>
@@ -61,7 +55,7 @@ class UserScreen extends Component {
                 name='date-range'
                 containerStyle={{ marginRight: wp('5%') }}
               />
-              <Text numberOfLines={1} style={styles.rightColumn}>{this.parseDate(user.lastEdit)}</Text>
+              <Text numberOfLines={1} style={styles.rightColumn}>{user.readableCreatedDate}</Text>
             </View>
             {user.location
             && (
@@ -80,7 +74,7 @@ class UserScreen extends Component {
                 containerStyle={{ marginRight: wp('5%') }}
               />
               <FlatList
-                data={[this.props.groupsState.focusedGroupName]}
+                data={[primaryGroupName]}
                 renderItem={({ item }) => (
                   <View style={styles.groupIconNameContainer}>
                     <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
@@ -99,7 +93,7 @@ class UserScreen extends Component {
                 containerStyle={{ marginRight: wp('5%') }}
               />
               <FlatList
-                data={this.groupTagNamesOnly(userGroups)}
+                data={this.groupTagNamesOnly(userGroups, primaryGroupName)}
                 renderItem={({ item }) => (
                   <View style={styles.groupIconNameContainer}>
                     <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />

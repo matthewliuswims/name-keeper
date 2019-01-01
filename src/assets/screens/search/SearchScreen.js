@@ -1,9 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Platform } from 'react-native';
+import { View, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import moment from 'moment';
+import RF from 'react-native-responsive-fontsize';
 import { connect } from 'react-redux';
 import SearchBar from 'react-native-searchbar';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import { focusUser } from '../../../redux/actions/users';
+import UserBox from '../../components/users/UserBox';
+import { container } from '../../styles/base';
+import { focusGroup } from '../../../redux/actions/groups';
 
 class SearchScreen extends React.Component {
   static navigationOptions = {
@@ -23,75 +30,126 @@ class SearchScreen extends React.Component {
     this.setState({ results });
   }
 
+  parseDate(dateAsStr) {
+    const momentDate = moment(dateAsStr);
+    const formattedDate = momentDate.format('ddd, MMM Do');
+    return formattedDate;
+  }
+
   placeHolderText(groupName) {
     if (groupName) {
       return `Search for users in ${groupName}`;
     }
     return 'Search for ALL users';
   }
+  
+  /**
+   * the reason why the first two navigations are needed is because I want the back button the user screen
+   * to be back to the appropriate group screen.
+   */
+  navigateToUserScreen = (user) => {
+    this.props.navigation.popToTop();
+    this.props.navigation.navigate('GroupScreen',
+      {
+        groupName: user.primaryGroupName,
+      });
+    this.props.navigation.navigate('UserScreen',
+      {
+        username: user.name,
+      });
+  }
+
+  users() {
+    return (
+      <FlatList
+        data={this.state.results}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress = {() => {
+              console.log('item is', item);
+              this.props.focusUser(item);
+              this.props.focusGroup(item.primaryGroupName);
+              // so the back button is correct
+              this.props.navigation.popToTop();
+              this.props.navigation.navigate('GroupScreen',
+                {
+                  groupName: item.primaryGroupName,
+                });
+              this.props.navigation.navigate('UserScreen',
+                {
+                  username: item.name,
+                });
+            }}
+          >
+            <UserBox
+              username={item.name}
+              userDescription={item.description}
+              date={this.parseDate(item.createdDate)}
+            />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item => `${item.userID}`)}
+      />
+    );
+  }
 
   render() {
     const groupName = this.props.navigation.getParam('groupName');
     return (
       <View style={styles.container}>
-        <View style={{ marginTop: 110 }}>
+        <View style={{ marginTop: hp('12%') }}>
+          {this.users()}
+        </View>
+        {/* <View style={{ marginTop: 110 }}>
           {
-            this.state.results.map((result, i) => {
+            this.state.results.map((result) => {
               return (
-                <Text key={i}>
+                <Text key={result.userID}>
                   {result.name}
                 </Text>
               );
             })
           }
-        </View>
+        </View> */}
         <SearchBar
           ref={function (ref) {
             this.searchBar = ref;
           }}
-          data={items}
+          data={this.props.usersState.users}
           handleResults={this.handleResults}
           showOnLoad
           placeholder={this.placeHolderText(groupName)}
           heightAdjust={Platform.OS === 'ios' ? 0 : hp('3%')}
+          onBack={() => {
+            this.props.navigation.navigate('GroupsScreen');
+          }}
         />
-        <Text> I search screen and we are searching for this group: {groupName} </Text>
-        <TouchableOpacity onPress={() => {
-          this.props.navigation.navigate('GroupsScreen');
-        }}>
-          <Text> Click to go back to groups screen </Text>
-        </TouchableOpacity>
       </View>
     );
   }
 }
 
-
-const items = [
-  {
-    name: 'Mark',
-    groupNames: ['Work'],
-    primaryGroupName: 'Work',
-    description: 'introduced me to work',
-  },
-  {
-    name: 'Adrian',
-    groupNames: ['Work'],
-    primaryGroupName: 'Work',
-    description: 'Sat next to the right of me',
-  },
-  {
-    name: 'Reilly',
-    groupNames: ['Church', 'Community Group'],
-    primaryGroupName: 'Church',
-    description: 'first person i met at church',
-  },
-];
-
-
 const styles = StyleSheet.create({
+  noGroupHeader: {
+    fontWeight: 'bold',
+    fontSize: RF(4),
+    marginTop: hp('1%'),
+    textAlign: 'center',
+  },
+  noGroupMessage: {
+    fontSize: RF(2.5),
+    marginTop: hp('2%'),
+    textAlign: 'center',
+  },
+  noGroupContainer: {
+    paddingTop: hp('25%'),
+  },
   container: {
-    flex: 1,
+    flex: container.flex,
+    paddingTop: container.paddingTop,
+    backgroundColor: container.backgroundColor,
+    paddingLeft: container.paddingLeft,
+    paddingRight: container.paddingRight,
   },
 });
 const mapStateToProps = state => (
@@ -100,4 +158,11 @@ const mapStateToProps = state => (
   }
 );
 
-export default withNavigation(connect(mapStateToProps)(SearchScreen));
+const mapDispatchToProps = dispatch => (
+  {
+    focusGroup: groupName => dispatch(focusGroup(groupName)),
+    focusUser: user => dispatch(focusUser(user)),
+  }
+);
+
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(SearchScreen));

@@ -46,6 +46,7 @@ class GroupScreen extends Component<Props> {
    * @param {string} groupName
    */
   usersForGroup(groupName) {
+    console.log('users group and groupName is', groupName);
     const { users } = this.props.usersState;
     if (!users) return [];
     const usersInGroup = this.props.usersState.users.filter((user) => {

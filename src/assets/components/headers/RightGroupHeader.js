@@ -75,7 +75,10 @@ class RightHeaderGroupComponent extends React.Component {
           name='search'
           underlayColor='grey'
           color='white'
-          // SIZE?
+          iconStyle={{
+            padding: hp('1.5%'),
+            marginRight: wp('0.5%'),
+          }}
         />
         <GroupMenu
           opened={opened}

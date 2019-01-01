@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Icon } from 'react-native-elements';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
@@ -16,6 +16,9 @@ export default class GroupMenu extends React.Component {
           <Icon
             name='more-vert'
             color='white'
+            iconStyle={{
+              padding: hp('1.5%'),
+            }}
           />
         </MenuTrigger>
         <MenuOptions>

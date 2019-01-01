@@ -22,8 +22,8 @@ export const container = {
 };
 
 export const topRightSaveButton = {
-  paddingLeft: wp('3%'),
-  paddingRight: wp('3%'),
+  padding: hp('2%'),
+  paddingRight: wp('2%'),
   backgroundColor: '#00000000',
   color: 'white',
 };

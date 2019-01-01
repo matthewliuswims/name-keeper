@@ -1,4 +1,6 @@
 
+import moment from 'moment';
+
 import UsersDB from '../../assets/database/UsersDB';
 import { makeAction, turnUsersListGroupNamesIntoArray } from '../../lib/actions';
 
@@ -26,6 +28,12 @@ export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
 export const EDIT_USER_FAIL = 'EDIT_USER_FAIL';
 
 export const CLEAR_ERRS_USER = 'CLEAR_ERRS_USER';
+
+function parseDate(dateAsStr) {
+  const momentDate = moment(dateAsStr);
+  const formattedDate = momentDate.format('h:mm A, dddd, MMMM Do, YYYY');
+  return formattedDate;
+}
 
 export function addUser(user) {
   return (dispatch) => {
@@ -66,7 +74,14 @@ export function listAllUsers() {
       return usersDBInstance.listAllUsers();
     }).then((usersList) => {
       const newUsersList = turnUsersListGroupNamesIntoArray(usersList);
-      dispatch(makeAction(LIST_ALL_USERS_SUCCESS, newUsersList));
+      // this is so when we do searches, the search can find parsed dates as a substring
+      const withParsedDates = newUsersList.map((user) => {
+        const newUser = Object.assign({}, user, {
+          readableCreatedDate: parseDate(user.createdDate),
+        });
+        return newUser;
+      });
+      dispatch(makeAction(LIST_ALL_USERS_SUCCESS, withParsedDates));
     }).catch((error) => {
       dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
       // no need to throw err in this particular instance
