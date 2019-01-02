@@ -87,6 +87,15 @@ class SearchScreen extends React.Component {
     );
   }
 
+  usersForGroup(groupName) {
+    const { users } = this.props.usersState;
+    if (!users) return [];
+    const usersInGroup = this.props.usersState.users.filter((user) => {
+      return user.primaryGroupName === groupName;
+    });
+    return usersInGroup;
+  }
+
   render() {
     const groupName = this.props.navigation.getParam('groupName');
     return (
@@ -98,7 +107,7 @@ class SearchScreen extends React.Component {
           ref={function (ref) {
             this.searchBar = ref;
           }}
-          data={this.props.usersState.users}
+          data={groupName ? this.usersForGroup(groupName) : this.props.usersState.users} // if no group name, show ALL USERS
           handleResults={this.handleResults}
           showOnLoad
           placeholder={this.placeHolderText(groupName)}

@@ -71,7 +71,11 @@ class RightHeaderGroupComponent extends React.Component {
     return (
       <View style={styles.container}>
         <Icon
-          onPress={() => console.log('HIII')}
+          onPress={() => {
+            this.props.navigation.navigate('SearchScreen', {
+              groupName: this.props.groupsState.focusedGroupName,
+            });
+          }}
           name='search'
           underlayColor='grey'
           color='white'

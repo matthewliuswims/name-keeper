@@ -13,6 +13,7 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 ^^^Or have boostapped material with a 'work' group with billy joe and mary har examples <-- saying how to delete stuff
 0.02) need to change groupsScreen so it comes prepopulated with a group
 1) still need to fix jest..
+2) increased click size - but didnt' do it for the back button
 
 ### Outstanding Issues
 1) test deleting groups - in a mixed up way
@@ -25,8 +26,10 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 8) change package versions from latest to numbers
 9) design decision for groupName.. was bad
 10) add text explaining what a group is to "add group screen"
-11) increase click size?
-
+11) TOOLTIPS?
+12) sentry logging?
+13) addgroup screen help text?
+14) add bottom lines in the menu
 
 
 ### TODO version 2:

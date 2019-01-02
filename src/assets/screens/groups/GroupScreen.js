@@ -1,12 +1,9 @@
-// @flow
-
 import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { connect } from 'react-redux';
-import { get } from 'lodash';
 
 import { parseToShortDate } from '../../../lib/dates';
 
@@ -16,6 +13,8 @@ import { container } from '../../styles/base';
 import UserBox from '../../components/users/UserBox';
 
 import Footer from '../../components/footer/footer';
+import SortBy from '../../components/modal/SortBy';
+
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
 type Props = {
@@ -33,6 +32,13 @@ class GroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.props.listAllUsers();
+    this.state = {
+      sortByModalOpen: false,
+      sortedUsersWrapper: {
+        sortOption: 'Date: Old to New (default)',
+        sortedUsers: this.usersForGroup(this.props.groupsState.focusedGroupName),
+      },
+    };
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -68,10 +74,93 @@ class GroupScreen extends Component<Props> {
     );
   }
 
-  groupContents(groupName) {
+  sortOpen() {
+    if (this.state.sortByModalOpen) {
+      return (
+        <SortBy
+          sortOption={this.state.sortedUsersWrapper.sortOption}
+          closeSortModal={this.closeSortModal}
+        />
+      );
+    }
+  }
+
+  openSortModal = () => {
+    this.setState({
+      sortByModalOpen: true,
+    });
+  }
+
+  sortUsers(sortOption) {
+    console.log('hi', sortOption);
+    if (sortOption === 'Date: Old to New (default)') {
+      console.log('1');
+      this.setState((state) => {
+        const copysortedUsers = state.sortedUsersWrapper.sortedUsers.slice();
+        copysortedUsers.sort((a, b) => {
+          // Turn strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          const aCreatedDate = new Date(a.createdDate);
+          const bCreatedDate = new Date(b.createdDate);
+          return aCreatedDate - bCreatedDate;
+        });
+        console.log('1sss', copysortedUsers);
+        return {
+          sortedUsersWrapper: {
+            sortOption,
+            sortedUsers: copysortedUsers,
+          },
+        };
+      });
+    }
+
+    if (sortOption === 'Date: New to Old') {
+      console.log('2');
+      this.setState((state) => {
+        const copysortedUsers = state.sortedUsersWrapper.sortedUsers.slice();
+        copysortedUsers.sort((a, b) => {
+          // Turn strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b.createdDate) - new Date(a.createdDate);
+        });
+        console.log('2sss', copysortedUsers);
+        return {
+          sortedUsersWrapper: {
+            sortOption,
+            sortedUsers: copysortedUsers,
+          },
+        };
+      });
+    }
+
+    if (sortOption === 'Alphabetical') {
+      this.setState((state) => {
+        const copysortedUsers = state.sortedUsersWrapper.sortedUsers.slice();
+        copysortedUsers.sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        console.log('33sss', copysortedUsers);
+        return {
+          sortedUsersWrapper: {
+            sortOption,
+            sortedUsers: copysortedUsers,
+          },
+        };
+      });
+    }
+  }
+
+  closeSortModal = (sortOption) => {
+    this.setState({
+      sortByModalOpen: false,
+    });
+    this.sortUsers(sortOption);
+  }
+
+  groupContents() {
     return (
       <FlatList
-        data={this.usersForGroup(groupName)}
+        data={this.state.sortedUsersWrapper.sortedUsers}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress = {() => {
@@ -96,7 +185,7 @@ class GroupScreen extends Component<Props> {
 
 
   render() {
-    const groupName = get(this.props.groupsState, 'focusedGroupName', null);
+    const groupName = this.props.groupsState.focusedGroupName;
     const NumUsersForGroup = this.usersForGroup(groupName).length;
     return (
       <View style={styles.container}>
@@ -104,8 +193,11 @@ class GroupScreen extends Component<Props> {
           {NumUsersForGroup ? this.groupContents(groupName) : this.noGroupContents()}
         </View>
         <View style={styles.footer}>
-          <Footer />
+          <Footer
+            openSortModal={this.openSortModal}
+          />
         </View>
+        {this.sortOpen()}
       </View>
     );
   }

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 0,
     borderBottomWidth: 1,
-    paddingTop: 5, // @TODO: make this dynamic
+    paddingTop: 5,
     paddingBottom: 5,
   },
   descriptionAndDate: {
