@@ -61,7 +61,10 @@ const { Polygon, Circle, Line } = Svg;
 class Footer extends React.Component {
   filterComponent() {
     return (
-      <TouchableOpacity style={styles.filterContainer}>
+      <TouchableOpacity
+        style={styles.filterContainer}
+        onPress = {() => this.props.openFilterModal()}
+      >
         <Text> Filter </Text>
         <Svg
           height={filterSvgHeightOrWidth}

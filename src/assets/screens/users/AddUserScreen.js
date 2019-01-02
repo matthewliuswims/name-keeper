@@ -178,7 +178,7 @@ class AddUserScreen extends Component<Props> {
    * @param groupsOriginal - this.props.groups, redux state of groups
    * @param focusedGroupname - group we are currently looking at
    * @return takes on form of Array of objects - where each object is a redux group WITH added fields
-   * the added fields are: added: true, opacity: 1, isFocusedGroup: true,
+   * the added fields can be of form: added: true, opacity: 1, isFocusedGroup: true,
    * NOTE: the focused group is ALWAYS first.
    */
   sortedGroups(groups, focusedGroupName) {

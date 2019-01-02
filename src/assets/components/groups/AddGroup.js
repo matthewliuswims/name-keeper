@@ -21,15 +21,6 @@ type Props = {
  */
 export default class AddGroup extends React.Component <Props> {
   checkboxToRender(group, cb) {
-    if (group.isFocusedGroup) {
-      return (
-        <CheckBox
-          checked
-          checkedColor='grey'
-          containerStyle={{ padding: checkBoxBase.padding, margin: checkBoxBase.margin }}
-        />
-      );
-    }
     return (
       <CheckBox
         checked={group.added}

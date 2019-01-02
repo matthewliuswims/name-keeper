@@ -106,8 +106,8 @@ class AddGroupScreen extends Component<Props> {
 
 const styles = StyleSheet.create({
   saveButton: {
-    paddingLeft: topRightSaveButton.paddingLeft,
-    paddingRight: topRightSaveButton.paddingRight,
+    padding: topRightSaveButton.padding,
+    marginRight: topRightSaveButton.marginRight,
     backgroundColor: topRightSaveButton.backgroundColor,
   },
   saveButtonText: {

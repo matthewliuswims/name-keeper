@@ -16,6 +16,8 @@ Runs the [jest](https://github.com/facebook/jest) test runner on your tests. Con
 2) increased click size - but didnt' do it for the back button
 
 ### Outstanding Issues
+0.25) need to be able to close sort and filter modals without applying changes
+0.5) add filter instructions?
 1) test deleting groups - in a mixed up way
 2) in the overflow section, have a help screen.
 2) need to fix ref warnings in AddUserScreen - I just don't understand them

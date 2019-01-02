@@ -35,10 +35,6 @@ function matches(groupName) {
   return groupName === this.currentGroupName; // this is currentGroupName
 }
 
-function matchesGroupName(groupName) {
-  return groupName === this.groupName; // this is currentGroupName
-}
-
 /**
  * if a user in @usersList has it's primaryGroupName match currentGroupName
  * then that user is returned as part of the newUsersList array.
@@ -62,30 +58,19 @@ export function usersPrimaryGroupNameMatch(groupName, usersList) {
 }
 
 /**
- * NOTE: @param usersList should only include users who DO not have
- * their primaryGroupName matching any of their own groupNames.
- * AKA: this function is called as part of deleteGroup, and it is called after
- * all users whose primary groupName is currentGroupName are deleted. This function
- * is, therefore, called as part of a parent function to update tags.
+ * @param {Array<String>} groupNames
+ * @param {Array<Object>} usersList
+ * @return Array<Object> - all users who have at least of their groupNames matching the param @groupNames
  */
-export function usersGroupNamesMatchOnly(groupName, usersList) {
-  if (!Array.isArray(usersList)) {
-    throw new Error('usersGroupNamesMatchOnly expects usersList to be an Array');
-  }
-  if (!usersList.length) {
-    return usersList;
-  }
-
-  const newUsersList = [];
-  for (const user of usersList) {
-    if (user.primaryGroupName === groupName) {
-      throw new Error('usersList should not have any users whose users primaryGroupName matches groupName');
-    }
-    if (user.groupNames.find(matchesGroupName, { groupName })) {
-      newUsersList.push(user);
-    }
-  }
-  return newUsersList;
+export function usersGroupNamesMatch(groupNames, usersList) {
+  const usersThatHaveGroupName = usersList.filter((user) => {
+    const userGroupNames = user.groupNames;
+    const usrGrpMatches = userGroupNames.filter((usrGrpName) => {
+      return groupNames.includes(usrGrpName);
+    });
+    return usrGrpMatches.length > 1;
+  });
+  return usersThatHaveGroupName;
 }
 
 /**
