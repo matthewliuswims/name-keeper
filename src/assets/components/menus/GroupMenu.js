@@ -22,8 +22,8 @@ export default class GroupMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption value='edit' text='edit' />
-          <MenuOption value='delete' text='delete' />
+          <MenuOption value='Edit' text='Edit' />
+          <MenuOption value='Delete' text='Delete' />
         </MenuOptions>
       </Menu>
     );

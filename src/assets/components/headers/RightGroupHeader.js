@@ -18,13 +18,12 @@ class RightHeaderGroupComponent extends React.Component {
   state = { opened: false, visibleModal: false };
 
   onOptionSelect = (value) => {
-    if (value === 'edit') {
-      console.log('edit group');
+    if (value === 'Edit') {
       this.props.navigation.navigate('EditGroupScreen', {
         focusedGroupName: this.props.groupsState.focusedGroupName,
       });
     }
-    if (value === 'delete') {
+    if (value === 'Delete') {
       this.setState({ visibleModal: true });
       /*
        *  1.25) call redux action for delete
@@ -81,7 +80,6 @@ class RightHeaderGroupComponent extends React.Component {
           color='white'
           iconStyle={{
             padding: hp('1.5%'),
-            marginRight: wp('0.5%'),
           }}
         />
         <GroupMenu

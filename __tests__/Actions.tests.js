@@ -4,6 +4,7 @@ import {
   changeGroupReferences,
   usersPrimaryGroupNameMatch,
   deleteGroupTag,
+  usersGroupNamesMatch,
 } from '../src/lib/actions';
 
 const bigUsersListFromDB = [
@@ -185,4 +186,60 @@ const noGroupTest11Tag = [
 
 test('deleteGroupTag - normal case', () => {
   expect(deleteGroupTag('GroupTest11', usersWithGroupNamesModified)).toEqual(noGroupTest11Tag);
+});
+
+
+// usersGroupNamesMatch
+
+const groupNames = [
+  'AustinGroup',
+  'barbaros',
+];
+
+const usersWithMatchingGroupNames = [
+  {
+    name: 'Someone in group test',
+    groupNames: ['GroupTest', 'Grouperoni', 'AustinGroup'],
+    primaryGroupName: 'GroupTest',
+  },
+];
+
+test('usersGroupNamesMatch - normal case', () => {
+  expect(usersGroupNamesMatch(groupNames, usersWithGroupNamesModified)).toEqual(usersWithMatchingGroupNames);
+});
+
+const groupNamesComplex = [
+  'AustinGroup33',
+  'GroupTest11',
+];
+
+const usersWithMatchingGroupNamesComplex = [
+  {
+    name: 'Someone in group test',
+    groupNames: ['GroupTest11', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'GroupTest11',
+  },
+  {
+    name: 'COOLERONI',
+    groupNames: ['GroupTest11', 'Grouperoni22', 'AustinGroup33'],
+    primaryGroupName: 'GroupTest11',
+  },
+  {
+    name: 'iruser',
+    groupNames: ['Grouperoni22', 'GroupTest11'],
+    primaryGroupName: 'Grouperoni22',
+  },
+];
+
+test('usersGroupNamesMatch - complex case', () => {
+  expect(usersGroupNamesMatch(groupNamesComplex, usersWithGroupNamesModified)).toEqual(usersWithMatchingGroupNamesComplex);
+});
+
+const groupNamesNoMatch = [
+  'asdasdasd',
+  'barbaros',
+];
+
+test('usersGroupNamesMatch - no matches', () => {
+  expect(usersGroupNamesMatch(groupNamesNoMatch, usersWithGroupNamesModified)).toEqual([]);
 });

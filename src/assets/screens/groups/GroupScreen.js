@@ -12,6 +12,8 @@ import { container } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
 
+import { usersGroupNamesMatch } from '../../../lib/actions';
+
 import Footer from '../../components/footer/footer';
 import SortBy from '../../components/modal/SortBy';
 import Filter from '../../components/modal/Filter';
@@ -31,16 +33,15 @@ type Props = {
 
 class GroupScreen extends Component<Props> {
   constructor(props) {
-    console.log('constructing in groupscreen');
     super(props);
     this.props.listAllUsers();
     this.state = {
       sortByModalOpen: false,
       filterModalOpen: false,
       sortedFilteredUsersWrapper: {
+        // computed data shouldn't be stored in the state of the object, which is why sortedFiltererdUsers isn't here
         sortOption: 'Date: Old to New (default)',
-        sortedUsers: this.usersForGroup(this.props.groupsState.focusedGroupName),
-        selectedFilteredGroups: this.filteredGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
+        selectedFilteredGroups: this.filteredGroupsInitial(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
       },
     };
   }
@@ -63,15 +64,14 @@ class GroupScreen extends Component<Props> {
       this.setState({
         sortedFilteredUsersWrapper: {
           sortOption: 'Date: Old to New (default)',
-          sortedUsers: this.usersForGroup(this.props.groupsState.focusedGroupName),
-          selectedFilteredGroups: this.filteredGroups(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
+          selectedFilteredGroups: this.filteredGroupsInitial(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
         },
       });
     }
   }
 
   /**
-   * CALLED in constructor.
+   * CALLED in constructor and in componentDidMount
    * @param groupsOriginal - this.props.groups, redux state of groups
    * @param focusedGroupname - group we are currently looking at
    * @return takes on form of Array of objects - where each object is a redux group WITH added fields
@@ -82,7 +82,9 @@ class GroupScreen extends Component<Props> {
    * NOTE: the focused group is ALWAYS first & all groups by default have added to be true and opacity of 1,
    * which means they're all part of the filter (by default)
    */
-  filteredGroups(groups, focusedGroupName) {
+  filteredGroupsInitial(groups, focusedGroupName) {
+    console.log('inside initial groups r', groups);
+    console.log('inside focusedGroupName r', focusedGroupName);
     let focusedGroup;
 
     const withFocus = groups.map((group) => {
@@ -115,6 +117,14 @@ class GroupScreen extends Component<Props> {
     return usersInGroup;
   }
 
+  sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users) {
+    console.log('upper echelon selectedFilteredGroups', selectedFilteredGroups);
+    const usersCopy = users.slice();
+    const sortedUsers = this.sortUsers(sortOption, usersCopy);
+    const sortAndFilteredUsers = this.filterUsers(selectedFilteredGroups, sortedUsers);
+    return sortAndFilteredUsers;
+  }
+
   noGroupContents() {
     return (
       <View style={styles.noGroupContainer}>
@@ -129,7 +139,6 @@ class GroupScreen extends Component<Props> {
   }
 
   filterOpen() {
-    console.log('filter is open', this.state.filterModalOpen);
     if (this.state.filterModalOpen) {
       return (
         <Filter
@@ -147,18 +156,32 @@ class GroupScreen extends Component<Props> {
   }
 
   closeFilterModal = (filteredGroups) => {
+    console.log('filtered gourps are', filteredGroups);
     this.setState({
       filterModalOpen: false,
     });
-    this.filterUsers(filteredGroups);
+    this.setNewFiltereredGroups(filteredGroups);
   }
 
-  filterUsers(filteredGroups) {
-    // will filter the sorted users
-    console.log('my filteredGroups are', filteredGroups);
-    // sortedFilteredUsersWrapper: {
-    //   sortOption: 'Date: Old to New (default)',
-    //   sortedUsers: this.usersForGroup(this.props.groupsState.focusedGroupName),
+  setNewFiltereredGroups(changedGroups) {
+    this.setState((state) => {
+      const { sortOption } = state.sortedFilteredUsersWrapper;
+      return {
+        sortedFilteredUsersWrapper: {
+          selectedFilteredGroups: changedGroups,
+          sortOption,
+        },
+      };
+    });
+  }
+
+  filterUsers(selectedFilteredGroups, users) {
+    console.log('selectedFilteredGroups', selectedFilteredGroups);
+    const filteredGroups = selectedFilteredGroups.filter(group => group.added);
+    const filteredGroupNames = filteredGroups.map(group => group.name);
+    const filteredUsers = usersGroupNamesMatch(filteredGroupNames, users);
+    console.log('filteredUsers', filteredUsers);
+    return filteredUsers;
   }
 
   sortOpen() {
@@ -182,66 +205,54 @@ class GroupScreen extends Component<Props> {
     this.setState({
       sortByModalOpen: false,
     });
-    this.sortUsers(sortOption);
+    this.setSortOption(sortOption);
   }
 
-  sortUsers(sortOption) {
+  setSortOption(sortOption) {
+    this.setState((state) => {
+      const { selectedFilteredGroups } = state.sortedFilteredUsersWrapper;
+      return {
+        sortedFilteredUsersWrapper: {
+          sortOption,
+          selectedFilteredGroups,
+        },
+      };
+    });
+  }
+
+  sortUsers(sortOption, users) {
+    let sortedUsers;
     if (sortOption === 'Date: Old to New (default)') {
-      this.setState((state) => {
-        const copysortedUsers = state.sortedFilteredUsersWrapper.sortedUsers.slice();
-        copysortedUsers.sort((a, b) => {
-          // Turn strings into dates, and then subtract them
-          // to get a value that is either negative, positive, or zero.
-          const aCreatedDate = new Date(a.createdDate);
-          const bCreatedDate = new Date(b.createdDate);
-          return aCreatedDate - bCreatedDate;
-        });
-        return {
-          sortedFilteredUsersWrapper: {
-            sortOption,
-            sortedUsers: copysortedUsers,
-          },
-        };
+      sortedUsers = users.sort((a, b) => {
+        // Turn strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        const aCreatedDate = new Date(a.createdDate);
+        const bCreatedDate = new Date(b.createdDate);
+        return aCreatedDate - bCreatedDate;
       });
     }
 
     if (sortOption === 'Date: New to Old') {
-      this.setState((state) => {
-        const copysortedUsers = state.sortedFilteredUsersWrapper.sortedUsers.slice();
-        copysortedUsers.sort((a, b) => {
-          // Turn strings into dates, and then subtract them
-          // to get a value that is either negative, positive, or zero.
-          return new Date(b.createdDate) - new Date(a.createdDate);
-        });
-        return {
-          sortedFilteredUsersWrapper: {
-            sortOption,
-            sortedUsers: copysortedUsers,
-          },
-        };
+      sortedUsers = users.sort((a, b) => {
+        // Turn strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.createdDate) - new Date(a.createdDate);
       });
     }
 
     if (sortOption === 'Alphabetical') {
-      this.setState((state) => {
-        const copysortedUsers = state.sortedFilteredUsersWrapper.sortedUsers.slice();
-        copysortedUsers.sort((a, b) => {
-          return a.name.localeCompare(b.name);
-        });
-        return {
-          sortedFilteredUsersWrapper: {
-            sortOption,
-            sortedUsers: copysortedUsers,
-          },
-        };
+      sortedUsers = users.sort((a, b) => {
+        return a.name.localeCompare(b.name);
       });
     }
+    return sortedUsers;
   }
 
-  groupContents() {
+  groupContents(groupName) {
+    const { sortOption, selectedFilteredGroups } = this.state.sortedFilteredUsersWrapper;
     return (
       <FlatList
-        data={this.state.sortedFilteredUsersWrapper.sortedUsers}
+        data={this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, this.usersForGroup(groupName))}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress = {() => {

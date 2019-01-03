@@ -14,7 +14,6 @@ import { listAllUsers } from '../../../redux/actions/users';
 
 type Props = {
   navigation: () => void,
-  addGroup: () => void,
 };
 
 const { Form } = tComb.form;
@@ -80,10 +79,13 @@ class AddGroupScreen extends Component<Props> {
     // remember below Form type is group
     if (groupStruct) {
       const { name: newGroupName } = groupStruct;
-      await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName); //
+      this.props.navigation.navigate('GroupsScreen');
+      // just put it before? so i don't have to focus user and worry about users and groups being in sycn and updated?
+      // Answer; NOPE: below 3 won't fire otherwise..
+      // AWAIT...focusGroup too...
+      await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName);
       await this.props.listGroups();
       await this.props.listAllUsers();
-      this.props.navigation.navigate('GroupsScreen');
     }
   }
 
@@ -104,6 +106,7 @@ const styles = StyleSheet.create({
     paddingLeft: topRightSaveButton.paddingLeft,
     paddingRight: topRightSaveButton.paddingRight,
     backgroundColor: topRightSaveButton.backgroundColor,
+    marginRight: topRightSaveButton.marginRight,
   },
   saveButtonText: {
     color: topRightSaveButtonText.color,

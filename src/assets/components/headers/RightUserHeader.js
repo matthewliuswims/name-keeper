@@ -17,10 +17,10 @@ class RightUserHeader extends React.Component {
   state = { opened: false, visibleModal: false };
 
   onOptionSelect = (value) => {
-    if (value === 'delete') {
+    if (value === 'Delete') {
       this.setState({ visibleModal: true });
     }
-    if (value === 'edit') {
+    if (value === 'Edit') {
       this.props.navigation.navigate('EditUserScreen', {
         focusedUserName: this.props.usersState.focusedUser.name,
       });
