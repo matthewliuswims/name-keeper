@@ -79,13 +79,10 @@ class AddGroupScreen extends Component<Props> {
     // remember below Form type is group
     if (groupStruct) {
       const { name: newGroupName } = groupStruct;
-      this.props.navigation.navigate('GroupsScreen');
-      // just put it before? so i don't have to focus user and worry about users and groups being in sycn and updated?
-      // Answer; NOPE: below 3 won't fire otherwise..
-      // AWAIT...focusGroup too...
       await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName);
       await this.props.listGroups();
       await this.props.listAllUsers();
+      this.props.navigation.navigate('GroupsScreen');
     }
   }
 

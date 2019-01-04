@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -83,8 +83,6 @@ class GroupScreen extends Component<Props> {
    * which means they're all part of the filter (by default)
    */
   filteredGroupsInitial(groups, focusedGroupName) {
-    console.log('inside initial groups r', groups);
-    console.log('inside focusedGroupName r', focusedGroupName);
     let focusedGroup;
 
     const withFocus = groups.map((group) => {
@@ -118,7 +116,6 @@ class GroupScreen extends Component<Props> {
   }
 
   sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users) {
-    console.log('upper echelon selectedFilteredGroups', selectedFilteredGroups);
     const usersCopy = users.slice();
     const sortedUsers = this.sortUsers(sortOption, usersCopy);
     const sortAndFilteredUsers = this.filterUsers(selectedFilteredGroups, sortedUsers);
@@ -143,6 +140,7 @@ class GroupScreen extends Component<Props> {
       return (
         <Filter
           closeFilterModal={this.closeFilterModal}
+          applyFilterModal={this.applyFilterModal}
           filteredGroups={this.state.sortedFilteredUsersWrapper.selectedFilteredGroups}
         />
       );
@@ -155,8 +153,13 @@ class GroupScreen extends Component<Props> {
     });
   }
 
-  closeFilterModal = (filteredGroups) => {
-    console.log('filtered gourps are', filteredGroups);
+  closeFilterModal = () => {
+    this.setState({
+      filterModalOpen: false,
+    });
+  }
+
+  applyFilterModal = (filteredGroups) => {
     this.setState({
       filterModalOpen: false,
     });
@@ -176,11 +179,9 @@ class GroupScreen extends Component<Props> {
   }
 
   filterUsers(selectedFilteredGroups, users) {
-    console.log('selectedFilteredGroups', selectedFilteredGroups);
     const filteredGroups = selectedFilteredGroups.filter(group => group.added);
     const filteredGroupNames = filteredGroups.map(group => group.name);
     const filteredUsers = usersGroupNamesMatch(filteredGroupNames, users);
-    console.log('filteredUsers', filteredUsers);
     return filteredUsers;
   }
 
@@ -190,6 +191,7 @@ class GroupScreen extends Component<Props> {
         <SortBy
           sortOption={this.state.sortedFilteredUsersWrapper.sortOption}
           closeSortModal={this.closeSortModal}
+          applySortModal={this.applySortModal}
         />
       );
     }
@@ -201,7 +203,13 @@ class GroupScreen extends Component<Props> {
     });
   }
 
-  closeSortModal = (sortOption) => {
+  closeSortModal = () => {
+    this.setState({
+      sortByModalOpen: false,
+    });
+  }
+
+  applySortModal = (sortOption) => {
     this.setState({
       sortByModalOpen: false,
     });
@@ -275,12 +283,9 @@ class GroupScreen extends Component<Props> {
     );
   }
 
-
-  render() {
-    const groupName = this.props.groupsState.focusedGroupName;
-    const NumUsersForGroup = this.usersForGroup(groupName).length;
+  groupScreenWrapper(groupName, NumUsersForGroup) {
     return (
-      <View style={styles.container}>
+      <Fragment>
         <View style={styles.groupContents}>
           {NumUsersForGroup ? this.groupContents(groupName) : this.noGroupContents()}
         </View>
@@ -290,6 +295,16 @@ class GroupScreen extends Component<Props> {
             openSortModal={this.openSortModal}
           />
         </View>
+      </Fragment>
+    );
+  }
+
+  render() {
+    const groupName = this.props.groupsState.focusedGroupName;
+    const NumUsersForGroup = this.usersForGroup(groupName).length;
+    return (
+      <View style={styles.container}>
+        { (this.props.groupsState.loading || this.props.usersState.loading) ? null : this.groupScreenWrapper(groupName, NumUsersForGroup) }
         {this.sortOpen()}
         {this.filterOpen()}
       </View>

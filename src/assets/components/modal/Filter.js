@@ -97,7 +97,7 @@ export default class FilterModal extends Component {
         {this.allGroups()}
         {this.renderButton('Apply', () => {
           this.setState({ visibleModal: false });
-          this.props.closeFilterModal(this.state.filteredGroups); // tell GroupScreen this modal is closed
+          this.props.applyFilterModal(this.state.filteredGroups); // tell GroupScreen this modal is closed
         })}
       </View>
     );

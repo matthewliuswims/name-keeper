@@ -22,7 +22,6 @@ export default class GroupMenu extends React.Component {
           />
         </MenuTrigger>
         <MenuOptions>
-          <MenuOption value='FAQ' text='FAQ' />
           <MenuOption value='About' text='About' />
         </MenuOptions>
       </Menu>

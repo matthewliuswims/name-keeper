@@ -10,6 +10,7 @@ import AddUserScreen from './assets/screens/users/AddUserScreen';
 import EditUserScreen from './assets/screens/users/EditUserScreen';
 import EditGroupScreen from './assets/screens/groups/EditGroupScreen';
 import SearchScreen from './assets/screens/search/SearchScreen';
+import AboutScreen from './assets/screens/help/AboutScreen';
 
 // @tutorial: https://reactnavigation.org/docs/en/screen-tracking.html#listening-to-state-changes
 // https://reactnavigation.org/docs/en/app-containers.html#onnavigationstatechangeprevstate-newstate-action
@@ -23,6 +24,7 @@ const AppNavigator = createStackNavigator({
   EditUserScreen: { screen: EditUserScreen },
   EditGroupScreen: { screen: EditGroupScreen },
   SearchScreen: { screen: SearchScreen },
+  AboutScreen: { screen: AboutScreen },
 }, {
   defaultNavigationOptions: {
     headerStyle: {

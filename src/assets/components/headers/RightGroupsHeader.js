@@ -11,8 +11,8 @@ class RightGroupsHeader extends React.Component {
   state = { opened: false };
 
   onOptionSelect = (value) => {
-    if (value === 'FAQ') {
-      console.log('faq was called');
+    if (value === 'About') {
+      this.props.navigation.navigate('AboutScreen');
     }
   }
 
@@ -58,10 +58,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 });
-const mapStateToProps = state => (
-  {
-    groupsState: state.groups,
-  }
-);
 
-export default withNavigation(connect(mapStateToProps)(RightGroupsHeader));
+export default withNavigation(RightGroupsHeader);

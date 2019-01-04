@@ -78,7 +78,7 @@ export default class SortByModal extends Component {
         {this.radioButtons()}
         {this.renderButton('Apply', () => {
           this.setState({ visibleModal: false });
-          this.props.closeSortModal(this.state.selectedSortOption); // tell GroupScreen this modal is closed
+          this.props.applySortModal(this.state.selectedSortOption); // tell GroupScreen this modal is closed
         })}
       </View>
     );

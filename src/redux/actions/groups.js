@@ -94,12 +94,8 @@ export function editGroup(currentGroupName, newGroupName) {
     try {
       dispatch(makeAction(EDIT_GROUP_START));
       const groupDBInstance = await GroupsDB.getInstance();
-      // guess this all needs to happen below..
-      // focus users
-      // lsit groups
-      // list users
-      await groupDBInstance.editGroup(currentGroupName); // also updatesUsers
-      dispatch(makeAction(EDIT_GROUP_SUCCESS, newGroupName));
+      await groupDBInstance.editGroup(currentGroupName, newGroupName); // also updatesUsers
+      dispatch(makeAction(EDIT_GROUP_SUCCESS));
     } catch (err) {
       dispatch(makeAction(EDIT_GROUP_FAIL, err));
     }
