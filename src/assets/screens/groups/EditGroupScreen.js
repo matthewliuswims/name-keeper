@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 

@@ -1,6 +1,5 @@
-// currentlt this jsut adds the screen...need to make ti edit screen
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
@@ -10,9 +9,8 @@ import { editUser, clearUsersErr, listAllUsers } from '../../../redux/actions/us
 
 import ErrorModal from '../../components/modal/Error';
 
-import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
+import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon } from '../../styles/base';
 import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
-import AddGroup from '../../components/groups/AddGroup';
 import FocusedGroup from '../../components/groups/FocusedGroup';
 
 import { MORE_THAN_3_GROUPS, NO_GROUPS_SELECTED } from '../../../lib/errors/overrides';

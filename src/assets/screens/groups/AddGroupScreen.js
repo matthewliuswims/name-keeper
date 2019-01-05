@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-
+import RF from 'react-native-responsive-fontsize';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
@@ -92,12 +93,19 @@ class AddGroupScreen extends Component<Props> {
     }
   }
 
+  groupText() {
+    return (
+      <Text style={styles.groupText}>
+        A group is usually a community you are part of (e.g. Work or Church).
+      </Text>
+    );
+  }
+
   render() {
     return (
       <View style={container}>
-        <View>
-          <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
-        </View>
+        <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
+        {this.groupText()}
         {this.checkErr(this.props.groupsState.error)}
       </View>
     );
@@ -105,6 +113,12 @@ class AddGroupScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  groupText: {
+    fontSize: RF(3),
+    marginTop: hp('22%'),
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
   saveButton: {
     padding: topRightSaveButton.padding,
     marginRight: topRightSaveButton.marginRight,

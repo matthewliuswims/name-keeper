@@ -21,30 +21,14 @@ How often do you remember someone's face, but not their name? This is a native a
 4. tests are in the `__tests__` directory.  Most of the 'meaty code' is in the `src` directory. But the entry point to the App in `App.js` at the root level.
 
 
-### Previous issues
-0.01) add placeholder text in user screen when there are no users 'Add a person below to this group - CLICK below' also add place holder text for groups screen, explaining how app works. Something like: `Write the name of people you just met - but first, create a group!'
+### Outstanding Issues/Considerations
+1) Need to still do my manual end-end testing.
+2) Need to fix es-lint ref warnings in AddUserScreen.
+3) change package versions from latest to numbers
+4) figure out how many places the about menu should be.
+5) sentry logging?
 
-^^^Or have boostapped material with a 'work' group with billy joe and mary har examples <-- saying how to delete stuff
-0.02) need to change groupsScreen so it comes prepopulated with a group
-1) still need to fix jest..
-2) increased click size - but didnt' do it for the back button
-0.25) need to be able to close sort and filter modals without applying changes
-
-### Outstanding Issues
-1) test deleting groups - in a mixed up way
-2) in the overflow section, have a help screen.
-2) need to fix ref warnings in AddUserScreen - I just don't understand them
-7) don't have to import styles if I'm not overriding anything?
-8) change package versions from latest to numbers
-9) design decision for groupName.. was bad
-10) add text explaining what a group is to "add group screen"
-11) TOOLTIPS?
-12) sentry logging?
-13) addgroup screen help text?
-15) have about on every screen
-
-
-### TODO version 2:
+### Version 2 feature requests
 1) allow user to edit tags
 2) allow user to add more than 2 tags
 3) maybe contribute to: https://github.com/tuantle/react-native-search-header so that

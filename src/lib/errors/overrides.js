@@ -7,7 +7,7 @@ export const DUPLICATE_GROUP_NAME = {
 // 3 groups includes the primary group (but the end user doesn't know this)
 export const MORE_THAN_3_GROUPS = {
   default: true,
-  message: 'Only 2 or less additional group tags can be associated with a user',
+  message: 'Only 2 or less group tags are allowed.',
 };
 
 export const NO_GROUPS_SELECTED = {

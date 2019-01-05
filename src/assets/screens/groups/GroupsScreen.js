@@ -66,7 +66,7 @@ class GroupsScreen extends Component<Props> {
           Add a group below!
         </Text>
         <Text style={styles.noGroupMessage}>
-          Once you create one, you can add the people you meet to that group.
+          Once you create one, you can add the names of people you meet to that group.
         </Text>
       </View>
     );
