@@ -22,11 +22,13 @@ How often do you remember someone's face, but not their name? This is a native a
 
 
 ### Outstanding Issues/Considerations
+0.5) change add group to match snapchat login: https://medium.com/@LeMarquisOfAndy/the-engineers-guide-to-not-making-your-app-look-awful-8b178b670e27
 1) Need to still do my manual end-end testing.
 2) Need to fix es-lint ref warnings in AddUserScreen.
 3) change package versions from latest to numbers
 4) figure out how many places the about menu should be.
 5) sentry logging?
+6) download names file?
 
 ### Version 2 feature requests
 1) allow user to edit tags

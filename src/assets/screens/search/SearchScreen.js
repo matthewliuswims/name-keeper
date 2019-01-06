@@ -33,9 +33,9 @@ class SearchScreen extends React.Component {
 
   placeHolderText(groupName) {
     if (groupName) {
-      return `Search for users in ${groupName}`;
+      return `Search in ${groupName} by name, location, descrption...`;
     }
-    return 'Search for ALL users';
+    return 'Search for ALL users by name, location, descrption...';
   }
 
   /**
