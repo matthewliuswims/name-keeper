@@ -60,16 +60,13 @@ export function usersPrimaryGroupNameMatch(groupName, usersList) {
 /**
  * @param {Array<String>} groupNames
  * @param {Array<Object>} usersList
- * @return Array<Object> - all users who have at least of their groupNames matching the param @groupNames. Users are
- * kept in order, as per filter spec.
+ * @return Array<Object> - all users who match at least one of the groupnames
  */
 export function usersGroupNamesMatch(groupNames, usersList) {
   const usersThatHaveGroupName = usersList.filter((user) => {
-    const userGroupNames = user.groupNames;
-    const usrGrpMatches = userGroupNames.filter((usrGrpName) => {
-      return groupNames.includes(usrGrpName);
-    });
-    return usrGrpMatches.length > 0;
+    const userGroupName = user.primaryGroupName;
+    const usrGrpMatches = groupNames.includes(userGroupName); // groupNames should only ever include one userGroupName, btw
+    return usrGrpMatches;
   });
   return usersThatHaveGroupName;
 }

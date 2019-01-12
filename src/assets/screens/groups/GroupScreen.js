@@ -178,10 +178,16 @@ class GroupScreen extends Component<Props> {
     });
   }
 
+  /**
+   * filters all the users based upon the grups their in
+   */
   filterUsers(selectedFilteredGroups, users) {
     const filteredGroups = selectedFilteredGroups.filter(group => group.added);
     const filteredGroupNames = filteredGroups.map(group => group.name);
+    console.log('filtered group names inside are', filteredGroupNames);
     const filteredUsers = usersGroupNamesMatch(filteredGroupNames, users);
+    console.log('filteredUsers inside are', filteredUsers);
+    console.log('users inside are', users);
     return filteredUsers;
   }
 

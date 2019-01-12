@@ -28,6 +28,8 @@ How often do you remember someone's face, but not their name? This is a native a
 3) change package versions from latest to numbers
 4) figure out how many places the about menu should be.
 5) sentry logging?
+  a) - capturing the user info <--  advanced stuff, https://docs.sentry.io/enriching-error-data/context/?platform=node#capturing-the-user
+  b) 
 6) download names file?
 
 ### Version 2 feature requests

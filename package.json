@@ -29,6 +29,7 @@
     "redux": "latest",
     "redux-logger": "latest",
     "redux-thunk": "latest",
+    "sentry-expo": "^1.11.0",
     "tcomb-form-native": "latest"
   },
   "devDependencies": {

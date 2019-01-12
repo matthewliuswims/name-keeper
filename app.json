@@ -23,6 +23,18 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "matthew-liu",
+            "project": "remember-names",
+            "authToken": "246d247fbcad4da38dda93e3715b75f7149e2182a104425aa6683a5a5320a0a7"
+          }
+        }
+      ]
     }
   }
 }

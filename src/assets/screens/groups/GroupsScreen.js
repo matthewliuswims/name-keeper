@@ -1,3 +1,5 @@
+import Sentry from 'sentry-expo';
+
 import React, { Component } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
@@ -27,6 +29,10 @@ type Props = {
 class GroupsScreen extends Component<Props> {
   constructor(props) {
     console.log('groups screen created - only on opening of app??');
+    // Sentry.captureException(new Error('Oops! from groupsscreen'));
+    // Sentry.captureMessage('Something happened testeronbi', {
+    //   level: 'info', // one of 'info', 'warning', or 'error'
+    // });
     super(props);
     this.props.listGroups();
     this.props.listAllUsers();
