@@ -1,5 +1,7 @@
+import Sentry from 'sentry-expo';
+
 import UsersDB from '../../assets/database/UsersDB';
-import { makeAction, turnUsersListGroupNamesIntoArray } from '../../lib/actions';
+import { makeAction } from '../../lib/actions';
 import { parseToLongDate } from '../../lib/dates';
 
 export const ADD_USER_START = 'ADD_USER_START';
@@ -65,9 +67,8 @@ export function listAllUsers() {
     return UsersDB.getInstance().then((usersDBInstance) => {
       return usersDBInstance.listAllUsers();
     }).then((usersList) => {
-      const newUsersList = turnUsersListGroupNamesIntoArray(usersList);
       // this is so when we do searches, the search can find parsed dates as a substring
-      const withParsedDates = newUsersList.map((user) => {
+      const withParsedDates = usersList.map((user) => {
         const newUser = Object.assign({}, user, {
           readableCreatedDate: parseToLongDate(user.createdDate),
         });
@@ -75,6 +76,7 @@ export function listAllUsers() {
       });
       dispatch(makeAction(LIST_ALL_USERS_SUCCESS, withParsedDates));
     }).catch((error) => {
+      Sentry.captureException(error);
       dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
       // no need to throw err in this particular instance
     });

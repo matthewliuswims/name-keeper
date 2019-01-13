@@ -20,6 +20,8 @@ import Filter from '../../components/modal/Filter';
 
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
+import ErrorModal from '../../components/modal/Error';
+
 type Props = {
   groupsState : {
     focusedGroupName: String,
@@ -305,6 +307,19 @@ class GroupScreen extends Component<Props> {
     );
   }
 
+  checkErrUsrs = (err) => {
+    // don't want err to render if we're not even on the screen
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearUsersErr}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
+  }
+
   render() {
     const groupName = this.props.groupsState.focusedGroupName;
     const NumUsersForGroup = this.usersForGroup(groupName).length;
@@ -313,6 +328,7 @@ class GroupScreen extends Component<Props> {
         { (this.props.groupsState.loading || this.props.usersState.loading) ? null : this.groupScreenWrapper(groupName, NumUsersForGroup) }
         {this.sortOpen()}
         {this.filterOpen()}
+        {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
   }

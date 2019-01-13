@@ -18,7 +18,7 @@ export default class FocusedGroup extends React.Component <Props> {
     const { group } = this.props;
     return (
       <View style={styles.groupIconNameContainer}>
-        <View style={this.props.getColorStyle(group.color, group.opacity)} />
+        <View style={this.props.getColorStyle(group.color)} />
         <Text numberOfLines={1}> {group.name} </Text>
       </View>
     );

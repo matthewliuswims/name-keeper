@@ -16,6 +16,10 @@ Sentry.enableInExpoDevelopment = true;
 
 Sentry.config('https://3bf48e7028f641eb869c85a11919fb78@sentry.io/1364814').install();
 
+Sentry.captureMessage('App was started up by a user', {
+  level: 'info',
+});
+
 export default class App extends Component {
   render() {
     return (

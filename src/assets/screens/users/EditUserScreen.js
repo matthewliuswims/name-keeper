@@ -282,13 +282,6 @@ class EditUserScreen extends Component<Props> {
           onChange={this.onChange}
           options={options}
         />
-        <View>
-          <Text style={{ fontWeight: 'bold' }}> Group </Text>
-          <FocusedGroup
-            group={this.state.groups[0]}
-            getColorStyle={this.getColorStyle}
-          />
-        </View>
         {this.checkErrGrps(this.props.groupsState.error)}
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>

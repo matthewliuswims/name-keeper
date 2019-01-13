@@ -5,27 +5,6 @@ export function makeAction(actionType, payload) {
   };
 }
 
-/**
- * @param {Array<Object>} usersList - returned from SQLLITE
- * @return almost same as the @param, except that the user object in the array will
- * have its groupNames value be an array instead of a JSON string
- */
-export function turnUsersListGroupNamesIntoArray(usersList) {
-  if (!Array.isArray(usersList)) {
-    throw new Error('turnUsersListGroupNamesIntoArray expects usersList to be an Array');
-  }
-  if (!usersList.length) {
-    return usersList;
-  }
-
-  const newUsers = usersList.map((user) => {
-    const userCopy = Object.assign({}, user);
-    const groupNamesArray = JSON.parse(userCopy.groupNames);
-    userCopy.groupNames = groupNamesArray; // changing groupNamesField
-    return userCopy;
-  });
-  return newUsers;
-}
 
 /**
  * whether or not the groupname matches this.currentGroupName - used as a CB for find func

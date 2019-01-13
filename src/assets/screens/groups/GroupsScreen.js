@@ -29,6 +29,7 @@ type Props = {
 class GroupsScreen extends Component<Props> {
   constructor(props) {
     console.log('groups screen created - only on opening of app??');
+    
     // Sentry.captureException(new Error('Oops! from groupsscreen'));
     // Sentry.captureMessage('Something happened testeronbi', {
     //   level: 'info', // one of 'info', 'warning', or 'error'

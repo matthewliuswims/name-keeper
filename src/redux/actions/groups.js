@@ -1,3 +1,4 @@
+import Sentry from 'sentry-expo';
 import GroupsDB from '../../assets/database/GroupsDB';
 import { makeAction } from '../../lib/actions';
 
@@ -62,6 +63,9 @@ export function addGroup(groupName) {
       dispatch(addGroupSuccess(groupName));
     }).catch((err) => {
       dispatch(addGroupFail(err));
+      Sentry.captureMessage('App was started up by a user', {
+        level: 'info',
+      });
       // no need to throw err in this particular instance because
       // ui won't do anything explictly if this part fails
     });

@@ -2,7 +2,6 @@ import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
 import {
-  turnUsersListGroupNamesIntoArray,
   getRelevantUsers,
   changeGroupReferences,
   usersPrimaryGroupNameMatch,
@@ -43,7 +42,6 @@ export default class UsersDB extends React.Component {
               createdDate TEXT NOT NULL UNIQUE,
               lastEdit TEXT NOT NULL,
               primaryGroupName TEXT NOT NULL,
-              groupNames TEXT NOT NULL,
               location TEXT
             );`,
           );
@@ -53,31 +51,21 @@ export default class UsersDB extends React.Component {
       });
     }
 
-    makeGroupNamesArray(groupNameOne, groupNameTwo, groupNameThree) {
-      const groups = [];
-      groups.push(groupNameOne);
-      if (groupNameTwo) groups.push(groupNameTwo);
-      if (groupNameThree) groups.push(groupNameThree);
-      return groups;
-    }
 
     addUser(user) {
       const timeUserAdded = new Date();
-      const groupNamesArray = this.makeGroupNamesArray(user.groupNameOne, user.groupNameTwo, user.groupNameThree);
-      const groupNames = JSON.stringify(groupNamesArray);
-      const primaryGroupName = user.groupNameOne;
+      const { primaryGroupName } = user;
 
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             tx.executeSql(
-              'INSERT INTO users (name, description, createdDate, lastEdit, primaryGroupName, groupNames, location) values (?, ?, ?, ?, ?, ?, ?)',
+              'INSERT INTO users (name, description, createdDate, lastEdit, primaryGroupName, location) values (?, ?, ?, ?, ?, ?)',
               [user.name,
                 user.description,
                 timeUserAdded,
                 timeUserAdded,
                 primaryGroupName,
-                groupNames,
                 user.location,
               ],
             );
