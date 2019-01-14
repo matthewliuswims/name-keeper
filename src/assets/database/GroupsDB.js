@@ -91,7 +91,6 @@ export default class GroupsDB extends React.Component {
     }
 
     async deleteGroup(groupName) {
-      // @TODO: have to do own group editing stuff
       const usersDBInstance = await UsersDB.getInstance();
       await usersDBInstance.updateUsersGroupDelete(groupName);
       await this.deleteGroupFromDB(groupName);

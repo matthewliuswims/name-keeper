@@ -10,9 +10,6 @@ import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/use
 import ErrorModal from '../../components/modal/Error';
 
 import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon } from '../../styles/base';
-import { groupValidationFail, clearGroupsErr } from '../../../redux/actions/groups';
-import FocusedGroup from '../../components/groups/FocusedGroup';
-
 
 type Props = {
   navigation: () => void,
@@ -80,7 +77,6 @@ class AddUserScreen extends Component<Props> {
     const userStruct = this.refs.form.getValue();
 
     if (userStruct) {
-      console.log('userStruct is', userStruct);
       const { name, location, description } = userStruct;
 
       const user = {
@@ -171,8 +167,6 @@ const mapDispatchToProps = dispatch => (
   {
     addUser: user => dispatch(addUser(user)),
     listAllUsers: () => dispatch(listAllUsers()),
-    groupValidationFail: err => dispatch(groupValidationFail(err)),
-    clearGroupsErr: () => dispatch(clearGroupsErr()),
     clearUsersErr: () => dispatch(clearUsersErr()),
   }
 );

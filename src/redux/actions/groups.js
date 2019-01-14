@@ -108,7 +108,7 @@ export function editGroup(currentGroupName, newGroupName) {
 
 /**
  * will delete the group and also update any users who have references to groupName accordingly (by
- * either deleting the user if has a primaryGroupName === groupName or updating its groupName tag)
+ *  deleting the user if has a primaryGroupName === groupName)
  */
 export function deleteGroup(groupName) {
   return async (dispatch) => {

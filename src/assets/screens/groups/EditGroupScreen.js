@@ -8,8 +8,8 @@ import ErrorModal from '../../components/modal/Error';
 
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
 
-import { editGroup, listGroups } from '../../../redux/actions/groups';
-import { listAllUsers } from '../../../redux/actions/users';
+import { editGroup, listGroups, clearGroupsErr } from '../../../redux/actions/groups';
+import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
 
 type Props = {
   navigation: () => void,
@@ -56,18 +56,6 @@ class AddGroupScreen extends Component<Props> {
     this.props.navigation.setParams({ groupSubmit: this.groupSubmit });
   }
 
-  checkErr = (err) => {
-    if (err) {
-      return (
-        <ErrorModal
-          error={err}
-          clearError={this.props.clearGroupsErr}
-          currentFocusedScreen={this.props.navigation.isFocused()}
-        />
-      );
-    }
-  }
-
   groupSubmit = async () => {
     /**
      * Calling getValue will cause the validation of all the fields of the form,
@@ -79,11 +67,47 @@ class AddGroupScreen extends Component<Props> {
     if (groupStruct) {
       const { name: newGroupName } = groupStruct;
       await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName);
-      await this.props.listGroups();
-      await this.props.listAllUsers();
-      this.props.navigation.navigate('GroupsScreen');
+
+      if (!this.props.groupsState.error) {
+        await this.props.listGroups();
+      } // else, we wait for the errModal to popup here
+
+      if (!this.props.groupsState.error) {
+        await this.props.listAllUsers();
+      } // else, we wait for the errModal to popup here
+
+      if (!this.props.groupsState.error && !this.props.usersState.error) {
+        this.props.navigation.navigate('GroupsScreen');
+      } // else, we wait for the errModal to popup herea
     }
   }
+
+  checkErrGrps = (err) => {
+    // don't want err to render if we're not even on the screen
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearGroupsErr}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
+  }
+
+  checkErrUsrs = (err) => {
+    // don't want err to render if we're not even on the screen
+    if (err) {
+      return (
+        <ErrorModal
+          error={err}
+          clearError={this.props.clearUsersErr}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
+  }
+
 
   render() {
     return (
@@ -91,7 +115,8 @@ class AddGroupScreen extends Component<Props> {
         <View>
           <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         </View>
-        {this.checkErr(this.props.groupsState.error)}
+        {this.checkErrGrps(this.props.groupsState.error)}
+        {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
   }
@@ -112,6 +137,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => (
   {
+    clearGroupsErr: () => dispatch(clearGroupsErr()),
+    clearUsersErr: () => dispatch(clearUsersErr()),
     listGroups: () => dispatch(listGroups()),
     listAllUsers: () => dispatch(listAllUsers()),
     editGroup: (currentGroupName, newGroupName) => dispatch(editGroup(currentGroupName, newGroupName)),
@@ -121,6 +148,7 @@ const mapDispatchToProps = dispatch => (
 const mapStateToProps = state => (
   {
     groupsState: state.groups,
+    usersState: state.users,
   }
 );
 
