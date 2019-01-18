@@ -1,15 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
-
+import { focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 
-import { container, topRightSaveButton, topRightSaveButtonText, circularGroupIcon } from '../../styles/base';
+import { container, groupIconNameContainer, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
+import { getGroupColor } from '../../../lib/groupColors';
+import colors from '../../styles/colors';
 
 type Props = {
   navigation: () => void,
@@ -48,8 +50,21 @@ class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      value: null,
+      value: null, // for form
+      selectedGroupName: this.props.groupsState.focusedGroupName,
+      groupsDropdownSelection: this.props.groupsState.groups, // selectedGroupName will always correspond to first group.
+      groupDropdownOpen: false,
     };
+  }
+
+
+  getCircularColorStyle(groupColor) {
+    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconWithColor = {
+      backgroundColor: groupColor,
+    };
+    const combinedStyle = StyleSheet.flatten([circularGroupIconNoColor, circularGroupIconWithColor]);
+    return combinedStyle;
   }
 
   /**
@@ -83,7 +98,7 @@ class AddUserScreen extends Component<Props> {
         name,
         description,
         location,
-        primaryGroupName: this.props.groupsState.focusedGroupName,
+        primaryGroupName: this.state.selectedGroupName,
       };
 
       await this.props.addUser(user);
@@ -91,19 +106,12 @@ class AddUserScreen extends Component<Props> {
         await this.props.listAllUsers();
       } // else, we wait for the errModal to popup here
       if (!this.props.usersState.error) {
-        this.props.navigation.navigate('GroupScreen');
+        this.props.focusGroup(this.state.selectedGroupName);
+        this.props.navigation.navigate('GroupScreen', {
+          groupName: this.state.selectedGroupName,
+        });
       } // else, we wait for the errModal to popup here
     }
-  }
-
-  getColorStyle(groupColor) {
-    const circularGroupIconNoColor = circularGroupIcon;
-    const circularGroupIconWithColor = {
-      backgroundColor: groupColor,
-      opacity: 1,
-    };
-    const combinedStyle = StyleSheet.flatten([circularGroupIconNoColor, circularGroupIconWithColor]);
-    return combinedStyle;
   }
 
   checkErrUsrs = (err) => {
@@ -123,25 +131,146 @@ class AddUserScreen extends Component<Props> {
     this.setState({ value });
   }
 
-  render() {
-    // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
-    // diegoprates
+  otherGroupClick = (group) => {
+    this.setState((state) => {
+      const copyGroupsDropdownSelection = state.groupsDropdownSelection.slice();
+      const noClickedGroup = copyGroupsDropdownSelection.filter(grp => grp.name !== group.name);
+      noClickedGroup.unshift(group);
+
+      return {
+        groupDropdownOpen: !state.groupDropdownOpen,
+        groupsDropdownSelection: noClickedGroup,
+        selectedGroupName: group.name,
+      };
+    });
+  }
+
+  /**
+   * @param {Array<Object>} groupsDropdownSelection - ordered groups from dropdown perspective
+   * @return all groups that are not currently selected.
+   */
+  otherGroups(groupsDropdownSelection) {
+    const groupsCopy = groupsDropdownSelection.slice();
+    if (groupsCopy.length <= 1 || !this.state.groupDropdownOpen) {
+      return null; // if not open, don't show
+    }
+    groupsCopy.shift();
+
     return (
-      <View style={container}>
-        <Form
-          ref='form'
-          type={userForm}
-          value={this.state.value}
-          onChange={this.onChange}
-          options={options}
+      <FlatList
+        data={groupsCopy}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.otherGroupSelection}
+            onPress={() => { this.otherGroupClick(item); }}
+          >
+            <View style={styles.groupIconNameContainer}>
+              <View style={this.getCircularColorStyle(getGroupColor(item.name, groupsCopy))} />
+              <Text numberOfLines={1}> {item.name} </Text>
+            </View>
+            <Icon
+              name='keyboard-arrow-down'
+              color='#F2F2F2'
+            />
+          </TouchableOpacity>)
+        }
+        keyExtractor={(item => `${item.groupID}`)}
+      />
+    );
+  }
+
+  /**
+   * @param {Array<Object>} groupsDropdownSelection - ordered groups from dropdown perspective
+   */
+  selectedGroup(groupsDropdownSelection) {
+    return (
+      <TouchableOpacity
+        style={styles.initialGroupSelection}
+        onPress={() => {
+          this.setState((state) => {
+            return { groupDropdownOpen: !state.groupDropdownOpen };
+          });
+        }
+        }
+      >
+        <View style={styles.groupIconNameContainer}>
+          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, groupsDropdownSelection))} />
+          <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+        </View>
+        <Icon
+          name='keyboard-arrow-down'
         />
-        {this.checkErrUsrs(this.props.usersState.error)}
-      </View>
+      </TouchableOpacity>
+    );
+  }
+
+  render() {
+    const { groupsDropdownSelection } = this.state;
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          this.setState({
+            groupDropdownOpen: false,
+          });
+        }}
+      >
+        <View style={container}>
+          <Form
+            ref='form'
+            type={userForm}
+            value={this.state.value}
+            onChange={this.onChange}
+            options={options}
+          />
+          <Text style={styles.groupText}> Group </Text>
+          <View style={styles.groupsSection}>
+            {this.selectedGroup(groupsDropdownSelection)}
+            {this.otherGroups(groupsDropdownSelection)}
+          </View>
+          {this.checkErrUsrs(this.props.usersState.error)}
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  groupText: {
+    fontWeight: '500',
+    fontSize: 17,
+  },
+  groupIconNameContainer: {
+    flex: groupIconNameContainer.flex,
+    flexDirection: groupIconNameContainer.flexDirection,
+    paddingTop: hp('0.5%'),
+  },
+  circularGroupIcon: {
+    height: wp('4%'),
+    width: wp('4%'),
+    borderRadius: wp('3%'),
+    marginRight: wp('2%'),
+    marginLeft: wp('2%'),
+  },
+  groupsSection: {
+    // borderWidth: 0.75,
+    // borderColor: colors.borderColor,
+    marginTop: hp('1%'),
+  },
+  initialGroupSelection: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 0.75,
+    borderColor: 'black',
+  },
+  otherGroupSelection: {
+    backgroundColor: '#F2F2F2',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderLeftWidth: 0.75,
+    borderRightWidth: 0.75,
+    borderBottomWidth: 0.75,
+    borderColor: colors.borderColor,
+  },
   groups: {
     marginTop: hp('2%'),
   },
@@ -166,6 +295,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     addUser: user => dispatch(addUser(user)),
+    focusGroup: grpName => dispatch(focusGroup(grpName)),
     listAllUsers: () => dispatch(listAllUsers()),
     clearUsersErr: () => dispatch(clearUsersErr()),
   }

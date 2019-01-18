@@ -16,6 +16,8 @@ import { listAllUsers } from '../../../redux/actions/users';
 import { listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
 import RightHeaderComponent from '../../components/headers/RightGroupsHeader';
+import LeftHeaderComponent from '../../components/headers/LeftGroupsHeader';
+
 
 type Props = {
   navigation: () => void,
@@ -42,6 +44,7 @@ class GroupsScreen extends Component<Props> {
   static navigationOptions = {
     title: 'Groups',
     headerRight: <RightHeaderComponent />,
+    headerLeft: <LeftHeaderComponent />,
   };
 
   updateGroupsList = () => {
@@ -70,10 +73,10 @@ class GroupsScreen extends Component<Props> {
     return (
       <View style={styles.noGroupContainer}>
         <Text style={styles.noGroupHeader}>
-          Add a group below!
+          Add a person you met below!
         </Text>
         <Text style={styles.noGroupMessage}>
-          Once you create one, you can add the names of people you meet to that group.
+          Before you add a person, you have to put them in a group.
         </Text>
       </View>
     );
@@ -117,7 +120,7 @@ class GroupsScreen extends Component<Props> {
           style={styles.button}
           onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
         >
-          <Text style={{ color: 'white' }}> Add Group </Text>
+          <Text style={{ color: 'white' }}> Add </Text>
         </TouchableOpacity>
         {this.checkErr(groupsStateErr)}
       </View>

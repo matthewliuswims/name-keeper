@@ -30,6 +30,7 @@ const AppNavigator = createStackNavigator({
     headerStyle: {
       backgroundColor: sectionHeader.backgroundColor, // commmon to everything, can also add other stuff too
     },
+    headerBackTitle: null,
     headerTitleStyle: { color: sectionHeader.color },
     headerBackTitleStyle: {
       color: sectionHeader.color,
