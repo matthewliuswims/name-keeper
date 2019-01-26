@@ -1,18 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import { Svg } from 'expo';
-import {
-  filterSvgHeightOrWidth,
-  point1,
-  point2,
-  point3,
-  point4,
-  point5,
-  point6,
-  filterContainer,
-} from '../../styles/svg/filter';
 
 import { container } from '../../styles/base';
 import color from '../../styles/colors';
@@ -47,47 +37,9 @@ import {
   addContainer,
 } from '../../styles/svg/add';
 
-import {
-  sortSvgWidth,
-  sortSvgHeight,
-  triangle1Points,
-  triangle2Points,
-  sortContainer,
-} from '../../styles/svg/sort';
-
-
-const { Polygon, Circle, Line } = Svg;
+const { Circle, Line } = Svg;
 
 class Footer extends React.Component {
-  filterComponent() {
-    return (
-      <TouchableOpacity
-        style={styles.filterContainer}
-        onPress = {() => this.props.openFilterModal()}
-      >
-        <Text> Filter </Text>
-        <Svg
-          height={filterSvgHeightOrWidth}
-          width={filterSvgHeightOrWidth} // same as height
-        >
-          <Polygon
-            points = {`
-              ${point1},
-              ${point2},
-              ${point3},
-              ${point4},
-              ${point5},
-              ${point6},
-            `}
-            stroke="black"
-            strokeWidth="1"
-            fill="black"
-          />
-        </Svg>
-      </TouchableOpacity>
-    );
-  }
-
   plusComponent() {
     return (
       <TouchableOpacity
@@ -133,36 +85,10 @@ class Footer extends React.Component {
     );
   }
 
-  sortComponent() {
-    return (
-      <TouchableOpacity
-        style={styles.sortContainer}
-        onPress = {() => this.props.openSortModal()}
-      >
-        <Text> Sort </Text>
-        <Svg
-          height={sortSvgHeight}
-          width={sortSvgWidth}
-        >
-          <Polygon
-            points={triangle1Points}
-            fill='black'
-          />
-          <Polygon
-            points={triangle2Points}
-            fill='black'
-          />
-        </Svg>
-      </TouchableOpacity>
-    );
-  }
-
   render() {
     return (
       <View style={styles.container}>
-        { this.filterComponent() }
         { this.plusComponent()}
-        { this.sortComponent()}
       </View>
     );
   }
@@ -172,22 +98,13 @@ const styles = StyleSheet.create({
   container: {
     flex: container.flex, // if uncomment, you'll see difference
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: color.footerBackgroundColor,
-  },
-  filterContainer: {
-    marginLeft: filterContainer.marginLeft,
-    flexDirection: filterContainer.flexDirection,
-    justifyContent: filterContainer.justifyContent,
-  },
-  sortContainer: {
-    flexDirection: sortContainer.flexDirection,
-    justifyContent: sortContainer.justifyContent,
-    marginRight: sortContainer.marginRight,
+    // backgroundColor: color.footerBackgroundColor,
   },
   addContainer: {
     marginBottom: addContainer.marginBottom,
+    marginRight: addContainer.marginRight,
   },
 });
 

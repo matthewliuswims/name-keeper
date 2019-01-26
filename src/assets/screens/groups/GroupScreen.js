@@ -102,10 +102,7 @@ class GroupScreen extends Component<Props> {
           {NumUsersForGroup ? this.groupContents(groupName) : this.noGroupContents()}
         </View>
         <View style={styles.footer}>
-          <Footer
-            openFilterModal={this.openFilterModal}
-            openSortModal={this.openSortModal}
-          />
+          <Footer />
         </View>
       </Fragment>
     );

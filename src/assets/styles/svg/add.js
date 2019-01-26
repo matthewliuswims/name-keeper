@@ -1,5 +1,5 @@
 /* eslint no-eval: 0 indent: 0 */
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../colors';
 
 export const addSvgHeightOrWidth = wp('17%');
@@ -57,5 +57,6 @@ const line2YPoint2Num = eval(`0.7 * ${addSvgHeightOrWidth}`);
 export const line2YPoint2 = `${line2YPoint2Num}`;
 
 export const addContainer = {
-  marginBottom: wp('5%'),
+  marginBottom: hp('5%'),
+  marginRight: wp('7%'),
 };
