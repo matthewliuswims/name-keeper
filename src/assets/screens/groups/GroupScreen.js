@@ -12,11 +12,7 @@ import { container } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
 
-import { usersGroupNamesMatch } from '../../../lib/actions';
-
 import Footer from '../../components/footer/footer';
-import SortBy from '../../components/modal/SortBy';
-import Filter from '../../components/modal/Filter';
 
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
@@ -37,15 +33,6 @@ class GroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.props.listAllUsers();
-    this.state = {
-      sortByModalOpen: false,
-      filterModalOpen: false,
-      sortedFilteredUsersWrapper: {
-        // computed data shouldn't be stored in the state of the object, which is why sortedFiltererdUsers isn't here
-        sortOption: 'Date: Old to New (default)',
-        selectedFilteredGroups: this.filteredGroupsInitial(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
-      },
-    };
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -55,54 +42,6 @@ class GroupScreen extends Component<Props> {
     };
   };
 
-  /**
-   * this is necessary to update the usersList after we add a user (as the constructor is NOT
-   * invoked after we add a user)
-   */
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props)
-    // @tutorial: https://reactjs.org/docs/react-component.html componentDidUpdate
-    if (this.props.usersState !== prevProps.usersState) {
-      this.setState({
-        sortedFilteredUsersWrapper: {
-          sortOption: 'Date: Old to New (default)',
-          selectedFilteredGroups: this.filteredGroupsInitial(this.props.groupsState.groups, this.props.groupsState.focusedGroupName),
-        },
-      });
-    }
-  }
-
-  /**
-   * CALLED in constructor and in componentDidMount
-   * @param groupsOriginal - this.props.groups, redux state of groups
-   * @param focusedGroupname - group we are currently looking at
-   * @return takes on form of Array of objects - where each object is a redux group WITH added fields
-   * the added fields can be of form: added: true, opacity: 1, isFocusedGroup: true. In this case,
-   * we return an array of groupWrappers, where the first group is the focused group & the others after
-   * are unfocused.
-   *
-   * NOTE: the focused group is ALWAYS first & all groups by default have added to be true and opacity of 1,
-   * which means they're all part of the filter (by default)
-   */
-  filteredGroupsInitial(groups, focusedGroupName) {
-    let focusedGroup;
-
-    const withFocus = groups.map((group) => {
-      const clonedGroupTarget = Object.assign({}, group);
-      if (group.name !== focusedGroupName) {
-        const unfocusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1 });
-        return unfocusedGroup;
-      }
-      focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1, isFocusedGroup: true });
-      return focusedGroup;
-    });
-
-    const noFocusGroup = withFocus.filter(group => group.name !== focusedGroupName);
-
-    noFocusGroup.unshift(focusedGroup); // NOTE: HERE we make focused group first
-    const filteredGroups = noFocusGroup;
-    return filteredGroups;
-  }
 
   /**
    * will only get the users where user.primaryGroupName === groupName
@@ -115,13 +54,6 @@ class GroupScreen extends Component<Props> {
       return user.primaryGroupName === groupName;
     });
     return usersInGroup;
-  }
-
-  sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users) {
-    const usersCopy = users.slice();
-    const sortedUsers = this.sortUsers(sortOption, usersCopy);
-    const sortAndFilteredUsers = this.filterUsers(selectedFilteredGroups, sortedUsers);
-    return sortAndFilteredUsers;
   }
 
   noGroupContents() {
@@ -137,135 +69,10 @@ class GroupScreen extends Component<Props> {
     );
   }
 
-  filterOpen() {
-    if (this.state.filterModalOpen) {
-      return (
-        <Filter
-          closeFilterModal={this.closeFilterModal}
-          applyFilterModal={this.applyFilterModal}
-          filteredGroups={this.state.sortedFilteredUsersWrapper.selectedFilteredGroups}
-        />
-      );
-    }
-  }
-
-  openFilterModal = () => {
-    this.setState({
-      filterModalOpen: true,
-    });
-  }
-
-  closeFilterModal = () => {
-    this.setState({
-      filterModalOpen: false,
-    });
-  }
-
-  applyFilterModal = (filteredGroups) => {
-    this.setState({
-      filterModalOpen: false,
-    });
-    this.setNewFiltereredGroups(filteredGroups);
-  }
-
-  setNewFiltereredGroups(changedGroups) {
-    this.setState((state) => {
-      const { sortOption } = state.sortedFilteredUsersWrapper;
-      return {
-        sortedFilteredUsersWrapper: {
-          selectedFilteredGroups: changedGroups,
-          sortOption,
-        },
-      };
-    });
-  }
-
-  /**
-   * filters all the users based upon the grups their in
-   */
-  filterUsers(selectedFilteredGroups, users) {
-    const filteredGroups = selectedFilteredGroups.filter(group => group.added);
-    const filteredGroupNames = filteredGroups.map(group => group.name);
-    const filteredUsers = usersGroupNamesMatch(filteredGroupNames, users);
-    return filteredUsers;
-  }
-
-  sortOpen() {
-    if (this.state.sortByModalOpen) {
-      return (
-        <SortBy
-          sortOption={this.state.sortedFilteredUsersWrapper.sortOption}
-          closeSortModal={this.closeSortModal}
-          applySortModal={this.applySortModal}
-        />
-      );
-    }
-  }
-
-  openSortModal = () => {
-    this.setState({
-      sortByModalOpen: true,
-    });
-  }
-
-  closeSortModal = () => {
-    this.setState({
-      sortByModalOpen: false,
-    });
-  }
-
-  applySortModal = (sortOption) => {
-    this.setState({
-      sortByModalOpen: false,
-    });
-    this.setSortOption(sortOption);
-  }
-
-  setSortOption(sortOption) {
-    this.setState((state) => {
-      const { selectedFilteredGroups } = state.sortedFilteredUsersWrapper;
-      return {
-        sortedFilteredUsersWrapper: {
-          sortOption,
-          selectedFilteredGroups,
-        },
-      };
-    });
-  }
-
-  sortUsers(sortOption, users) {
-    let sortedUsers;
-    if (sortOption === 'Date: Old to New (default)') {
-      sortedUsers = users.sort((a, b) => {
-        // Turn strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        const aCreatedDate = new Date(a.createdDate);
-        const bCreatedDate = new Date(b.createdDate);
-        return aCreatedDate - bCreatedDate;
-      });
-    }
-
-    if (sortOption === 'Date: New to Old') {
-      sortedUsers = users.sort((a, b) => {
-        // Turn strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b.createdDate) - new Date(a.createdDate);
-      });
-    }
-
-    if (sortOption === 'Alphabetical') {
-      sortedUsers = users.sort((a, b) => {
-        return a.name.localeCompare(b.name);
-      });
-    }
-    return sortedUsers;
-  }
-
   groupContents(groupName) {
-    const { sortOption, selectedFilteredGroups } = this.state.sortedFilteredUsersWrapper;
     return (
       <FlatList
-        data={this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, this.usersForGroup(groupName))}
+        data={this.usersForGroup(groupName)}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress = {() => {
@@ -323,8 +130,6 @@ class GroupScreen extends Component<Props> {
     return (
       <View style={styles.container}>
         { (this.props.groupsState.loading || this.props.usersState.loading) ? null : this.groupScreenWrapper(groupName, NumUsersForGroup) }
-        {this.sortOpen()}
-        {this.filterOpen()}
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
