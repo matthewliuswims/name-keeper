@@ -76,6 +76,7 @@ class SearchScreen extends React.Component {
             }}
           >
             <UserBox
+              primaryGroupName={item.primaryGroupName}
               username={item.name}
               userDescription={item.description}
               date={parseToShortDate(item.createdDate)}

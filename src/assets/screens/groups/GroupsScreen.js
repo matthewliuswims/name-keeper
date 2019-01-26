@@ -1,22 +1,26 @@
 import Sentry from 'sentry-expo';
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
 
 import ErrorModal from '../../components/modal/Error';
+import AddModal from '../../components/modal/Add';
 
-import { listAllUsers } from '../../../redux/actions/users';
+import { listAllUsers, focusUser } from '../../../redux/actions/users';
 
 import { listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
 import RightHeaderComponent from '../../components/headers/RightGroupsHeader';
 import LeftHeaderComponent from '../../components/headers/LeftGroupsHeader';
+
+import { parseToShortDate } from '../../../lib/dates';
+import UserBox from '../../components/users/UserBox';
 
 
 type Props = {
@@ -28,10 +32,12 @@ type Props = {
   }
 };
 
+const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
+
 class GroupsScreen extends Component<Props> {
   constructor(props) {
     console.log('groups screen created - only on opening of app??');
-    
+
     // Sentry.captureException(new Error('Oops! from groupsscreen'));
     // Sentry.captureMessage('Something happened testeronbi', {
     //   level: 'info', // one of 'info', 'warning', or 'error'
@@ -39,13 +45,29 @@ class GroupsScreen extends Component<Props> {
     super(props);
     this.props.listGroups();
     this.props.listAllUsers();
+    this.state = {
+      addModalOpen: false,
+      showingGroups: true,
+      screenTitle: 'Groups',
+    };
   }
 
-  static navigationOptions = {
-    title: 'Groups',
-    headerRight: <RightHeaderComponent />,
-    headerLeft: <LeftHeaderComponent />,
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+      title: params.screenTitle,
+      headerRight: <RightHeaderComponent />,
+      // getParam('swap') refers to the 'swap' function in componentDidMount
+      headerLeft: <LeftHeaderComponent swap={navigation.getParam('swap') || noOp} showingGroups={params.showingGroups} />,
+    };
   };
+
+  componentDidMount() {
+    const { showingGroups, screenTitle } = this.state;
+    this.props.navigation.setParams({ screenTitle });
+    this.props.navigation.setParams({ showingGroups });
+    this.props.navigation.setParams({ swap: this.swap });
+  }
 
   updateGroupsList = () => {
     this.props.listGroups();
@@ -109,19 +131,122 @@ class GroupsScreen extends Component<Props> {
     );
   }
 
+  closeAddModal = () => {
+    this.setState({
+      addModalOpen: false,
+    });
+  }
+
+  addUser = () => {
+    //@TODO: implement
+    this.setState({
+      addModalOpen: false,
+    });
+  }
+
+  addGroup = () => {
+    this.setState({
+      addModalOpen: false,
+    });
+    this.props.navigation.navigate('AddGroupScreen');
+  }
+
+  AddModalOpen() {
+    if (this.state.addModalOpen) {
+      return (
+        <AddModal
+          closeAddModal={this.closeAddModal}
+          addUser={this.addUser}
+          addGroup={this.addGroup}
+        />
+      );
+    }
+  }
+
+  addClick = () => {
+    this.setState({
+      addModalOpen: true,
+    });
+  }
+
+  swap = () => {
+    this.setState((state) => {
+      const showingGroups = !state.showingGroups;
+
+      if (showingGroups) {
+        this.props.navigation.setParams({
+          screenTitle: 'Groups',
+        });
+      } else {
+        this.props.navigation.setParams({
+          screenTitle: 'People',
+        });
+      }
+
+      this.props.navigation.setParams({
+        showingGroups,
+      });
+      return { showingGroups };
+    });
+  }
+
+  groupsList = (numberGroups, users) => {
+    return numberGroups ? this.groups(users) : this.noGroupsText();
+  }
+
+  renderSortFilterButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress} style={text === 'Sort' ? styles.sortBtn : styles.filterBtn}>
+      <Text style={styles.buttonTextSortFilter}>{text}</Text>
+    </TouchableOpacity>
+  );
+
+
+  usersList = (users) => {
+    return (
+      <Fragment>
+        <View style={styles.buttons}>
+          {this.renderSortFilterButton('Sort', () => {})}
+          {this.renderSortFilterButton('Filter', () => {})}
+        </View>
+        <FlatList
+          data={users}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress = {() => {
+                this.props.focusUser(item);
+                this.props.navigation.navigate('UserScreen',
+                  {
+                    username: item.name,
+                  });
+              }}
+            >
+              <UserBox
+                username={item.name}
+                userDescription={item.description}
+                date={parseToShortDate(item.createdDate)}
+              />
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item => `${item.userID}`)}
+        />
+      </Fragment>
+    );
+  }
+
   render() {
     const { error: groupsStateErr, groups } = this.props.groupsState;
     const { users } = this.props.usersState;
     const numberGroups = groups.length;
     return (
       <View style={container}>
-        { numberGroups ? this.groups(users) : this.noGroupsText() }
+        { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(users) }
         <TouchableOpacity
           style={styles.button}
-          onPress = {() => this.props.navigation.navigate('AddGroupScreen')}
+          onPress = {this.addClick}
         >
           <Text style={{ color: 'white' }}> Add </Text>
         </TouchableOpacity>
+        {this.AddModalOpen()}
         {this.checkErr(groupsStateErr)}
       </View>
     );
@@ -143,6 +268,47 @@ const styles = StyleSheet.create({
   noGroupContainer: {
     paddingTop: hp('25%'),
     paddingBottom: hp('37%'),
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: hp('1%'),
+  },
+  filterBtn: {
+    flexGrow: 1,
+    backgroundColor: '#6666ff', // @TODO: take from pallete
+
+    paddingLeft: wp('7%'),
+    paddingRight: wp('7%'),
+    paddingTop: hp('1%'),
+    paddingBottom: hp('1%'),
+    padding: horizontalGroupScreenButton.padding,
+
+    alignItems: horizontalGroupScreenButton.alignItems,
+    borderBottomRightRadius: 3,
+    borderTopRightRadius: 3,
+    borderLeftWidth: 1,
+    borderLeftColor: 'black',
+    marginBottom: horizontalGroupScreenButton.marginBottom,
+  },
+  sortBtn: {
+    flexGrow: 1,
+    backgroundColor: '#6666ff', // @TODO: take from pallete
+
+    paddingLeft: wp('7%'),
+    paddingRight: wp('7%'),
+    paddingTop: hp('1%'),
+    paddingBottom: hp('1%'),
+    padding: horizontalGroupScreenButton.padding,
+
+    alignItems: horizontalGroupScreenButton.alignItems,
+    borderBottomLeftRadius: 3,
+    borderTopLeftRadius: 3,
+    marginBottom: horizontalGroupScreenButton.marginBottom,
+  },
+  buttonTextSortFilter: {
+    color: 'white',
   },
   button: {
     backgroundColor: colors.addApplyColor,
@@ -174,6 +340,7 @@ const mapDispatchToProps = dispatch => (
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     focusGroup: groupName => dispatch(focusGroup(groupName)),
     listAllUsers: () => dispatch(listAllUsers()),
+    focusUser: user => dispatch(focusUser(user)),
   }
 );
 

@@ -1,12 +1,29 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
+import { Icon } from 'react-native-elements';
+import PropTypes from 'prop-types';
 
 export default class LeftGroupsHeader extends React.Component {
   render() {
     return (
-      <View>
-        <Text> I is left group header</Text>
-      </View>
+      <TouchableOpacity onPress={this.props.swap}>
+        <Icon
+          name='swap-horiz'
+          color='white'
+        />
+        {this.props.showingGroups ? <Text style={{ color: 'white' }}> Groups </Text>
+          : <Text style={{ color: 'white' }}>  People </Text>
+        }
+      </TouchableOpacity>
     );
   }
 }
+
+LeftGroupsHeader.propTypes = {
+  swap: PropTypes.func.isRequired,
+  showingGroups: PropTypes.bool,
+};
+
+LeftGroupsHeader.defaultProps = {
+  showingGroups: true,
+};
