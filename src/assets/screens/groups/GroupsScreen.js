@@ -22,6 +22,11 @@ import LeftHeaderComponent from '../../components/headers/LeftGroupsHeader';
 import { parseToShortDate } from '../../../lib/dates';
 import UserBox from '../../components/users/UserBox';
 
+import { usersGroupNamesMatch } from '../../../lib/actions';
+
+import SortBy from '../../components/modal/SortBy';
+import Filter from '../../components/modal/Filter';
+
 
 type Props = {
   navigation: () => void,
@@ -43,13 +48,39 @@ class GroupsScreen extends Component<Props> {
     //   level: 'info', // one of 'info', 'warning', or 'error'
     // });
     super(props);
-    this.props.listGroups();
+    this.props.listGroups(); // also called in compoenntDidMount, but this is used so we can see groups quicker on screen
     this.props.listAllUsers();
     this.state = {
       addModalOpen: false,
       showingGroups: true,
+      sortByModalOpen: false,
+      filterModalOpen: false,
       screenTitle: 'Groups',
+      sortedFilteredUsersWrapper: {
+        // computed data shouldn't be stored in the state of the object, which is why sortedFiltererdUsers isn't here
+        sortOption: 'Date: Old to New (default)',
+        selectedFilteredGroups: [], // populated in componentDidMount
+      },
     };
+  }
+
+  /**
+   * CALLED in constructor and in componentDidMount
+   * @param groupsOriginal - this.props.groups, redux state of groups
+   * @return takes on form of Array of objects - where each object is a redux group WITH added fields
+   * the added fields can be of form: added: true, opacity: 1, isFocusedGroup: true.
+   *
+   */
+  filteredGroupsInitial(groups) {
+    let focusedGroup;
+
+    const addedGroups = groups.map((group) => {
+      const clonedGroupTarget = Object.assign({}, group);
+      focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1 });
+      return focusedGroup;
+    });
+    console.log('added groups aree', addedGroups);
+    return addedGroups;
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -67,6 +98,19 @@ class GroupsScreen extends Component<Props> {
     this.props.navigation.setParams({ screenTitle });
     this.props.navigation.setParams({ showingGroups });
     this.props.navigation.setParams({ swap: this.swap });
+
+    this.props.listGroups().then(() => {
+      this.setState((state) => {
+        const { sortOption } = state.sortedFilteredUsersWrapper;
+        const selectedFilteredGroups = this.filteredGroupsInitial(this.props.groupsState.groups);
+        return {
+          sortedFilteredUsersWrapper: {
+            sortOption,
+            selectedFilteredGroups,
+          },
+        };
+      });
+    });
   }
 
   updateGroupsList = () => {
@@ -181,6 +225,16 @@ class GroupsScreen extends Component<Props> {
         this.props.navigation.setParams({
           screenTitle: 'People',
         });
+        this.setState(() => {
+          const sortOption = 'Date: Old to New (default)';
+          const selectedFilteredGroups = this.filteredGroupsInitial(this.props.groupsState.groups);
+          return {
+            sortedFilteredUsersWrapper: {
+              sortOption,
+              selectedFilteredGroups,
+            },
+          };
+        });
       }
 
       this.props.navigation.setParams({
@@ -200,16 +254,62 @@ class GroupsScreen extends Component<Props> {
     </TouchableOpacity>
   );
 
+  sortUsers(sortOption, users) {
+    let sortedUsers;
+    if (sortOption === 'Date: Old to New (default)') {
+      sortedUsers = users.sort((a, b) => {
+        // Turn strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        const aCreatedDate = new Date(a.createdDate);
+        const bCreatedDate = new Date(b.createdDate);
+        return aCreatedDate - bCreatedDate;
+      });
+    }
 
-  usersList = (users) => {
+    if (sortOption === 'Date: New to Old') {
+      sortedUsers = users.sort((a, b) => {
+        // Turn strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.createdDate) - new Date(a.createdDate);
+      });
+    }
+
+    if (sortOption === 'Alphabetical') {
+      sortedUsers = users.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+    }
+    return sortedUsers;
+  }
+
+  /**
+   * filters all the users based upon the grups their in
+   */
+  filterUsers(selectedFilteredGroups, users) {
+    const filteredGroups = selectedFilteredGroups.filter(group => group.added);
+    const filteredGroupNames = filteredGroups.map(group => group.name);
+    const filteredUsers = usersGroupNamesMatch(filteredGroupNames, users);
+    return filteredUsers;
+  }
+
+
+  sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users) {
+    const usersCopy = users.slice();
+    const sortedUsers = this.sortUsers(sortOption, usersCopy);
+    const sortAndFilteredUsers = this.filterUsers(selectedFilteredGroups, sortedUsers);
+    return sortAndFilteredUsers;
+  }
+
+  usersList = (sortOption, selectedFilteredGroups, users) => {
+    const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
         <View style={styles.buttons}>
-          {this.renderSortFilterButton('Sort', () => {})}
-          {this.renderSortFilterButton('Filter', () => {})}
+          {this.renderSortFilterButton('Sort', this.openSortModal)}
+          {this.renderSortFilterButton('Filter', this.openFilterModal)}
         </View>
         <FlatList
-          data={users}
+          data={sortFilteredUsers}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress = {() => {
@@ -222,6 +322,7 @@ class GroupsScreen extends Component<Props> {
             >
               <UserBox
                 username={item.name}
+                primaryGroupName={item.primaryGroupName}
                 userDescription={item.description}
                 date={parseToShortDate(item.createdDate)}
               />
@@ -233,13 +334,103 @@ class GroupsScreen extends Component<Props> {
     );
   }
 
+
+  sortOpen() {
+    if (this.state.sortByModalOpen) {
+      return (
+        <SortBy
+          sortOption={this.state.sortedFilteredUsersWrapper.sortOption}
+          closeSortModal={this.closeSortModal}
+          applySortModal={this.applySortModal}
+        />
+      );
+    }
+  }
+
+  openSortModal = () => {
+    this.setState({
+      sortByModalOpen: true,
+    });
+  }
+
+  closeSortModal = () => {
+    this.setState({
+      sortByModalOpen: false,
+    });
+  }
+
+  applySortModal = (sortOption) => {
+    this.setState({
+      sortByModalOpen: false,
+    });
+    this.setSortOption(sortOption);
+  }
+
+  setSortOption(sortOption) {
+    this.setState((state) => {
+      const { selectedFilteredGroups } = state.sortedFilteredUsersWrapper;
+      return {
+        sortedFilteredUsersWrapper: {
+          sortOption,
+          selectedFilteredGroups,
+        },
+      };
+    });
+  }
+
+
+  filterOpen() {
+    if (this.state.filterModalOpen) {
+      return (
+        <Filter
+          closeFilterModal={this.closeFilterModal}
+          applyFilterModal={this.applyFilterModal}
+          filteredGroups={this.state.sortedFilteredUsersWrapper.selectedFilteredGroups}
+        />
+      );
+    }
+  }
+
+  openFilterModal = () => {
+    this.setState({
+      filterModalOpen: true,
+    });
+  }
+
+  closeFilterModal = () => {
+    this.setState({
+      filterModalOpen: false,
+    });
+  }
+
+  applyFilterModal = (filteredGroups) => {
+    this.setState({
+      filterModalOpen: false,
+    });
+    this.setNewFilteredGroups(filteredGroups);
+  }
+
+  setNewFilteredGroups(changedGroups) {
+    this.setState((state) => {
+      const { sortOption } = state.sortedFilteredUsersWrapper;
+      return {
+        sortedFilteredUsersWrapper: {
+          selectedFilteredGroups: changedGroups,
+          sortOption,
+        },
+      };
+    });
+  }
+
   render() {
     const { error: groupsStateErr, groups } = this.props.groupsState;
     const { users } = this.props.usersState;
+    const { sortOption, selectedFilteredGroups } = this.state.sortedFilteredUsersWrapper;
+
     const numberGroups = groups.length;
     return (
       <View style={container}>
-        { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(users) }
+        { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(sortOption, selectedFilteredGroups, users)}
         <TouchableOpacity
           style={styles.button}
           onPress = {this.addClick}
@@ -247,6 +438,8 @@ class GroupsScreen extends Component<Props> {
           <Text style={{ color: 'white' }}> Add </Text>
         </TouchableOpacity>
         {this.AddModalOpen()}
+        {this.sortOpen()}
+        {this.filterOpen()}
         {this.checkErr(groupsStateErr)}
       </View>
     );

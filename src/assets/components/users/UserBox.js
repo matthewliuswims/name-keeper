@@ -11,7 +11,7 @@ type Props = {
   username: string,
   userDescription: string,
   date: string,
-  primaryGroupName: string,
+  primaryGroupName: string, // this is optional, if you add it includes the groupColor
 };
 
 class UserBox extends React.Component <Props> {
@@ -19,7 +19,7 @@ class UserBox extends React.Component <Props> {
     return (
       <View style={styles.groupIconNameContainer}>
         <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
-        <Text numberOfLines={1}> {this.props.username} </Text>
+        <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
       </View>
     );
   }
