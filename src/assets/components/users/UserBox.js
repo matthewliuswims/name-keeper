@@ -44,7 +44,7 @@ class UserBox extends React.Component <Props> {
       <View style={styles.container}>
         {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
         <View style={styles.descriptionAndDate}>
-          <Text numberOfLines={1}> {this.props.userDescription} </Text>
+          <Text numberOfLines={1} style={styles.description}> {this.props.userDescription} </Text>
           <Text numberOfLines={1}> {this.props.date} </Text>
         </View>
       </View>
@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
     flex: 1, // if uncomment, you'll see difference
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  description: {
+    flex: 1,
   },
 });
 

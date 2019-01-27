@@ -17,6 +17,7 @@ import Footer from '../../components/footer/footer';
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
 import ErrorModal from '../../components/modal/Error';
+import { getGroupColor } from '../../../lib/groupColors';
 
 type Props = {
   groupsState : {
@@ -122,11 +123,18 @@ class GroupScreen extends Component<Props> {
   }
 
   render() {
-    const groupName = this.props.groupsState.focusedGroupName;
-    const NumUsersForGroup = this.usersForGroup(groupName).length;
+    const { focusedGroupName, groups } = this.props.groupsState;
+
+    const NumUsersForGroup = this.usersForGroup(focusedGroupName).length;
+    const groupColor = getGroupColor(focusedGroupName, groups);
+    const borderColor = {
+      borderColor: groupColor,
+    };
+    const combinedContainerStyle = StyleSheet.flatten([styles.container, borderColor]);
+
     return (
-      <View style={styles.container}>
-        { (this.props.groupsState.loading || this.props.usersState.loading) ? null : this.groupScreenWrapper(groupName, NumUsersForGroup) }
+      <View style={combinedContainerStyle}>
+        { (this.props.groupsState.loading || this.props.usersState.loading) ? null : this.groupScreenWrapper(focusedGroupName, NumUsersForGroup) }
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
@@ -152,6 +160,7 @@ const styles = StyleSheet.create({
     flex: container.flex,
     paddingTop: container.paddingTop,
     backgroundColor: container.backgroundColor,
+    borderTopWidth: 3,
   },
   groupContents: {
     paddingLeft: container.paddingLeft,

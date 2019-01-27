@@ -216,31 +216,32 @@ class GroupsScreen extends Component<Props> {
   swap = () => {
     this.setState((state) => {
       const showingGroups = !state.showingGroups;
+      this.props.navigation.setParams({
+        showingGroups,
+      });
 
       if (showingGroups) {
         this.props.navigation.setParams({
           screenTitle: 'Groups',
         });
-      } else {
-        this.props.navigation.setParams({
-          screenTitle: 'People',
-        });
-        this.setState(() => {
-          const sortOption = 'Date: Old to New (default)';
-          const selectedFilteredGroups = this.filteredGroupsInitial(this.props.groupsState.groups);
-          return {
-            sortedFilteredUsersWrapper: {
-              sortOption,
-              selectedFilteredGroups,
-            },
-          };
-        });
+        return {
+          showingGroups,
+        };
       }
 
+      // not showing groups logic below
       this.props.navigation.setParams({
-        showingGroups,
+        screenTitle: 'People',
       });
-      return { showingGroups };
+      const sortOption = 'Date: Old to New (default)';
+      const selectedFilteredGroups = this.filteredGroupsInitial(this.props.groupsState.groups);
+      return {
+        sortedFilteredUsersWrapper: {
+          sortOption,
+          selectedFilteredGroups,
+        },
+        showingGroups,
+      };
     });
   }
 

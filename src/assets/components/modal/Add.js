@@ -101,23 +101,24 @@ const styles = StyleSheet.create({
   button: {
     paddingLeft: wp('7%'),
     paddingRight: wp('7%'),
+    margin: wp('1%'),
     paddingTop: hp('1%'),
     paddingBottom: hp('1%'),
-    padding: horizontalGroupScreenButton.padding,
 
     flexGrow: 1,
-
-    flexDirection: 'row',
     backgroundColor: colors.addApplyColor,
-
-    alignItems: horizontalGroupScreenButton.alignItems,
-    borderRadius: horizontalGroupScreenButton.borderRadius,
-    borderWidth: horizontalGroupScreenButton.borderWidth,
     borderColor: horizontalGroupScreenButton.borderColor,
-    shadowColor: horizontalGroupScreenButton.shadowColor,
-    shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
-    shadowRadius: horizontalGroupScreenButton.shadowRadius,
-    shadowOffset: horizontalGroupScreenButton.shadowOffset,
+    borderWidth: 1,
+    justifyContent: 'center',
+    flexDirection: 'row',
+
+    borderRadius: horizontalGroupScreenButton.borderRadius,
+
+    // borderColor: horizontalGroupScreenButton.borderColor,
+    // shadowColor: horizontalGroupScreenButton.shadowColor,
+    // shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
+    // shadowRadius: horizontalGroupScreenButton.shadowRadius,
+    // shadowOffset: horizontalGroupScreenButton.shadowOffset,
   },
   buttonText: cancelButtonText,
   modalContent: {
