@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   buttonText: cancelButtonText,
   modalContent: {
-    height: hp('20%'),
+    height: hp('26%'),
     backgroundColor: 'white',
     padding: 16,
     borderRadius: 4,

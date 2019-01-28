@@ -1,14 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { connect } from 'react-redux';
 
 import { parseToShortDate } from '../../../lib/dates';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
-import { container } from '../../styles/base';
+import { container, horizontalGroupScreenButton } from '../../styles/base';
+import colors from '../../styles/colors';
 
 import UserBox from '../../components/users/UserBox';
 
@@ -96,14 +97,21 @@ class GroupScreen extends Component<Props> {
     );
   }
 
+  navigateToAddUserScreen = () => {
+    this.props.navigation.navigate('AddUserScreen');
+  }
+
   groupScreenWrapper(groupName, NumUsersForGroup) {
     return (
       <Fragment>
+        <View style={styles.buttons}>
+          {this.renderSortButton('Sort', this.openSortModal)}
+        </View>
         <View style={styles.groupContents}>
           {NumUsersForGroup ? this.groupContents(groupName) : this.noGroupContents()}
         </View>
         <View style={styles.footer}>
-          <Footer />
+          <Footer navigateToAddUserScreen={this.navigateToAddUserScreen} />
         </View>
       </Fragment>
     );
@@ -122,11 +130,26 @@ class GroupScreen extends Component<Props> {
     }
   }
 
-  render() {
-    const { focusedGroupName, groups } = this.props.groupsState;
+  renderSortButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress} style={styles.sortBtn}>
+      <Text style={styles.buttonTextSortFilter}>{text}</Text>
+    </TouchableOpacity>
+  );
 
+
+  render() {
+    if (this.props.groupsState.loading || this.props.usersState.loading) {
+      return null;
+    }
+    const { focusedGroupName, groups } = this.props.groupsState;
     const NumUsersForGroup = this.usersForGroup(focusedGroupName).length;
-    const groupColor = getGroupColor(focusedGroupName, groups);
+
+    let groupColor;
+    try {
+      groupColor = getGroupColor(focusedGroupName, groups);
+    } catch (err) {
+      return null; // because we delete the group, there's a time when we re-render this container but the group doesn't exist anymore
+    }
     const borderColor = {
       borderColor: groupColor,
     };
@@ -134,7 +157,7 @@ class GroupScreen extends Component<Props> {
 
     return (
       <View style={combinedContainerStyle}>
-        { (this.props.groupsState.loading || this.props.usersState.loading) ? null : this.groupScreenWrapper(focusedGroupName, NumUsersForGroup) }
+        {this.groupScreenWrapper(focusedGroupName, NumUsersForGroup) }
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
@@ -147,6 +170,26 @@ const styles = StyleSheet.create({
     fontSize: RF(4),
     marginTop: hp('1%'),
     textAlign: 'center',
+  },
+  buttons: {
+    marginBottom: hp('1%'),
+  },
+  sortBtn: {
+    backgroundColor: colors.filterSortColor, // @TODO: take from pallete
+
+    // below is to have the button width manually triggered
+    // width: wp('15%'),
+
+    paddingTop: hp('1%'),
+    paddingBottom: hp('1%'),
+
+    alignItems: horizontalGroupScreenButton.alignItems,
+    borderBottomLeftRadius: 3,
+    borderTopLeftRadius: 3,
+    marginBottom: horizontalGroupScreenButton.marginBottom,
+  },
+  buttonTextSortFilter: {
+    color: 'white',
   },
   noGroupMessage: {
     fontSize: RF(2.5),
@@ -161,10 +204,10 @@ const styles = StyleSheet.create({
     paddingTop: container.paddingTop,
     backgroundColor: container.backgroundColor,
     borderTopWidth: 3,
-  },
-  groupContents: {
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
+  },
+  groupContents: {
     flex: 11,
   },
   footer: {

@@ -1,11 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import PropTypes from 'prop-types';
 
 import { Svg } from 'expo';
 
 import { container } from '../../styles/base';
-import color from '../../styles/colors';
 
 import {
   addSvgHeightOrWidth,
@@ -44,7 +43,7 @@ class Footer extends React.Component {
     return (
       <TouchableOpacity
         style={styles.addContainer}
-        onPress = {() => this.props.navigation.navigate('AddUserScreen')}
+        onPress = {this.props.navigateToAddUserScreen}
       >
         <Svg
           height={addSvgHeightOrWidth}
@@ -108,4 +107,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(Footer);
+Footer.propTypes = {
+  navigateToAddUserScreen: PropTypes.func.isRequired,
+};
+
+export default Footer;

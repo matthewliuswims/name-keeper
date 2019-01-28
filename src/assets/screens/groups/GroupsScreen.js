@@ -5,9 +5,12 @@ import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { get } from 'lodash';
 
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
+
+import UsersFooter from '../../components/footer/footer';
 
 import ErrorModal from '../../components/modal/Error';
 import AddModal from '../../components/modal/Add';
@@ -423,6 +426,26 @@ class GroupsScreen extends Component<Props> {
     });
   }
 
+  footerGroupsList = () => {
+    return (
+      <TouchableOpacity
+        style={styles.button}
+        onPress = {this.addClick}
+      >
+        <Text style={{ color: 'white' }}> + group </Text>
+      </TouchableOpacity>
+    );
+  }
+
+  navigateToAddUserScreen = () => {
+    const firstGroupNameWeFind = get(this.props.groupsState, 'groups[0].name', '');
+    if (!firstGroupNameWeFind) {
+      // @TODO: logger error here... and handle gracefully?
+    }
+    this.props.focusGroup(firstGroupNameWeFind); // arbitrarily focus the first group name we find
+    this.props.navigation.navigate('AddUserScreen');
+  }
+
   render() {
     const { error: groupsStateErr, groups } = this.props.groupsState;
     const { users } = this.props.usersState;
@@ -431,13 +454,12 @@ class GroupsScreen extends Component<Props> {
     const numberGroups = groups.length;
     return (
       <View style={container}>
-        { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(sortOption, selectedFilteredGroups, users)}
-        <TouchableOpacity
-          style={styles.button}
-          onPress = {this.addClick}
-        >
-          <Text style={{ color: 'white' }}> Add </Text>
-        </TouchableOpacity>
+        <View style={styles.contents}>
+          { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(sortOption, selectedFilteredGroups, users)}
+        </View>
+        <View style={styles.footer}>
+          { this.state.showingGroups ? this.footerGroupsList() : <UsersFooter navigateToAddUserScreen={this.navigateToAddUserScreen} /> }
+        </View>
         {this.AddModalOpen()}
         {this.sortOpen()}
         {this.filterOpen()}
@@ -448,6 +470,20 @@ class GroupsScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  contents: {
+    flex: 11,
+  },
+  footer: {
+    flex: 1,
+  },
+  container: {
+    flex: container.flex,
+    paddingTop: container.paddingTop,
+    backgroundColor: container.backgroundColor,
+    paddingLeft: container.paddingLeft,
+    paddingRight: container.paddingRight,
+    paddingBottom: container.paddingBottom,
+  },
   noGroupHeader: {
     fontWeight: 'bold',
     fontSize: RF(4),
@@ -461,7 +497,7 @@ const styles = StyleSheet.create({
   },
   noGroupContainer: {
     paddingTop: hp('25%'),
-    paddingBottom: hp('37%'),
+    paddingBottom: hp('30%'),
   },
   buttons: {
     flexDirection: 'row',
@@ -471,30 +507,27 @@ const styles = StyleSheet.create({
   },
   filterBtn: {
     flexGrow: 1,
-    backgroundColor: '#6666ff', // @TODO: take from pallete
+    backgroundColor: colors.filterSortColor,
 
     paddingLeft: wp('7%'),
     paddingRight: wp('7%'),
     paddingTop: hp('1%'),
     paddingBottom: hp('1%'),
-    padding: horizontalGroupScreenButton.padding,
 
     alignItems: horizontalGroupScreenButton.alignItems,
     borderBottomRightRadius: 3,
     borderTopRightRadius: 3,
     borderLeftWidth: 1,
     borderLeftColor: 'black',
-    marginBottom: horizontalGroupScreenButton.marginBottom,
   },
   sortBtn: {
     flexGrow: 1,
-    backgroundColor: '#6666ff', // @TODO: take from pallete
+    backgroundColor: colors.filterSortColor,
 
     paddingLeft: wp('7%'),
     paddingRight: wp('7%'),
     paddingTop: hp('1%'),
     paddingBottom: hp('1%'),
-    padding: horizontalGroupScreenButton.padding,
 
     alignItems: horizontalGroupScreenButton.alignItems,
     borderBottomLeftRadius: 3,
@@ -518,7 +551,6 @@ const styles = StyleSheet.create({
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
     paddingTop: horizontalGroupScreenButton.paddingTop,
     paddingBottom: horizontalGroupScreenButton.paddingBottom,
-    marginBottom: horizontalGroupScreenButton.marginBottom,
   },
 });
 

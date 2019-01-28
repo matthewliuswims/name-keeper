@@ -6,6 +6,7 @@ export default {
   warningColor: 'firebrick',
   cancelButtonBackgroundColor: '#C1C1C1',
   cancelButtonBackgroundText: 'white',
+  filterSortColor: '#6666ff',
 
   firstGroupColor: 'red',
   secondGroupColor: 'dodgerblue',

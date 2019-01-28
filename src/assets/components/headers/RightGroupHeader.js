@@ -106,10 +106,10 @@ class RightHeaderGroupComponent extends React.Component {
                 this.setState({ visibleModal: false });
               })}
               {this.renderDelete('Delete', async () => {
+                await this.props.navigation.navigate('GroupsScreen');
                 await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
                 this.props.listAllUsers();
                 this.props.listGroups();
-                this.props.navigation.navigate('GroupsScreen');
                 this.setState({ visibleModal: false });
               })}
             </View>
