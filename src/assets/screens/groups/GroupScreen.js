@@ -20,6 +20,8 @@ import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 import ErrorModal from '../../components/modal/Error';
 import { getGroupColor } from '../../../lib/groupColors';
 
+import SortBy from '../../components/modal/SortBy';
+
 type Props = {
   groupsState : {
     focusedGroupName: String,
@@ -35,6 +37,10 @@ class GroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.props.listAllUsers();
+    this.state = {
+      sortByModalOpen: false,
+      sortOption: 'Date: Old to New (default)',
+    };
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -43,6 +49,72 @@ class GroupScreen extends Component<Props> {
       headerRight: <RightHeaderComponent />,
     };
   };
+
+  sortUsers(sortOption, users) {
+    let sortedUsers;
+    if (sortOption === 'Date: Old to New (default)') {
+      sortedUsers = users.sort((a, b) => {
+        // Turn strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        const aCreatedDate = new Date(a.createdDate);
+        const bCreatedDate = new Date(b.createdDate);
+        return aCreatedDate - bCreatedDate;
+      });
+    }
+
+    if (sortOption === 'Date: New to Old') {
+      sortedUsers = users.sort((a, b) => {
+        // Turn strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return new Date(b.createdDate) - new Date(a.createdDate);
+      });
+    }
+
+    if (sortOption === 'Alphabetical') {
+      sortedUsers = users.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+    }
+
+    return sortedUsers;
+  }
+
+  openSortModal = () => {
+    this.setState({
+      sortByModalOpen: true,
+    });
+  }
+
+  closeSortModal = () => {
+    this.setState({
+      sortByModalOpen: false,
+    });
+  }
+
+  applySortModal = (sortOption) => {
+    this.setState({
+      sortByModalOpen: false,
+    });
+    this.setSortOption(sortOption);
+  }
+
+  setSortOption(sortOption) {
+    this.setState({
+      sortOption,
+    });
+  }
+
+  sortOpen() {
+    if (this.state.sortByModalOpen) {
+      return (
+        <SortBy
+          sortOption={this.state.sortOption}
+          closeSortModal={this.closeSortModal}
+          applySortModal={this.applySortModal}
+        />
+      );
+    }
+  }
 
 
   /**
@@ -72,9 +144,11 @@ class GroupScreen extends Component<Props> {
   }
 
   groupContents(groupName) {
+    const userForGroup = this.usersForGroup(groupName);
+    const sortedUsers = this.sortUsers(this.state.sortOption, userForGroup);
     return (
       <FlatList
-        data={this.usersForGroup(groupName)}
+        data={sortedUsers}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress = {() => {
@@ -99,22 +173,6 @@ class GroupScreen extends Component<Props> {
 
   navigateToAddUserScreen = () => {
     this.props.navigation.navigate('AddUserScreen');
-  }
-
-  groupScreenWrapper(groupName, NumUsersForGroup) {
-    return (
-      <Fragment>
-        <View style={styles.buttons}>
-          {this.renderSortButton('Sort', this.openSortModal)}
-        </View>
-        <View style={styles.groupContents}>
-          {NumUsersForGroup ? this.groupContents(groupName) : this.noGroupContents()}
-        </View>
-        <View style={styles.footer}>
-          <Footer navigateToAddUserScreen={this.navigateToAddUserScreen} />
-        </View>
-      </Fragment>
-    );
   }
 
   checkErrUsrs = (err) => {
@@ -157,7 +215,16 @@ class GroupScreen extends Component<Props> {
 
     return (
       <View style={combinedContainerStyle}>
-        {this.groupScreenWrapper(focusedGroupName, NumUsersForGroup) }
+        <View style={styles.groupContents}>
+          {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
+        </View>
+        <View style={styles.footer}>
+          <Footer
+            navigateToAddUserScreen={this.navigateToAddUserScreen}
+            sortCB={this.openSortModal}
+          />
+        </View>
+        {this.sortOpen()}
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
@@ -165,6 +232,12 @@ class GroupScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  groupContents: {
+    flex: 11,
+  },
+  footer: {
+    flex: 1,
+  },
   noGroupHeader: {
     fontWeight: 'bold',
     fontSize: RF(4),
@@ -203,15 +276,11 @@ const styles = StyleSheet.create({
     flex: container.flex,
     paddingTop: container.paddingTop,
     backgroundColor: container.backgroundColor,
-    borderTopWidth: 3,
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
-  },
-  groupContents: {
-    flex: 11,
-  },
-  footer: {
-    flex: 1,
+
+    // borderTopWidth: 3,
+    // paddingBottom: container.paddingBottom,
   },
 });
 

@@ -10,7 +10,7 @@ import { get } from 'lodash';
 import { container, horizontalGroupScreenButton } from '../../styles/base';
 import colors from '../../styles/colors';
 
-import UsersFooter from '../../components/footer/footer';
+import Footer from '../../components/footer/footer';
 
 import ErrorModal from '../../components/modal/Error';
 import AddModal from '../../components/modal/Add';
@@ -252,12 +252,6 @@ class GroupsScreen extends Component<Props> {
     return numberGroups ? this.groups(users) : this.noGroupsText();
   }
 
-  renderSortFilterButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress} style={text === 'Sort' ? styles.sortBtn : styles.filterBtn}>
-      <Text style={styles.buttonTextSortFilter}>{text}</Text>
-    </TouchableOpacity>
-  );
-
   sortUsers(sortOption, users) {
     let sortedUsers;
     if (sortOption === 'Date: Old to New (default)') {
@@ -308,10 +302,6 @@ class GroupsScreen extends Component<Props> {
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
-        <View style={styles.buttons}>
-          {this.renderSortFilterButton('Sort', this.openSortModal)}
-          {this.renderSortFilterButton('Filter', this.openFilterModal)}
-        </View>
         <FlatList
           data={sortFilteredUsers}
           renderItem={({ item }) => (
@@ -458,7 +448,15 @@ class GroupsScreen extends Component<Props> {
           { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(sortOption, selectedFilteredGroups, users)}
         </View>
         <View style={styles.footer}>
-          { this.state.showingGroups ? this.footerGroupsList() : <UsersFooter navigateToAddUserScreen={this.navigateToAddUserScreen} /> }
+          { this.state.showingGroups ? this.footerGroupsList()
+            : (
+              <Footer
+                navigateToAddUserScreen={this.navigateToAddUserScreen}
+                filterCB={this.openFilterModal}
+                sortCB={this.openSortModal}
+              />
+            )
+          }
         </View>
         {this.AddModalOpen()}
         {this.sortOpen()}
@@ -482,7 +480,7 @@ const styles = StyleSheet.create({
     backgroundColor: container.backgroundColor,
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
-    paddingBottom: container.paddingBottom,
+    // paddingBottom: container.paddingBottom,
   },
   noGroupHeader: {
     fontWeight: 'bold',
@@ -498,12 +496,6 @@ const styles = StyleSheet.create({
   noGroupContainer: {
     paddingTop: hp('25%'),
     paddingBottom: hp('30%'),
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: hp('1%'),
   },
   filterBtn: {
     flexGrow: 1,
