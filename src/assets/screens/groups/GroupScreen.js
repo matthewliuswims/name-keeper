@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { connect } from 'react-redux';
 
@@ -215,7 +215,7 @@ class GroupScreen extends Component<Props> {
 
     return (
       <View style={combinedContainerStyle}>
-        <View style={styles.groupContents}>
+        <View style={styles.contents}>
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
         <View style={styles.footer}>
@@ -232,11 +232,21 @@ class GroupScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  groupContents: {
+  contents: {
     flex: 11,
   },
   footer: {
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    paddingTop: container.paddingTop,
+    backgroundColor: container.backgroundColor,
+    paddingLeft: container.paddingLeft,
+    paddingRight: container.paddingRight,
+
+    borderTopWidth: 3,
+    // paddingBottom: container.paddingBottom,
   },
   noGroupHeader: {
     fontWeight: 'bold',
@@ -271,16 +281,6 @@ const styles = StyleSheet.create({
   },
   noGroupContainer: {
     paddingTop: hp('25%'),
-  },
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-    backgroundColor: container.backgroundColor,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
-
-    // borderTopWidth: 3,
-    // paddingBottom: container.paddingBottom,
   },
 });
 

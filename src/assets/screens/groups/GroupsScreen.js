@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    flex: container.flex,
+    flex: 1,
     paddingTop: container.paddingTop,
     backgroundColor: container.backgroundColor,
     paddingLeft: container.paddingLeft,
@@ -496,38 +496,6 @@ const styles = StyleSheet.create({
   noGroupContainer: {
     paddingTop: hp('25%'),
     paddingBottom: hp('30%'),
-  },
-  filterBtn: {
-    flexGrow: 1,
-    backgroundColor: colors.filterSortColor,
-
-    paddingLeft: wp('7%'),
-    paddingRight: wp('7%'),
-    paddingTop: hp('1%'),
-    paddingBottom: hp('1%'),
-
-    alignItems: horizontalGroupScreenButton.alignItems,
-    borderBottomRightRadius: 3,
-    borderTopRightRadius: 3,
-    borderLeftWidth: 1,
-    borderLeftColor: 'black',
-  },
-  sortBtn: {
-    flexGrow: 1,
-    backgroundColor: colors.filterSortColor,
-
-    paddingLeft: wp('7%'),
-    paddingRight: wp('7%'),
-    paddingTop: hp('1%'),
-    paddingBottom: hp('1%'),
-
-    alignItems: horizontalGroupScreenButton.alignItems,
-    borderBottomLeftRadius: 3,
-    borderTopLeftRadius: 3,
-    marginBottom: horizontalGroupScreenButton.marginBottom,
-  },
-  buttonTextSortFilter: {
-    color: 'white',
   },
   button: {
     backgroundColor: colors.addApplyColor,
