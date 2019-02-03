@@ -4,16 +4,15 @@ import React, { Component, Fragment } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { get } from 'lodash';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { container, horizontalGroupScreenButton } from '../../styles/base';
+import { container, horizontalGroupScreenButton, footerSection } from '../../styles/base';
 import colors from '../../styles/colors';
 
 import Footer from '../../components/footer/footer';
 
 import ErrorModal from '../../components/modal/Error';
-import AddModal from '../../components/modal/Add';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
 
@@ -92,7 +91,10 @@ class GroupsScreen extends Component<Props> {
       title: params.screenTitle,
       headerRight: <RightHeaderComponent />,
       // getParam('swap') refers to the 'swap' function in componentDidMount
-      headerLeft: <LeftHeaderComponent swap={navigation.getParam('swap') || noOp} showingGroups={params.showingGroups} />,
+      headerLeft: <LeftHeaderComponent
+        swap={navigation.getParam('swap') || noOp}
+        showingGroups={params.showingGroups}
+      />,
     };
   };
 
@@ -101,6 +103,7 @@ class GroupsScreen extends Component<Props> {
     this.props.navigation.setParams({ screenTitle });
     this.props.navigation.setParams({ showingGroups });
     this.props.navigation.setParams({ swap: this.swap });
+    this.props.navigation.setParams({ getTotalNumberUsers: this.getTotalNumberUsers });
 
     this.props.listGroups().then(() => {
       this.setState((state) => {
@@ -140,12 +143,12 @@ class GroupsScreen extends Component<Props> {
 
   noGroupsText() {
     return (
-      <View style={styles.noGroupContainer}>
-        <Text style={styles.noGroupHeader}>
-          Add a person you met below!
+      <View style={styles.noGroupsOrUsersContainer}>
+        <Text style={styles.noGroupsOrUsersHeader}>
+          Add a group below
         </Text>
-        <Text style={styles.noGroupMessage}>
-          Before you add a person, you have to put them in a group.
+        <Text style={styles.noGroupsOrUsersMessage}>
+          A group contains the people you meet.
         </Text>
       </View>
     );
@@ -176,44 +179,6 @@ class GroupsScreen extends Component<Props> {
           extraData={this.props.usersState} // necessary to show the 2 users
         />)
     );
-  }
-
-  closeAddModal = () => {
-    this.setState({
-      addModalOpen: false,
-    });
-  }
-
-  addUser = () => {
-    //@TODO: implement
-    this.setState({
-      addModalOpen: false,
-    });
-  }
-
-  addGroup = () => {
-    this.setState({
-      addModalOpen: false,
-    });
-    this.props.navigation.navigate('AddGroupScreen');
-  }
-
-  AddModalOpen() {
-    if (this.state.addModalOpen) {
-      return (
-        <AddModal
-          closeAddModal={this.closeAddModal}
-          addUser={this.addUser}
-          addGroup={this.addGroup}
-        />
-      );
-    }
-  }
-
-  addClick = () => {
-    this.setState({
-      addModalOpen: true,
-    });
   }
 
   swap = () => {
@@ -298,7 +263,37 @@ class GroupsScreen extends Component<Props> {
     return sortAndFilteredUsers;
   }
 
-  usersList = (sortOption, selectedFilteredGroups, users) => {
+  usersList = (numberGroups, numberUsers, sortOption, selectedFilteredGroups, users) => {
+    return numberUsers ? this.usersListWithUsers(sortOption, selectedFilteredGroups, users) : this.noUsersText(numberGroups);
+  }
+
+  noUsersText(numberGroups) {
+    // so there are no users and no groups
+    if (!numberGroups) {
+      return (
+        <View style={styles.noGroupsOrUsersContainer}>
+          <Text style={styles.noGroupsOrUsersHeader}>
+            {'Click "Groups" at the top left & go create a group'}
+          </Text>
+          <Text style={styles.noGroupsOrUsersMessage}>
+            You need to create a group before you can add a user.
+          </Text>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.noGroupsOrUsersContainer}>
+        <Text style={styles.noGroupsOrUsersHeader}>
+          Add a person you met below!
+        </Text>
+        <Text style={styles.noGroupsOrUsersMessage}>
+          That person will be placed by you into one of the groups you made!
+        </Text>
+      </View>
+    );
+  }
+
+  usersListWithUsers = (sortOption, selectedFilteredGroups, users) => {
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
@@ -420,7 +415,10 @@ class GroupsScreen extends Component<Props> {
     return (
       <TouchableOpacity
         style={styles.button}
-        onPress = {this.addClick}
+        onPress = {() => {
+          this.props.navigation.navigate('AddGroupScreen');
+        }
+        }
       >
         <Text style={{ color: 'white' }}> + group </Text>
       </TouchableOpacity>
@@ -436,29 +434,49 @@ class GroupsScreen extends Component<Props> {
     this.props.navigation.navigate('AddUserScreen');
   }
 
+  renderContents = (numberGroups, users, numberUsers, sortOption, selectedFilteredGroups) => {
+    if (this.state.showingGroups) {
+      return this.groupsList(numberGroups, users);
+    }
+    return this.usersList(numberGroups, numberUsers, sortOption, selectedFilteredGroups, users);
+  }
+
+  renderFooter = (numberGroups, numberUsers) => {
+    if (this.state.showingGroups) {
+      return this.footerGroupsList();
+    }
+
+    // viewing users and there are no groups
+    if (!this.state.showingGroups && !numberGroups) {
+      return null;
+    }
+
+    // viewing users
+    return (
+      <Footer
+        numberUsers={numberUsers}
+        navigateToAddUserScreen={this.navigateToAddUserScreen}
+        filterCB={this.openFilterModal}
+        sortCB={this.openSortModal}
+      />
+    );
+  }
+
   render() {
     const { error: groupsStateErr, groups } = this.props.groupsState;
     const { users } = this.props.usersState;
     const { sortOption, selectedFilteredGroups } = this.state.sortedFilteredUsersWrapper;
 
     const numberGroups = groups.length;
+    const numberUsers = users.length;
     return (
-      <View style={container}>
+      <View style={styles.container}>
         <View style={styles.contents}>
-          { this.state.showingGroups ? this.groupsList(numberGroups, users) : this.usersList(sortOption, selectedFilteredGroups, users)}
+          { this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
         </View>
-        <View style={styles.footer}>
-          { this.state.showingGroups ? this.footerGroupsList()
-            : (
-              <Footer
-                navigateToAddUserScreen={this.navigateToAddUserScreen}
-                filterCB={this.openFilterModal}
-                sortCB={this.openSortModal}
-              />
-            )
-          }
+        <View style={footerSection}>
+          { this.renderFooter(numberGroups, numberUsers) }
         </View>
-        {this.AddModalOpen()}
         {this.sortOpen()}
         {this.filterOpen()}
         {this.checkErr(groupsStateErr)}
@@ -471,9 +489,6 @@ const styles = StyleSheet.create({
   contents: {
     flex: 11,
   },
-  footer: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     paddingTop: container.paddingTop,
@@ -482,18 +497,18 @@ const styles = StyleSheet.create({
     paddingRight: container.paddingRight,
     // paddingBottom: container.paddingBottom,
   },
-  noGroupHeader: {
+  noGroupsOrUsersHeader: {
     fontWeight: 'bold',
     fontSize: RF(4),
     marginTop: hp('1%'),
     textAlign: 'center',
   },
-  noGroupMessage: {
+  noGroupsOrUsersMessage: {
     fontSize: RF(2.5),
     marginTop: hp('2%'),
     textAlign: 'center',
   },
-  noGroupContainer: {
+  noGroupsOrUsersContainer: {
     paddingTop: hp('25%'),
     paddingBottom: hp('30%'),
   },

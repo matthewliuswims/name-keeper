@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { Svg } from 'expo';
 
@@ -45,7 +44,6 @@ import {
   point4,
   point5,
   point6,
-  filterContainer,
 } from '../../styles/svg/filter';
 
 import {
@@ -66,10 +64,8 @@ class Footer extends React.Component {
   filterComponent() {
     return (
       <TouchableOpacity
-        style={styles.filterContainer}
         onPress = {() => this.props.filterCB()}
       >
-        <Text> Filter </Text>
         <Svg
           height={filterSvgHeightOrWidth}
           width={filterSvgHeightOrWidth} // same as height
@@ -88,6 +84,7 @@ class Footer extends React.Component {
             fill="black"
           />
         </Svg>
+        <Text>Filter</Text>
       </TouchableOpacity>
     );
   }
@@ -95,10 +92,9 @@ class Footer extends React.Component {
   sortComponent() {
     return (
       <TouchableOpacity
-        style={styles.sortContainer}
+        style={sortContainer}
         onPress = {() => this.props.sortCB()}
       >
-        <Text> Sort </Text>
         <Svg
           height={sortSvgHeight}
           width={sortSvgWidth}
@@ -112,6 +108,7 @@ class Footer extends React.Component {
             fill='black'
           />
         </Svg>
+        <Text>Sort</Text>
       </TouchableOpacity>
     );
   }
@@ -119,7 +116,7 @@ class Footer extends React.Component {
   plusComponent() {
     return (
       <TouchableOpacity
-        style={styles.addContainer}
+        style={addContainer}
         onPress = {this.props.navigateToAddUserScreen}
       >
         <Svg
@@ -163,7 +160,16 @@ class Footer extends React.Component {
 
 
   render() {
-    const { filterCB } = this.props;
+    const { filterCB, numberUsers } = this.props;
+
+    if (!numberUsers) {
+      return (
+        <View style={styles.containerPlusOnly}>
+          { this.plusComponent()}
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <View style={styles.filterSort}>
@@ -177,14 +183,12 @@ class Footer extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  containerPlusOnly: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   filterSort: {
     flexDirection: 'row',
-    marginBottom: hp('4%'),
-  },
-  filterContainer: {
-    marginLeft: filterContainer.marginLeft,
-    flexDirection: filterContainer.flexDirection,
-    justifyContent: filterContainer.justifyContent,
   },
   container: {
     flex: container.flex, // if uncomment, you'll see difference
@@ -192,25 +196,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  addContainer: {
-    marginBottom: addContainer.marginBottom,
-    marginRight: addContainer.marginRight,
-  },
-  sortContainer: {
-    flexDirection: sortContainer.flexDirection,
-    justifyContent: sortContainer.justifyContent,
-    marginRight: sortContainer.marginRight,
-  },
 });
 
 Footer.propTypes = {
   navigateToAddUserScreen: PropTypes.func.isRequired,
   filterCB: PropTypes.func,
   sortCB: PropTypes.func.isRequired,
+  numberUsers: PropTypes.number,
 };
 
 Footer.defaultProps = {
   filterCB: null,
+  numberUsers: 0,
 };
 
 export default Footer;

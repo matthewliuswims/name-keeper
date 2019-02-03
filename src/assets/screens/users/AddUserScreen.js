@@ -88,6 +88,12 @@ class AddUserScreen extends Component<Props> {
     this.props.navigation.setParams({ userSubmit: this.userSubmit });
   }
 
+  resetFormValueState = async () => {
+    this.setState({
+      value: null,
+    });
+  }
+
   userSubmit = async () => {
     const userStruct = this.refs.form.getValue();
 
@@ -107,6 +113,7 @@ class AddUserScreen extends Component<Props> {
       } // else, we wait for the errModal to popup here
       if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
+        await this.resetFormValueState();
         this.props.navigation.navigate('GroupScreen', {
           groupName: this.state.selectedGroupName,
         });

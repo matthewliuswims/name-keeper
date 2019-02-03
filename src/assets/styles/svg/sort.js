@@ -12,8 +12,8 @@
  */
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-export const sortSvgWidth = wp('12%');
-export const sortSvgHeight = wp('6%');
+export const sortSvgWidth = wp('8%');
+export const sortSvgHeight = wp('8%');
 // 1st triangle
 
 const firstPointXFirstTriangle = 0;
@@ -48,7 +48,6 @@ export const triangle2Points = `${firstPointXSecondTriangle} ${firstPointYSecond
 ${thirdPointXSecondTriangle} ${thirdPointYSecondTriangle}`;
 
 export const sortContainer = {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  marginRight: wp('3%'),
+  marginRight: wp('5%'),
+  marginLeft: wp('3%'),
 };

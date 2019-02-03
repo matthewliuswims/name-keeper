@@ -30,9 +30,3 @@ const point6XAsNum = eval(`1.0 * ${filterSvgHeightOrWidth}`);
 const point6YAsNum = 0;
 
 export const point6 = `${point6XAsNum} ${point6YAsNum}`;
-
-export const filterContainer = {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  marginLeft: wp('3%'),
-};

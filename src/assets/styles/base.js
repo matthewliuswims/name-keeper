@@ -51,6 +51,12 @@ export const horizontalGroupScreenButton = {
   },
 };
 
+// user in conjunction with contents
+export const footerSection = {
+  marginBottom: hp('4%'),
+  flex: 1,
+};
+
 export const innardsStyleContainer = {
   flex: 1,
   flexDirection: 'row',

@@ -11,8 +11,8 @@ export default class LeftGroupsHeader extends React.Component {
           name='swap-horiz'
           color='white'
         />
-        {this.props.showingGroups ? <Text style={{ color: 'white' }}> Groups </Text>
-          : <Text style={{ color: 'white' }}>  People </Text>
+        {this.props.showingGroups ? <Text style={{ color: 'white' }}> People </Text>
+          : <Text style={{ color: 'white' }}>  Groups </Text>
         }
       </TouchableOpacity>
     );

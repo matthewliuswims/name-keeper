@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { parseToShortDate } from '../../../lib/dates';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
-import { container, horizontalGroupScreenButton } from '../../styles/base';
+import { container, horizontalGroupScreenButton, footerSection } from '../../styles/base';
 import colors from '../../styles/colors';
 
 import UserBox from '../../components/users/UserBox';
@@ -218,10 +218,11 @@ class GroupScreen extends Component<Props> {
         <View style={styles.contents}>
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
-        <View style={styles.footer}>
+        <View style={footerSection}>
           <Footer
             navigateToAddUserScreen={this.navigateToAddUserScreen}
             sortCB={this.openSortModal}
+            numberUsers={NumUsersForGroup}
           />
         </View>
         {this.sortOpen()}
@@ -234,9 +235,6 @@ class GroupScreen extends Component<Props> {
 const styles = StyleSheet.create({
   contents: {
     flex: 11,
-  },
-  footer: {
-    flex: 1,
   },
   container: {
     flex: 1,
