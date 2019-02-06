@@ -297,6 +297,7 @@ class GroupsScreen extends Component<Props> {
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
+        <Text style={styles.usersListText}> Everyone in all groups </Text>
         <FlatList
           data={sortFilteredUsers}
           renderItem={({ item }) => (
@@ -420,7 +421,7 @@ class GroupsScreen extends Component<Props> {
         }
         }
       >
-        <Text style={{ color: 'white' }}> + group </Text>
+        <Text style={styles.addGroupText}> + group </Text>
       </TouchableOpacity>
     );
   }
@@ -486,6 +487,11 @@ class GroupsScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  addGroupText: {
+    // fontWeight: 'bold',
+    // fontSize: RF(2.5),
+    color: 'white',
+  },
   contents: {
     flex: 11,
   },
@@ -495,12 +501,17 @@ const styles = StyleSheet.create({
     backgroundColor: container.backgroundColor,
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
-    // paddingBottom: container.paddingBottom,
+    paddingBottom: container.paddingBottom,
   },
   noGroupsOrUsersHeader: {
     fontWeight: 'bold',
     fontSize: RF(4),
     marginTop: hp('1%'),
+    textAlign: 'center',
+  },
+  usersListText: {
+    fontWeight: 'bold',
+    fontSize: RF(3),
     textAlign: 'center',
   },
   noGroupsOrUsersMessage: {
@@ -524,8 +535,7 @@ const styles = StyleSheet.create({
     shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
     shadowRadius: horizontalGroupScreenButton.shadowRadius,
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
-    paddingTop: horizontalGroupScreenButton.paddingTop,
-    paddingBottom: horizontalGroupScreenButton.paddingBottom,
+    // paddingBottom: horizontalGroupScreenButton.paddingBottom,
   },
 });
 

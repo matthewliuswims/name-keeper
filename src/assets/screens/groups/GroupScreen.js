@@ -8,8 +8,7 @@ import { connect } from 'react-redux';
 import { parseToShortDate } from '../../../lib/dates';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
-import { container, horizontalGroupScreenButton, footerSection } from '../../styles/base';
-import colors from '../../styles/colors';
+import { container, footerSection } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
 
@@ -188,13 +187,6 @@ class GroupScreen extends Component<Props> {
     }
   }
 
-  renderSortButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress} style={styles.sortBtn}>
-      <Text style={styles.buttonTextSortFilter}>{text}</Text>
-    </TouchableOpacity>
-  );
-
-
   render() {
     if (this.props.groupsState.loading || this.props.usersState.loading) {
       return null;
@@ -243,7 +235,7 @@ const styles = StyleSheet.create({
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
 
-    borderTopWidth: 3,
+    borderTopWidth: hp('2%'),
     // paddingBottom: container.paddingBottom,
   },
   noGroupHeader: {
@@ -254,20 +246,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     marginBottom: hp('1%'),
-  },
-  sortBtn: {
-    backgroundColor: colors.filterSortColor, // @TODO: take from pallete
-
-    // below is to have the button width manually triggered
-    // width: wp('15%'),
-
-    paddingTop: hp('1%'),
-    paddingBottom: hp('1%'),
-
-    alignItems: horizontalGroupScreenButton.alignItems,
-    borderBottomLeftRadius: 3,
-    borderTopLeftRadius: 3,
-    marginBottom: horizontalGroupScreenButton.marginBottom,
   },
   buttonTextSortFilter: {
     color: 'white',

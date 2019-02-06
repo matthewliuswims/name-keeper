@@ -5,24 +5,24 @@
 
 export const colors = [
   'red',
-  'dodgerblue',
+  'purple',
   'forestgreen',
   'coral',
-  'purple',
+  'silver',
   'yellow',
   'violet',
-  'lightsteelblue',
+  'mediumvioletred',
 ];
 
 const colorsToPosition = {
   red: 0,
-  dodgerblue: 1,
+  purple: 1,
   forestgreen: 2,
   coral: 3,
-  purple: 4,
+  silver: 4,
   yellow: 5,
   violet: 6,
-  lightsteelblue: 7,
+  mediumvioletred: 7,
 };
 // want to turn it into below
 // const colorsToPosition = [

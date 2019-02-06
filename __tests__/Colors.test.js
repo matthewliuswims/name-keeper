@@ -11,7 +11,7 @@ test('Next color when the first color is there', () => {
 
 
 test('Next color works for an ordered "normal" case where the groupColors is ordered as original', () => {
-  expect(nextColor(['red', 'dodgerblue'])).toBe(colors[2]);
+  expect(nextColor(['red', 'purple'])).toBe(colors[2]);
 });
 
 test('Next color works for an unordered case where the groupColors is NOT ordered as original, because a group got deleted', () => {
@@ -19,15 +19,15 @@ test('Next color works for an unordered case where the groupColors is NOT ordere
 });
 
 test('Next color works a completely unordered case', () => {
-  expect(nextColor(['lightsteelblue', 'red', 'dodgerblue'])).toBe(colors[2]);
+  expect(nextColor(['mediumvioletred', 'red', 'purple'])).toBe(colors[2]);
 });
 
 test('Next color works a normal unordered case', () => {
-  expect(nextColor(['dodgerblue', 'coral', 'red'])).toBe(colors[2]);
+  expect(nextColor(['coral', 'purple', 'red'])).toBe(colors[2]);
 });
 
 test('Next color works when we only have the last color', () => {
-  expect(nextColor(['violet'])).toBe(colors[0]);
+  expect(nextColor(['mediumvioletred'])).toBe(colors[0]);
 });
 
 // getGroupColor Tests
@@ -50,13 +50,13 @@ const multiGroupsWithOriginalColorOrder = [
   },
   {
     name: 'Billy',
-    color: 'dodgerblue',
+    color: 'purple',
   },
 ];
 
 
 test('correctly get group color for groups where original order is preserved', () => {
-  expect(getGroupColor('Billy', multiGroupsWithOriginalColorOrder)).toBe('dodgerblue');
+  expect(getGroupColor('Billy', multiGroupsWithOriginalColorOrder)).toBe('purple');
 });
 
 // means a group was deleted
