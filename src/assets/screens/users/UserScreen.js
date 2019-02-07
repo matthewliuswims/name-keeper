@@ -37,7 +37,7 @@ class UserScreen extends Component {
     const primaryGroupName = get(user, 'primaryGroupName', null);
 
     return (
-      <View style={styles.containerWrapper}>
+      <View style={{ flex: 1 }}>
         { user
         && (
           <View style={container}>
@@ -91,9 +91,6 @@ class UserScreen extends Component {
  * NOTICE: infoRow is not given a flex: 1, because we don't want it to expand down.
  */
 const styles = StyleSheet.create({
-  containerWrapper: {
-    flex: 1,
-  },
   groupIconNameContainer: {
     flex: groupIconNameContainer.flex,
     flexDirection: groupIconNameContainer.flexDirection,
@@ -107,6 +104,7 @@ const styles = StyleSheet.create({
     paddingTop: hp('0.5%'),
   },
   infoRow: {
+    width: wp('80%'),
     flexDirection: 'row',
     marginTop: hp('3%'),
   },

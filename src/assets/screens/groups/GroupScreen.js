@@ -236,7 +236,6 @@ const styles = StyleSheet.create({
     paddingRight: container.paddingRight,
 
     borderTopWidth: hp('2%'),
-    // paddingBottom: container.paddingBottom,
   },
   noGroupHeader: {
     fontWeight: 'bold',

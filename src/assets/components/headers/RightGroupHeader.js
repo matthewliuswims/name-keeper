@@ -15,6 +15,7 @@ import { deleteGroup, listGroups } from '../../../redux/actions/groups';
 import { listAllUsers } from '../../../redux/actions/users';
 
 class RightHeaderGroupComponent extends React.Component {
+
   state = { opened: false, visibleModal: false };
 
   onOptionSelect = (value) => {

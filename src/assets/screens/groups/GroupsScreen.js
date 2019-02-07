@@ -490,11 +490,11 @@ class GroupsScreen extends Component<Props> {
 const styles = StyleSheet.create({
   addText: {
     fontWeight: 'bold',
-    fontSize: hp('3.5%'),
+    fontSize: hp('3%'),
     color: 'white',
   },
   groupText: {
-    fontSize: hp('3%'),
+    fontSize: hp('2.75%'),
     fontWeight: 'bold',
     color: 'white',
   },
@@ -507,7 +507,6 @@ const styles = StyleSheet.create({
     backgroundColor: container.backgroundColor,
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
-    paddingBottom: container.paddingBottom,
   },
   noGroupsOrUsersHeader: {
     fontWeight: 'bold',

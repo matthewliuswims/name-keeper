@@ -31,11 +31,9 @@ How often do you remember someone's face, but not their name? This is a native a
   a) - capturing the user info <--  advanced stuff, https://docs.sentry.io/enriching-error-data/context/?platform=node#capturing-the-user
   b) 
 6) download names file?
+7) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
 
 ### Version 2 feature requests
-1) allow user to edit tags
-2) allow user to add more than 2 tags
-3) maybe contribute to: https://github.com/tuantle/react-native-search-header so that
-onGetAutocompletions() can take in an object in addition to a string, so i can pass in 'metadata'?
+1) geolocation?
 
 

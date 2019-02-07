@@ -23,6 +23,6 @@ export function parseToShortDate(dateAsStr) {
  */
 export function parseToLongDate(dateAsStr) {
   const momentDate = moment(dateAsStr);
-  const formattedDate = momentDate.format('h:mm A, dddd, MMMM Do, YYYY');
+  const formattedDate = momentDate.format('h:mmA, ddd, MMM Do, YYYY');
   return formattedDate;
 }
