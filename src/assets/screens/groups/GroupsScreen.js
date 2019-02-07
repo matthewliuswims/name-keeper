@@ -81,7 +81,7 @@ class GroupsScreen extends Component<Props> {
       focusedGroup = Object.assign(clonedGroupTarget, { added: true, opacity: 1 });
       return focusedGroup;
     });
-    console.log('added groups aree', addedGroups);
+
     return addedGroups;
   }
 
@@ -421,7 +421,7 @@ class GroupsScreen extends Component<Props> {
         }
         }
       >
-        <Text style={styles.addGroupText}> + group </Text>
+        <Text style={styles.addText}>+ <Text style={styles.groupText}> group</Text></Text>
       </TouchableOpacity>
     );
   }
@@ -436,6 +436,7 @@ class GroupsScreen extends Component<Props> {
   }
 
   renderContents = (numberGroups, users, numberUsers, sortOption, selectedFilteredGroups) => {
+
     if (this.state.showingGroups) {
       return this.groupsList(numberGroups, users);
     }
@@ -487,9 +488,14 @@ class GroupsScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  addGroupText: {
-    // fontWeight: 'bold',
-    // fontSize: RF(2.5),
+  addText: {
+    fontWeight: 'bold',
+    fontSize: hp('3.5%'),
+    color: 'white',
+  },
+  groupText: {
+    fontSize: hp('3%'),
+    fontWeight: 'bold',
     color: 'white',
   },
   contents: {
@@ -513,6 +519,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: RF(3),
     textAlign: 'center',
+    marginBottom: hp('2%'),
   },
   noGroupsOrUsersMessage: {
     fontSize: RF(2.5),
@@ -523,11 +530,17 @@ const styles = StyleSheet.create({
     paddingTop: hp('25%'),
     paddingBottom: hp('30%'),
   },
+  touchHereText: {
+    color: 'white',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
   button: {
+    flex: 1,
     backgroundColor: colors.addApplyColor,
-
+    alignContent: 'center',
+    justifyContent: 'center',
     alignItems: horizontalGroupScreenButton.alignItems,
-    padding: horizontalGroupScreenButton.padding,
     borderRadius: horizontalGroupScreenButton.borderRadius,
     borderWidth: horizontalGroupScreenButton.borderWidth,
     borderColor: horizontalGroupScreenButton.borderColor,
@@ -535,7 +548,6 @@ const styles = StyleSheet.create({
     shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
     shadowRadius: horizontalGroupScreenButton.shadowRadius,
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
-    // paddingBottom: horizontalGroupScreenButton.paddingBottom,
   },
 });
 

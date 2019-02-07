@@ -27,7 +27,6 @@ class SearchScreen extends React.Component {
   }
 
   handleResults(results) {
-    console.log('results are', results);
     this.setState({ results });
   }
 
@@ -101,9 +100,6 @@ class SearchScreen extends React.Component {
     const groupName = this.props.navigation.getParam('groupName');
     return (
       <View style={styles.container}>
-        <View style={{ marginTop: hp('12%') }}>
-          {this.users()}
-        </View>
         <SearchBar
           ref={function (ref) {
             this.searchBar = ref;
@@ -117,6 +113,9 @@ class SearchScreen extends React.Component {
             this.props.navigation.navigate('GroupsScreen');
           }}
         />
+        <View style={{ marginTop: 5 }}>
+          {this.users()}
+        </View>
       </View>
     );
   }
