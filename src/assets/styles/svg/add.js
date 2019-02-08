@@ -59,4 +59,12 @@ export const line2YPoint2 = `${line2YPoint2Num}`;
 export const addContainer = {
   marginBottom: hp('3%'),
   marginRight: wp('6%'),
+
+  shadowColor: 'black',
+  shadowOffset: {
+    width: 0,
+    height: 3,
+  },
+  shadowRadius: 2.5,
+  shadowOpacity: 0.5,
 };

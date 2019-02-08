@@ -34,7 +34,7 @@ class SearchScreen extends React.Component {
     if (groupName) {
       return `Search in ${groupName} by name, location, descrption...`;
     }
-    return 'Search for ALL users by name, location, descrption...';
+    return 'Search ALL users by name, location, descrption...';
   }
 
   /**
@@ -108,12 +108,12 @@ class SearchScreen extends React.Component {
           handleResults={this.handleResults}
           showOnLoad
           placeholder={this.placeHolderText(groupName)}
-          heightAdjust={Platform.OS === 'ios' ? 0 : hp('3%')}
           onBack={() => {
             this.props.navigation.navigate('GroupsScreen');
           }}
         />
-        <View style={{ marginTop: 5 }}>
+        <View style={{ marginTop: 55 }}>
+          {/* Search bar source code seems to be hard-coded height, so i can get hard-coded marginTop */}
           {this.users()}
         </View>
       </View>

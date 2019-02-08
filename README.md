@@ -32,8 +32,10 @@ How often do you remember someone's face, but not their name? This is a native a
   b) 
 6) download names file?
 7) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
+8) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 
 ### Version 2 feature requests
 1) geolocation?
+
 
 

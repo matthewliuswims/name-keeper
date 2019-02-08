@@ -53,7 +53,6 @@ class GroupsScreen extends Component<Props> {
     this.props.listGroups(); // also called in compoenntDidMount, but this is used so we can see groups quicker on screen
     this.props.listAllUsers();
     this.state = {
-      addModalOpen: false,
       showingGroups: true,
       sortByModalOpen: false,
       filterModalOpen: false,
@@ -414,15 +413,16 @@ class GroupsScreen extends Component<Props> {
 
   footerGroupsList = () => {
     return (
-      <TouchableOpacity
-        style={styles.button}
-        onPress = {() => {
-          this.props.navigation.navigate('AddGroupScreen');
-        }
-        }
-      >
-        <Text style={styles.addText}>+ <Text style={styles.groupText}> group</Text></Text>
-      </TouchableOpacity>
+      <View style={styles.button} elevation={5}>
+        <TouchableOpacity
+          onPress = {() => {
+            this.props.navigation.navigate('AddGroupScreen');
+          }
+          }
+        >
+          <Text style={styles.addText}>+ <Text style={styles.groupText}> group</Text></Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 
