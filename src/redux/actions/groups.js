@@ -1,12 +1,11 @@
 import Sentry from 'sentry-expo';
+
 import GroupsDB from '../../assets/database/GroupsDB';
 import { makeAction } from '../../lib/actions';
 
 export const ADD_GROUP_START = 'ADD_GROUP_START';
 export const ADD_GROUP_SUCCESS = 'ADD_GROUP_SUCCESS';
 export const ADD_GROUP_FAIL = 'ADD_GROUP_FAIL';
-
-export const GROUP_VALIDATION_FAIL = 'GROUP_VALIDATION_FAIL';
 
 export const LIST_GROUPS_START = 'LIST_GROUPS_START';
 export const LIST_GROUPS_SUCCESS = 'LIST_GROUPS_SUCCESS';
@@ -62,10 +61,8 @@ export function addGroup(groupName) {
     }).then(() => {
       dispatch(addGroupSuccess(groupName));
     }).catch((err) => {
+      Sentry.captureException(err);
       dispatch(addGroupFail(err));
-      Sentry.captureMessage('App was started up by a user', {
-        level: 'info',
-      });
       // no need to throw err in this particular instance because
       // ui won't do anything explictly if this part fails
     });
@@ -81,6 +78,7 @@ export function listGroups() {
       dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
       return groupsList;
     } catch (err) {
+      Sentry.captureException(err);
       dispatch(makeAction(LIST_GROUPS_FAIL, err));
     }
   };
@@ -101,6 +99,7 @@ export function editGroup(currentGroupName, newGroupName) {
       await groupDBInstance.editGroup(currentGroupName, newGroupName); // also updatesUsers
       dispatch(makeAction(EDIT_GROUP_SUCCESS));
     } catch (err) {
+      Sentry.captureException(err);
       dispatch(makeAction(EDIT_GROUP_FAIL, err));
     }
   };
@@ -118,15 +117,9 @@ export function deleteGroup(groupName) {
       await groupDBInstance.deleteGroup(groupName);
       dispatch(makeAction(DELETE_GROUP_SUCCESS));
     } catch (err) {
+      Sentry.captureException(err);
       dispatch(makeAction(DELETE_GROUP_FAIL, err));
     }
-  };
-}
-
-
-export function groupValidationFail(error) {
-  return (dispatch) => {
-    dispatch(makeAction(GROUP_VALIDATION_FAIL, error));
   };
 }
 

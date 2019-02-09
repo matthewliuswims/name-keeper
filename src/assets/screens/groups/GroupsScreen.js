@@ -43,12 +43,9 @@ const noOp = () => { console.log('please try again in a second'); }; // eslint-d
 
 class GroupsScreen extends Component<Props> {
   constructor(props) {
-    console.log('groups screen created - only on opening of app??');
-
-    // Sentry.captureException(new Error('Oops! from groupsscreen'));
-    // Sentry.captureMessage('Something happened testeronbi', {
-    //   level: 'info', // one of 'info', 'warning', or 'error'
-    // });
+    Sentry.captureMessage('Groups screen Initialzied for a user', {
+      level: 'info', // one of 'info', 'warning', or 'error'
+    });
     super(props);
     this.props.listGroups(); // also called in compoenntDidMount, but this is used so we can see groups quicker on screen
     this.props.listAllUsers();
@@ -429,7 +426,7 @@ class GroupsScreen extends Component<Props> {
   navigateToAddUserScreen = () => {
     const firstGroupNameWeFind = get(this.props.groupsState, 'groups[0].name', '');
     if (!firstGroupNameWeFind) {
-      // @TODO: logger error here... and handle gracefully?
+      Sentry.captureException(new Error('Catastrophic Error: tried to add a user, but could not get a default group to give that user'));
     }
     this.props.focusGroup(firstGroupNameWeFind); // arbitrarily focus the first group name we find
     this.props.navigation.navigate('AddUserScreen');

@@ -1,6 +1,3 @@
-
-// @TODO: better way to do this?
-
 // @tutorial: https://facebook.github.io/react-native/docs/colors
 
 export const colors = [
@@ -24,18 +21,14 @@ const colorsToPosition = {
   violet: 6,
   mediumvioletred: 7,
 };
-// want to turn it into below
-// const colorsToPosition = [
-//   { color: 'red', position: 0},
-//   { color: 'dodgerblue', position: 1},
-//   { color: 'forestgreen', position: 2},
-//   { color: 'coral', position: 3},
-//   { color: 'purple', position: 4},
-//   { color: 'yellow', position: 5},
-//   { color: 'violet', position: 6},
-//   { color: 'lightsteelblue', position: 7},
-// ];
 
+/**
+ * helper func for nextColor()
+ * @param {string[]} groupColors - CURRENT colors of all the groups (unordered from redux)
+ *   @example ['silver','red','yellow']
+ * @return {string[]} - groupColors are now ordered by position (based on above colorsToPosition mapping)
+ *   @example ['red', 'silver', 'yellow']
+ */
 function orderColors(groupColors) {
   const colorsAndPosition = [];
   for (const color of groupColors) {
@@ -44,16 +37,26 @@ function orderColors(groupColors) {
       position: colorsToPosition[color],
     });
   }
+  // @example of colorsAndPosition
+  //  [
+  //   { color: 'yellow', position: 5},
+  //   { color: 'red', position: 0},
+  //   { color: 'silver', position: 3},
+  //  ];
   colorsAndPosition.sort((a, b) => {
     return a.position - b.position;
   });
   const orderedColors = colorsAndPosition.map(colorPosition => colorPosition.color);
   return orderedColors;
 }
+
 /**
- * this assumes groupCOlors is an array that is no greater than GROUP_NUMBER_LIMIT
- * @param {string[]} groupColors - current colors of all the groups (unordered from redux)
- * @returns {string} next group color
+ * called in GroupsDB to get the next group color for a newly created group.
+ *
+ * this func assumes groupColors is an array that is no greater than GROUP_NUMBER_LIMIT
+ *
+ * @param {string[]} groupColors - CURRENT colors of all the groups (unordered from redux)
+ * @returns {string} next group color for a NEW group
  */
 export function nextColor(groupColors) {
   const groupColorsOrdered = orderColors(groupColors);

@@ -45,8 +45,6 @@ const options = {
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-// @TODO: investigate whether or not we will have bugs because
-// we only initialize this.state.groups in constructor once...
 class EditUserScreen extends Component<Props> {
   constructor(props) {
     super(props);

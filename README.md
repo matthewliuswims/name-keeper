@@ -18,24 +18,33 @@ How often do you remember someone's face, but not their name? This is a native a
 
 3. Notable libraries: redux is used extensively for state management, while react-navigation is used for navigating between screens.
 
-4. tests are in the `__tests__` directory.  Most of the 'meaty code' is in the `src` directory. But the entry point to the App in `App.js` at the root level.
+4. tests are in the `__tests__` directory.  Most of the 'meaty code' is in the `src` directory. But the entry point to the App is `App.js` at the root directory.
 
+### Manual Regression Testing Process
 
+@TODO: need to finish this and give specific cases for the sentences below. 
+@TODO: test on multiple devices
+
+Verify that deleting all groups and all users yields proper results.
+Can add multiple users to multiple groups.
+Can edit users and edit groups.
+Can delete users and groups.
+Search Screen works as intended
+
+ 
 ### Outstanding Issues/Considerations
-0.5) change add group to match snapchat login: https://medium.com/@LeMarquisOfAndy/the-engineers-guide-to-not-making-your-app-look-awful-8b178b670e27
-1) Need to still do my manual end-end testing.
-2) Need to fix es-lint ref warnings in AddUserScreen.
-3) change package versions from latest to numbers
-4) figure out how many places the about menu should be.
-5) sentry logging?
+1) Need to still do my manual testing steps above
+2) change package versions from latest to numbers when put in prod.
+3) figure out how many places the about menu should be.
+4) sentry logging?
   a) - capturing the user info <--  advanced stuff, https://docs.sentry.io/enriching-error-data/context/?platform=node#capturing-the-user
   b) 
-6) download names file?
-7) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
-8) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
+5) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
+6) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 
 ### Version 2 feature requests
 1) geolocation?
+2) downloading all names to a file?
 
 
 

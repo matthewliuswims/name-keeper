@@ -4,8 +4,8 @@ import { nextColor } from '../../lib/groupColors';
 
 import UsersDB from './UsersDB';
 
-const GROUP_NUMBER_LIMIT = 8; // @TODO need to give design justification in a screen/readme for
-// for why we set a hard limit...
+const GROUP_NUMBER_LIMIT = 8;
+// Why do we set a hard limit to the maxmimum number of groups a phone-user can have?
 // because: a) limit clutter b) want control over specific colors
 
 export default class GroupsDB extends React.Component {
@@ -69,7 +69,6 @@ export default class GroupsDB extends React.Component {
     }
 
     async editGroup(currentGroupName, newGroupName) {
-      // @TODO: have to do own group editing stuff
       const usersDBInstance = await UsersDB.getInstance();
       await usersDBInstance.updateUsersWithNewGroupName(currentGroupName, newGroupName);
       await this.editGroupName(currentGroupName, newGroupName);
