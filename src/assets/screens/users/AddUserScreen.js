@@ -95,7 +95,7 @@ class AddUserScreen extends Component<Props> {
   }
 
   userSubmit = async () => {
-    const userStruct = this.refs.form.getValue();
+    const userStruct = this.formRef.getValue();
 
     if (userStruct) {
       const { name, location, description } = userStruct;
@@ -223,7 +223,7 @@ class AddUserScreen extends Component<Props> {
       >
         <View style={container}>
           <Form
-            ref='form'
+            ref={(c) => { this.formRef = c; }}
             type={userForm}
             value={this.state.value}
             onChange={this.onChange}
