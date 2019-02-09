@@ -41,6 +41,7 @@ Search Screen works as intended
   b) 
 5) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
 6) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
+7) setState unmounting issues
 
 ### Version 2 feature requests
 1) geolocation?

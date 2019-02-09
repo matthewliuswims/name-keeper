@@ -15,8 +15,21 @@ import { deleteGroup, listGroups } from '../../../redux/actions/groups';
 import { listAllUsers } from '../../../redux/actions/users';
 
 class RightHeaderGroupComponent extends React.Component {
+  // https://www.robinwieruch.de/react-warning-cant-call-setstate-on-an-unmounted-component/
+  _isMounted = false;
 
+  // @TODO; need to investigate the unmounting stuff...how it works here..
   state = { opened: false, visibleModal: false };
+
+  // @TODO: use _isMounted below
+  componentDidMount() {
+    this._isMounted = true;
+  }
+
+  // @TODO: use _isMounted below
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   onOptionSelect = (value) => {
     if (value === 'Edit') {
@@ -25,12 +38,10 @@ class RightHeaderGroupComponent extends React.Component {
       });
     }
     if (value === 'Delete') {
+      // setting the confirmation-modal to be open
       this.setState({ visibleModal: true });
-      /*
-       *  1.25) call redux action for delete
-       *  1.5) react navigation change screen.
-       */
     }
+    // groupMenu is no longer upon a selection of anoption
     this.setState({ opened: false });
   }
 
@@ -111,7 +122,9 @@ class RightHeaderGroupComponent extends React.Component {
                 await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
                 this.props.listAllUsers();
                 this.props.listGroups();
-                this.setState({ visibleModal: false });
+                if (this._isMounted) {
+                  this.setState({ visibleModal: false });
+                }
               })}
             </View>
           </View>
