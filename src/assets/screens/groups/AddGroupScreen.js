@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ErrorModal from '../../components/modal/Error';
 
 import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
-import { addGroup, listGroups, clearGroupsErr } from '../../../redux/actions/groups';
+import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
 
 type Props = {
@@ -85,7 +85,12 @@ class AddGroupScreen extends Component<Props> {
         if (!this.props.groupsState.error) {
           this.props.listGroups().then(
             () => {
-              this.props.navigation.navigate('GroupsScreen');
+              this.props.navigation.popToTop();
+              this.props.focusGroup(groupName);
+              this.props.navigation.navigate('GroupScreen',
+                {
+                  groupName,
+                });
             },
           ); // update redux from sql
         }
@@ -134,6 +139,7 @@ const mapDispatchToProps = dispatch => (
   {
     addGroup: groupName => dispatch(addGroup(groupName)),
     listGroups: () => dispatch(listGroups()),
+    focusGroup: groupName => dispatch(focusGroup(groupName)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
   }
 );

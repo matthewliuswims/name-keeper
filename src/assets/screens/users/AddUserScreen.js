@@ -50,7 +50,6 @@ class AddUserScreen extends Component<Props> {
     this.state = {
       value: null, // for form
       selectedGroupName: this.props.groupsState.focusedGroupName,
-      groupsDropdownSelection: this.props.groupsState.groups, // selectedGroupName will always correspond to first group.
       groupDropdownOpen: false,
     };
   }
@@ -150,27 +149,27 @@ class AddUserScreen extends Component<Props> {
     });
   }
 
+
   /**
-   * @param {Array<Object>} groupsDropdownSelection - ordered groups from dropdown perspective
-   * @return all groups that are not currently selected.
+   * @param {Array<Object>} allGroups - unordered groups from groups redux
+   * @return selection UI for 'other' groups in the dropdown
    */
-  otherGroups(groupsDropdownSelection) {
-    const groupsCopy = groupsDropdownSelection.slice();
-    if (groupsCopy.length <= 1 || !this.state.groupDropdownOpen) {
-      return null; // if not open, don't show
+  otherGroupsDropdown(allGroups) {
+    const otherGroups = allGroups.filter(group => group.name !== this.state.selectedGroupName);
+    if (otherGroups.length === 0 || !this.state.groupDropdownOpen) {
+      return null; // if not open, don't show a dropdown
     }
-    groupsCopy.shift();
 
     return (
       <FlatList
-        data={groupsCopy}
+        data={otherGroups}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.otherGroupSelection}
             onPress={() => { this.otherGroupClick(item); }}
           >
             <View style={styles.groupIconNameContainer}>
-              <View style={this.getCircularColorStyle(getGroupColor(item.name, groupsCopy))} />
+              <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
               <Text numberOfLines={1}> {item.name} </Text>
             </View>
             <Icon
@@ -185,9 +184,9 @@ class AddUserScreen extends Component<Props> {
   }
 
   /**
-   * @param {Array<Object>} groupsDropdownSelection - ordered groups from dropdown perspective
+   * @param {Array<Object>} allGroups - unordered groups from groups redux
    */
-  selectedGroup(groupsDropdownSelection) {
+  selectedGroupUI(allGroups) {
     return (
       <TouchableOpacity
         style={styles.initialGroupSelection}
@@ -199,7 +198,7 @@ class AddUserScreen extends Component<Props> {
         }
       >
         <View style={styles.groupIconNameContainer}>
-          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, groupsDropdownSelection))} />
+          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
           <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
         </View>
         <Icon
@@ -210,7 +209,7 @@ class AddUserScreen extends Component<Props> {
   }
 
   render() {
-    const { groupsDropdownSelection } = this.state;
+    const { groups: allGroups } = this.props.groupsState;
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -229,8 +228,8 @@ class AddUserScreen extends Component<Props> {
           />
           <Text style={styles.groupText}> Group </Text>
           <View style={styles.groupsSection}>
-            {this.selectedGroup(groupsDropdownSelection)}
-            {this.otherGroups(groupsDropdownSelection)}
+            {this.selectedGroupUI(allGroups)}
+            {this.otherGroupsDropdown(allGroups)}
           </View>
           {this.checkErrUsrs(this.props.usersState.error)}
         </View>

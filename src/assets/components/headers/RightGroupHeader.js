@@ -79,6 +79,7 @@ class RightHeaderGroupComponent extends React.Component {
 
   render() {
     const { opened } = this.state;
+
     return (
       <View style={styles.container}>
         <Icon
@@ -100,35 +101,38 @@ class RightHeaderGroupComponent extends React.Component {
           onSelect={this.onOptionSelect}
           onTriggerPress={this.onTriggerPress}
         />
-        <Modal isVisible={this.state.visibleModal}>
-          <View style={styles.modalContent}>
-            <Icon
-              name='warning'
-              color={colors.warningColor}
-              size={wp('16%')}
-            />
-            <Text style={styles.modalHeader}>
-              Are you sure?
-            </Text>
-            <Text style={styles.modalMsg}>
-              You will delete this group and all its users. This process cannot be done.
-            </Text>
-            <View style={styles.cancelDeleteContainer}>
-              {this.renderCancel('Close', () => {
-                this.setState({ visibleModal: false });
-              })}
-              {this.renderDelete('Delete', async () => {
-                await this.props.navigation.navigate('GroupsScreen');
-                await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
-                this.props.listAllUsers();
-                this.props.listGroups();
-                if (this._isMounted) {
+        {/* @TODO: i still get setState warnings in the line below... */}
+        {this._isMounted && (
+          <Modal isVisible={this.state.visibleModal}>
+            <View style={styles.modalContent}>
+              <Icon
+                name='warning'
+                color={colors.warningColor}
+                size={wp('16%')}
+              />
+              <Text style={styles.modalHeader}>
+                Are you sure?
+              </Text>
+              <Text style={styles.modalMsg}>
+                You will delete this group and all its users. This process cannot be done.
+              </Text>
+              <View style={styles.cancelDeleteContainer}>
+                {this.renderCancel('Close', () => {
                   this.setState({ visibleModal: false });
-                }
-              })}
+                })}
+                {this.renderDelete('Delete', async () => {
+                  await this.props.navigation.navigate('GroupsScreen');
+                  await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
+                  this.props.listAllUsers();
+                  this.props.listGroups();
+                  if (this._isMounted) {
+                    this.setState({ visibleModal: false });
+                  }
+                })}
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        )}
       </View>
     );
   }

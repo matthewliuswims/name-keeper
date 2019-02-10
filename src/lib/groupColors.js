@@ -72,7 +72,7 @@ export function nextColor(groupColors) {
  * because the caller of this is a group container, which means
  * that at least 1 group exists
  * @param {string} groupName - groupName we are interested in finding color for
- * @param {[]Object} groups - all groups that exist, can assume this will always have length > 1.
+ * @param {[]Object} groups - all groups (unordered) that exist, can assume this will always have length > 1.
  * can assume names in groups are all unique.
  * @return {string} color for groupName
  * tests for jest when it works:

@@ -82,6 +82,8 @@ class RightUserHeader extends React.Component {
               {this.renderDelete('Delete', () => {
                 this.props.deleteUser(this.props.usersState.focusedUser);
                 this.props.listAllUsers();
+                // so the back button is correct, else back button but would be deleted user screen
+                this.props.navigation.popToTop();
                 this.props.navigation.navigate('GroupScreen',
                   {
                     groupName: this.props.groupsState.focusedGroupName,

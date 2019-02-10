@@ -43,9 +43,25 @@ Search Screen works as intended
 6) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 7) setState unmounting issues
 
+---
+9) allow user to edit they long-press on the box (gives them edit+delete) options
+10) make sort icon target area bigger
+11) bug: sorting (after saving a new user) <-- hard to replicate
+12) move people from group to group <-- suport this.
+13) bug: adding in a user which isn't the first group, only have 1 slection of the user
+14) after adding a group, just take them to the group screen.
+
+
 ### Version 2 feature requests
 1) geolocation?
 2) downloading all names to a file?
+3) picture/thumbail?
+4) delete multiple people?
+5) if a user logs in again, they have the option to turn off help if they want it.
 
+***avoid pronouns
+
+'Add a group'
+'Then you can add people (**or names?) to the group'
 
 

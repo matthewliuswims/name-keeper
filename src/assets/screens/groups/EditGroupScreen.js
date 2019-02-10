@@ -77,7 +77,12 @@ class AddGroupScreen extends Component<Props> {
       } // else, we wait for the errModal to popup here
 
       if (!this.props.groupsState.error && !this.props.usersState.error) {
-        this.props.navigation.navigate('GroupsScreen');
+        this.props.navigation.popToTop();
+        this.props.focusGroup(newGroupName);
+        this.props.navigation.navigate('GroupScreen',
+          {
+            newGroupName,
+          });
       } // else, we wait for the errModal to popup herea
     }
   }
