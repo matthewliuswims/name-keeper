@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
 import ErrorModal from '../../components/modal/Error';
 
-import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
+import { container, topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
 
 import { editGroup, listGroups, clearGroupsErr } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
@@ -33,6 +33,17 @@ const options = {
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
 class AddGroupScreen extends Component<Props> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: this.geGroupValue(),
+    };
+  }
+
+  geGroupValue = () => {
+    return ({ name: this.props.groupsState.focusedGroupName });
+  }
+
   /**
    * @tutorial https://reactnavigation.org/docs/en/header-buttons.html#header-interaction-with-its-screen-component
    * for onPress we need a noOp, otherwise we'd get an error, because React Navigation does NOT guarantee
@@ -44,8 +55,8 @@ class AddGroupScreen extends Component<Props> {
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
-          <View style={styles.saveButton}>
-            <Text style={styles.saveButtonText}> Save</Text>
+          <View style={topRightTextButtonContainer}>
+            <Text style={topRightButtonText}> Save</Text>
           </View>
         </TouchableOpacity>
       ),
@@ -113,12 +124,21 @@ class AddGroupScreen extends Component<Props> {
     }
   }
 
+  onChange = (value) => {
+    this.setState({ value });
+  }
 
   render() {
     return (
       <View style={container}>
         <View>
-          <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
+          <Form
+            ref={(c) => { this.formRef = c; }}
+            type={group}
+            options={options}
+            value={this.state.value}
+            onChange={this.onChange}
+          />
         </View>
         {this.checkErrGrps(this.props.groupsState.error)}
         {this.checkErrUsrs(this.props.usersState.error)}
@@ -126,19 +146,6 @@ class AddGroupScreen extends Component<Props> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  saveButton: {
-    paddingLeft: topRightSaveButton.paddingLeft,
-    paddingRight: topRightSaveButton.paddingRight,
-    backgroundColor: topRightSaveButton.backgroundColor,
-    marginRight: topRightSaveButton.marginRight,
-  },
-  saveButtonText: {
-    color: topRightSaveButtonText.color,
-    fontWeight: topRightSaveButtonText.fontWeight,
-  },
-});
 
 const mapDispatchToProps = dispatch => (
   {

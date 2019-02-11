@@ -22,14 +22,14 @@ export const container = {
   paddingRight: wp('3%'),
 };
 
-export const topRightSaveButton = {
+export const topRightTextButtonContainer = {
   padding: wp('1%'),
   marginRight: wp('3%'),
   backgroundColor: '#00000000',
   color: 'white',
 };
 
-export const topRightSaveButtonText = {
+export const topRightButtonText = {
   color: 'white',
   fontWeight: 'bold',
 };

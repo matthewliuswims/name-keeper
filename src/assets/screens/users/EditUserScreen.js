@@ -12,7 +12,7 @@ import { listGroups } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, groupIconNameContainer, topRightSaveButton, topRightSaveButtonText, circularGroupIcon } from '../../styles/base';
+import { container, groupIconNameContainer, topRightTextButtonContainer, topRightButtonText, circularGroupIcon } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -73,8 +73,8 @@ class EditUserScreen extends Component<Props> {
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
-          <View style={styles.saveButton}>
-            <Text style={styles.saveButtonText}> Save</Text>
+          <View style={topRightTextButtonContainer}>
+            <Text style={topRightButtonText}> Save</Text>
           </View>
         </TouchableOpacity>
       ),
@@ -358,15 +358,6 @@ const styles = StyleSheet.create({
     borderRightWidth: 0.75,
     borderBottomWidth: 0.75,
     borderColor: colors.borderColor,
-  },
-  saveButton: {
-    padding: topRightSaveButton.padding,
-    marginRight: topRightSaveButton.marginRight,
-    backgroundColor: topRightSaveButton.backgroundColor,
-  },
-  saveButtonText: {
-    color: topRightSaveButtonText.color,
-    fontWeight: topRightSaveButtonText.fontWeight,
   },
 });
 

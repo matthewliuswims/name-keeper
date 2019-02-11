@@ -6,18 +6,32 @@ import { get } from 'lodash';
 
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 
+import noOp from '../../../lib/UIhelpers';
 import { container, groupIconNameContainer, horizontalGroupScreenButton } from '../../styles/base';
-import RightHeaderComponent from '../../components/headers/RightUserHeader';
+import RightHeaderComponent from '../../components/headers/RightTextHeader';
 import { getGroupColor } from '../../../lib/groupColors';
 
 class UserScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('username'),
-      headerRight: <RightHeaderComponent />,
+      headerRight: <RightHeaderComponent
+        buttonOnPress={navigation.getParam('editClick') || noOp}
+        textDisplay='Edit'
+      />,
       headerBackTitle: null,
     };
   };
+
+  componentDidMount() {
+    this.props.navigation.setParams({ editClick: this.editClick });
+  }
+
+  editClick = () => {
+    this.props.navigation.navigate('EditUserScreen', {
+      focusedUserName: this.props.usersState.focusedUser.name,
+    });
+  }
 
   getCircularColorStyle(groupColor) {
     const circularGroupIconNoColor = styles.circularGroupIcon;

@@ -42,6 +42,7 @@ Search Screen works as intended
 5) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
 6) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 7) setState unmounting issues
+8) instead of doign poptotop use reset: https://reactnavigation.org/docs/en/stack-actions.html#reset
 
 ---
 9) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options

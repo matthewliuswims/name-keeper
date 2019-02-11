@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import ErrorModal from '../../components/modal/Error';
 
-import { container, topRightSaveButton, topRightSaveButtonText } from '../../styles/base';
+import { container, topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
 import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
 
@@ -46,8 +46,8 @@ class AddGroupScreen extends Component<Props> {
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
-          <View style={styles.saveButton}>
-            <Text style={styles.saveButtonText}> Save</Text>
+          <View style={topRightTextButtonContainer}>
+            <Text style={topRightButtonText}> Save</Text>
           </View>
         </TouchableOpacity>
       ),
@@ -123,15 +123,6 @@ const styles = StyleSheet.create({
     marginTop: hp('22%'),
     textAlign: 'center',
     fontWeight: 'bold',
-  },
-  saveButton: {
-    padding: topRightSaveButton.padding,
-    marginRight: topRightSaveButton.marginRight,
-    backgroundColor: topRightSaveButton.backgroundColor,
-  },
-  saveButtonText: {
-    color: topRightSaveButtonText.color,
-    fontWeight: topRightSaveButtonText.fontWeight,
   },
 });
 

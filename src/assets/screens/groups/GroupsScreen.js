@@ -411,12 +411,13 @@ class GroupsScreen extends Component<Props> {
 
   footerGroupsList = () => {
     return (
-      <View style={styles.button} elevation={5}>
+      <View elevation={5} style={{ flex: 1 }}>
         <TouchableOpacity
           onPress = {() => {
             this.props.navigation.navigate('AddGroupScreen');
           }
           }
+          style={styles.button}
         >
           <Text style={styles.addText}>+ <Text style={styles.groupText}> group</Text></Text>
         </TouchableOpacity>
