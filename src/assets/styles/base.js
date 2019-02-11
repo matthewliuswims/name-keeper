@@ -2,6 +2,7 @@
 
 // @tutorial https://medium.com/react-native-training/build-responsive-react-native-views-for-any-device-and-support-orientation-change-1c8beba5bc23
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import RF from 'react-native-responsive-fontsize';
 
 import colors from './colors';
 
@@ -128,4 +129,19 @@ export const deleteButton = {
 
 export const deleteButtonText = {
   color: 'white',
+};
+
+export const modalContentDeleteConfirmation = {
+  backgroundColor: 'white',
+  padding: 16,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 4,
+  borderColor: 'rgba(0, 0, 0, 0.1)',
+};
+
+export const modalHeader = {
+  fontWeight: 'bold',
+  fontSize: RF(2.5),
+  marginTop: hp('2%'),
 };

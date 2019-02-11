@@ -137,13 +137,8 @@ class AddUserScreen extends Component<Props> {
 
   otherGroupClick = (group) => {
     this.setState((state) => {
-      const copyGroupsDropdownSelection = state.groupsDropdownSelection.slice();
-      const noClickedGroup = copyGroupsDropdownSelection.filter(grp => grp.name !== group.name);
-      noClickedGroup.unshift(group);
-
       return {
         groupDropdownOpen: !state.groupDropdownOpen,
-        groupsDropdownSelection: noClickedGroup,
         selectedGroupName: group.name,
       };
     });
@@ -256,8 +251,6 @@ const styles = StyleSheet.create({
     marginLeft: wp('2%'),
   },
   groupsSection: {
-    // borderWidth: 0.75,
-    // borderColor: colors.borderColor,
     marginTop: hp('1%'),
   },
   initialGroupSelection: {

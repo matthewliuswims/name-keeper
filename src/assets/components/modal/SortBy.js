@@ -94,9 +94,6 @@ export default class SortByModal extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   sortRow: {
     flexDirection: 'row',
     alignItems: 'center',

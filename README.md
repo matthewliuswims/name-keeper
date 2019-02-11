@@ -44,13 +44,18 @@ Search Screen works as intended
 7) setState unmounting issues
 
 ---
-9) allow user to edit they long-press on the box (gives them edit+delete) options
+9) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options
 10) make sort icon target area bigger
 11) bug: sorting (after saving a new user) <-- hard to replicate
 12) move people from group to group <-- suport this.
 13) bug: adding in a user which isn't the first group, only have 1 slection of the user
 14) after adding a group, just take them to the group screen.
-
+15) prepopulate edit group input
+16) padding on topleft groups icon is different
+17) edit instead of three colons at top right
+18) asbtract styles from base.js (e.g. modalContent, modalHeader, modalMsg )
+19) add proptypes
+20) individual modals don't need to know their own state
 
 ### Version 2 feature requests
 1) geolocation?
@@ -58,6 +63,8 @@ Search Screen works as intended
 3) picture/thumbail?
 4) delete multiple people?
 5) if a user logs in again, they have the option to turn off help if they want it.
+6) flashcard mode?
+7) search uses fuzzy search
 
 ***avoid pronouns
 

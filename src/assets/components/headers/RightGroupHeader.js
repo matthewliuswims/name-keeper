@@ -65,14 +65,6 @@ class RightHeaderGroupComponent extends React.Component {
     </TouchableOpacity>
   );
 
-  renderButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.button}>
-        <Text>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
   onBackdropPress = () => {
     this.setState({ opened: false });
   }

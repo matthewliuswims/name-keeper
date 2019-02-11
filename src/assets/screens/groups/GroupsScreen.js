@@ -434,7 +434,6 @@ class GroupsScreen extends Component<Props> {
   }
 
   renderContents = (numberGroups, users, numberUsers, sortOption, selectedFilteredGroups) => {
-
     if (this.state.showingGroups) {
       return this.groupsList(numberGroups, users);
     }
