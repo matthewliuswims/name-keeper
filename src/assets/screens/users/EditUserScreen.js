@@ -12,7 +12,7 @@ import { listGroups } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, groupIconNameContainer, topRightTextButtonContainer, topRightButtonText, circularGroupIcon } from '../../styles/base';
+import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -73,8 +73,8 @@ class EditUserScreen extends Component<Props> {
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
-          <View style={topRightTextButtonContainer}>
-            <Text style={topRightButtonText}> Save</Text>
+          <View style={topRightTextButtonContainerSolo}>
+            <Text style={topRightButtonText}>Save</Text>
           </View>
         </TouchableOpacity>
       ),
@@ -266,6 +266,7 @@ class EditUserScreen extends Component<Props> {
           deleteFunc={this.deleteUser}
           closeDeleteModal={this.closeDeleteModal}
           currentFocusedScreen={this.props.navigation.isFocused()}
+          deleteGroup={false}
         />
       );
     }
@@ -300,8 +301,14 @@ class EditUserScreen extends Component<Props> {
             </View>
             {this.checkErrGrps(this.props.groupsState.error)}
             {this.checkErrUsrs(this.props.usersState.error)}
-            <TouchableOpacity style={styles.deleteContainer} onPress={this.openDeleteModal}>
-              <Text style={styles.deleteText}> Delete Person </Text>
+            <TouchableOpacity style={deleteContainer} onPress={this.openDeleteModal}>
+              <Icon
+                name='delete'
+                size={wp('10%')}
+                iconStyle={{
+                  marginRight: wp('2%'),
+                }}
+              />
             </TouchableOpacity>
           </View>
         </TouchableWithoutFeedback>
@@ -312,11 +319,6 @@ class EditUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  deleteContainer: {
-    marginTop: hp('3%'),
-    borderWidth: 1,
-    padding: hp('1%'),
-  },
   deleteText: {
     color: 'red',
     fontSize: 21,

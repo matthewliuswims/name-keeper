@@ -63,7 +63,10 @@ export default class DeleteModal extends Component {
           Are you sure?
         </Text>
         <Text style={modalMsg}>
-          You will delete this group and all its users. This process cannot be done.
+          { this.props.deleteGroup
+            ? 'You will delete this group and all its people. This process cannot be done.'
+            : 'You will delete this person from the group. This process cannot be done.'
+          }
         </Text>
         <View style={styles.cancelDeleteContainer}>
           {this.renderCancel('Close', this.props.closeDeleteModal)}
@@ -97,4 +100,9 @@ DeleteModal.propTypes = {
   deleteFunc: PropTypes.func.isRequired,
   currentFocusedScreen: PropTypes.bool.isRequired,
   closeDeleteModal: PropTypes.func.isRequired,
+  deleteGroup: PropTypes.bool,
 };
+
+DeleteModal.defaultProps = {
+  deleteGroup: true,
+}

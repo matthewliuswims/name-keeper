@@ -3,12 +3,16 @@ import { Text, View, TouchableOpacity } from 'react-native';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
+import { Icon } from 'react-native-elements';
+
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import ErrorModal from '../../components/modal/Error';
+import DeleteModal from '../../components/modal/Delete';
 
-import { container, topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
+import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer } from '../../styles/base';
 
-import { editGroup, listGroups, clearGroupsErr } from '../../../redux/actions/groups';
+import { editGroup, listGroups, clearGroupsErr, deleteGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
 
 type Props = {
@@ -36,11 +40,12 @@ class AddGroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.geGroupValue(),
+      value: this.getGroupValue(),
+      deleteModalOpen: false,
     };
   }
 
-  geGroupValue = () => {
+  getGroupValue = () => {
     return ({ name: this.props.groupsState.focusedGroupName });
   }
 
@@ -55,8 +60,8 @@ class AddGroupScreen extends Component<Props> {
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
-          <View style={topRightTextButtonContainer}>
-            <Text style={topRightButtonText}> Save</Text>
+          <View style={topRightTextButtonContainerSolo}>
+            <Text style={topRightButtonText}>Save</Text>
           </View>
         </TouchableOpacity>
       ),
@@ -124,14 +129,44 @@ class AddGroupScreen extends Component<Props> {
     }
   }
 
-  onChange = (value) => {
-    this.setState({ value });
+
+  openDeleteModal = () => {
+    this.setState({
+      deleteModalOpen: true,
+    });
+  }
+
+  closeDeleteModal = () => {
+    this.setState({
+      deleteModalOpen: false,
+    });
+  }
+
+  deleteGroup = async () => {
+    await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
+    await this.props.navigation.navigate('GroupsScreen');
+    this.props.listAllUsers();
+    this.props.listGroups();
+    this.setState({ deleteModalOpen: false });
+  }
+
+  deleteModal = () => {
+    if (this.state.deleteModalOpen) {
+      return (
+        <DeleteModal
+          deleteModalOpen={this.state.deleteModalOpen}
+          deleteFunc={this.deleteGroup}
+          closeDeleteModal={this.closeDeleteModal}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
   }
 
   render() {
     return (
       <View style={container}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Form
             ref={(c) => { this.formRef = c; }}
             type={group}
@@ -140,8 +175,18 @@ class AddGroupScreen extends Component<Props> {
             onChange={this.onChange}
           />
         </View>
+        <TouchableOpacity style={deleteContainer} onPress={this.openDeleteModal}>
+          <Icon
+            name='delete'
+            size={wp('10%')}
+            iconStyle={{
+              marginRight: wp('2%'),
+            }}
+          />
+        </TouchableOpacity>
         {this.checkErrGrps(this.props.groupsState.error)}
         {this.checkErrUsrs(this.props.usersState.error)}
+        {this.deleteModal()}
       </View>
     );
   }
@@ -149,6 +194,7 @@ class AddGroupScreen extends Component<Props> {
 
 const mapDispatchToProps = dispatch => (
   {
+    deleteGroup: user => dispatch(deleteGroup(user)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     clearUsersErr: () => dispatch(clearUsersErr()),
     listGroups: () => dispatch(listGroups()),

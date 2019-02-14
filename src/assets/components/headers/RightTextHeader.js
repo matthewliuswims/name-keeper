@@ -3,15 +3,17 @@ import { TouchableOpacity, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 
-import { topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
+import { topRightTextButtonContainerSolo, topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
 
 
-class RighTextHeader extends React.Component {
+class RightTextHeader extends React.Component {
   render() {
+    const { soleDisplay } = this.props;
+    const styleToShow = soleDisplay ? topRightTextButtonContainerSolo : topRightTextButtonContainer;
     return (
       <TouchableOpacity
         onPress={this.props.buttonOnPress}
-        style={topRightTextButtonContainer}
+        style={styleToShow}
       >
         <Text style={topRightButtonText}>{this.props.textDisplay}</Text>
       </TouchableOpacity>
@@ -19,9 +21,14 @@ class RighTextHeader extends React.Component {
   }
 }
 
-RighTextHeader.propTypes = {
+RightTextHeader.propTypes = {
   buttonOnPress: PropTypes.func.isRequired,
   textDisplay: PropTypes.string.isRequired,
+  soleDisplay: PropTypes.bool,
 };
 
-export default withNavigation(RighTextHeader);
+RightTextHeader.defaultProps = {
+  soleDisplay: true,
+};
+
+export default withNavigation(RightTextHeader);

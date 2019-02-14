@@ -23,6 +23,21 @@ export const container = {
 };
 
 export const topRightTextButtonContainer = {
+  padding: wp('0.5%'),
+  backgroundColor: '#00000000',
+  color: 'white',
+};
+
+export const deleteContainer = {
+  flex: 1,
+  justifyContent: 'flex-end',
+  alignItems: 'flex-end',
+  marginBottom: 36,
+  marginTop: hp('3%'),
+  padding: hp('1%'),
+};
+
+export const topRightTextButtonContainerSolo = {
   padding: wp('1%'),
   marginRight: wp('3%'),
   backgroundColor: '#00000000',

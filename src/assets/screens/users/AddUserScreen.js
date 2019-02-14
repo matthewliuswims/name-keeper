@@ -9,7 +9,7 @@ import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/use
 import { focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 
-import { container, groupIconNameContainer, topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
+import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -74,8 +74,8 @@ class AddUserScreen extends Component<Props> {
       title: 'Add Person',
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
-        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={topRightTextButtonContainer}>
-          <Text style={topRightButtonText}> Save</Text>
+        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={topRightTextButtonContainerSolo}>
+          <Text style={topRightButtonText}>Save</Text>
         </TouchableOpacity>
       ),
     };

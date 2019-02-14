@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 import ErrorModal from '../../components/modal/Error';
 
-import { container, topRightTextButtonContainer, topRightButtonText } from '../../styles/base';
+import { container, topRightTextButtonContainerSolo, topRightButtonText } from '../../styles/base';
 import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
 
@@ -46,8 +46,8 @@ class AddGroupScreen extends Component<Props> {
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
-          <View style={topRightTextButtonContainer}>
-            <Text style={topRightButtonText}> Save</Text>
+          <View style={topRightTextButtonContainerSolo}>
+            <Text style={topRightButtonText}>Save</Text>
           </View>
         </TouchableOpacity>
       ),
