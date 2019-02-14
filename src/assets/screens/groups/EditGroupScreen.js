@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
@@ -12,7 +13,7 @@ import DeleteModal from '../../components/modal/Delete';
 
 import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer } from '../../styles/base';
 
-import { editGroup, listGroups, clearGroupsErr, deleteGroup } from '../../../redux/actions/groups';
+import { editGroup, listGroups, clearGroupsErr, deleteGroup, focusGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
 
 type Props = {
@@ -39,11 +40,13 @@ const noOp = () => { console.log('please try again in a second'); }; // eslint-d
 class AddGroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
+    this.props.navigation.setParams({ getGroupName: this.props.groupsState.focusedGroupName });
     this.state = {
       value: this.getGroupValue(),
       deleteModalOpen: false,
     };
   }
+
 
   getGroupValue = () => {
     return ({ name: this.props.groupsState.focusedGroupName });
@@ -55,8 +58,11 @@ class AddGroupScreen extends Component<Props> {
    * that the screen component will be mounted before the header.
    */
   static navigationOptions = ({ navigation }) => {
+    const navGroupName = navigation.getParam('getGroupName');
+    const groupName = navGroupName || '';
+    const titleDisplay = navGroupName ? `Edit ${groupName}` : '';
     return {
-      title: `Edit ${navigation.getParam('focusedGroupName')}`,
+      title: titleDisplay,
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
@@ -93,12 +99,15 @@ class AddGroupScreen extends Component<Props> {
       } // else, we wait for the errModal to popup here
 
       if (!this.props.groupsState.error && !this.props.usersState.error) {
-        this.props.navigation.popToTop();
         this.props.focusGroup(newGroupName);
-        this.props.navigation.navigate('GroupScreen',
-          {
-            newGroupName,
-          });
+        const resetAction = StackActions.reset({
+          index: 1,
+          actions: [
+            NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+            NavigationActions.navigate({ routeName: 'GroupScreen' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
       } // else, we wait for the errModal to popup herea
     }
   }
@@ -194,6 +203,7 @@ class AddGroupScreen extends Component<Props> {
 
 const mapDispatchToProps = dispatch => (
   {
+    focusGroup: groupName => dispatch(focusGroup(groupName)),
     deleteGroup: user => dispatch(deleteGroup(user)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     clearUsersErr: () => dispatch(clearUsersErr()),

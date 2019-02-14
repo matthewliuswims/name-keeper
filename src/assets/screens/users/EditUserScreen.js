@@ -3,11 +3,12 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFee
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-import { editUser, clearUsersErr, listAllUsers, deleteUser } from '../../../redux/actions/users';
-import { listGroups } from '../../../redux/actions/groups';
+import { editUser, clearUsersErr, listAllUsers, deleteUser, focusUser } from '../../../redux/actions/users';
+import { listGroups, focusGroup } from '../../../redux/actions/groups';
 
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
@@ -15,6 +16,8 @@ import DeleteModal from '../../components/modal/Delete';
 import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
+
+import { parseToLongDate } from '../../../lib/dates';
 
 type Props = {
   navigation: () => void,
@@ -68,8 +71,12 @@ class EditUserScreen extends Component<Props> {
    * that the screen component will be mounted before the header.
    */
   static navigationOptions = ({ navigation }) => {
+    const navUserName = navigation.getParam('focusedUserName');
+    const userName = navUserName || '';
+    const titleDisplay = navUserName ? `Edit ${userName}` : '';
+
     return {
-      title: `Edit ${navigation.getParam('focusedUserName')}`,
+      title: titleDisplay,
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
@@ -96,7 +103,6 @@ class EditUserScreen extends Component<Props> {
     if (userStruct) {
       const { name, location, description } = userStruct;
       const { userID } = this.props.usersState.focusedUser;
-      console.log('this.state.selectedGroupName', this.state.selectedGroupName);
       const user = {
         userID,
         name,
@@ -110,7 +116,25 @@ class EditUserScreen extends Component<Props> {
         await this.props.listAllUsers();
       } // else, we wait for the errModal to popup here
       if (!this.props.usersState.error) {
-        this.props.navigation.navigate('GroupScreen');
+        this.props.focusGroup(this.state.selectedGroupName);
+
+        // it's really bad, but since the DB (upstream where it gets the creationDate) doesn't return the new user
+        // we have to manually jam it here, just to show it one time.
+        const oneTimeDateForUI = Date.now();
+        const userForUI = Object.assign({}, user, {
+          readableCreatedDate: parseToLongDate(oneTimeDateForUI),
+        });
+
+        this.props.focusUser(userForUI);
+        const resetAction = StackActions.reset({
+          index: 2,
+          actions: [
+            NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+            NavigationActions.navigate({ routeName: 'GroupScreen' }),
+            NavigationActions.navigate({ routeName: 'UserScreen' }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
       } // else, we wait for the errModal to popup here
     }
   }
@@ -250,12 +274,15 @@ class EditUserScreen extends Component<Props> {
     this.closeDeleteModal();
     await this.props.deleteUser(this.props.usersState.focusedUser);
     this.props.listAllUsers();
-    // so the back button is correct, else back button but would be deleted user screen
-    this.props.navigation.popToTop();
-    this.props.navigation.navigate('GroupScreen',
-      {
-        groupName: this.props.groupsState.focusedGroupName,
-      });
+
+    const resetAction = StackActions.reset({
+      index: 1,
+      actions: [
+        NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+        NavigationActions.navigate({ routeName: 'GroupScreen' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   deleteModal = () => {
@@ -372,6 +399,8 @@ const mapStateToProps = state => (
 );
 const mapDispatchToProps = dispatch => (
   {
+    focusUser: user => dispatch(focusUser(user)),
+    focusGroup: groupName => dispatch(focusGroup(groupName)),
     editUser: user => dispatch(editUser(user)),
     deleteUser: user => dispatch(deleteUser(user)),
     listAllUsers: () => dispatch(listAllUsers()),

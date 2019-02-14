@@ -11,10 +11,17 @@ import { container, groupIconNameContainer, horizontalGroupScreenButton } from '
 import RightHeaderComponent from '../../components/headers/RightTextHeader';
 import { getGroupColor } from '../../../lib/groupColors';
 
+
 class UserScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.navigation.setParams({ username: this.props.usersState.focusedUser.name });
+  }
+
   static navigationOptions = ({ navigation }) => {
+    const username = navigation.getParam('username') || '';
     return {
-      title: navigation.getParam('username'),
+      title: username,
       headerRight: <RightHeaderComponent
         buttonOnPress={navigation.getParam('editClick') || noOp}
         textDisplay='Edit'

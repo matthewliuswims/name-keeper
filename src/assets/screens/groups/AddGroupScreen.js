@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
@@ -85,12 +86,15 @@ class AddGroupScreen extends Component<Props> {
         if (!this.props.groupsState.error) {
           this.props.listGroups().then(
             () => {
-              this.props.navigation.popToTop();
               this.props.focusGroup(groupName);
-              this.props.navigation.navigate('GroupScreen',
-                {
-                  groupName,
-                });
+              const resetAction = StackActions.reset({
+                index: 1,
+                actions: [
+                  NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+                  NavigationActions.navigate({ routeName: 'GroupScreen' }),
+                ],
+              });
+              this.props.navigation.dispatch(resetAction);
             },
           ); // update redux from sql
         }

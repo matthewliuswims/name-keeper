@@ -35,6 +35,7 @@ type Props = {
 class GroupScreen extends Component<Props> {
   constructor(props) {
     super(props);
+    this.props.navigation.setParams({ getGroupName: this.props.groupsState.focusedGroupName });
     this.props.listAllUsers();
     this.state = {
       sortByModalOpen: false,
@@ -42,9 +43,14 @@ class GroupScreen extends Component<Props> {
     };
   }
 
+  componentDidMount() {
+    this.props.navigation.setParams({ groupSubmit: this.groupSubmit });
+  }
+
   static navigationOptions = ({ navigation }) => {
+    const groupName = navigation.getParam('getGroupName') || '';
     return {
-      title: navigation.getParam('groupName', 'GroupScreen'),
+      title: groupName,
       headerRight: <RightHeaderComponent />,
     };
   };
@@ -152,10 +158,7 @@ class GroupScreen extends Component<Props> {
           <TouchableOpacity
             onPress = {() => {
               this.props.focusUser(item);
-              this.props.navigation.navigate('UserScreen',
-                {
-                  username: item.name,
-                });
+              this.props.navigation.navigate('UserScreen');
             }}
           >
             <UserBox

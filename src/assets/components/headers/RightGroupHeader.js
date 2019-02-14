@@ -32,9 +32,7 @@ class RightHeaderGroupComponent extends React.Component {
         <View style={styles.editContainer}>
           <RightTextHeader
             buttonOnPress={() => {
-              this.props.navigation.navigate('EditGroupScreen', {
-                focusedGroupName: this.props.groupsState.focusedGroupName,
-              });
+              this.props.navigation.navigate('EditGroupScreen');
             }}
             textDisplay='Edit'
             soleDisplay={false}

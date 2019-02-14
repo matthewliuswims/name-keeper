@@ -301,10 +301,7 @@ class GroupsScreen extends Component<Props> {
               onPress = {() => {
                 this.props.focusUser(item);
                 this.props.focusGroup(item.primaryGroupName);
-                this.props.navigation.navigate('UserScreen',
-                  {
-                    username: item.name,
-                  });
+                this.props.navigation.navigate('UserScreen');
               }}
             >
               <UserBox

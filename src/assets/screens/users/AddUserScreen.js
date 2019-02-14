@@ -111,9 +111,7 @@ class AddUserScreen extends Component<Props> {
       if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
-        this.props.navigation.navigate('GroupScreen', {
-          groupName: this.state.selectedGroupName,
-        });
+        this.props.navigation.navigate('GroupScreen');
       } // else, we wait for the errModal to popup here
     }
   }

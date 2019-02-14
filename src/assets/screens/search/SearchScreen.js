@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, StackActions, NavigationActions } from 'react-navigation';
 import RF from 'react-native-responsive-fontsize';
 import { connect } from 'react-redux';
 import SearchBar from 'react-native-searchbar';
@@ -36,22 +36,6 @@ class SearchScreen extends React.Component {
     return 'Search ALL users by name, location, descrption...';
   }
 
-  /**
-   * the reason why the first two navigations are needed is because I want the back button the user screen
-   * to be back to the appropriate group screen.
-   */
-  navigateToUserScreen = (user) => {
-    this.props.navigation.popToTop();
-    this.props.navigation.navigate('GroupScreen',
-      {
-        groupName: user.primaryGroupName,
-      });
-    this.props.navigation.navigate('UserScreen',
-      {
-        username: user.name,
-      });
-  }
-
   users() {
     return (
       <FlatList
@@ -61,16 +45,15 @@ class SearchScreen extends React.Component {
             onPress = {() => {
               this.props.focusUser(item);
               this.props.focusGroup(item.primaryGroupName);
-              // so the back button is correct
-              this.props.navigation.popToTop();
-              this.props.navigation.navigate('GroupScreen',
-                {
-                  groupName: item.primaryGroupName,
-                });
-              this.props.navigation.navigate('UserScreen',
-                {
-                  username: item.name,
-                });
+              const resetAction = StackActions.reset({
+                index: 2,
+                actions: [
+                  NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+                  NavigationActions.navigate({ routeName: 'GroupScreen' }),
+                  NavigationActions.navigate({ routeName: 'UserScreen' }),
+                ],
+              });
+              this.props.navigation.dispatch(resetAction);
             }}
           >
             <UserBox

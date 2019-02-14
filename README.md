@@ -43,7 +43,8 @@ Search Screen works as intended
 6) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 7) setState unmounting issues
 8) instead of doign poptotop use reset: https://reactnavigation.org/docs/en/stack-actions.html#reset
-
+9) if i edit groupscreen name to be something that already exists...i need to give an err
+9.5) for search screen, by default show all people?
 ---
 9) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options
 10) make sort icon target area bigger
