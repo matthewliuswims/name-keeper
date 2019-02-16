@@ -16,8 +16,7 @@ export const sectionHeader = {
 export const container = {
   flex: 1,
   paddingTop: hp('3%'),
-  paddingBottom: hp('3%'),
-  backgroundColor: '#FFFFFF',
+  backgroundColor: colors.containerBackgroundColor,
   paddingLeft: wp('3%'),
   paddingRight: wp('3%'),
 };
@@ -155,8 +154,39 @@ export const modalContentDeleteConfirmation = {
   borderColor: 'rgba(0, 0, 0, 0.1)',
 };
 
-export const modalHeader = {
+// e.g. filter and sort
+export const modalContentNormal = {
+  height: hp('60%'),
+  backgroundColor: 'white',
+  padding: 16,
+  borderRadius: 4,
+  borderColor: 'rgba(0, 0, 0, 0.1)',
+};
+
+export const modalHeaderDelete = {
   fontWeight: 'bold',
   fontSize: RF(2.5),
   marginTop: hp('2%'),
+};
+
+// e.g. filter and sort
+export const modalHeaderNormal = {
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderBottomWidth: 2,
+  paddingBottom: hp('2%'),
+  marginBottom: hp('2%'),
+};
+
+export const groupContainerStyle = {
+  paddingTop: hp('1%'),
+  paddingBottom: hp('1%'),
+  marginBottom: hp('1%'),
+  borderRadius: 4,
+  borderWidth: 0.5,
+  backgroundColor: colors.containerBackgroundColor,
+};
+
+export const groupTextStyle = {
+  fontSize: 18,
 };

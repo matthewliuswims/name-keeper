@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 
 import { Svg } from 'expo';
 
-import { container } from '../../styles/base';
-
 import {
   addSvgHeightOrWidth,
   // circle
@@ -195,7 +193,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   container: {
-    flex: container.flex, // if uncomment, you'll see difference
+    flex: 1, // if uncomment, you'll see difference
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

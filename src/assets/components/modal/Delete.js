@@ -15,7 +15,7 @@ import {
   deleteButtonText,
   modalMsg,
   modalContentDeleteConfirmation,
-  modalHeader,
+  modalHeaderDelete,
 } from '../../styles/base';
 
 export default class DeleteModal extends Component {
@@ -59,7 +59,7 @@ export default class DeleteModal extends Component {
           color={colors.warningColor}
           size={wp('16%')}
         />
-        <Text style={modalHeader}>
+        <Text style={modalHeaderDelete}>
           Are you sure?
         </Text>
         <Text style={modalMsg}>
@@ -105,4 +105,4 @@ DeleteModal.propTypes = {
 
 DeleteModal.defaultProps = {
   deleteGroup: true,
-}
+};

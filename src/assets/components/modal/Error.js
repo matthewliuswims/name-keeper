@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { modalMsg, cancelButton, cancelButtonText } from '../../styles/base';
+import { modalMsg, cancelButton, cancelButtonText, modalContentDeleteConfirmation } from '../../styles/base';
 import getErrMsg from '../../../lib/errors/errors';
 import { PLACE_HOLDER_DEFAULT } from '../../../lib/errors/overrides';
 
@@ -35,8 +35,8 @@ export default class ErrorModal extends Component<Props> {
     if (this.props.error) {
       const msg = getErrMsg(this.props.error, this.props.overrides);
       return (
-        <View style={styles.modalContent}>
-          <Text style={styles.modalMsg}>
+        <View style={modalContentDeleteConfirmation}>
+          <Text style={modalMsg}>
             {msg}
           </Text>
           {this.renderButton('Close', () => {
@@ -63,7 +63,6 @@ export default class ErrorModal extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  modalMsg,
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -71,14 +70,6 @@ const styles = StyleSheet.create({
   },
   button: cancelButton,
   buttonText: cancelButtonText,
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
 });
 
 ErrorModal.defaultProps = {

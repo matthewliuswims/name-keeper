@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { groupContainerStyle, groupTextStyle } from '../../styles/group';
+import { groupContainerStyle, groupTextStyle } from '../../styles/base';
 
 type Props = {
   groupName: string,
@@ -10,7 +10,7 @@ type Props = {
 export default class Group extends React.Component <Props> {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={groupContainerStyle}>
         <Text style={styles.headerText} numberOfLines={1}> {this.props.groupName} </Text>
         <Text style={styles.text} numberOfLines={1}> {'\t'} {this.props.firstTwoUsernames[0]} </Text>
         <Text style={styles.text} numberOfLines={1}> {'\t'} {this.props.firstTwoUsernames[1]} </Text>
@@ -20,14 +20,6 @@ export default class Group extends React.Component <Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: groupContainerStyle.backgroundColor,
-    paddingTop: groupContainerStyle.paddingTop, // TODO: make this dynamic?
-    paddingBottom: groupContainerStyle.paddingBottom,
-    marginBottom: groupContainerStyle.marginBottom,
-    borderRadius: groupContainerStyle.borderRadius,
-    borderWidth: groupContainerStyle.borderWidth,
-  },
   text: {
     fontSize: groupTextStyle.fontSize,
   },
@@ -36,5 +28,4 @@ const styles = StyleSheet.create({
     fontSize: groupTextStyle.fontSize,
     marginBottom: 3,
   },
-
 });

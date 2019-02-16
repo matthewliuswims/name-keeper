@@ -45,11 +45,6 @@ Search Screen works as intended
 10) make sort icon target area bigger
 11) bug: sorting (after saving a new user) <-- hard to replicate
 12) move people from group to group <-- suport this.
-13) bug: adding in a user which isn't the first group, only have 1 slection of the user
-14) after adding a group, just take them to the group screen.
-15) prepopulate edit group input
-16) padding on topleft groups icon is different
-17) edit instead of three colons at top right
 18) asbtract styles from base.js (e.g. modalContent, modalHeader, modalMsg )
 19) add proptypes
 20) individual modals don't need to know their own state

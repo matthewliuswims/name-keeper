@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements';
 
 import AddGroup from '../groups/AddGroup';
 import colors from '../../styles/colors';
-import { cancelButtonText, horizontalGroupScreenButton, circularGroupIcon, innardsStyleContainer } from '../../styles/base';
+import { cancelButtonText, horizontalGroupScreenButton, circularGroupIcon, innardsStyleContainer, modalContentNormal, modalHeaderNormal } from '../../styles/base';
 
 
 export default class FilterModal extends Component {
@@ -79,8 +79,8 @@ export default class FilterModal extends Component {
 
   renderModalContent = () => {
     return (
-      <View style={styles.modalContent}>
-        <View style={styles.modalHeader}>
+      <View style={modalContentNormal}>
+        <View style={modalHeaderNormal}>
           <Icon
             onPress={() => {
               this.setState({ visibleModal: false });
@@ -116,13 +116,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 2,
-    paddingBottom: hp('2%'),
-    marginBottom: hp('2%'),
-  },
   headerText: {
     fontSize: RF(3.5),
     fontWeight: 'bold',
@@ -146,11 +139,4 @@ const styles = StyleSheet.create({
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
   },
   buttonText: cancelButtonText,
-  modalContent: {
-    height: hp('60%'),
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
 });

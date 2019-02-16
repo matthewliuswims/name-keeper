@@ -81,7 +81,7 @@ class SearchScreen extends React.Component {
   render() {
     const groupName = this.props.navigation.getParam('groupName');
     return (
-      <View style={styles.container}>
+      <View style={container}>
         <SearchBar
           ref={function (ref) {
             this.searchBar = ref;
@@ -118,13 +118,6 @@ const styles = StyleSheet.create({
   },
   noGroupContainer: {
     paddingTop: hp('25%'),
-  },
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-    backgroundColor: container.backgroundColor,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
   },
 });
 const mapStateToProps = state => (

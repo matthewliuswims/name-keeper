@@ -7,7 +7,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Icon } from 'react-native-elements';
 
 import colors from '../../styles/colors';
-import { cancelButtonText, horizontalGroupScreenButton } from '../../styles/base';
+import { cancelButtonText, horizontalGroupScreenButton, modalContentNormal, modalHeaderNormal } from '../../styles/base';
 
 const sortOptions = [
   { option: 'Date: Old to New (default)' },
@@ -60,8 +60,8 @@ export default class SortByModal extends Component {
 
   renderModalContent = () => {
     return (
-      <View style={styles.modalContent}>
-        <View style={styles.modalHeader}>
+      <View style={modalContentNormal}>
+        <View style={modalHeaderNormal}>
           <Icon
             onPress={() => {
               this.setState({ visibleModal: false });
@@ -102,13 +102,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'grey',
   },
-  modalHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: 2,
-    paddingBottom: hp('2%'),
-    marginBottom: hp('2%'),
-  },
   headerText: {
     fontSize: RF(3.5),
     fontWeight: 'bold',
@@ -135,11 +128,4 @@ const styles = StyleSheet.create({
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
   },
   buttonText: cancelButtonText,
-  modalContent: {
-    height: hp('60%'),
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
 });

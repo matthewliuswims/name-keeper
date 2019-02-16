@@ -467,7 +467,7 @@ class GroupsScreen extends Component<Props> {
     const numberGroups = groups.length;
     const numberUsers = users.length;
     return (
-      <View style={styles.container}>
+      <View style={container}>
         <View style={styles.contents}>
           { this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
         </View>
@@ -495,13 +495,6 @@ const styles = StyleSheet.create({
   },
   contents: {
     flex: 11,
-  },
-  container: {
-    flex: 1,
-    paddingTop: container.paddingTop,
-    backgroundColor: container.backgroundColor,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
   },
   noGroupsOrUsersHeader: {
     fontWeight: 'bold',

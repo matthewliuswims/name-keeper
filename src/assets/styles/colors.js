@@ -1,6 +1,7 @@
 export default {
   appThemeColor: '#499EFF', // the blue
   borderColor: '#979797', // greyish color around plus icon
+  containerBackgroundColor: 'white',
   footerBackgroundColor: '#E5E9EF',
   addApplyColor: 'dimgray',
   warningColor: 'firebrick',
