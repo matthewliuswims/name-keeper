@@ -11,10 +11,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/robot-dev.png",
-    "splash": {
-      "image": "./assets/robot-dev.png",
-      "resizeMode": "contain"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },

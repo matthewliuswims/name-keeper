@@ -1,1 +1,1 @@
-export default 'Remember Names'; // name of app
+export default 'Name Keeper'; // name of app

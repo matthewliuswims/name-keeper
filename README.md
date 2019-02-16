@@ -40,14 +40,12 @@ Search Screen works as intended
 4) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
 5) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 6) setState unmounting issues
-8) for search screen, by default show all people?
+7) https://docs.expo.io/versions/latest/guides/splash-screens/
+8) https://facebook.github.io/react-native/docs/activityindicator
+9) add circular icons to the group iin the groups screen
 ---
-10) make sort icon target area bigger
 11) bug: sorting (after saving a new user) <-- hard to replicate
-12) move people from group to group <-- suport this.
-18) asbtract styles from base.js (e.g. modalContent, modalHeader, modalMsg )
-19) add proptypes
-20) individual modals don't need to know their own state
+
 
 ### Version 2 feature requests
 1) geolocation?
