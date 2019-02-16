@@ -21,6 +21,16 @@ export const container = {
   paddingRight: wp('3%'),
 };
 
+export const loadingContainer = {
+  flex: 1,
+  paddingTop: hp('3%'),
+  backgroundColor: colors.containerBackgroundColor,
+  paddingLeft: wp('3%'),
+  paddingRight: wp('3%'),
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
 export const topRightTextButtonContainer = {
   padding: wp('0.5%'),
   backgroundColor: '#00000000',

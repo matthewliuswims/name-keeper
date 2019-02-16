@@ -8,6 +8,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { editUser, clearUsersErr, listAllUsers, deleteUser, focusUser } from '../../../redux/actions/users';
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 import { listGroups, focusGroup } from '../../../redux/actions/groups';
 
 import ErrorModal from '../../components/modal/Error';
@@ -299,7 +300,15 @@ class EditUserScreen extends Component<Props> {
 
 
   render() {
-    const { groups: allGroups } = this.props.groupsState;
+    const { groups: allGroups, loading } = this.props.groupsState;
+    const { loading: usersStateLoading } = this.props.usersState;
+
+    if (loading || usersStateLoading) {
+      return (
+        <LoadingSpinner />
+      );
+    }
+
     // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
     // diegoprates
     return (

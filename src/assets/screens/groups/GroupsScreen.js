@@ -12,7 +12,7 @@ import { container, horizontalGroupScreenButton, footerSection } from '../../sty
 import colors from '../../styles/colors';
 
 import Footer from '../../components/footer/footer';
-
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 import ErrorModal from '../../components/modal/Error';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
@@ -451,8 +451,13 @@ class GroupsScreen extends Component {
   }
 
   render() {
-    const { error: groupsStateErr, groups } = this.props.groupsState;
-    const { users } = this.props.usersState;
+    const { error: groupsStateErr, groups, loading } = this.props.groupsState;
+    const { users, loading: usersStateLoading } = this.props.usersState;
+    if (loading || usersStateLoading) {
+      return (
+        <LoadingSpinner />
+      );
+    }
     const { sortOption, selectedFilteredGroups } = this.state.sortedFilteredUsersWrapper;
 
     const numberGroups = groups.length;

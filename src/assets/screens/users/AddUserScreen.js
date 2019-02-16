@@ -9,6 +9,8 @@ import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/use
 import { focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
+
 import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
@@ -202,7 +204,15 @@ class AddUserScreen extends Component<Props> {
   }
 
   render() {
-    const { groups: allGroups } = this.props.groupsState;
+    const { groups: allGroups, loading } = this.props.groupsState;
+    const { loading: usersStateLoading } = this.props.usersState;
+
+    if (loading || usersStateLoading) {
+      return (
+        <LoadingSpinner />
+      );
+    }
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {

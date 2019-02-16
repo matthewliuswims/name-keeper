@@ -8,6 +8,7 @@ import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
 import ErrorModal from '../../components/modal/Error';
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
 import { container, topRightTextButtonContainerSolo, topRightButtonText } from '../../styles/base';
 import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
@@ -109,11 +110,17 @@ class AddGroupScreen extends Component<Props> {
   }
 
   render() {
+    const { loading, error } = this.props.groupsState;
+    if (loading) {
+      return (
+        <LoadingSpinner />
+      );
+    }
     return (
       <View style={container}>
         <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         {this.groupText()}
-        {this.checkErr(this.props.groupsState.error)}
+        {this.checkErr(error)}
       </View>
     );
   }

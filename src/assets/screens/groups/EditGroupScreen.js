@@ -8,6 +8,8 @@ import { Icon } from 'react-native-elements';
 
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
+
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
@@ -175,6 +177,14 @@ class AddGroupScreen extends Component<Props> {
   }
 
   render() {
+    const { loading, error: groupsError } = this.props.groupsState;
+    const { loading: usersStateLoading, error: usersError } = this.props.usersState;
+
+    if (loading || usersStateLoading) {
+      return (
+        <LoadingSpinner />
+      );
+    }
     return (
       <View style={container}>
         <View style={{ flex: 1 }}>
@@ -195,8 +205,8 @@ class AddGroupScreen extends Component<Props> {
             }}
           />
         </TouchableOpacity>
-        {this.checkErrGrps(this.props.groupsState.error)}
-        {this.checkErrUsrs(this.props.usersState.error)}
+        {this.checkErrGrps(groupsError)}
+        {this.checkErrUsrs(usersError)}
         {this.deleteModal()}
       </View>
     );
