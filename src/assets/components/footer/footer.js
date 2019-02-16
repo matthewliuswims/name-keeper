@@ -44,6 +44,7 @@ import {
   point4,
   point5,
   point6,
+  filterContainer,
 } from '../../styles/svg/filter';
 
 import {
@@ -64,6 +65,7 @@ class Footer extends React.Component {
   filterComponent() {
     return (
       <TouchableOpacity
+        style={filterContainer}
         onPress = {() => this.props.filterCB()}
       >
         <Svg

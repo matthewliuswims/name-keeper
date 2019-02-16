@@ -42,7 +42,7 @@ const options = {
       error: 'Please enter a name',
     },
     description: {
-      placeholder: 'What stands out?',
+      placeholder: 'Notable impressions',
       error: 'Description is required',
     },
     location: {

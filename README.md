@@ -35,18 +35,13 @@ Search Screen works as intended
 ### Outstanding Issues/Considerations
 1) Need to still do my manual testing steps above
 2) change package versions from latest to numbers when put in prod.
-3) figure out how many places the about menu should be.
-4) sentry logging?
+3) sentry logging?
   a) - capturing the user info <--  advanced stuff, https://docs.sentry.io/enriching-error-data/context/?platform=node#capturing-the-user
-  b) 
-5) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
-6) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
-7) setState unmounting issues
-8) instead of doign poptotop use reset: https://reactnavigation.org/docs/en/stack-actions.html#reset
-9) if i edit groupscreen name to be something that already exists...i need to give an err
-9.5) for search screen, by default show all people?
+4) fix empty top text space for long user descriptions: https://stackoverflow.com/questions/50884639/empty-text-space-in-a-continuous-text-component-react-native
+5) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
+6) setState unmounting issues
+8) for search screen, by default show all people?
 ---
-9) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options
 10) make sort icon target area bigger
 11) bug: sorting (after saving a new user) <-- hard to replicate
 12) move people from group to group <-- suport this.
@@ -67,6 +62,7 @@ Search Screen works as intended
 5) if a user logs in again, they have the option to turn off help if they want it.
 6) flashcard mode?
 7) search uses fuzzy search
+8) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options
 
 ***avoid pronouns
 

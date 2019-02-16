@@ -48,6 +48,7 @@ export const triangle2Points = `${firstPointXSecondTriangle} ${firstPointYSecond
 ${thirdPointXSecondTriangle} ${thirdPointYSecondTriangle}`;
 
 export const sortContainer = {
+  padding: wp('3%'),
   marginRight: wp('5%'),
   marginLeft: wp('3%'),
 };

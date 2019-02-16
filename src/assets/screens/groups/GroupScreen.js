@@ -142,7 +142,7 @@ class GroupScreen extends Component<Props> {
           Add a user below!
         </Text>
         <Text style={styles.noGroupMessage}>
-          Hint: if you want to delete/edit this group, click on the top right 3 vertical circles.
+          Hint: after meeting a person, you should add their name!
         </Text>
       </View>
     );
