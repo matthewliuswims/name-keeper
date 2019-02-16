@@ -1,4 +1,5 @@
 import Sentry from 'sentry-expo';
+import PropTypes from 'prop-types';
 
 import React, { Component, Fragment } from 'react';
 import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
@@ -29,19 +30,9 @@ import { usersGroupNamesMatch } from '../../../lib/actions';
 import SortBy from '../../components/modal/SortBy';
 import Filter from '../../components/modal/Filter';
 
-
-type Props = {
-  navigation: () => void,
-  listGroups: () => Promise<Object>,
-  groupsState : {
-    error: Object,
-    groups: Array<Object>,
-  }
-};
-
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-class GroupsScreen extends Component<Props> {
+class GroupsScreen extends Component {
   constructor(props) {
     Sentry.captureMessage('Groups screen Initialzied for a user', {
       level: 'info', // one of 'info', 'warning', or 'error'
@@ -553,5 +544,24 @@ const mapDispatchToProps = dispatch => (
     focusUser: user => dispatch(focusUser(user)),
   }
 );
+
+GroupsScreen.propTypes = {
+  navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+
+  listGroups: PropTypes.func.isRequired,
+  clearGroupsErr: PropTypes.func.isRequired,
+  focusGroup: PropTypes.func.isRequired,
+
+  listAllUsers: PropTypes.func.isRequired,
+  focusUser: PropTypes.func.isRequired,
+
+  groupsState: PropTypes.shape({
+    groups: PropTypes.array,
+    error: PropTypes.object,
+  }).isRequired,
+  usersState: PropTypes.shape({
+    users: PropTypes.array,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupsScreen);
