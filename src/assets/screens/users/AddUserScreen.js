@@ -32,7 +32,7 @@ const options = {
       error: 'Please enter a name',
     },
     description: {
-      placeholder: 'Notable impressions',
+      placeholder: 'Notable impression(s)',
       error: 'Description is required',
     },
     location: {

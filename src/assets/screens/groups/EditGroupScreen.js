@@ -67,10 +67,8 @@ class AddGroupScreen extends Component<Props> {
       title: titleDisplay,
       headerRight: (
         // getParam('groupSubmit') refers to the 'groupSubmit' function in componentDidMount
-        <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp}>
-          <View style={topRightTextButtonContainerSolo}>
-            <Text style={topRightButtonText}>Save</Text>
-          </View>
+        <TouchableOpacity onPress={navigation.getParam('groupSubmit') || noOp} style={topRightTextButtonContainerSolo}>
+          <Text style={topRightButtonText}>Save</Text>
         </TouchableOpacity>
       ),
     };

@@ -139,10 +139,10 @@ class GroupScreen extends Component<Props> {
     return (
       <View style={styles.noGroupContainer}>
         <Text style={styles.noGroupHeader}>
-          Add a user below!
+          Add a person below!
         </Text>
         <Text style={styles.noGroupMessage}>
-          Hint: after meeting a person, you should add their name!
+          Hint: the best time to add someone&#39;s name is right after you finish meeting them.
         </Text>
       </View>
     );

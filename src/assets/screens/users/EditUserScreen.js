@@ -42,7 +42,7 @@ const options = {
       error: 'Please enter a name',
     },
     description: {
-      placeholder: 'Notable impressions',
+      placeholder: 'Notable impression(s)',
       error: 'Description is required',
     },
     location: {
@@ -79,10 +79,8 @@ class EditUserScreen extends Component<Props> {
       title: titleDisplay,
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
-        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp}>
-          <View style={topRightTextButtonContainerSolo}>
-            <Text style={topRightButtonText}>Save</Text>
-          </View>
+        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={topRightTextButtonContainerSolo}>
+          <Text style={topRightButtonText}>Save</Text>
         </TouchableOpacity>
       ),
     };

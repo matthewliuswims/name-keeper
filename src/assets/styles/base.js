@@ -38,7 +38,7 @@ export const deleteContainer = {
 };
 
 export const topRightTextButtonContainerSolo = {
-  padding: wp('1%'),
+  padding: wp('2%'),
   marginRight: wp('3%'),
   backgroundColor: '#00000000',
   color: 'white',
