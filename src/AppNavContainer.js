@@ -1,6 +1,10 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import React from 'react';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 import { sectionHeader } from './assets/styles/base';
+
 
 import AddGroupScreen from './assets/screens/groups/AddGroupScreen';
 import GroupsScreen from './assets/screens/groups/GroupsScreen';
@@ -31,6 +35,14 @@ const AppNavigator = createStackNavigator({
       backgroundColor: sectionHeader.backgroundColor, // commmon to everything, can also add other stuff too
     },
     headerBackTitle: null,
+    headerBackImage:
+  <Icon
+    name='arrow-back'
+    color='white'
+    iconStyle={{
+      padding: hp('1.5%'),
+    }}
+  />,
     headerTitleStyle: { color: sectionHeader.color },
     headerBackTitleStyle: {
       color: sectionHeader.color,

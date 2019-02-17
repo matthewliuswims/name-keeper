@@ -142,29 +142,32 @@ class GroupsScreen extends Component {
   }
 
   groups = (users) => {
+    const { groups } = this.props.groupsState;
+    const { usersState } = this.props;
+
     return (
-      !this.props.groupsState.loading && (
-        <FlatList
-          data={this.props.groupsState.groups}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress = {() => {
-                this.props.focusGroup(item.name);
-                this.props.navigation.navigate('GroupScreen',
-                  {
-                    groupName: item.name,
-                  });
-              }}
-            >
-              <Group
-                groupName={item.name}
-                firstTwoUsernames={this.getTwoUsernames(item.name, users)}
-                />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item => `${item.groupID}`)}
-          extraData={this.props.usersState} // necessary to show the 2 users
-        />)
+      <FlatList
+        data={groups}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress = {() => {
+              this.props.focusGroup(item.name);
+              this.props.navigation.navigate('GroupScreen',
+                {
+                  groupName: item.name,
+                });
+            }}
+          >
+            <Group
+              groupName={item.name}
+              firstTwoUsernames={this.getTwoUsernames(item.name, users)}
+              groups={groups}
+              />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item => `${item.groupID}`)}
+        extraData={usersState} // necessary to show the 2 users
+      />
     );
   }
 
@@ -284,7 +287,7 @@ class GroupsScreen extends Component {
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
-        <Text style={styles.usersListText}>Everyone I Met</Text>
+        <Text style={styles.usersListText}>People I Have Met</Text>
         <FlatList
           data={sortFilteredUsers}
           renderItem={({ item }) => (

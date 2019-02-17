@@ -41,8 +41,8 @@ Search Screen works as intended
 5) check css things are working on android among other things (checkout evelation thing https://stackoverflow.com/questions/29323544/how-do-i-render-a-shadow)
 6) setState unmounting issues
 7) https://docs.expo.io/versions/latest/guides/splash-screens/
-8) https://facebook.github.io/react-native/docs/activityindicator
-9) add circular icons to the group iin the groups screen
+9) fix problem of weird look right after sort and filter?
+10) introduced a bug where if I have 1 group and I try to add a user the groupname on the add user screen disappears...
 ---
 11) bug: sorting (after saving a new user) <-- hard to replicate
 

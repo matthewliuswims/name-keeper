@@ -188,6 +188,8 @@ const styles = StyleSheet.create({
   containerPlusOnly: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    flex: 1,
+    alignItems: 'center', // this is important to raise the plus icon
   },
   filterSort: {
     flexDirection: 'row',
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
     flex: 1, // if uncomment, you'll see difference
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center', // this is important to raise the icons
   },
 });
 

@@ -198,7 +198,7 @@ class EditUserScreen extends Component<Props> {
         }
         }
       >
-        <View style={styles.groupIconNameContainer}>
+        <View style={groupIconNameContainer}>
           <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
           <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
         </View>
@@ -228,7 +228,7 @@ class EditUserScreen extends Component<Props> {
             style={styles.otherGroupSelection}
             onPress={() => { this.otherGroupClick(item); }}
           >
-            <View style={styles.groupIconNameContainer}>
+            <View style={groupIconNameContainer}>
               <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
               <Text numberOfLines={1}> {item.name} </Text>
             </View>
@@ -298,6 +298,25 @@ class EditUserScreen extends Component<Props> {
     }
   }
 
+  groupsSection = (allGroups) => {
+    if (allGroups.length === 1) {
+      return (
+        <View style={styles.groupSection}>
+          <View style={groupIconNameContainer}>
+            <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
+            <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+          </View>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.groupsSection}>
+        {this.selectedGroupUI(allGroups)}
+        {this.otherGroupsDropdown(allGroups)}
+      </View>
+    );
+  }
+
 
   render() {
     const { groups: allGroups, loading } = this.props.groupsState;
@@ -329,10 +348,7 @@ class EditUserScreen extends Component<Props> {
               options={options}
             />
             <Text style={styles.groupText}> Group </Text>
-            <View style={styles.groupsSection}>
-              {this.selectedGroupUI(allGroups)}
-              {this.otherGroupsDropdown(allGroups)}
-            </View>
+            {this.groupsSection(allGroups)}
             {this.checkErrGrps(this.props.groupsState.error)}
             {this.checkErrUsrs(this.props.usersState.error)}
             <TouchableOpacity style={deleteContainer} onPress={this.openDeleteModal}>
@@ -369,11 +385,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 17,
   },
-  groupIconNameContainer: {
-    flex: groupIconNameContainer.flex,
-    flexDirection: groupIconNameContainer.flexDirection,
-    paddingTop: hp('0.5%'),
-  },
   groups: {
     marginTop: hp('2%'),
   },
@@ -382,6 +393,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 0.75,
     borderColor: 'black',
+  },
+  groupSection: {
+    marginTop: hp('2%'),
   },
   groupsSection: {
     marginTop: hp('1%'),

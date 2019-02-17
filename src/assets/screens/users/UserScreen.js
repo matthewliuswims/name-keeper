@@ -88,7 +88,7 @@ class UserScreen extends Component {
               <FlatList
                 data={[primaryGroupName]}
                 renderItem={({ item }) => (
-                  <View style={styles.groupIconNameContainer}>
+                  <View style={groupIconNameContainer}>
                     <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
                     <Text numberOfLines={1}> {item} </Text>
                   </View>
@@ -112,11 +112,6 @@ class UserScreen extends Component {
  * NOTICE: infoRow is not given a flex: 1, because we don't want it to expand down.
  */
 const styles = StyleSheet.create({
-  groupIconNameContainer: {
-    flex: groupIconNameContainer.flex,
-    flexDirection: groupIconNameContainer.flexDirection,
-    paddingTop: hp('0.5%'),
-  },
   groupsSection: {
     flexDirection: 'row',
     marginTop: hp('3%'),

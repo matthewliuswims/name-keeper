@@ -21,6 +21,11 @@ export const container = {
   paddingRight: wp('3%'),
 };
 
+export const twoItemHeaderContainer = {
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+
 export const loadingContainer = {
   flex: 1,
   paddingTop: hp('3%'),
@@ -108,6 +113,9 @@ export const circularGroupIcon = {
 export const groupIconNameContainer = {
   flex: 1,
   flexDirection: 'row',
+  paddingTop: hp('0.5%'),
+  alignItems: 'center',
+  marginBottom: 2,
 };
 
 export const modalMsg = {

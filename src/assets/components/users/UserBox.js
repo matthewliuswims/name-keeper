@@ -17,7 +17,7 @@ type Props = {
 class UserBox extends React.Component <Props> {
   firstSectionWithGroup(primaryGroupName) {
     return (
-      <View style={styles.groupIconNameContainer}>
+      <View style={groupIconNameContainer}>
         <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
         <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
       </View>
@@ -65,11 +65,6 @@ const styles = StyleSheet.create({
     borderRadius: wp('3%'),
     marginRight: wp('2%'),
     marginLeft: wp('2%'),
-  },
-  groupIconNameContainer: {
-    flex: groupIconNameContainer.flex,
-    flexDirection: groupIconNameContainer.flexDirection,
-    paddingTop: hp('0.5%'),
   },
   headerText: {
     fontWeight: 'bold',

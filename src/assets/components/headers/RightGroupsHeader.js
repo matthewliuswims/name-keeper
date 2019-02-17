@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import GroupsMenu from '../menus/GroupsMenu';
+
+import { twoItemHeaderContainer } from '../../styles/base';
 
 class RightGroupsHeader extends React.Component {
   state = { opened: false };
@@ -26,7 +28,7 @@ class RightGroupsHeader extends React.Component {
   render() {
     const { opened } = this.state;
     return (
-      <View style={styles.container}>
+      <View style={twoItemHeaderContainer}>
         <Icon
           onPress={() => {
             this.props.navigation.navigate('SearchScreen', {
@@ -50,12 +52,5 @@ class RightGroupsHeader extends React.Component {
     );
   }
 }
-
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-});
 
 export default withNavigation(RightGroupsHeader);

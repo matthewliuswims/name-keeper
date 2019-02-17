@@ -49,6 +49,7 @@ const noOp = () => { console.log('please try again in a second'); }; // eslint-d
 class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
+    console.log('add user screen activated', this.props.groupsState.focusedGroupName);
     this.state = {
       value: null, // for form
       selectedGroupName: this.props.groupsState.focusedGroupName,
@@ -163,7 +164,7 @@ class AddUserScreen extends Component<Props> {
             style={styles.otherGroupSelection}
             onPress={() => { this.otherGroupClick(item); }}
           >
-            <View style={styles.groupIconNameContainer}>
+            <View style={groupIconNameContainer}>
               <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
               <Text numberOfLines={1}> {item.name} </Text>
             </View>
@@ -192,7 +193,7 @@ class AddUserScreen extends Component<Props> {
         }
         }
       >
-        <View style={styles.groupIconNameContainer}>
+        <View style={groupIconNameContainer}>
           <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
           <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
         </View>
@@ -200,6 +201,26 @@ class AddUserScreen extends Component<Props> {
           name='keyboard-arrow-down'
         />
       </TouchableOpacity>
+    );
+  }
+
+  groupsSection = (allGroups) => {
+    if (allGroups.length === 1) {
+      console.log('sect grup name', this.state.selectedGroupName);
+      return (
+        <View style={styles.groupSection}>
+          <View style={groupIconNameContainer}>
+            <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
+            <Text> {this.state.selectedGroupName} </Text>
+          </View>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.groupsSection}>
+        {this.selectedGroupUI(allGroups)}
+        {this.otherGroupsDropdown(allGroups)}
+      </View>
     );
   }
 
@@ -230,10 +251,7 @@ class AddUserScreen extends Component<Props> {
             options={options}
           />
           <Text style={styles.groupText}> Group </Text>
-          <View style={styles.groupsSection}>
-            {this.selectedGroupUI(allGroups)}
-            {this.otherGroupsDropdown(allGroups)}
-          </View>
+          {this.groupsSection(allGroups)}
           {this.checkErrUsrs(this.props.usersState.error)}
         </View>
       </TouchableWithoutFeedback>
@@ -246,17 +264,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 17,
   },
-  groupIconNameContainer: {
-    flex: groupIconNameContainer.flex,
-    flexDirection: groupIconNameContainer.flexDirection,
-    paddingTop: hp('0.5%'),
-  },
   circularGroupIcon: {
     height: wp('4%'),
     width: wp('4%'),
     borderRadius: wp('3%'),
     marginRight: wp('2%'),
     marginLeft: wp('2%'),
+  },
+  groupSection: {
+    marginTop: hp('2%'),
   },
   groupsSection: {
     marginTop: hp('1%'),

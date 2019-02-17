@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
   },
   AnswerText: {
     fontSize: RF(2),
+    marginBottom: hp('1%'),
   },
 });
