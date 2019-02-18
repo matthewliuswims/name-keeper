@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     marginLeft: wp('2%'),
   },
   groupSection: {
-    marginTop: hp('2%'),
+    marginTop: hp('1.5%'),
   },
   groupsSection: {
     marginTop: hp('1%'),

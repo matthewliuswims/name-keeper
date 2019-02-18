@@ -111,7 +111,6 @@ export const circularGroupIcon = {
 };
 
 export const groupIconNameContainer = {
-  flex: 1,
   flexDirection: 'row',
   paddingTop: hp('0.5%'),
   alignItems: 'center',

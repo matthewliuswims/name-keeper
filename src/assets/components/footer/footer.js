@@ -115,48 +115,46 @@ class Footer extends React.Component {
 
   plusComponent() {
     return (
-      <View elevation={5}>
-        <TouchableOpacity
-          style={addContainer}
-          onPress = {this.props.navigateToAddUserScreen}
+      <TouchableOpacity
+        style={addContainer}
+        onPress = {this.props.navigateToAddUserScreen}
+      >
+        <Svg
+          height={addSvgHeightOrWidth}
+          width={addSvgHeightOrWidth}
         >
-          <Svg
-            height={addSvgHeightOrWidth}
-            width={addSvgHeightOrWidth}
-          >
-            <Circle
-              cx={circlecx}
-              cy={circlecy}
-              r={radiusCircle}
-              fill={circleFill}
-            />
-            <Circle
-              cx={circlecx}
-              cy={circlecy}
-              r={radiusCircle}
-              stroke={circleBorderStroke}
-              fill={cirlceBorderfill} // transparent
-              stroke-width={circleBorderStrokeWidth}
-            />
-            <Line
-              x1={line1XPoint1}
-              y1={line1YPoint1}
-              x2={line1XPoint2}
-              y2={line1YPoint2}
-              stroke={lineStroke}
-              stroke-width={lineStrokeWidth}
-            />
-            <Line
-              x1={line2XPoint1}
-              y1={line2YPoint1}
-              x2={line2XPoint2}
-              y2={line2YPoint2}
-              stroke={lineStroke}
-              stroke-width={lineStrokeWidth}
-            />
-          </Svg>
-        </TouchableOpacity>
-      </View>
+          <Circle
+            cx={circlecx}
+            cy={circlecy}
+            r={radiusCircle}
+            fill={circleFill}
+          />
+          <Circle
+            cx={circlecx}
+            cy={circlecy}
+            r={radiusCircle}
+            stroke={circleBorderStroke}
+            fill={cirlceBorderfill} // transparent
+            stroke-width={circleBorderStrokeWidth}
+          />
+          <Line
+            x1={line1XPoint1}
+            y1={line1YPoint1}
+            x2={line1XPoint2}
+            y2={line1YPoint2}
+            stroke={lineStroke}
+            stroke-width={lineStrokeWidth}
+          />
+          <Line
+            x1={line2XPoint1}
+            y1={line2YPoint1}
+            x2={line2XPoint2}
+            y2={line2YPoint2}
+            stroke={lineStroke}
+            stroke-width={lineStrokeWidth}
+          />
+        </Svg>
+      </TouchableOpacity>
     );
   }
 
@@ -199,6 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center', // this is important to raise the icons
+    backgroundColor: 'transparent',
   },
 });
 
