@@ -57,7 +57,7 @@ const line2YPoint2Num = eval(`0.7 * ${addSvgHeightOrWidth}`);
 export const line2YPoint2 = `${line2YPoint2Num}`;
 
 export const addContainer = {
-  marginBottom: hp('3%'),
+  marginBottom: hp('2%'),
   marginRight: wp('6%'),
 
   shadowColor: 'black',

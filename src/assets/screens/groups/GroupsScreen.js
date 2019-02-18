@@ -6,7 +6,7 @@ import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
 import { get } from 'lodash';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { container, horizontalGroupScreenButton, footerSection } from '../../styles/base';
 import colors from '../../styles/colors';
@@ -29,6 +29,7 @@ import { usersGroupNamesMatch } from '../../../lib/actions';
 
 import SortBy from '../../components/modal/SortBy';
 import Filter from '../../components/modal/Filter';
+
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
@@ -402,7 +403,7 @@ class GroupsScreen extends Component {
 
   footerGroupsList = () => {
     return (
-      <View elevation={5} style={{ flex: 1 }}>
+      <View elevation={5} style={styles.buttonContainer}>
         <TouchableOpacity
           onPress = {() => {
             this.props.navigation.navigate('AddGroupScreen');
@@ -410,7 +411,7 @@ class GroupsScreen extends Component {
           }
           style={styles.button}
         >
-          <Text style={styles.addText}>+ <Text style={styles.groupText}> group</Text></Text>
+          <Text style={styles.addText}>+ <Text style={styles.groupText}> Group</Text></Text>
         </TouchableOpacity>
       </View>
     );
@@ -522,9 +523,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   button: {
-    flex: 1,
     backgroundColor: colors.addApplyColor,
-    alignContent: 'center',
     justifyContent: 'center',
     alignItems: horizontalGroupScreenButton.alignItems,
     borderRadius: horizontalGroupScreenButton.borderRadius,
@@ -534,6 +533,13 @@ const styles = StyleSheet.create({
     shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
     shadowRadius: horizontalGroupScreenButton.shadowRadius,
     shadowOffset: horizontalGroupScreenButton.shadowOffset,
+    width: '84%',
+    padding: wp('3%'),
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: wp('100%'),
   },
 });
 

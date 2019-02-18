@@ -81,10 +81,12 @@ export const horizontalGroupScreenButton = {
   },
 };
 
-// user in conjunction with contents
 export const footerSection = {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  width: '100%',
   marginBottom: hp('4%'),
-  flex: 1,
 };
 
 export const innardsStyleContainer = {
