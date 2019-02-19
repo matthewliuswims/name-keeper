@@ -83,7 +83,8 @@ export const horizontalGroupScreenButton = {
 
 // user in conjunction with contents
 export const footerSection = {
-  marginBottom: hp('4%'),
+  paddingTop: hp('3%'),
+  paddingBottom: hp('3%'),
   flex: 1,
 };
 

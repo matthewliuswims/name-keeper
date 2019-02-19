@@ -84,7 +84,6 @@ class Footer extends React.Component {
             fill="black"
           />
         </Svg>
-        <Text>Filter</Text>
       </TouchableOpacity>
     );
   }
@@ -108,7 +107,6 @@ class Footer extends React.Component {
             fill='black'
           />
         </Svg>
-        <Text>Sort</Text>
       </TouchableOpacity>
     );
   }
@@ -190,13 +188,15 @@ const styles = StyleSheet.create({
     alignItems: 'center', // this is important to raise the plus icon
   },
   filterSort: {
+    alignItems: 'flex-end',
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   container: {
     flex: 1, // if uncomment, you'll see difference
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center', // this is important to raise the icons
     backgroundColor: 'transparent',
   },
 });

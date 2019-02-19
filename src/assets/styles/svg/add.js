@@ -2,7 +2,7 @@
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../colors';
 
-export const addSvgHeightOrWidth = wp('17%');
+export const addSvgHeightOrWidth = wp('16%');
 
 // CIRCLE
 const circlecxAsNum = eval(`0.5 * ${addSvgHeightOrWidth}`);
@@ -57,7 +57,6 @@ const line2YPoint2Num = eval(`0.7 * ${addSvgHeightOrWidth}`);
 export const line2YPoint2 = `${line2YPoint2Num}`;
 
 export const addContainer = {
-  marginBottom: hp('3%'),
   marginRight: wp('6%'),
 
   shadowColor: 'black',

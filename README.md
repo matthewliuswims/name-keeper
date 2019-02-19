@@ -44,7 +44,7 @@ Search Screen works as intended
 9) fix problem of weird look right after sort and filter?
 10) introduced a bug where if I have 1 group and I try to add a user the groupname on the add user screen disappears...
 ---
-11) bug: sorting (after saving a new user)...on my real iphone only...gotta click on the footer
+11) bug: sorting (after saving a new user)...on my real iphone only...gotta click on the footer in the center repatedly
 12) long list of users...footer looks weird
 13) looking for saturday  vs sat
 
