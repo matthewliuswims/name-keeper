@@ -47,8 +47,6 @@ Search Screen works as intended
 11) bug: sorting (after saving a new user)...on my real iphone only...gotta click on the footer
 12) long list of users...footer looks weird
 13) looking for saturday  vs sat
-15) add circular backgrounds around the filter and sort.
-16) why when i change the margin bottom of the add component, it raises (slightly) the sort+filter buttons?
 
 
 ### Version 2 feature requests
