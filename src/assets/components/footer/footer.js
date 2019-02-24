@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { Svg } from 'expo';
+import colors from '../../styles/colors';
 
 import {
   addSvgHeightOrWidth,
@@ -15,21 +16,9 @@ import {
   circleBorderStroke,
   cirlceBorderfill,
   circleBorderStrokeWidth,
-  // lines
-  lineStroke,
-  lineStrokeWidth,
-  // line1
-  line1XPoint1,
-  line1YPoint1,
 
-  line1XPoint2,
-  line1YPoint2,
-  // line2
-  line2XPoint1,
-  line2YPoint1,
-
-  line2XPoint2,
-  line2YPoint2,
+  addPolygonHorizontalLine,
+  addPolygonVerticalLine,
 
   addContainer,
 } from '../../styles/svg/add';
@@ -54,7 +43,7 @@ import {
 } from '../../styles/svg/sort';
 
 
-const { Circle, Line, Polygon } = Svg;
+const { Circle, Polygon } = Svg;
 
 /**
  * this footer always assumes there will always be a sort and add button. only the filter button is optional
@@ -117,6 +106,14 @@ class Footer extends React.Component {
         style={addContainer}
         onPress = {this.props.navigateToAddUserScreen}
       >
+        {/* <Icon
+          name='add-user'
+          color={colors.appThemeColor}
+          size={wp('12%')}
+          iconStyle={{
+            padding: wp('2%'),
+          }}
+        /> */}
         <Svg
           height={addSvgHeightOrWidth}
           width={addSvgHeightOrWidth}
@@ -135,21 +132,17 @@ class Footer extends React.Component {
             fill={cirlceBorderfill} // transparent
             stroke-width={circleBorderStrokeWidth}
           />
-          <Line
-            x1={line1XPoint1}
-            y1={line1YPoint1}
-            x2={line1XPoint2}
-            y2={line1YPoint2}
-            stroke={lineStroke}
-            stroke-width={lineStrokeWidth}
+          <Polygon
+            points = {addPolygonHorizontalLine}
+            stroke="white"
+            strokeWidth="2"
+            fill={colors.appThemeColor}
           />
-          <Line
-            x1={line2XPoint1}
-            y1={line2YPoint1}
-            x2={line2XPoint2}
-            y2={line2YPoint2}
-            stroke={lineStroke}
-            stroke-width={lineStrokeWidth}
+          <Polygon
+            points = {addPolygonVerticalLine}
+            stroke="white"
+            strokeWidth="2"
+            fill={colors.appThemeColor}
           />
         </Svg>
       </TouchableOpacity>
@@ -197,7 +190,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'transparent',
   },
 });
 

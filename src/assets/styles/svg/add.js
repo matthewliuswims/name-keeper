@@ -56,6 +56,15 @@ export const line2XPoint2 = `${line2XPoint2Num}`;
 const line2YPoint2Num = eval(`0.7 * ${addSvgHeightOrWidth}`);
 export const line2YPoint2 = `${line2YPoint2Num}`;
 
+export const addPolygonHorizontalLine = `${line1XPoint1} ${line1YPoint1}
+ ${line1XPoint2} ${line1YPoint2}
+`;
+
+export const addPolygonVerticalLine = `
+${line2XPoint1} ${line2YPoint1}
+${line2XPoint2} ${line2YPoint2}
+`;
+
 export const addContainer = {
   marginRight: wp('6%'),
 
