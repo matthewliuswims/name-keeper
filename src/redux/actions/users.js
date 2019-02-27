@@ -2,7 +2,7 @@ import Sentry from 'sentry-expo';
 
 import UsersDB from '../../assets/database/UsersDB';
 import { makeAction } from '../../lib/actions';
-import { parseToLongDate } from '../../lib/dates';
+import { parseToLongDate, getDayOfWeek } from '../../lib/dates';
 
 export const ADD_USER_START = 'ADD_USER_START';
 export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
@@ -73,6 +73,8 @@ export function listAllUsers() {
       const withParsedDates = usersList.map((user) => {
         const newUser = Object.assign({}, user, {
           readableCreatedDate: parseToLongDate(user.createdDate),
+          createdDayOfWeek: getDayOfWeek(user.createdDate),
+          // created for search purposes, see getDayOfWeek for more info
         });
         return newUser;
       });
