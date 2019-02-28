@@ -106,14 +106,6 @@ class Footer extends React.Component {
         style={addContainer}
         onPress = {this.props.navigateToAddUserScreen}
       >
-        {/* <Icon
-          name='add-user'
-          color={colors.appThemeColor}
-          size={wp('12%')}
-          iconStyle={{
-            padding: wp('2%'),
-          }}
-        /> */}
         <Svg
           height={addSvgHeightOrWidth}
           width={addSvgHeightOrWidth}
