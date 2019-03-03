@@ -208,3 +208,10 @@ export const groupContainerStyle = {
 export const groupTextStyle = {
   fontSize: 18,
 };
+
+export const headerButtonWrapper = {
+  paddingTop: hp('0.5%'),
+  paddingBottom: hp('0.5%'),
+  paddingLeft: wp('3%'),
+  paddingRight: wp('3%'),
+};

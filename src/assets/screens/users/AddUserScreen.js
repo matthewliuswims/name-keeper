@@ -49,7 +49,6 @@ const noOp = () => { console.log('please try again in a second'); }; // eslint-d
 class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
-    console.log('add user screen activated', this.props.groupsState.focusedGroupName);
     this.state = {
       value: null, // for form
       selectedGroupName: this.props.groupsState.focusedGroupName,
@@ -206,7 +205,6 @@ class AddUserScreen extends Component<Props> {
 
   groupsSection = (allGroups) => {
     if (allGroups.length === 1) {
-      console.log('sect grup name', this.state.selectedGroupName);
       return (
         <View style={styles.groupSection}>
           <View style={groupIconNameContainer}>

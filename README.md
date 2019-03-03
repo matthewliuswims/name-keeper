@@ -27,6 +27,9 @@ give explanations for each person. It is your job as the pastor to try to rememb
 A week later, before church, you think you might see the people again, so you pull out your phone
 and refresh your memory.
 
+### Issues
+1) ipad stuff - make it look good and fix null
+
 ### Manual Regression Testing Process
 
 Do this for both ios and android

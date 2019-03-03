@@ -2,11 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import GroupsMenu from '../menus/GroupsMenu';
 
-import { twoItemHeaderContainer } from '../../styles/base';
+import { twoItemHeaderContainer, headerButtonWrapper } from '../../styles/base';
 
 class RightGroupsHeader extends React.Component {
   state = { opened: false };
@@ -38,9 +37,7 @@ class RightGroupsHeader extends React.Component {
           name='search'
           underlayColor='grey'
           color='white'
-          iconStyle={{
-            padding: hp('1.5%'),
-          }}
+          iconStyle={headerButtonWrapper}
         />
         <GroupsMenu
           opened={opened}

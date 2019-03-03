@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "version-4-remember-names",
-    "slug": "version-4-remember-names",
+    "name": "Name Keeper",
+    "slug": "name-keeper",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -18,7 +18,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "hooks": {
       "postPublish": [

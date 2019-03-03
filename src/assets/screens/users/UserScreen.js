@@ -98,7 +98,7 @@ class UserScreen extends Component {
               />
             </View>
             <View style={styles.description}>
-              <Text> {user.description} </Text>
+              <Text>{user.description}</Text>
             </View>
           </View>
         )
