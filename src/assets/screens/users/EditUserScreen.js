@@ -351,15 +351,18 @@ class EditUserScreen extends Component<Props> {
             {this.groupsSection(allGroups)}
             {this.checkErrGrps(this.props.groupsState.error)}
             {this.checkErrUsrs(this.props.usersState.error)}
-            <TouchableOpacity style={deleteContainer} onPress={this.openDeleteModal}>
-              <Icon
-                name='delete'
-                size={wp('10%')}
-                iconStyle={{
-                  marginRight: wp('2%'),
-                }}
-              />
-            </TouchableOpacity>
+            <View style={deleteContainer}>
+              <TouchableOpacity onPress={this.openDeleteModal}>
+                <Icon
+                  name='delete'
+                  size={wp('10%')}
+                  iconStyle={{
+                    marginRight: wp('2%'),
+                    padding: wp('5%'),
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </TouchableWithoutFeedback>
         {this.deleteModal()}

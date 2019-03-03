@@ -67,6 +67,7 @@ ${line2XPoint2} ${line2YPoint2}
 
 export const addContainer = {
   marginRight: wp('6%'),
+  marginBottom: hp('3%'),
 
   shadowColor: 'black',
   shadowOffset: {
