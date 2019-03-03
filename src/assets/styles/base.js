@@ -36,12 +36,6 @@ export const loadingContainer = {
   alignItems: 'center',
 };
 
-export const topRightTextButtonContainer = {
-  padding: wp('0.5%'),
-  backgroundColor: '#00000000',
-  color: 'white',
-};
-
 export const deleteContainer = {
   flex: 1,
   justifyContent: 'flex-end',
@@ -51,9 +45,22 @@ export const deleteContainer = {
   padding: hp('1%'),
 };
 
+export const topRightTextButtonContainer = {
+  paddingTop: hp('0.5%'),
+  paddingBottom: hp('0.5%'),
+  paddingLeft: wp('1%'),
+  paddingRight: wp('1%'),
+
+  backgroundColor: '#00000000',
+  color: 'white',
+};
+
 export const topRightTextButtonContainerSolo = {
-  padding: wp('2%'),
-  marginRight: wp('3%'),
+  paddingTop: hp('0.5%'),
+  paddingBottom: hp('0.5%'),
+  paddingLeft: wp('3%'),
+  paddingRight: wp('3%'),
+
   backgroundColor: '#00000000',
   color: 'white',
 };

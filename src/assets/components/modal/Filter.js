@@ -6,7 +6,7 @@ import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { Icon } from 'react-native-elements';
 
-import AddGroup from '../groups/AddGroup';
+import AddGroup from '../groups/GroupFilterRow';
 import colors from '../../styles/colors';
 import { cancelButtonText, horizontalGroupScreenButton, circularGroupIcon, innardsStyleContainer, modalContentNormal, modalHeaderNormal } from '../../styles/base';
 

@@ -287,7 +287,7 @@ class GroupsScreen extends Component {
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
-        <Text style={styles.usersListText}>People I Have Met</Text>
+        <Text style={styles.usersListText}>All People I Met</Text>
         <FlatList
           data={sortFilteredUsers}
           renderItem={({ item }) => (

@@ -19,7 +19,7 @@ type Props = {
  * https://github.com/styled-components/styled-components/issues/1795.
  * NOTE: touchable highlight must take one and only 1 child, hence view wrapper
  */
-export default class AddGroup extends React.Component <Props> {
+export default class GroupFilterRow extends React.Component <Props> {
   checkboxToRender(group, cb) {
     return (
       <CheckBox
