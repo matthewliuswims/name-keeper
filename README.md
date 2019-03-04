@@ -28,9 +28,8 @@ A week later, before church, you think you might see the people again, so you pu
 and refresh your memory.
 
 ### Issues
-1) ipad stuff - make it look good and fix null
-2) filter, when the group name is verylong
-3) get circular dotto line up with the name
+1) trash drawer gesture handler? <-- maybe edit too? or just edit..
+2) move date stuff around?
 
 ### Manual Regression Testing Process
 

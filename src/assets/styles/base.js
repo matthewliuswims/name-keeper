@@ -124,11 +124,17 @@ export const circularGroupIcon = {
   marginLeft: wp('2%'),
 };
 
-export const groupIconNameContainer = {
+export const groupIconNameDateContainer = {
   flexDirection: 'row',
   paddingTop: hp('0.5%'),
   alignItems: 'center',
-  marginBottom: 2,
+  marginBottom: 4,
+
+  justifyContent: 'space-between',
+};
+
+export const groupIconNameContainer = {
+  flexDirection: 'row',
 };
 
 export const modalMsg = {

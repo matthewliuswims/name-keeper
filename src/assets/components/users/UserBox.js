@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Text, View, StyleSheet } from 'react-native';
 import { getGroupColor } from '../../../lib/groupColors';
 
-import { groupIconNameContainer, circularGroupIcon } from '../../styles/base';
+import { groupIconNameContainer, circularGroupIcon, groupIconNameDateContainer } from '../../styles/base';
 
 type Props = {
   username: string,
@@ -16,16 +16,22 @@ type Props = {
 class UserBox extends React.Component <Props> {
   firstSectionWithGroup(primaryGroupName) {
     return (
-      <View style={groupIconNameContainer}>
-        <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
-        <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
+      <View style={groupIconNameDateContainer}>
+        <View style={groupIconNameContainer}>
+          <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
+          <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
+        </View>
+        <Text numberOfLines={1}> {this.props.date} </Text>
       </View>
     );
   }
 
   firstSectionWithoutGroup() {
     return (
-      <Text style={styles.headerText} numberOfLines={1}>{this.props.username} </Text>
+      <View style={groupIconNameDateContainer}>
+        <Text style={styles.headerText} numberOfLines={1}>{this.props.username} </Text>
+        <Text numberOfLines={1}> {this.props.date} </Text>
+      </View>
     );
   }
 
@@ -44,7 +50,7 @@ class UserBox extends React.Component <Props> {
         {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
         <View style={styles.descriptionAndDate}>
           <Text numberOfLines={1} style={styles.description}>{this.props.userDescription} </Text>
-          <Text numberOfLines={1}> {this.props.date} </Text>
+          {/* <Text numberOfLines={1}> {this.props.date} </Text> */}
         </View>
       </View>
     );
