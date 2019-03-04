@@ -89,7 +89,8 @@ export default class FilterModal extends Component {
             name='close'
             size={wp('8%')}
             iconStyle={{
-              marginRight: wp('8%'),
+              marginRight: wp('6%'),
+              padding: wp('2%'),
             }}
           />
           <Text style={styles.headerText}> Filter by Groups</Text>

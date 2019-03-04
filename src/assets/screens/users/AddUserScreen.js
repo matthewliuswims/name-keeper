@@ -58,7 +58,7 @@ class AddUserScreen extends Component<Props> {
 
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = circularGroupIcon;
+    const circularGroupIconNoColor = styles.circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -258,6 +258,13 @@ class AddUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  circularGroupIcon: {
+    height: circularGroupIcon.height,
+    width: circularGroupIcon.width,
+    borderRadius: circularGroupIcon.borderRadius,
+    marginRight: circularGroupIcon.marginRight,
+    // we do NOT get margin left from circularGroupIcon
+  },
   groupText: {
     fontWeight: '500',
     fontSize: 17,

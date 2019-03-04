@@ -4,6 +4,8 @@ import { Icon } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
+import { togglePeopleGroupsWrapper } from '../../styles/base';
+
 export default class LeftGroupsHeader extends React.Component {
   render() {
     const textStyles = {
@@ -12,7 +14,7 @@ export default class LeftGroupsHeader extends React.Component {
     };
 
     return (
-      <TouchableOpacity onPress={this.props.swap}>
+      <TouchableOpacity onPress={this.props.swap} style={togglePeopleGroupsWrapper}>
         <Icon
           name='swap-horiz'
           color='white'

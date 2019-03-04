@@ -25,7 +25,7 @@ class UserBox extends React.Component <Props> {
 
   firstSectionWithoutGroup() {
     return (
-      <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
+      <Text style={styles.headerText} numberOfLines={1}>{this.props.username} </Text>
     );
   }
 

@@ -70,7 +70,8 @@ export default class SortByModal extends Component {
             name='close'
             size={wp('8%')}
             iconStyle={{
-              marginRight: wp('20%'),
+              marginRight: wp('16%'),
+              padding: wp('2%'),
             }}
           />
           <Text style={styles.headerText}> Sort by </Text>

@@ -40,7 +40,9 @@ const AppNavigator = createStackNavigator({
     color='white'
     iconStyle={headerButtonWrapper}
   />,
-    headerTitleStyle: { color: sectionHeader.color },
+    headerTitleStyle: {
+      color: sectionHeader.color,
+    },
     headerBackTitleStyle: {
       color: sectionHeader.color,
     },

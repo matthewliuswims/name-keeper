@@ -41,7 +41,7 @@ class UserScreen extends Component {
   }
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = circularGroupIcon;
+    const circularGroupIconNoColor = styles.circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };

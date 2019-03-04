@@ -113,9 +113,13 @@ export const checkBoxBase = {
 
 // @TODO: any customer logic for the fitler group icon should put in the filter component
 export const circularGroupIcon = {
-  height: wp('4%'),
-  width: wp('4%'),
-  borderRadius: wp('3%'),
+  height: 18,
+  width: 18,
+  borderRadius: 10,
+  // height: wp('4%'),
+  // width: wp('4%'),
+  // borderRadius: wp('3%'),
+
   marginRight: wp('2%'),
   marginLeft: wp('2%'),
 };
@@ -210,7 +214,7 @@ export const groupContainerStyle = {
   paddingBottom: hp('1%'),
   marginBottom: hp('1%'),
   borderRadius: 4,
-  borderWidth: 0.5,
+  borderWidth: hp('0.1%'),
   backgroundColor: colors.containerBackgroundColor,
 };
 
@@ -221,6 +225,11 @@ export const groupTextStyle = {
 export const headerButtonWrapper = {
   paddingTop: hp('0.5%'),
   paddingBottom: hp('0.5%'),
+  paddingLeft: wp('3%'),
+  paddingRight: wp('3%'),
+};
+
+export const togglePeopleGroupsWrapper = {
   paddingLeft: wp('3%'),
   paddingRight: wp('3%'),
 };

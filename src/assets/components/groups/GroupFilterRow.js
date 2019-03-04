@@ -43,7 +43,8 @@ export default class GroupFilterRow extends React.Component <Props> {
           <View style={this.props.innardsStyleContainer}>
             <View style={groupIconNameContainer}>
               <View style={this.props.getColorStyle(group.color, group.opacity)} />
-              <Text numberOfLines={1}> {group.name} </Text>
+              <Text numberOfLines={1} style={{ width: '70%' }}> {group.name} </Text>
+              {/* width: '70%' is so long group names won't kick out the checkbox */}
             </View>
             {this.checkboxToRender(group, this.props.onGroupClick)}
           </View>
