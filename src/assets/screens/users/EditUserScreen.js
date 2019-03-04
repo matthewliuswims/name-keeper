@@ -176,7 +176,7 @@ class EditUserScreen extends Component<Props> {
   }
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -376,13 +376,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 21,
     textAlign: 'center',
-  },
-  circularGroupIcon: {
-    height: wp('4%'),
-    width: wp('4%'),
-    borderRadius: wp('3%'),
-    marginRight: wp('2%'),
-    marginLeft: wp('2%'),
   },
   groupText: {
     fontWeight: '500',

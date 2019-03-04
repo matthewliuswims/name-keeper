@@ -111,11 +111,13 @@ export const checkBoxBase = {
   margin: 0,
 };
 
+// @TODO: any customer logic for the fitler group icon should put in the filter component
 export const circularGroupIcon = {
-  height: wp('5%'),
-  width: wp('5%'),
+  height: wp('4%'),
+  width: wp('4%'),
   borderRadius: wp('3%'),
-  marginRight: wp('3%'),
+  marginRight: wp('2%'),
+  marginLeft: wp('2%'),
 };
 
 export const groupIconNameContainer = {

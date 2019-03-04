@@ -1,14 +1,13 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-import { groupContainerStyle, groupTextStyle, groupIconNameContainer } from '../../styles/base';
+import { groupContainerStyle, groupTextStyle, groupIconNameContainer, circularGroupIcon } from '../../styles/base';
 
 import { getGroupColor } from '../../../lib/groupColors';
 
 export default class Group extends React.Component {
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -39,13 +38,6 @@ const styles = StyleSheet.create({
     paddingTop: groupIconNameContainer.paddingTop,
     alignItems: groupIconNameContainer.alignItems,
     marginBottom: 4,
-  },
-  circularGroupIcon: {
-    height: wp('4%'),
-    width: wp('4%'),
-    borderRadius: wp('3%'),
-    marginRight: wp('2%'),
-    marginLeft: wp('2%'),
   },
   text: {
     fontSize: groupTextStyle.fontSize,

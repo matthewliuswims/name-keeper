@@ -7,7 +7,7 @@ import { get } from 'lodash';
 import { Text, View, StyleSheet, FlatList } from 'react-native';
 
 import noOp from '../../../lib/UIhelpers';
-import { container, groupIconNameContainer, horizontalGroupScreenButton } from '../../styles/base';
+import { container, groupIconNameContainer, horizontalGroupScreenButton, circularGroupIcon } from '../../styles/base';
 import RightHeaderComponent from '../../components/headers/RightTextHeader';
 import { getGroupColor } from '../../../lib/groupColors';
 
@@ -41,7 +41,7 @@ class UserScreen extends Component {
   }
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -142,10 +142,11 @@ const styles = StyleSheet.create({
     shadowColor: horizontalGroupScreenButton.shadowColor,
   },
   circularGroupIcon: {
-    height: wp('4%'),
-    width: wp('4%'),
-    borderRadius: wp('3%'),
-    marginRight: wp('3%'),
+    height: circularGroupIcon.height,
+    width: circularGroupIcon.width,
+    borderRadius: circularGroupIcon.borderRadius,
+    marginRight: circularGroupIcon.marginRight,
+    // we do NOT get margin left from circularGroupIcon
   },
 });
 

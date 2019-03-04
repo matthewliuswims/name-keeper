@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import { Text, View, StyleSheet } from 'react-native';
 import { getGroupColor } from '../../../lib/groupColors';
 
-import { groupIconNameContainer } from '../../styles/base';
+import { groupIconNameContainer, circularGroupIcon } from '../../styles/base';
 
 type Props = {
   username: string,
@@ -44,7 +43,7 @@ class UserBox extends React.Component <Props> {
       <View style={styles.container}>
         {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
         <View style={styles.descriptionAndDate}>
-          <Text numberOfLines={1} style={styles.description}> {this.props.userDescription} </Text>
+          <Text numberOfLines={1} style={styles.description}>{this.props.userDescription} </Text>
           <Text numberOfLines={1}> {this.props.date} </Text>
         </View>
       </View>
@@ -60,11 +59,11 @@ const mapStateToProps = state => (
 
 const styles = StyleSheet.create({
   circularGroupIcon: {
-    height: wp('4%'),
-    width: wp('4%'),
-    borderRadius: wp('3%'),
-    marginRight: wp('2%'),
-    marginLeft: wp('2%'),
+    height: circularGroupIcon.height,
+    width: circularGroupIcon.width,
+    borderRadius: circularGroupIcon.borderRadius,
+    marginRight: circularGroupIcon.marginRight,
+    // we do NOT get margin left from circularGroupIcon
   },
   headerText: {
     fontWeight: 'bold',

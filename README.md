@@ -29,6 +29,8 @@ and refresh your memory.
 
 ### Issues
 1) ipad stuff - make it look good and fix null
+2) filter, when the group name is verylong
+3) get circular dotto line up with the name
 
 ### Manual Regression Testing Process
 

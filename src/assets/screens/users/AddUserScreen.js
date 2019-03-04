@@ -4,14 +4,14 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFee
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
 import { focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
-import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText } from '../../styles/base';
+import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -58,7 +58,7 @@ class AddUserScreen extends Component<Props> {
 
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -261,13 +261,6 @@ const styles = StyleSheet.create({
   groupText: {
     fontWeight: '500',
     fontSize: 17,
-  },
-  circularGroupIcon: {
-    height: wp('4%'),
-    width: wp('4%'),
-    borderRadius: wp('3%'),
-    marginRight: wp('2%'),
-    marginLeft: wp('2%'),
   },
   groupSection: {
     marginTop: hp('1.5%'),

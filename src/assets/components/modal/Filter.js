@@ -68,7 +68,7 @@ export default class FilterModal extends Component {
 
   // is also in AddUserScreen...eventually refactor
   getColorStyle(groupColor, opacity) {
-    const circularGroupIconNoColor = circularGroupIcon;
+    const circularGroupIconNoColor = styles.circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
       opacity,
@@ -113,6 +113,13 @@ export default class FilterModal extends Component {
 }
 
 const styles = StyleSheet.create({
+  circularGroupIcon: {
+    height: circularGroupIcon.height,
+    width: circularGroupIcon.width,
+    borderRadius: circularGroupIcon.borderRadius,
+    marginRight: circularGroupIcon.marginRight,
+    // we do NOT get margin left from circularGroupIcon
+  },
   container: {
     flex: 1,
   },
