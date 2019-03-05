@@ -14,7 +14,7 @@ import { listGroups, focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer } from '../../styles/base';
+import { container, groupIconNameContainerEditAddUser, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -198,7 +198,7 @@ class EditUserScreen extends Component<Props> {
         }
         }
       >
-        <View style={groupIconNameContainer}>
+        <View style={groupIconNameContainerEditAddUser}>
           <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
           <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
         </View>
@@ -228,7 +228,7 @@ class EditUserScreen extends Component<Props> {
             style={styles.otherGroupSelection}
             onPress={() => { this.otherGroupClick(item); }}
           >
-            <View style={groupIconNameContainer}>
+            <View style={groupIconNameContainerEditAddUser}>
               <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
               <Text numberOfLines={1}> {item.name} </Text>
             </View>
@@ -302,7 +302,7 @@ class EditUserScreen extends Component<Props> {
     if (allGroups.length === 1) {
       return (
         <View style={styles.groupSection}>
-          <View style={groupIconNameContainer}>
+          <View style={groupIconNameContainerEditAddUser}>
             <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
             <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
           </View>

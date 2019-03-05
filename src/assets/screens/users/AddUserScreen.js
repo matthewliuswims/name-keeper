@@ -11,7 +11,7 @@ import ErrorModal from '../../components/modal/Error';
 
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
-import { container, groupIconNameContainer, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon } from '../../styles/base';
+import { container, groupIconNameContainerEditAddUser, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -58,7 +58,7 @@ class AddUserScreen extends Component<Props> {
 
 
   getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
     };
@@ -163,7 +163,7 @@ class AddUserScreen extends Component<Props> {
             style={styles.otherGroupSelection}
             onPress={() => { this.otherGroupClick(item); }}
           >
-            <View style={groupIconNameContainer}>
+            <View style={groupIconNameContainerEditAddUser}>
               <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
               <Text numberOfLines={1}> {item.name} </Text>
             </View>
@@ -192,7 +192,7 @@ class AddUserScreen extends Component<Props> {
         }
         }
       >
-        <View style={groupIconNameContainer}>
+        <View style={groupIconNameContainerEditAddUser}>
           <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
           <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
         </View>
@@ -207,7 +207,7 @@ class AddUserScreen extends Component<Props> {
     if (allGroups.length === 1) {
       return (
         <View style={styles.groupSection}>
-          <View style={groupIconNameContainer}>
+          <View style={groupIconNameContainerEditAddUser}>
             <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
             <Text> {this.state.selectedGroupName} </Text>
           </View>
@@ -258,13 +258,6 @@ class AddUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  circularGroupIcon: {
-    height: circularGroupIcon.height,
-    width: circularGroupIcon.width,
-    borderRadius: circularGroupIcon.borderRadius,
-    marginRight: circularGroupIcon.marginRight,
-    // we do NOT get margin left from circularGroupIcon
-  },
   groupText: {
     fontWeight: '500',
     fontSize: 17,

@@ -116,9 +116,6 @@ export const circularGroupIcon = {
   height: 18,
   width: 18,
   borderRadius: 10,
-  // height: wp('4%'),
-  // width: wp('4%'),
-  // borderRadius: wp('3%'),
 
   marginRight: wp('2%'),
   marginLeft: wp('2%'),
@@ -135,6 +132,12 @@ export const groupIconNameDateContainer = {
 
 export const groupIconNameContainer = {
   flexDirection: 'row',
+};
+
+export const groupIconNameContainerEditAddUser = {
+  paddingTop: hp('0.5%'),
+  paddingBottom: hp('0.5%'),
+  flexDirection: groupIconNameContainer.flexDirection,
 };
 
 export const modalMsg = {
@@ -225,7 +228,7 @@ export const groupContainerStyle = {
 };
 
 export const groupTextStyle = {
-  fontSize: 18,
+  fontSize: 14,
 };
 
 export const headerButtonWrapper = {
