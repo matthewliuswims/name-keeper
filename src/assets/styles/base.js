@@ -225,7 +225,6 @@ export const groupContainerStyle = {
   borderRadius: 4,
   borderWidth: 1,
   backgroundColor: colors.containerBackgroundColor,
-  
 };
 
 export const groupTextStyle = {
@@ -242,4 +241,28 @@ export const headerButtonWrapper = {
 export const togglePeopleGroupsWrapper = {
   paddingLeft: wp('3%'),
   paddingRight: wp('3%'),
+};
+
+export const rightDrawerOpenValue = -140;
+
+export const editRightSlot = {
+  backgroundColor: '#cccc00',
+  width: 70,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+export const editRightSlotText = {
+  color: 'white',
+};
+
+export const deleteRightSlot = {
+  backgroundColor: colors.warningColor,
+  width: 70,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
+export const deleteRightSlotText = {
+  color: 'white',
 };

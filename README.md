@@ -32,6 +32,7 @@ and refresh your memory.
 2) make ipad a first class citizen <-- could have quite a few users
 3) make it so that any kind of userbox or groupbox is swipeable!
 4) get rid of console.log
+5) after adding a userin all users, go back to the alluser sscreen? have to make sure have extradata fortheflat list?
 
 
 ### Manual Regression Testing Process

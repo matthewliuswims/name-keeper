@@ -10,7 +10,18 @@ import RF from 'react-native-responsive-fontsize';
 import { get } from 'lodash';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { container, horizontalGroupScreenButton, footerSection, groupContainerStyle } from '../../styles/base';
+import {
+  container,
+  horizontalGroupScreenButton,
+  footerSection,
+  groupContainerStyle,
+  rightDrawerOpenValue,
+  editRightSlot,
+  editRightSlotText,
+  deleteRightSlot,
+  deleteRightSlotText,
+} from '../../styles/base';
+
 import colors from '../../styles/colors';
 
 import Footer from '../../components/footer/footer';
@@ -46,7 +57,7 @@ class GroupsScreen extends Component {
     this.props.listAllUsers();
     this.state = {
       groupNameDrawerFocused: '',
-      deleteModalOpen: false,
+      deleteGroupModalOpen: false,
       showingGroups: true,
       sortByModalOpen: false,
       filterModalOpen: false,
@@ -147,42 +158,41 @@ class GroupsScreen extends Component {
     );
   }
 
-  // delete modal logic
-  openDeleteModal = () => {
+  // delete modal group
+  openGroupDeleteModal = () => {
     this.setState({
-      deleteModalOpen: true,
+      deleteGroupModalOpen: true,
     });
   }
 
-  closeDeleteModal = () => {
+  closeGroupDeleteModal = () => {
     this.setState({
-      deleteModalOpen: false,
+      deleteGroupModalOpen: false,
     });
   }
 
   deleteGroup = async () => {
-    console.log('groupNameDrawerFocused', this.state.groupNameDrawerFocused);
     await this.props.deleteGroup(this.state.groupNameDrawerFocused);
     await this.props.navigation.navigate('GroupsScreen');
     this.props.listAllUsers();
     this.props.listGroups();
     this.setState({ groupNameDrawerFocused: '' });
-    this.setState({ deleteModalOpen: false });
+    this.setState({ deleteGroupModalOpen: false });
   }
 
-  deleteModal = () => {
-    if (this.state.deleteModalOpen) {
+  deleteGroupModal = () => {
+    if (this.state.deleteGroupModalOpen) {
       return (
         <DeleteModal
-          deleteModalOpen={this.state.deleteModalOpen}
+          deleteModalOpen={this.state.deleteGroupModalOpen}
           deleteFunc={this.deleteGroup}
-          closeDeleteModal={this.closeDeleteModal}
+          closeDeleteModal={this.closeGroupDeleteModal}
           currentFocusedScreen={this.props.navigation.isFocused()}
         />
       );
     }
   }
-  // delete modal logic ends
+  // delete modal group ends
 
   groups = (users) => {
     const { groups } = this.props.groupsState;
@@ -214,27 +224,27 @@ class GroupsScreen extends Component {
         renderHiddenItem={({ item }) => (
           <View style={styles.rowBack}>
             <TouchableOpacity
-              style={styles.editRightSlot}
+              style={editRightSlot}
               onPress = {async () => {
                 await this.props.focusGroup(item.name);
                 await this.props.navigation.navigate('EditGroupScreen');
               }}
             >
-              <Text style={styles.editRightSlotText}>EDIT</Text>
+              <Text style={editRightSlotText}>EDIT</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.deleteRightSlot}
+              style={deleteRightSlot}
               onPress = {() => {
                 this.setState({ groupNameDrawerFocused: item.name });
-                this.openDeleteModal();
+                this.openGroupDeleteModal();
               }}
             >
-              <Text style={styles.deleteRightSlotText}>DELETE</Text>
+              <Text style={deleteRightSlotText}>DELETE</Text>
             </TouchableOpacity>
           </View>
         )}
         keyExtractor={(item => `${item.groupID}`)}
-        rightOpenValue={-140}
+        rightOpenValue={rightDrawerOpenValue}
         extraData={usersState}
         disableRightSwipe
       />
@@ -545,7 +555,7 @@ class GroupsScreen extends Component {
         </View>
         {this.sortOpen()}
         {this.filterOpen()}
-        {this.deleteModal()}
+        {this.deleteGroupModal()}
         {this.checkErr(groupsStateErr)}
       </View>
     );
@@ -553,24 +563,6 @@ class GroupsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  editRightSlot: {
-    backgroundColor: '#cccc00',
-    width: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  editRightSlotText: {
-    color: 'white',
-  },
-  deleteRightSlot: {
-    backgroundColor: colors.warningColor,
-    width: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  deleteRightSlotText: {
-    color: 'white',
-  },
   rowBack: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
