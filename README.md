@@ -29,7 +29,10 @@ and refresh your memory.
 
 ### Issues
 1) trash drawer gesture handler? <-- maybe edit too? or just edit..
-2) move date stuff around?
+2) make ipad a first class citizen <-- could have quite a few users
+3) make it so that any kind of userbox or groupbox is swipeable!
+4) get rid of console.log
+
 
 ### Manual Regression Testing Process
 

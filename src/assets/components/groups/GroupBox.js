@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 
-import { groupContainerStyle, groupTextStyle, groupIconNameContainer, circularGroupIcon } from '../../styles/base';
+import { groupTextStyle, groupIconNameContainer, circularGroupIcon } from '../../styles/base';
 
 import { getGroupColor } from '../../../lib/groupColors';
 
@@ -19,14 +19,14 @@ export default class Group extends React.Component {
     const { groupName, groups, firstTwoUsernames } = this.props;
 
     return (
-      <View style={groupContainerStyle}>
+      <React.Fragment>
         <View style={styles.groupIconNameContainer}>
           <View style={this.getCircularColorStyle(getGroupColor(groupName, groups))} />
           <Text style={styles.headerText} numberOfLines={1}>{groupName}</Text>
         </View>
         <Text style={styles.text} numberOfLines={1}>{'\t'}{firstTwoUsernames[0]}</Text>
         <Text style={styles.text} numberOfLines={1}>{'\t'}{firstTwoUsernames[1]}</Text>
-      </View>
+      </React.Fragment>
     );
   }
 }

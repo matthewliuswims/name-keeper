@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -155,7 +155,7 @@ class GroupScreen extends Component<Props> {
       <FlatList
         data={sortedUsers}
         renderItem={({ item }) => (
-          <TouchableOpacity
+          <TouchableHighlight
             onPress = {() => {
               this.props.focusUser(item);
               this.props.navigation.navigate('UserScreen');
@@ -166,7 +166,7 @@ class GroupScreen extends Component<Props> {
               userDescription={item.description}
               date={parseToShortDate(item.createdDate)}
             />
-          </TouchableOpacity>
+          </TouchableHighlight>
         )}
         keyExtractor={(item => `${item.userID}`)}
       />

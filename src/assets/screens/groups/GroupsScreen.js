@@ -2,22 +2,26 @@ import Sentry from 'sentry-expo';
 import PropTypes from 'prop-types';
 
 import React, { Component, Fragment } from 'react';
-import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
+
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
 import { get } from 'lodash';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { container, horizontalGroupScreenButton, footerSection } from '../../styles/base';
+import { container, horizontalGroupScreenButton, footerSection, groupContainerStyle } from '../../styles/base';
 import colors from '../../styles/colors';
 
 import Footer from '../../components/footer/footer';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 import ErrorModal from '../../components/modal/Error';
 
+import DeleteModal from '../../components/modal/Delete';
+
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
 
-import { listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
+import { listGroups, clearGroupsErr, focusGroup, deleteGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
 import RightHeaderComponent from '../../components/headers/RightGroupsHeader';
 import LeftHeaderComponent from '../../components/headers/LeftGroupsHeader';
@@ -41,6 +45,8 @@ class GroupsScreen extends Component {
     this.props.listGroups(); // also called in compoenntDidMount, but this is used so we can see groups quicker on screen
     this.props.listAllUsers();
     this.state = {
+      groupNameDrawerFocused: '',
+      deleteModalOpen: false,
       showingGroups: true,
       sortByModalOpen: false,
       filterModalOpen: false,
@@ -141,15 +147,52 @@ class GroupsScreen extends Component {
     );
   }
 
+  // delete modal logic
+  openDeleteModal = () => {
+    this.setState({
+      deleteModalOpen: true,
+    });
+  }
+
+  closeDeleteModal = () => {
+    this.setState({
+      deleteModalOpen: false,
+    });
+  }
+
+  deleteGroup = async () => {
+    console.log('groupNameDrawerFocused', this.state.groupNameDrawerFocused);
+    await this.props.deleteGroup(this.state.groupNameDrawerFocused);
+    await this.props.navigation.navigate('GroupsScreen');
+    this.props.listAllUsers();
+    this.props.listGroups();
+    this.setState({ groupNameDrawerFocused: '' });
+    this.setState({ deleteModalOpen: false });
+  }
+
+  deleteModal = () => {
+    if (this.state.deleteModalOpen) {
+      return (
+        <DeleteModal
+          deleteModalOpen={this.state.deleteModalOpen}
+          deleteFunc={this.deleteGroup}
+          closeDeleteModal={this.closeDeleteModal}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+        />
+      );
+    }
+  }
+  // delete modal logic ends
+
   groups = (users) => {
     const { groups } = this.props.groupsState;
     const { usersState } = this.props;
-
     return (
-      <FlatList
+      <SwipeListView
+        useFlatList
         data={groups}
         renderItem={({ item }) => (
-          <TouchableOpacity
+          <TouchableHighlight
             onPress = {() => {
               this.props.focusGroup(item.name);
               this.props.navigation.navigate('GroupScreen',
@@ -157,16 +200,43 @@ class GroupsScreen extends Component {
                   groupName: item.name,
                 });
             }}
+            style={groupContainerStyle}
+            activeOpacity={0.5}
+            underlayColor={colors.touchableHighlightUnderlayColor}
           >
             <Group
               groupName={item.name}
               firstTwoUsernames={this.getTwoUsernames(item.name, users)}
               groups={groups}
               />
-          </TouchableOpacity>
+          </TouchableHighlight>
+        )}
+        renderHiddenItem={({ item }) => (
+          <View style={styles.rowBack}>
+            <TouchableOpacity
+              style={styles.editRightSlot}
+              onPress = {async () => {
+                await this.props.focusGroup(item.name);
+                await this.props.navigation.navigate('EditGroupScreen');
+              }}
+            >
+              <Text style={styles.editRightSlotText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteRightSlot}
+              onPress = {() => {
+                this.setState({ groupNameDrawerFocused: item.name });
+                this.openDeleteModal();
+              }}
+            >
+              <Text style={styles.deleteRightSlotText}>DELETE</Text>
+            </TouchableOpacity>
+          </View>
         )}
         keyExtractor={(item => `${item.groupID}`)}
-        extraData={usersState} // necessary to show the 2 users
+        rightOpenValue={-140}
+        extraData={usersState}
+        disableRightSwipe
       />
     );
   }
@@ -263,7 +333,7 @@ class GroupsScreen extends Component {
       return (
         <View style={styles.noGroupsOrUsersContainer}>
           <Text style={styles.noGroupsOrUsersHeader}>
-            {'Click "Groups" at the top left & go create a group'}
+            {'Click "Groups" at the top-left to create a group'}
           </Text>
           <Text style={styles.noGroupsOrUsersMessage}>
             You need to create a group before you can add a user.
@@ -291,7 +361,7 @@ class GroupsScreen extends Component {
         <FlatList
           data={sortFilteredUsers}
           renderItem={({ item }) => (
-            <TouchableOpacity
+            <TouchableHighlight
               onPress = {() => {
                 this.props.focusUser(item);
                 this.props.focusGroup(item.primaryGroupName);
@@ -304,7 +374,7 @@ class GroupsScreen extends Component {
                 userDescription={item.description}
                 date={parseToShortDate(item.createdDate)}
               />
-            </TouchableOpacity>
+            </TouchableHighlight>
           )}
           keyExtractor={(item => `${item.userID}`)}
         />
@@ -475,6 +545,7 @@ class GroupsScreen extends Component {
         </View>
         {this.sortOpen()}
         {this.filterOpen()}
+        {this.deleteModal()}
         {this.checkErr(groupsStateErr)}
       </View>
     );
@@ -482,6 +553,32 @@ class GroupsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  editRightSlot: {
+    backgroundColor: '#cccc00',
+    width: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  editRightSlotText: {
+    color: 'white',
+  },
+  deleteRightSlot: {
+    backgroundColor: colors.warningColor,
+    width: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteRightSlotText: {
+    color: 'white',
+  },
+  rowBack: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    borderWidth: 1,
+    borderRadius: 4,
+    flex: 1,
+    marginBottom: hp('1%'), // needs to match groupContainerStyle
+  },
   addText: {
     fontWeight: 'bold',
     fontSize: hp('3%'),
@@ -545,6 +642,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     listGroups: () => dispatch(listGroups()),
+    deleteGroup: user => dispatch(deleteGroup(user)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
     focusGroup: groupName => dispatch(focusGroup(groupName)),
     listAllUsers: () => dispatch(listAllUsers()),

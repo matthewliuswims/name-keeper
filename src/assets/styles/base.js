@@ -223,8 +223,9 @@ export const groupContainerStyle = {
   paddingBottom: hp('1%'),
   marginBottom: hp('1%'),
   borderRadius: 4,
-  borderWidth: hp('0.1%'),
+  borderWidth: 1,
   backgroundColor: colors.containerBackgroundColor,
+  
 };
 
 export const groupTextStyle = {

@@ -38,7 +38,7 @@ export default class GroupFilterRow extends React.Component <Props> {
         <TouchableHighlight
           onPress = {group.isFocusedGroup ? null : () => this.props.onGroupClick(group.name)}
           style={groupIconContainer}
-          underlayColor="white"
+          underlayColor="white" // actually want this to just be white
         >
           <View style={this.props.innardsStyleContainer}>
             <View style={groupIconNameContainer}>
