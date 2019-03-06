@@ -2,7 +2,7 @@ import Sentry from 'sentry-expo';
 import PropTypes from 'prop-types';
 
 import React, { Component, Fragment } from 'react';
-import { Text, View, FlatList, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import {
   horizontalGroupScreenButton,
   footerSection,
   groupContainerStyle,
+  userContainerStyle,
   rightDrawerOpenValue,
   editRightSlot,
   editRightSlotText,
@@ -30,7 +31,7 @@ import ErrorModal from '../../components/modal/Error';
 
 import DeleteModal from '../../components/modal/Delete';
 
-import { listAllUsers, focusUser } from '../../../redux/actions/users';
+import { listAllUsers, focusUser, deleteUser } from '../../../redux/actions/users';
 
 import { listGroups, clearGroupsErr, focusGroup, deleteGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
@@ -58,6 +59,10 @@ class GroupsScreen extends Component {
     this.state = {
       groupNameDrawerFocused: '',
       deleteGroupModalOpen: false,
+
+      userDrawerFocused: null,
+      deleteUserModalOpen: false,
+
       showingGroups: true,
       sortByModalOpen: false,
       filterModalOpen: false,
@@ -166,6 +171,7 @@ class GroupsScreen extends Component {
   }
 
   closeGroupDeleteModal = () => {
+    this._swipeListGroupsView.safeCloseOpenRow();
     this.setState({
       deleteGroupModalOpen: false,
     });
@@ -174,10 +180,10 @@ class GroupsScreen extends Component {
   deleteGroup = async () => {
     await this.props.deleteGroup(this.state.groupNameDrawerFocused);
     await this.props.navigation.navigate('GroupsScreen');
-    this.props.listAllUsers();
-    this.props.listGroups();
-    this.setState({ groupNameDrawerFocused: '' });
-    this.setState({ deleteGroupModalOpen: false });
+    await this.props.listAllUsers();
+    await this.props.listGroups();
+    await this.setState({ groupNameDrawerFocused: '' });
+    await this.setState({ deleteGroupModalOpen: false });
   }
 
   deleteGroupModal = () => {
@@ -194,12 +200,52 @@ class GroupsScreen extends Component {
   }
   // delete modal group ends
 
+  // delete modal user starts
+  openUserDeleteModal = () => {
+    this.setState({
+      deleteUserModalOpen: true,
+    });
+  }
+
+  closeUserDeleteModal = () => {
+    this._swipeListUsersView.safeCloseOpenRow();
+    this.setState({
+      deleteUserModalOpen: false,
+    });
+  }
+
+  deleteUser = async () => {
+    this.closeUserDeleteModal();
+    console.log('this.state.userNameDrawerFocused', this.state.userDrawerFocused);
+    await this.props.deleteUser(this.state.userDrawerFocused);
+    await this.props.listAllUsers();
+    await this.setState({ userDrawerFocused: null });
+    await this.setState({ deleteUserModalOpen: false });
+  }
+
+  deleteUserModal = () => {
+    if (this.state.deleteUserModalOpen) {
+      return (
+        <DeleteModal
+          deleteModalOpen={this.state.deleteUserModalOpen}
+          deleteFunc={this.deleteUser}
+          closeDeleteModal={this.closeUserDeleteModal}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+          deleteGroup={false}
+        />
+      );
+    }
+  }
+  // delete modal userends
+
+
   groups = (users) => {
     const { groups } = this.props.groupsState;
     const { usersState } = this.props;
     return (
       <SwipeListView
         useFlatList
+        ref={ref => this._swipeListGroupsView = ref}
         data={groups}
         renderItem={({ item }) => (
           <TouchableHighlight
@@ -222,10 +268,11 @@ class GroupsScreen extends Component {
           </TouchableHighlight>
         )}
         renderHiddenItem={({ item }) => (
-          <View style={styles.rowBack}>
+          <View style={styles.rowGroupBack}>
             <TouchableOpacity
               style={editRightSlot}
               onPress = {async () => {
+                this._swipeListGroupsView.safeCloseOpenRow();
                 await this.props.focusGroup(item.name);
                 await this.props.navigation.navigate('EditGroupScreen');
               }}
@@ -364,11 +411,14 @@ class GroupsScreen extends Component {
   }
 
   usersListWithUsers = (sortOption, selectedFilteredGroups, users) => {
+    const { usersState } = this.props;
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
         <Text style={styles.usersListText}>All People I Met</Text>
-        <FlatList
+        <SwipeListView
+          useFlatList
+          ref={ref => this._swipeListUsersView = ref}
           data={sortFilteredUsers}
           renderItem={({ item }) => (
             <TouchableHighlight
@@ -377,6 +427,9 @@ class GroupsScreen extends Component {
                 this.props.focusGroup(item.primaryGroupName);
                 this.props.navigation.navigate('UserScreen');
               }}
+              style={userContainerStyle}
+              activeOpacity={0.5}
+              underlayColor={colors.touchableHighlightUnderlayColor}
             >
               <UserBox
                 username={item.name}
@@ -386,7 +439,38 @@ class GroupsScreen extends Component {
               />
             </TouchableHighlight>
           )}
+          renderHiddenItem={(data, rowMap) => (
+            <View style={styles.rowUserBack}>
+              <TouchableOpacity
+                style={editRightSlot}
+                onPress = {async () => {
+                  const { item } = data;
+                  rowMap[item.userID].closeRow();
+                  await this.props.focusUser(item);
+                  await this.props.focusGroup(item.primaryGroupName);
+                  await this.props.navigation.navigate('EditUserScreen', {
+                    focusedUserName: this.props.usersState.focusedUser.name,
+                  });
+                }}
+              >
+                <Text style={editRightSlotText}>EDIT</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={deleteRightSlot}
+                onPress = {() => {
+                  const { item } = data;
+                  this.setState({ userDrawerFocused: item });
+                  this.openUserDeleteModal();
+                }}
+              >
+                <Text style={deleteRightSlotText}>DELETE</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           keyExtractor={(item => `${item.userID}`)}
+          rightOpenValue={rightDrawerOpenValue}
+          extraData={usersState}
+          disableRightSwipe
         />
       </Fragment>
     );
@@ -556,6 +640,7 @@ class GroupsScreen extends Component {
         {this.sortOpen()}
         {this.filterOpen()}
         {this.deleteGroupModal()}
+        {this.deleteUserModal()}
         {this.checkErr(groupsStateErr)}
       </View>
     );
@@ -563,13 +648,22 @@ class GroupsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  rowBack: {
+  rowGroupBack: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     borderWidth: 1,
     borderRadius: 4,
     flex: 1,
     marginBottom: hp('1%'), // needs to match groupContainerStyle
+  },
+  rowUserBack: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    paddingTop: 5,
+    paddingBottom: 5,
+    flex: 1,
   },
   addText: {
     fontWeight: 'bold',
@@ -639,6 +733,7 @@ const mapDispatchToProps = dispatch => (
     focusGroup: groupName => dispatch(focusGroup(groupName)),
     listAllUsers: () => dispatch(listAllUsers()),
     focusUser: user => dispatch(focusUser(user)),
+    deleteUser: user => dispatch(deleteUser(user)),
   }
 );
 
@@ -648,7 +743,7 @@ GroupsScreen.propTypes = {
   listGroups: PropTypes.func.isRequired,
   clearGroupsErr: PropTypes.func.isRequired,
   focusGroup: PropTypes.func.isRequired,
-
+  deleteUser: PropTypes.func.isRequired,
   listAllUsers: PropTypes.func.isRequired,
   focusUser: PropTypes.func.isRequired,
 

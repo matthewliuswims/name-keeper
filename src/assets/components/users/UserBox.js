@@ -46,13 +46,12 @@ class UserBox extends React.Component <Props> {
 
   render() {
     return (
-      <View style={styles.container}>
+      <React.Fragment>
         {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
         <View style={styles.descriptionAndDate}>
           <Text numberOfLines={1} style={styles.description}>{this.props.userDescription} </Text>
-          {/* <Text numberOfLines={1}> {this.props.date} </Text> */}
         </View>
-      </View>
+      </React.Fragment>
     );
   }
 }
@@ -73,12 +72,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontWeight: 'bold',
-  },
-  container: {
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    paddingTop: 5,
-    paddingBottom: 5,
   },
   descriptionAndDate: {
     flex: 1, // if uncomment, you'll see difference

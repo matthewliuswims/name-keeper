@@ -6,9 +6,14 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
 import { parseToShortDate } from '../../../lib/dates';
+import colors from '../../styles/colors';
 
 import { listAllUsers, focusUser } from '../../../redux/actions/users';
-import { container, footerSection } from '../../styles/base';
+import {
+  container,
+  footerSection,
+  userContainerStyle,
+} from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
 
@@ -160,6 +165,9 @@ class GroupScreen extends Component<Props> {
               this.props.focusUser(item);
               this.props.navigation.navigate('UserScreen');
             }}
+            style={userContainerStyle}
+            activeOpacity={0.5}
+            underlayColor={colors.touchableHighlightUnderlayColor}
           >
             <UserBox
               username={item.name}

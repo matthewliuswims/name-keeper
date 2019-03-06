@@ -218,6 +218,14 @@ export const modalHeaderNormal = {
   marginBottom: hp('2%'),
 };
 
+export const userContainerStyle = {
+  borderWidth: 0,
+  borderBottomWidth: 1,
+  paddingTop: 5,
+  paddingBottom: 5,
+  backgroundColor: colors.containerBackgroundColor,
+};
+
 export const groupContainerStyle = {
   paddingTop: hp('1%'),
   paddingBottom: hp('1%'),
@@ -254,6 +262,7 @@ export const editRightSlot = {
 
 export const editRightSlotText = {
   color: 'white',
+  fontWeight: 'bold',
 };
 
 export const deleteRightSlot = {
@@ -265,4 +274,5 @@ export const deleteRightSlot = {
 
 export const deleteRightSlotText = {
   color: 'white',
+  fontWeight: 'bold',
 };

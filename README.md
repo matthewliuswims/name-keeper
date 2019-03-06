@@ -30,9 +30,15 @@ and refresh your memory.
 ### Issues
 1) trash drawer gesture handler? <-- maybe edit too? or just edit..
 2) make ipad a first class citizen <-- could have quite a few users
+2.5) edit delete prettier?
 3) make it so that any kind of userbox or groupbox is swipeable!
 4) get rid of console.log
 5) after adding a userin all users, go back to the alluser sscreen? have to make sure have extradata fortheflat list?
+6) see if focusing user when clicking on the the edit for user messes with anything
+7) add person - back screen when you're on the user screen is weird
+7.5) adding users from the user screen should bring them back to the users screen at large
+8) different edit and delete icons for groups vs users
+9) search screen doesn't need to have stuff
 
 
 ### Manual Regression Testing Process
