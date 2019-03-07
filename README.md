@@ -40,7 +40,9 @@ and refresh your memory.
 8) different edit and delete icons for groups vs users
 9) search screen doesn't need to have stuff
 10) + group doesn't look nice
-
+11) seriously consider doing something about buttons on ipad...limit them?
+12) make sure whenever I click to go to another screen, the drawers are closed?
+13) left Align for big body of text
 
 ### Manual Regression Testing Process
 

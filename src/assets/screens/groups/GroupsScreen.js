@@ -465,6 +465,7 @@ class GroupsScreen extends Component {
                   await this.props.focusGroup(item.primaryGroupName);
                   await this.props.navigation.navigate('EditUserScreen', {
                     focusedUserName: this.props.usersState.focusedUser.name,
+                    editUserFromUsersScreen: 'true',
                   });
                 }}
               >
@@ -584,7 +585,10 @@ class GroupsScreen extends Component {
       <View elevation={5} style={{ flex: 1 }}>
         <TouchableOpacity
           onPress = {() => {
-            this.props.navigation.navigate('AddGroupScreen');
+            this._swipeListGroupsView.safeCloseOpenRow();
+            this.props.navigation.navigate('AddGroupScreen', {
+              editUserFromUsersScreen: 'true',
+            });
           }
           }
           style={styles.button}
@@ -596,12 +600,15 @@ class GroupsScreen extends Component {
   }
 
   navigateToAddUserScreen = () => {
+    this._swipeListUsersView.safeCloseOpenRow();
     const firstGroupNameWeFind = get(this.props.groupsState, 'groups[0].name', '');
     if (!firstGroupNameWeFind) {
       Sentry.captureException(new Error('Catastrophic Error: tried to add a user, but could not get a default group to give that user'));
     }
     this.props.focusGroup(firstGroupNameWeFind); // arbitrarily focus the first group name we find
-    this.props.navigation.navigate('AddUserScreen');
+    this.props.navigation.navigate('AddUserScreen', {
+      addUserFromUsersScreen: 'true',
+    });
   }
 
   renderContents = (numberGroups, users, numberUsers, sortOption, selectedFilteredGroups) => {

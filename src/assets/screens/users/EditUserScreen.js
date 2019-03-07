@@ -97,6 +97,9 @@ class EditUserScreen extends Component<Props> {
   }
 
   userSubmit = async () => {
+    const { navigation } = this.props;
+    const navigatedFromUsersScreen = navigation.getParam('editUserFromUsersScreen', '');
+
     const userStruct = this.formRef.getValue();
 
     if (userStruct) {
@@ -125,17 +128,25 @@ class EditUserScreen extends Component<Props> {
         });
 
         this.props.focusUser(userForUI);
-        const resetAction = StackActions.reset({
-          index: 2,
-          actions: [
-            NavigationActions.navigate({ routeName: 'GroupsScreen' }),
-            NavigationActions.navigate({ routeName: 'GroupScreen' }),
-            NavigationActions.navigate({ routeName: 'UserScreen' }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
+        this.navigateToScreen(navigatedFromUsersScreen);
       } // else, we wait for the errModal to popup here
     }
+  }
+
+  navigateToScreen = (navigatedFromUsersScreen) => { 
+    if (navigatedFromUsersScreen) {
+      this.props.navigation.goBack();
+      return;
+    }
+    const resetAction = StackActions.reset({
+      index: 2,
+      actions: [
+        NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+        NavigationActions.navigate({ routeName: 'GroupScreen' }),
+        NavigationActions.navigate({ routeName: 'UserScreen' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   getColorStyle(groupColor) {

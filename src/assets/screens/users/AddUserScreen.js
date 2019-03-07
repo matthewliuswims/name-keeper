@@ -113,10 +113,21 @@ class AddUserScreen extends Component<Props> {
       if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
-        this.props.navigation.navigate('GroupScreen');
+        this.navigateToScreen();
       } // else, we wait for the errModal to popup here
     }
   }
+
+  navigateToScreen = () => {
+    const { navigation } = this.props;
+    const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
+    if (navigatedFromUsersScreen) {
+      navigation.goBack();
+      return;
+    }
+    navigation.navigate('GroupScreen');
+  }
+
 
   checkErrUsrs = (err) => {
     // don't want err to render if we're not even on the screen
