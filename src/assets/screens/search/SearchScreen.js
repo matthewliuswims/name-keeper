@@ -10,7 +10,7 @@ import { parseToShortDate } from '../../../lib/dates';
 
 import { focusUser } from '../../../redux/actions/users';
 import UserBox from '../../components/users/UserBox';
-import { container } from '../../styles/base';
+import { container, userContainerStyle } from '../../styles/base';
 import { focusGroup } from '../../../redux/actions/groups';
 
 class SearchScreen extends React.Component {
@@ -55,6 +55,7 @@ class SearchScreen extends React.Component {
               });
               this.props.navigation.dispatch(resetAction);
             }}
+            style={userContainerStyle}
           >
             <UserBox
               primaryGroupName={item.primaryGroupName}

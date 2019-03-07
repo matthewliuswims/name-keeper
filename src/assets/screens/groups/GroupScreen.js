@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity, TouchableHighlight, Text } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, TouchableOpacity, Text } from 'react-native';
 import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 import { connect } from 'react-redux';
 
 import { parseToShortDate } from '../../../lib/dates';
 import colors from '../../styles/colors';
 
-import { listAllUsers, focusUser } from '../../../redux/actions/users';
+import { listAllUsers, focusUser, deleteUser } from '../../../redux/actions/users';
 import {
   container,
   footerSection,
   userContainerStyle,
+  rightDrawerOpenValue,
+  editRightSlot,
+  editRightSlotText,
+  deleteRightSlot,
+  deleteRightSlotText,
+  rowUserBack,
 } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
@@ -23,6 +30,8 @@ import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
 import ErrorModal from '../../components/modal/Error';
 import { getGroupColor } from '../../../lib/groupColors';
+
+import DeleteModal from '../../components/modal/Delete';
 
 import SortBy from '../../components/modal/SortBy';
 
@@ -45,6 +54,9 @@ class GroupScreen extends Component<Props> {
     this.state = {
       sortByModalOpen: false,
       sortOption: 'Date: Old to New (default)',
+
+      userDrawerFocused: null,
+      deleteUserModalOpen: false,
     };
   }
 
@@ -59,6 +71,45 @@ class GroupScreen extends Component<Props> {
       headerRight: <RightHeaderComponent />,
     };
   };
+
+
+  // logic for delete modal user starts
+  openUserDeleteModal = () => {
+    this.setState({
+      deleteUserModalOpen: true,
+    });
+  }
+
+  closeUserDeleteModal = () => {
+    this._swipeListUsersView.safeCloseOpenRow();
+    this.setState({
+      deleteUserModalOpen: false,
+    });
+  }
+
+  deleteUser = async () => {
+    this.closeUserDeleteModal();
+    console.log('this.state.userNameDrawerFocused', this.state.userDrawerFocused);
+    await this.props.deleteUser(this.state.userDrawerFocused);
+    await this.props.listAllUsers();
+    await this.setState({ userDrawerFocused: null });
+    await this.setState({ deleteUserModalOpen: false });
+  }
+
+  deleteUserModal = () => {
+    if (this.state.deleteUserModalOpen) {
+      return (
+        <DeleteModal
+          deleteModalOpen={this.state.deleteUserModalOpen}
+          deleteFunc={this.deleteUser}
+          closeDeleteModal={this.closeUserDeleteModal}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+          deleteGroup={false}
+        />
+      );
+    }
+  }
+  // logic for  delete modal user ends
 
   sortUsers(sortOption, users) {
     let sortedUsers;
@@ -157,8 +208,10 @@ class GroupScreen extends Component<Props> {
     const userForGroup = this.usersForGroup(groupName);
     const sortedUsers = this.sortUsers(this.state.sortOption, userForGroup);
     return (
-      <FlatList
+      <SwipeListView
+        useFlatList
         data={sortedUsers}
+        ref={ref => this._swipeListUsersView = ref}
         renderItem={({ item }) => (
           <TouchableHighlight
             onPress = {() => {
@@ -176,6 +229,35 @@ class GroupScreen extends Component<Props> {
             />
           </TouchableHighlight>
         )}
+        renderHiddenItem={(data, rowMap) => (
+          <View style={rowUserBack}>
+            <TouchableOpacity
+              style={editRightSlot}
+              onPress = {async () => {
+                const { item } = data;
+                rowMap[item.userID].closeRow();
+                await this.props.focusUser(item);
+                await this.props.navigation.navigate('EditUserScreen', {
+                  focusedUserName: this.props.usersState.focusedUser.name,
+                });
+              }}
+            >
+              <Text style={editRightSlotText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={deleteRightSlot}
+              onPress = {() => {
+                const { item } = data;
+                this.setState({ userDrawerFocused: item });
+                this.openUserDeleteModal();
+              }}
+            >
+              <Text style={deleteRightSlotText}>DELETE</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        rightOpenValue={rightDrawerOpenValue}
+        disableRightSwipe
         keyExtractor={(item => `${item.userID}`)}
       />
     );
@@ -229,6 +311,7 @@ class GroupScreen extends Component<Props> {
           />
         </View>
         {this.sortOpen()}
+        {this.deleteUserModal()}
         {this.checkErrUsrs(this.props.usersState.error)}
       </View>
     );
@@ -280,6 +363,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = dispatch => (
   {
     listAllUsers: () => dispatch(listAllUsers()),
+    deleteUser: user => dispatch(deleteUser(user)),
     focusUser: user => dispatch(focusUser(user)),
   }
 );

@@ -282,3 +282,13 @@ export const deleteRightSlotText = {
   color: 'white',
   fontWeight: 'bold',
 };
+
+export const rowUserBack = {
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  borderWidth: 0,
+  borderBottomWidth: 1,
+  paddingTop: 5,
+  paddingBottom: 5,
+  flex: 1,
+};

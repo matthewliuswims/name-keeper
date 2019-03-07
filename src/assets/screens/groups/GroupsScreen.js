@@ -22,6 +22,7 @@ import {
   editRightSlotText,
   deleteRightSlot,
   deleteRightSlotText,
+  rowUserBack,
 } from '../../styles/base';
 
 import colors from '../../styles/colors';
@@ -164,7 +165,7 @@ class GroupsScreen extends Component {
     );
   }
 
-  // delete modal group
+  //  logic for delete modal group
   openGroupDeleteModal = () => {
     this.setState({
       deleteGroupModalOpen: true,
@@ -199,9 +200,9 @@ class GroupsScreen extends Component {
       );
     }
   }
-  // delete modal group ends
+  // logic for delete modal group ends
 
-  // delete modal user starts
+  // logic for delete modal user starts
   openUserDeleteModal = () => {
     this.setState({
       deleteUserModalOpen: true,
@@ -237,7 +238,7 @@ class GroupsScreen extends Component {
       );
     }
   }
-  // delete modal userends
+  // logic for  delete modal user ends
 
 
   groups = (users) => {
@@ -455,7 +456,7 @@ class GroupsScreen extends Component {
             </TouchableHighlight>
           )}
           renderHiddenItem={(data, rowMap) => (
-            <View style={styles.rowUserBack}>
+            <View style={rowUserBack}>
               <TouchableOpacity
                 style={editRightSlot}
                 onPress = {async () => {
@@ -677,15 +678,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     flex: 1,
     marginBottom: hp('1%'), // needs to match groupContainerStyle
-  },
-  rowUserBack: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    borderWidth: 0,
-    borderBottomWidth: 1,
-    paddingTop: 5,
-    paddingBottom: 5,
-    flex: 1,
   },
   addText: {
     fontWeight: 'bold',
