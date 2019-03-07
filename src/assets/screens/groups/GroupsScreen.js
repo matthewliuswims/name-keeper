@@ -586,7 +586,9 @@ class GroupsScreen extends Component {
       <View elevation={5} style={{ flex: 1 }}>
         <TouchableOpacity
           onPress = {() => {
-            this._swipeListGroupsView.safeCloseOpenRow();
+            if (this._swipeListGroupsView) {
+              this._swipeListGroupsView.safeCloseOpenRow();
+            }
             this.props.navigation.navigate('AddGroupScreen', {
               editUserFromUsersScreen: 'true',
             });

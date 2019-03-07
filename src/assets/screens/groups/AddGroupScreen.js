@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   groupText: {
     fontSize: addEditInstructionsGroupText.fontSize,
     marginTop: hp('22%'),
-    textAlign: addEditInstructionsGroupText.textAlign,
+    textAlign: 'center',
     fontWeight: addEditInstructionsGroupText.fontWeight,
   },
 });

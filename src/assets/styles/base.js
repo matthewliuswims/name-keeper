@@ -241,7 +241,6 @@ export const groupTextStyle = {
 
 export const addEditInstructionsGroupText = {
   fontSize: RF(3),
-  textAlign: 'center',
   fontWeight: 'bold',
 };
 
