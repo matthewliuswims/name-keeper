@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import ErrorModal from '../../components/modal/Error';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
-import { container, topRightTextButtonContainerSolo, topRightButtonText } from '../../styles/base';
+import { container, topRightTextButtonContainerSolo, topRightButtonText, addEditInstructionsGroupText } from '../../styles/base';
 import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
 import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
 
@@ -128,10 +128,10 @@ class AddGroupScreen extends Component<Props> {
 
 const styles = StyleSheet.create({
   groupText: {
-    fontSize: RF(3),
+    fontSize: addEditInstructionsGroupText.fontSize,
     marginTop: hp('22%'),
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: addEditInstructionsGroupText.textAlign,
+    fontWeight: addEditInstructionsGroupText.fontWeight,
   },
 });
 

@@ -39,6 +39,7 @@ and refresh your memory.
 7.5) adding users from the user screen should bring them back to the users screen at large
 8) different edit and delete icons for groups vs users
 9) search screen doesn't need to have stuff
+10) + group doesn't look nice
 
 
 ### Manual Regression Testing Process

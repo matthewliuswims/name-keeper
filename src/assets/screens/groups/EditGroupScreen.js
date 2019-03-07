@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
@@ -13,7 +13,7 @@ import LoadingSpinner from '../../components/transitional-states/LoadingSpinner'
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer } from '../../styles/base';
+import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer, addEditInstructionsGroupText } from '../../styles/base';
 
 import { editGroup, listGroups, clearGroupsErr, deleteGroup, focusGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
@@ -49,6 +49,16 @@ class AddGroupScreen extends Component<Props> {
       value: this.getGroupValue(),
       deleteModalOpen: false,
     };
+  }
+
+
+  groupText() {
+    return (
+      <Text style={addEditInstructionsGroupText}>
+        You can rename/delete the group here. BUT, if you want to modify a person,
+        then you need to click on that person.
+      </Text>
+    );
   }
 
 
@@ -186,7 +196,7 @@ class AddGroupScreen extends Component<Props> {
       );
     }
     return (
-      <View style={container}>
+      <View style={[container, { justifyContent: 'space-evenly' }]}>
         <View style={{ flex: 1 }}>
           <Form
             ref={(c) => { this.formRef = c; }}
@@ -195,6 +205,9 @@ class AddGroupScreen extends Component<Props> {
             value={this.state.value}
             onChange={this.onChange}
           />
+        </View>
+        <View style={{ flex: 1 }}>
+          {this.groupText()}
         </View>
         <TouchableOpacity style={deleteContainer} onPress={this.openDeleteModal}>
           <Icon

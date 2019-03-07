@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import { Icon } from 'react-native-elements';
 
 import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
@@ -277,7 +278,14 @@ class GroupsScreen extends Component {
                 await this.props.navigation.navigate('EditGroupScreen');
               }}
             >
-              <Text style={editRightSlotText}>EDIT</Text>
+              <Icon
+                name='edit'
+                color='white'
+                size={35}
+                iconStyle={{
+                  padding: 10,
+                }}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={deleteRightSlot}
@@ -286,7 +294,14 @@ class GroupsScreen extends Component {
                 this.openGroupDeleteModal();
               }}
             >
-              <Text style={deleteRightSlotText}>DELETE</Text>
+              <Icon
+                name='delete'
+                color='white'
+                size={35}
+                iconStyle={{
+                  padding: 10,
+                }}
+              />
             </TouchableOpacity>
           </View>
         )}
@@ -574,7 +589,7 @@ class GroupsScreen extends Component {
           }
           style={styles.button}
         >
-          <Text style={styles.addText}>+ <Text style={styles.groupText}> group</Text></Text>
+          <Text style={styles.addText}>+ <Text style={styles.groupText}> Group</Text></Text>
         </TouchableOpacity>
       </View>
     );

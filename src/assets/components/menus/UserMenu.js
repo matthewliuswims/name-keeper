@@ -4,6 +4,7 @@ import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 
 import { headerButtonWrapper } from '../../styles/base';
 
+// currently deprecated and not being used
 export default class UserMenu extends React.Component {
   render() {
     return (

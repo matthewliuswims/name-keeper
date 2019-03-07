@@ -239,6 +239,12 @@ export const groupTextStyle = {
   fontSize: 14,
 };
 
+export const addEditInstructionsGroupText = {
+  fontSize: RF(3),
+  textAlign: 'center',
+  fontWeight: 'bold',
+};
+
 export const headerButtonWrapper = {
   paddingTop: hp('0.5%'),
   paddingBottom: hp('0.5%'),
