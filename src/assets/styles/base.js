@@ -105,7 +105,6 @@ export const groupIconContainer = {
   marginTop: hp('1%'),
 };
 
-// size?
 export const checkBoxBase = {
   padding: 0,
   margin: 0,
@@ -115,7 +114,6 @@ export const circularGroupIcon = {
   height: 18,
   width: 18,
   borderRadius: 10,
-
   marginRight: wp('2%'),
   marginLeft: wp('2%'),
 };
@@ -125,7 +123,6 @@ export const groupIconNameDateContainer = {
   paddingTop: hp('0.5%'),
   alignItems: 'center',
   marginBottom: 4,
-
   justifyContent: 'space-between',
 };
 
@@ -164,12 +161,10 @@ export const modalMsg = {
 
 export const cancelButton = {
   backgroundColor: colors.cancelButtonBackgroundColor,
-
   paddingLeft: wp('7%'),
   paddingRight: wp('7%'),
   paddingTop: hp('1%'),
   paddingBottom: hp('1%'),
-
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 4,
