@@ -111,7 +111,6 @@ export const checkBoxBase = {
   margin: 0,
 };
 
-// @TODO: any customer logic for the fitler group icon should put in the filter component
 export const circularGroupIcon = {
   height: 18,
   width: 18,

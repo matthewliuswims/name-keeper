@@ -135,7 +135,7 @@ class EditUserScreen extends Component<Props> {
     }
   }
 
-  navigateToScreen = (navigatedFromUsersScreen) => { 
+  navigateToScreen = (navigatedFromUsersScreen) => {
     if (navigatedFromUsersScreen) {
       this.props.navigation.goBack();
       return;
