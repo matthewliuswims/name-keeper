@@ -71,8 +71,10 @@ export function listAllUsers() {
     }).then((usersList) => {
       // this is so when we do searches, the search can find parsed dates as a substring
       const withParsedDates = usersList.map((user) => {
+        const userDescriptionArray = JSON.parse(user.description);
+        const firstDescriptor = userDescriptionArray[0];
         const newUser = Object.assign({}, user, {
-          description: JSON.parse(user.description),
+          description: firstDescriptor,
           readableCreatedDate: parseToLongDate(user.createdDate),
           createdDayOfWeek: getDayOfWeek(user.createdDate),
           // created for search purposes, see getDayOfWeek for more info
