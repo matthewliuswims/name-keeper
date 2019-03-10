@@ -54,7 +54,7 @@ Do this for both ios and android
 4. have addable descriptors rather than a description <-- reilly's suggestion
 5. bulk edit
 
-### Contributors
+### Additional Contributors
 
 User Testing + UI/UX Critique:
   
@@ -67,3 +67,6 @@ User Testing + UI/UX Critique:
 App Architecture Advising: 
 
 * Adrian Cruz
+
+# License
+MIT
