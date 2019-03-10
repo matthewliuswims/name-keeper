@@ -134,6 +134,23 @@ export const groupIconNameContainer = {
   flexDirection: 'row',
 };
 
+export const groupColorBoxSliverLeftSide = {
+  paddingTop: 10,
+  paddingBottom: 10,
+  width: 30,
+  height: 76,
+  marginRight: 8,
+};
+
+export const rightSideGroupBox = {
+  marginTop: 10,
+};
+
+export const groupBoxContainer = {
+  flex: 1,
+  flexDirection: 'row',
+};
+
 export const groupIconNameContainerEditAddUser = {
   paddingTop: hp('0.5%'),
   paddingBottom: hp('0.5%'),
@@ -227,9 +244,7 @@ export const userContainerStyle = {
 };
 
 export const groupContainerStyle = {
-  paddingTop: hp('1%'),
-  paddingBottom: hp('1%'),
-  marginBottom: hp('1%'),
+  marginBottom: hp('1.5%'),
   borderRadius: 4,
   borderWidth: 1,
   backgroundColor: colors.containerBackgroundColor,

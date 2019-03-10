@@ -673,13 +673,15 @@ class GroupsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  // rowGroupBack needs to match grouPContainer style, since rowGroupBack
+  // is just the hidden version of groupContainer Style
   rowGroupBack: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    borderWidth: 1,
-    borderRadius: 4,
+    borderWidth: groupContainerStyle.borderWidth,
+    borderRadius: groupContainerStyle.borderRadius,
     flex: 1,
-    marginBottom: hp('1%'), // needs to match groupContainerStyle
+    marginBottom: groupContainerStyle.marginBottom, // needs to match groupContainerStyle
   },
   addText: {
     fontWeight: 'bold',

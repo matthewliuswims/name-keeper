@@ -43,6 +43,10 @@ and refresh your memory.
 11) seriously consider doing something about buttons on ipad...limit them?
 12) make sure whenever I click to go to another screen, the drawers are closed?
 13) left Align for big body of text
+14) add delimiter to description, so if i do decide to go with reilly's decision and have DESCRIPTORS as opposed to description, then it won't ruin sql stuff?
+15) change background color of the boxes?
+16) array of objects <-- stirngified!!>
+17) when there's 1 groupName, need to center it?
 
 ### Manual Regression Testing Process
 
