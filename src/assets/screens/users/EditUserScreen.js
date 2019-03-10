@@ -105,10 +105,12 @@ class EditUserScreen extends Component<Props> {
     if (userStruct) {
       const { name, location, description } = userStruct;
       const { userID } = this.props.usersState.focusedUser;
+
+      const descriptionAsArray = [description];
       const user = {
         userID,
         name,
-        description,
+        description: descriptionAsArray,
         location,
         primaryGroupName: this.state.selectedGroupName,
       };

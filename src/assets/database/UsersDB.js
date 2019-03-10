@@ -6,7 +6,14 @@ import {
   changeGroupReferences,
 } from '../../lib/actions';
 
-// see GroupsDB for good documentation, as this class mimics GroupsDB structure
+/**
+ * see GroupsDB for good documentation, as this class mimics GroupsDB structure
+ *
+ * NOTE: that user description comes in as an array of descriptions. For future user,
+ * we will probably allow a user to have an array of description (descriptors); but
+ * for the first version we are only taking the first item of the description.
+ *
+ */
 export default class UsersDB extends React.Component {
     static singletonInstance;
 
@@ -14,7 +21,6 @@ export default class UsersDB extends React.Component {
       if (!UsersDB.singletonInstance) {
         UsersDB.singletonInstance = new UsersDB();
         return this.singletonInstance.createTable().then((success) => {
-          console.log('created users table code', success);
           return this.singletonInstance;
         }).catch((err) => {
           throw err;
@@ -54,13 +60,16 @@ export default class UsersDB extends React.Component {
       const timeUserAdded = new Date();
       const { primaryGroupName } = user;
 
+      // user.description is an array of descriptions (right now we only have 1 element)
+      const userDescriptionStringified = JSON.stringify(user.description);
+
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             tx.executeSql(
               'INSERT INTO users (name, description, createdDate, lastEdit, primaryGroupName, location) values (?, ?, ?, ?, ?, ?)',
               [user.name,
-                user.description,
+                userDescriptionStringified,
                 timeUserAdded,
                 timeUserAdded,
                 primaryGroupName,
@@ -126,11 +135,15 @@ export default class UsersDB extends React.Component {
     editUser(user) {
       const { userID, name, description, location, primaryGroupName } = user;
       const lastEdit = new Date();
+
+      const userDescriptionStringified = JSON.stringify(description);
+
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
             tx.executeSql(
-              'UPDATE users SET name = (?), description = (?), location = (?), lastEdit = (?), primaryGroupName = (?) WHERE userID = (?)', [name, description, location, lastEdit, primaryGroupName, userID],
+              'UPDATE users SET name = (?), description = (?), location = (?), lastEdit = (?), primaryGroupName = (?) WHERE userID = (?)',
+              [name, userDescriptionStringified, location, lastEdit, primaryGroupName, userID],
             );
           },
           err => reject(err),

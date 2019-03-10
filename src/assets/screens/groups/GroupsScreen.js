@@ -596,7 +596,7 @@ class GroupsScreen extends Component {
           }
           style={styles.button}
         >
-          <Text style={styles.addText}>+ <Text style={styles.groupText}> Group</Text></Text>
+          <Text style={styles.groupText}>Add Group</Text>
         </TouchableOpacity>
       </View>
     );
@@ -683,11 +683,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: groupContainerStyle.marginBottom, // needs to match groupContainerStyle
   },
-  addText: {
-    fontWeight: 'bold',
-    fontSize: hp('3%'),
-    color: 'white',
-  },
   groupText: {
     fontSize: hp('2.75%'),
     fontWeight: 'bold',
@@ -727,9 +722,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.addApplyColor,
     justifyContent: 'center',
     alignItems: horizontalGroupScreenButton.alignItems,
-    borderRadius: horizontalGroupScreenButton.borderRadius,
-    borderWidth: horizontalGroupScreenButton.borderWidth,
-    borderColor: horizontalGroupScreenButton.borderColor,
+    borderRadius: 4,
     shadowColor: horizontalGroupScreenButton.shadowColor,
     shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
     shadowRadius: horizontalGroupScreenButton.shadowRadius,

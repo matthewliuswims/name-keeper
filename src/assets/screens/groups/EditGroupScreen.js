@@ -55,8 +55,7 @@ class AddGroupScreen extends Component<Props> {
   groupText() {
     return (
       <Text style={addEditInstructionsGroupText}>
-        You can rename/delete the group here. BUT, if you want to modify a person,
-        then you need to click on that person.
+        You can rename/delete the group here. BUT, if you want to modify the people within a group, you need to click on a person.
       </Text>
     );
   }

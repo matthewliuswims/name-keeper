@@ -47,6 +47,7 @@ and refresh your memory.
 15) change background color of the boxes?
 16) array of objects <-- stirngified!!>
 17) when there's 1 groupName, need to center it?
+18) group select? <-- feature 2?
 
 ### Manual Regression Testing Process
 
