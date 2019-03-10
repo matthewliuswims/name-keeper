@@ -4,7 +4,7 @@ How often do you remember someone's face, but not their name? This is a native a
 
 ## Installation
 
-1. have expo cli installed: [click here](https://docs.expo.io/versions/v31.0.0/introduction/installation)
+1. have expo cli installed: [click here](https://docs.expo.io/versions/latest/)
 
 2. `npm i` in the app's root directory
 
@@ -21,33 +21,11 @@ How often do you remember someone's face, but not their name? This is a native a
 4. tests are in the `__tests__` directory.  Most of the 'meaty code' is in the `src` directory. But the entry point to the App is `App.js` at the root directory.
 
 ### User Testing
-Scenario: imagine you are a church pastor, and you meet 5 new people that day (I will give photos) and
-give explanations for each person. It is your job as the pastor to try to remember their names.
+Scenario: imagine you are a church pastor, and you meet 5 new people that day (I will give photos) and give explanations for each person. It is your job as the pastor to try to remember their names.
 
 A week later, before church, you think you might see the people again, so you pull out your phone
 and refresh your memory.
 
-### Issues
-1) trash drawer gesture handler? <-- maybe edit too? or just edit..
-2) make ipad a first class citizen <-- could have quite a few users
-2.5) edit delete prettier?
-3) make it so that any kind of userbox or groupbox is swipeable!
-4) get rid of console.log
-5) after adding a userin all users, go back to the alluser sscreen? have to make sure have extradata fortheflat list?
-6) see if focusing user when clicking on the the edit for user messes with anything
-7) add person - back screen when you're on the user screen is weird
-7.5) adding users from the user screen should bring them back to the users screen at large
-8) different edit and delete icons for groups vs users
-9) search screen doesn't need to have stuff
-10) + group doesn't look nice
-11) seriously consider doing something about buttons on ipad...limit them?
-12) make sure whenever I click to go to another screen, the drawers are closed?
-13) left Align for big body of text
-14) add delimiter to description, so if i do decide to go with reilly's decision and have DESCRIPTORS as opposed to description, then it won't ruin sql stuff?
-15) change background color of the boxes?
-16) array of objects <-- stirngified!!>
-17) when there's 1 groupName, need to center it?
-18) group select? <-- feature 2?
 
 ### Manual Regression Testing Process
 
@@ -78,15 +56,6 @@ Do this for both ios and android
 1) geolocation?
 2) downloading all names to a file?
 3) picture/thumbail?
-4) delete multiple people?
-5) if a user logs in again, they have the option to turn off help if they want it.
-6) flashcard mode?
-7) search uses fuzzy search
-8) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options
-
-***avoid pronouns
-
-'Add a group'
-'Then you can add people (**or names?) to the group'
-
-
+4) allow user to edit they long-press (or swipe)..fotced touch on the box (gives them edit+delete) options
+5) have addable descriptors rather than a description <-- reilly's suggestion
+6) bulk edit
