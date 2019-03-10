@@ -1,6 +1,5 @@
 # Name Keeper
-
-How often do you remember someone's face, but not their name? This is a native app for iOS and android that offers a solution.
+How often do you remember someone's face, but not their name? This is an app that stores the names + descriptions of the people you meet within your social groups. 
 
 ## Installation
 
