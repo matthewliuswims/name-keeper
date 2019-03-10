@@ -17,7 +17,7 @@ export default class About extends Component {
       <View style={container}>
         <ScrollView>
           <View style={styles.HeaderQuestion}>
-            <Text style={styles.headerQuestionText}>What is the problem <Text style={{ fontStyle: 'italic' }}>{nameOfApp}</Text> is solving?</Text>
+            <Text style={styles.headerQuestionText}>What&apos;s the problem <Text style={{ fontStyle: 'italic' }}>{nameOfApp}</Text> is solving?</Text>
           </View>
           <Text style={styles.AnswerText}>We&apos;ve all been there. You know that person&apos;s face. You remember his horn-rimmed glasses, fiery-red hair and shy demeanor. BUT: you just cannot remember his name.
           </Text>

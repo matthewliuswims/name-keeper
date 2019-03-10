@@ -18,7 +18,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.matthewliuswims.namekeeper"
+    },
+    "android": {
+      "package": "com.matthewliuswims.namekeeper"
     },
     "hooks": {
       "postPublish": [
@@ -31,6 +35,8 @@
           }
         }
       ]
-    }
+    },
+    "description": "App that stores the names + descriptions of the people you meet within your social groups.",
+    "githubUrl": "https://github.com/matthewliuswims/name-keeper"
   }
 }
