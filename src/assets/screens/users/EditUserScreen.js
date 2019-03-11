@@ -101,6 +101,7 @@ class EditUserScreen extends Component<Props> {
     const navigatedFromUsersScreen = navigation.getParam('editUserFromUsersScreen', '');
 
     const userStruct = this.formRef.getValue();
+    if (!this.formRef) return;
 
     if (userStruct) {
       const { name, location, description } = userStruct;

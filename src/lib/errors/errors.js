@@ -38,7 +38,7 @@ export default function getMessage(error, overrides) {
  *
  * @param {object} [overrides] - optional overrides object
  */
-function statusCodeMatchesSQLError(error, overrides) {
+export function statusCodeMatchesSQLError(error, overrides) {
   if (!overrides.errCode) {
     return false; // we return because there's no overrides errCode to even compare to
   }
@@ -69,18 +69,3 @@ function errHookIsInErrMsg(error, overrides) {
 
   return false;
 }
-
-
-// function statusCodeMatchesSQLError(error, overrides) {
-//   if (!overrides) {
-//     return; // we return because there's no overrides to even compare to
-//   }
-//   const firstNumberRegex = /([0-9]+)/;
-//   // find the sql error code from the message
-//   const errorCode = firstNumberRegex.exec(error.message);
-
-//   if (errorCode && errorCode[0] === overrides.errCode) {
-//     return true;
-//   }
-//   return false;
-// }

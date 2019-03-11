@@ -1,5 +1,8 @@
 import Sentry from 'sentry-expo';
 
+import { statusCodeMatchesSQLError } from '../../lib/errors/errors';
+import { DUPLICATE_GROUP_NAME } from '../../lib/errors/overrides';
+
 import GroupsDB from '../../assets/database/GroupsDB';
 import { makeAction } from '../../lib/actions';
 
@@ -61,7 +64,10 @@ export function addGroup(groupName) {
     }).then(() => {
       dispatch(addGroupSuccess(groupName));
     }).catch((err) => {
-      Sentry.captureException(err);
+      // if it's not the err we expect (which is duplicate group name), then capture the exception, 'cause it's an err we did not anticipate
+      if (!statusCodeMatchesSQLError(err, DUPLICATE_GROUP_NAME)) {
+        Sentry.captureException(err);
+      }
       dispatch(addGroupFail(err));
       // no need to throw err in this particular instance because
       // ui won't do anything explictly if this part fails

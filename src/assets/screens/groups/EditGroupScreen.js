@@ -95,6 +95,8 @@ class AddGroupScreen extends Component<Props> {
      *  including some side effects like highlighting the errors.
      * @tutorial https://github.com/gcanti/tcomb-form-native
      */
+    if (!this.formRef) return;
+
     const groupStruct = this.formRef.getValue();
     // remember below Form type is group
     if (groupStruct) {

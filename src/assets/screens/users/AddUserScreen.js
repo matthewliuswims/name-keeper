@@ -95,6 +95,7 @@ class AddUserScreen extends Component<Props> {
 
   userSubmit = async () => {
     const userStruct = this.formRef.getValue();
+    if (!this.formRef) return;
 
     if (userStruct) {
       const { name, location, description } = userStruct;
