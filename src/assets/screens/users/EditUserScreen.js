@@ -110,7 +110,7 @@ class EditUserScreen extends Component<Props> {
       const user = {
         userID,
         name,
-        description: descriptionAsArray,
+        description: descriptionAsArray, // right now we only have 1 string element in the description array, but can potentially add on to this
         location,
         primaryGroupName: this.state.selectedGroupName,
       };

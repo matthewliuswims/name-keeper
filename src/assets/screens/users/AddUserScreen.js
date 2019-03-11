@@ -98,10 +98,11 @@ class AddUserScreen extends Component<Props> {
 
     if (userStruct) {
       const { name, location, description } = userStruct;
+      const descriptionAsArray = [description]; // right now we only have 1 string element in the description array, but can potentially add on to this
 
       const user = {
         name,
-        description,
+        description: descriptionAsArray,
         location,
         primaryGroupName: this.state.selectedGroupName,
       };
