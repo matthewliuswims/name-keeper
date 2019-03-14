@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Platform, FlatList, TouchableOpacity } from 'react-native';
+import { View, Platform, FlatList, TouchableOpacity, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { withNavigation, StackActions, NavigationActions } from 'react-navigation';
-import RF from 'react-native-responsive-fontsize';
+
 import { connect } from 'react-redux';
 import SearchBar from 'react-native-searchbar';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -82,45 +82,45 @@ class SearchScreen extends React.Component {
   render() {
     const groupName = this.props.navigation.getParam('groupName');
     return (
-      <View style={container}>
-        <SearchBar
-          ref={function (ref) {
-            this.searchBar = ref;
-          }}
-          data={groupName ? this.usersForGroup(groupName) : this.props.usersState.users} // if no group name, show ALL USERS
-          handleResults={this.handleResults}
-          showOnLoad
-          placeholder={this.placeHolderText(groupName)}
-          heightAdjust={Platform.OS === 'ios' ? 0 : hp('3%')}
-          onBack={() => {
-            this.props.navigation.navigate('GroupsScreen');
-          }}
-        />
-        <View style={{ marginTop: 55 }}>
-          {/* Search bar source code seems to be hard-coded height, so i can get hard-coded marginTop */}
-          {this.users()}
-        </View>
-      </View>
+      <KeyboardAvoidingView
+        behavior="padding"
+        enabled
+        style={{ flex: 1 }}
+      >
+        <ScrollView>
+          <SearchBar
+            ref={function (ref) {
+              this.searchBar = ref;
+            }}
+            data={groupName ? this.usersForGroup(groupName) : this.props.usersState.users} // if no group name, show ALL USERS
+            handleResults={this.handleResults}
+            showOnLoad
+            placeholder={this.placeHolderText(groupName)}
+            heightAdjust={Platform.OS === 'ios' ? 0 : hp('3%')}
+            onBack={() => {
+              this.props.navigation.navigate('GroupsScreen');
+            }}
+            autoCorrect={false}
+          />
+          <View style={styles.container}>
+            {/* Search bar source code seems to be hard-coded height, so i can get hard-coded marginTop */}
+            {this.users()}
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  noGroupHeader: {
-    fontWeight: 'bold',
-    fontSize: RF(4),
-    marginTop: hp('1%'),
-    textAlign: 'center',
-  },
-  noGroupMessage: {
-    fontSize: RF(2.5),
-    marginTop: hp('2%'),
-    textAlign: 'center',
-  },
-  noGroupContainer: {
-    paddingTop: hp('25%'),
+  container: {
+    paddingLeft: container.paddingLeft,
+    backgroundColor: container.backgroundColor,
+    paddingRight: container.paddingRight,
+    marginTop: 80,
   },
 });
+
 const mapStateToProps = state => (
   {
     usersState: state.users,

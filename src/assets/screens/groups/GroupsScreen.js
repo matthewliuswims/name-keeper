@@ -218,7 +218,6 @@ class GroupsScreen extends Component {
 
   deleteUser = async () => {
     this.closeUserDeleteModal();
-    console.log('this.state.userNameDrawerFocused', this.state.userDrawerFocused);
     await this.props.deleteUser(this.state.userDrawerFocused);
     await this.props.listAllUsers();
     await this.setState({ userDrawerFocused: null });
@@ -603,7 +602,9 @@ class GroupsScreen extends Component {
   }
 
   navigateToAddUserScreen = () => {
-    this._swipeListUsersView.safeCloseOpenRow();
+    if (this._swipeListUsersView) {
+      this._swipeListUsersView.safeCloseOpenRow();
+    }
     const firstGroupNameWeFind = get(this.props.groupsState, 'groups[0].name', '');
     if (!firstGroupNameWeFind) {
       Sentry.captureException(new Error('Catastrophic Error: tried to add a user, but could not get a default group to give that user'));

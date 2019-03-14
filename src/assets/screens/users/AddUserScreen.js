@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
@@ -36,6 +36,21 @@ const options = {
     description: {
       placeholder: 'Notable impression(s)',
       error: 'Description is required',
+      multiline: true,
+      stylesheet: {
+        ...Form.stylesheet,
+        textbox: {
+          ...Form.stylesheet.textbox,
+          normal: {
+            ...Form.stylesheet.textbox.normal,
+            height: 60,
+          },
+          error: {
+            ...Form.stylesheet.textbox.error,
+            height: 60,
+          },
+        },
+      },
     },
     location: {
       placeholder: 'Optional',
@@ -246,26 +261,35 @@ class AddUserScreen extends Component<Props> {
     }
 
     return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          this.setState({
-            groupDropdownOpen: false,
-          });
-        }}
+      <KeyboardAvoidingView
+        style={container}
+        behavior="padding"
+        enabled
+        keyboardVerticalOffset={80}
       >
-        <View style={container}>
-          <Form
-            ref={(c) => { this.formRef = c; }}
-            type={userForm}
-            value={this.state.value}
-            onChange={this.onChange}
-            options={options}
-          />
-          <Text style={styles.groupText}> Group </Text>
-          {this.groupsSection(allGroups)}
-          {this.checkErrUsrs(this.props.usersState.error)}
-        </View>
-      </TouchableWithoutFeedback>
+        <ScrollView>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.setState({
+                groupDropdownOpen: false,
+              });
+            }}
+          >
+            <React.Fragment>
+              <Form
+                ref={(c) => { this.formRef = c; }}
+                type={userForm}
+                value={this.state.value}
+                onChange={this.onChange}
+                options={options}
+              />
+              <Text style={styles.groupText}> Group </Text>
+              {this.groupsSection(allGroups)}
+              {this.checkErrUsrs(this.props.usersState.error)}
+            </React.Fragment>
+          </TouchableWithoutFeedback>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

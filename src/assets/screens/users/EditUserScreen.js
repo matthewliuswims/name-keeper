@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback } from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
@@ -45,6 +45,21 @@ const options = {
     description: {
       placeholder: 'Notable impression(s)',
       error: 'Description is required',
+      multiline: true,
+      stylesheet: {
+        ...Form.stylesheet,
+        textbox: {
+          ...Form.stylesheet.textbox,
+          normal: {
+            ...Form.stylesheet.textbox.normal,
+            height: 60,
+          },
+          error: {
+            ...Form.stylesheet.textbox.error,
+            height: 60,
+          },
+        },
+      },
     },
     location: {
       placeholder: 'Optional',
@@ -345,42 +360,49 @@ class EditUserScreen extends Component<Props> {
     // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
     // diegoprates
     return (
-      <Fragment>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            this.setState({
-              groupDropdownOpen: false,
-            });
-          }}
-        >
-          <View style={container}>
-            <Form
-              ref={(c) => { this.formRef = c; }}
-              type={userForm}
-              value={this.state.value}
-              onChange={this.onChange}
-              options={options}
-            />
-            <Text style={styles.groupText}> Group </Text>
-            {this.groupsSection(allGroups)}
-            {this.checkErrGrps(this.props.groupsState.error)}
-            {this.checkErrUsrs(this.props.usersState.error)}
-            <View style={deleteContainer}>
-              <TouchableOpacity onPress={this.openDeleteModal}>
-                <Icon
-                  name='delete'
-                  size={wp('10%')}
-                  iconStyle={{
-                    marginRight: wp('2%'),
-                    padding: wp('5%'),
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-        {this.deleteModal()}
-      </Fragment>
+      <KeyboardAvoidingView
+        style={container}
+        behavior="padding"
+        enabled
+        keyboardVerticalOffset={80}
+      >
+        <ScrollView>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.setState({
+                groupDropdownOpen: false,
+              });
+            }}
+          >
+            <React.Fragment>
+              <Form
+                ref={(c) => { this.formRef = c; }}
+                type={userForm}
+                value={this.state.value}
+                onChange={this.onChange}
+                options={options}
+              />
+              <Text style={styles.groupText}> Group </Text>
+              {this.groupsSection(allGroups)}
+              {this.checkErrGrps(this.props.groupsState.error)}
+              {this.checkErrUsrs(this.props.usersState.error)}
+              <View style={deleteContainer}>
+                <TouchableOpacity onPress={this.openDeleteModal}>
+                  <Icon
+                    name='delete'
+                    size={wp('10%')}
+                    iconStyle={{
+                      marginRight: wp('2%'),
+                      padding: wp('5%'),
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+              {this.deleteModal()}
+            </React.Fragment>
+          </TouchableWithoutFeedback>
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
