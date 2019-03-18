@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { groupTextStyle, groupIconNameContainer, groupColorBoxSliverLeftSide, groupBoxContainer, rightSideGroupBox } from '../../styles/base';
+import { groupTextStyle, groupIconNameContainer, groupColorBoxSliverLeftSide, groupBoxContainer, rightSideGroupBox, groupHeaderTextStyle } from '../../styles/base';
 
 import { getGroupColor } from '../../../lib/groupColors';
 
@@ -14,50 +14,43 @@ export default class Group extends React.Component {
     return combinedStyle;
   }
 
-  showUserNamesText(firstTwoUsernames) {
-    if (firstTwoUsernames.length === 0) {
+  showUserNamesText(userNamesForGroup) {
+    if (userNamesForGroup.length === 0) {
       return (
-        <Text style={styles.text} numberOfLines={1}>{'\t'}No People in Group</Text>
+        <Text style={groupTextStyle} numberOfLines={1}>{'\t'}No People in Group</Text>
       );
     }
     return (
       <React.Fragment>
-        <Text style={styles.text} numberOfLines={1}>{'\t'}{firstTwoUsernames[0]}</Text>
-        <Text style={styles.text} numberOfLines={1}>{'\t'}{firstTwoUsernames[1]}</Text>
+        <Text style={groupTextStyle} numberOfLines={1}>{this.usersTextDisplay(userNamesForGroup)}</Text>
       </React.Fragment>
     );
   }
 
+  usersTextDisplay(userNamesForGroup) {
+    if (userNamesForGroup.length === 1) {
+      return `${userNamesForGroup[0]}`;
+    }
+    if (userNamesForGroup.length === 2) {
+      return `${userNamesForGroup[0]} and ${userNamesForGroup[1]}`;
+    }
+    const remainderUsers = userNamesForGroup.length - 2;
+    return `${userNamesForGroup[0]}, ${userNamesForGroup[1]} and ${remainderUsers} more`;
+  }
+
   render() {
-    const { groupName, groups, firstTwoUsernames } = this.props;
+    const { groupName, groups, userNamesForGroup } = this.props;
 
     return (
       <View style={groupBoxContainer}>
         <View style={this.getVerticalStrip(getGroupColor(groupName, groups))} />
         <View style={rightSideGroupBox}>
-          <View style={styles.groupIconNameContainer}>
-            <Text style={styles.headerText} numberOfLines={1}>{groupName}</Text>
+          <View style={groupIconNameContainer}>
+            <Text style={groupHeaderTextStyle} numberOfLines={1}>{groupName}</Text>
           </View>
-          {this.showUserNamesText(firstTwoUsernames)}
+          {this.showUserNamesText(userNamesForGroup)}
         </View>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  groupIconNameContainer: {
-    flex: groupIconNameContainer.flex,
-    flexDirection: groupIconNameContainer.flexDirection,
-    paddingTop: groupIconNameContainer.paddingTop,
-    alignItems: groupIconNameContainer.alignItems,
-    marginBottom: 4,
-  },
-  text: {
-    fontSize: groupTextStyle.fontSize,
-  },
-  headerText: {
-    fontWeight: 'bold',
-    fontSize: groupTextStyle.fontSize,
-  },
-});

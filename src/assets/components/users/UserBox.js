@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Text, View, StyleSheet } from 'react-native';
 import { getGroupColor } from '../../../lib/groupColors';
 
-import { groupIconNameContainer, circularGroupIcon, groupIconNameDateContainer } from '../../styles/base';
+import { groupIconNameContainer, circularGroupIcon, groupIconNameDateContainer, userDescriptionText } from '../../styles/base';
 
 type Props = {
   username: string,
@@ -49,7 +49,7 @@ class UserBox extends React.Component <Props> {
       <React.Fragment>
         {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
         <View style={styles.descriptionAndDate}>
-          <Text numberOfLines={1} style={styles.description}>{this.props.userDescription} </Text>
+          <Text numberOfLines={1} style={userDescriptionText}>{this.props.userDescription} </Text>
         </View>
       </React.Fragment>
     );
@@ -71,15 +71,12 @@ const styles = StyleSheet.create({
     // we do NOT get margin left from circularGroupIcon
   },
   headerText: {
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   descriptionAndDate: {
     flex: 1, // if uncomment, you'll see difference
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  description: {
-    flex: 1,
   },
 });
 

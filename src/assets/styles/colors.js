@@ -9,6 +9,8 @@ export default {
   cancelButtonBackgroundText: 'white',
   filterSortColor: '#6666ff',
 
+  subTextColor: 'LightGrey',
+
   touchableHighlightUnderlayColor: '#F5F5DC',
 
   firstGroupColor: 'red',

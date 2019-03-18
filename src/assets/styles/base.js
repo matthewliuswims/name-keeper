@@ -145,7 +145,8 @@ export const groupColorBoxSliverLeftSide = {
 };
 
 export const rightSideGroupBox = {
-  marginTop: 10,
+  justifyContent: 'center',
+  // marginTop: 10,
 };
 
 export const groupBoxContainer = {
@@ -250,8 +251,21 @@ export const groupContainerStyle = {
   backgroundColor: colors.containerBackgroundColor,
 };
 
+export const userDescriptionText = {
+  color: colors.subTextColor,
+};
+
+
+export const groupHeaderTextStyle = {
+  fontWeight: '600',
+  fontSize: 22,
+  marginBottom: 2,
+};
+
 export const groupTextStyle = {
+  marginTop: 2,
   fontSize: 14,
+  color: colors.subTextColor,
 };
 
 export const addEditInstructionsGroupText = {

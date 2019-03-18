@@ -147,7 +147,7 @@ class GroupsScreen extends Component {
     }
   }
 
-  getTwoUsernames(groupName, users) {
+  getUserNamesForGroup(groupName, users) {
     const parsedUsers = users.filter(user => user.primaryGroupName === groupName);
     return parsedUsers.map(user => user.name);
   }
@@ -263,7 +263,8 @@ class GroupsScreen extends Component {
           >
             <Group
               groupName={item.name}
-              firstTwoUsernames={this.getTwoUsernames(item.name, users)}
+              usersLength={users.length}
+              userNamesForGroup={this.getUserNamesForGroup(item.name, users)}
               groups={groups}
               />
           </TouchableHighlight>
