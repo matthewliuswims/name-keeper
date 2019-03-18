@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { Icon } from 'react-native-elements';
-
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer, addEditInstructionsGroupText } from '../../styles/base';
+import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer, addEditInstructionsGroupText, deleteText } from '../../styles/base';
 
 import { editGroup, listGroups, clearGroupsErr, deleteGroup, focusGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
@@ -210,14 +207,8 @@ class AddGroupScreen extends Component<Props> {
         <View style={{ flex: 1 }}>
           {this.groupText()}
         </View>
-        <TouchableOpacity style={deleteContainer} onPress={this.openDeleteModal}>
-          <Icon
-            name='delete'
-            size={wp('10%')}
-            iconStyle={{
-              marginRight: wp('2%'),
-            }}
-          />
+        <TouchableOpacity style={[deleteContainer, { marginBottom: 20 }]} onPress={this.openDeleteModal}>
+          <Text style={deleteText}> Delete </Text>
         </TouchableOpacity>
         {this.checkErrGrps(groupsError)}
         {this.checkErrUsrs(usersError)}

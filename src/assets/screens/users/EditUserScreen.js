@@ -5,7 +5,7 @@ import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import { StackActions, NavigationActions } from 'react-navigation';
 
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { editUser, clearUsersErr, listAllUsers, deleteUser, focusUser } from '../../../redux/actions/users';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
@@ -14,7 +14,7 @@ import { listGroups, focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, groupIconNameContainerEditAddUser, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer } from '../../styles/base';
+import { container, groupIconNameContainerEditAddUser, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer, deleteText } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -386,18 +386,9 @@ class EditUserScreen extends Component<Props> {
               {this.groupsSection(allGroups)}
               {this.checkErrGrps(this.props.groupsState.error)}
               {this.checkErrUsrs(this.props.usersState.error)}
-              <View style={deleteContainer}>
-                <TouchableOpacity onPress={this.openDeleteModal}>
-                  <Icon
-                    name='delete'
-                    size={wp('10%')}
-                    iconStyle={{
-                      marginRight: wp('2%'),
-                      padding: wp('5%'),
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={this.openDeleteModal} style={deleteContainer}>
+                <Text style={deleteText}> Delete </Text>
+              </TouchableOpacity>
               {this.deleteModal()}
             </React.Fragment>
           </TouchableWithoutFeedback>

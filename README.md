@@ -20,6 +20,23 @@ How often do you remember someone's face, but not their name? This is an app tha
 4. tests are in the `__tests__` directory.  Most of the 'meaty code' is in the `src` directory. But the entry point to the App is `App.js` at the root directory.
 
 
+### TODO:
+0. FAQ add?
+1. app descrpition
+    * don't say app
+    * don't have to preface quote
+    * please let me know what you experience:
+2. + <-- add more for group screen...also make font bigger
+  for the group screen. have 2 lines.
+  Corazon <--- big font
+  Frnkalin, jessie, and 5 more <--smaller font size, different font text color, less color
+3. have search at the top screen? perhaps..
+4. All people I met <-- just remove it. 
+5. General group <-- boostrapped group. Or be able to create a group on the fly...just have "add group" in the seleeciton.
+6. list styleof description. 
+7. delete button moved up. delete button text. right after the group.
+8. this process cannot be undone.
+
 ### Manual Regression Testing Process
 
 Do this for both ios and android

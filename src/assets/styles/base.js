@@ -37,12 +37,18 @@ export const loadingContainer = {
 };
 
 export const deleteContainer = {
-  flex: 1,
-  justifyContent: 'flex-end',
-  alignItems: 'flex-end',
-  marginBottom: 36,
-  marginTop: hp('3%'),
-  padding: hp('1%'),
+  marginTop: hp('5%'),
+  backgroundColor: 'red',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 10,
+  borderRadius: 10,
+};
+
+export const deleteText = {
+  color: 'white',
+  fontSize: 14,
+  fontWeight: 'bold',
 };
 
 export const topRightTextButtonContainer = {
