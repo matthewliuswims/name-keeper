@@ -21,6 +21,7 @@ How often do you remember someone's face, but not their name? This is an app tha
 
 
 ### TODO:
+0.1. bugwith only 1 person in group
 0. FAQ add?
 1. app descrpition
     * don't say app
@@ -30,6 +31,7 @@ How often do you remember someone's face, but not their name? This is an app tha
   for the group screen. have 2 lines.
   Corazon <--- big font
   Frnkalin, jessie, and 5 more <--smaller font size, different font text color, less color
+2. have add group work evenwhen only 1 group exists
 3. have search at the top screen? perhaps..
 4. All people I met <-- just remove it. 
 5. General group <-- boostrapped group. Or be able to create a group on the fly...just have "add group" in the seleeciton.

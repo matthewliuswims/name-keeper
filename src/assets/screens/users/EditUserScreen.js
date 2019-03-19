@@ -111,6 +111,17 @@ class EditUserScreen extends Component<Props> {
     this.props.navigation.setParams({ userSubmit: this.userSubmit });
   }
 
+  componentDidUpdate(prevProps) {
+    // this is when we add a group from addgroupscreen
+    // we need to update selectedGroupName
+    if (this.props.groupsState.focusedGroupName !== prevProps.groupsState.focusedGroupName) {
+      this.setState({
+        selectedGroupName: this.props.groupsState.focusedGroupName,
+      });
+    }
+  }
+
+
   userSubmit = async () => {
     const { navigation } = this.props;
     const navigatedFromUsersScreen = navigation.getParam('editUserFromUsersScreen', '');
@@ -239,6 +250,17 @@ class EditUserScreen extends Component<Props> {
   }
 
 
+  addGroup = () => {
+    this.setState((state) => {
+      return {
+        groupDropdownOpen: !state.groupDropdownOpen,
+      };
+    });
+    this.props.navigation.navigate('AddGroupScreen', {
+      fromAddUserScreen: 'true',
+    });
+  }
+
   /**
    * @param {Array<Object>} allGroups - unordered groups from groups redux
    * @return selection UI for 'other' groups in the dropdown
@@ -249,24 +271,52 @@ class EditUserScreen extends Component<Props> {
       return null; // if not open, don't show a dropdown
     }
 
+    const addNewGroupOption = {
+      groupID: 'addNewGroupOption',
+      name: 'Add Group',
+    };
+
+    const otherGroupsWithOption = otherGroups.concat(addNewGroupOption);
+
     return (
       <FlatList
-        data={otherGroups}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.otherGroupSelection}
-            onPress={() => { this.otherGroupClick(item); }}
-          >
-            <View style={groupIconNameContainerEditAddUser}>
-              <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
-              <Text numberOfLines={1}> {item.name} </Text>
-            </View>
-            <Icon
-              name='keyboard-arrow-down'
-              color='#F2F2F2'
-            />
-          </TouchableOpacity>)
-        }
+        data={otherGroupsWithOption}
+        renderItem={({ item }) => {
+          if (item.groupID === 'addNewGroupOption') {
+            return (
+              <TouchableOpacity
+                style={styles.otherGroupSelection}
+                onPress={() => { this.addGroup(item); }}
+              >
+                <View style={groupIconNameContainerEditAddUser}>
+                  <Icon
+                    name='add'
+                    size={circularGroupIcon.width}
+                    iconStyle={{
+                      height: circularGroupIcon.height,
+                      width: circularGroupIcon.width,
+                      marginRight: circularGroupIcon.marginRight,
+                      marginLeft: circularGroupIcon.marginLeft,
+                    }
+                    }
+                  />
+                  <Text numberOfLines={1}> {item.name} </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }
+          return (
+            <TouchableOpacity
+              style={styles.otherGroupSelection}
+              onPress={() => { this.otherGroupClick(item); }}
+            >
+              <View style={groupIconNameContainerEditAddUser}>
+                <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
+                <Text numberOfLines={1}> {item.name} </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
         keyExtractor={(item => `${item.groupID}`)}
       />
     );

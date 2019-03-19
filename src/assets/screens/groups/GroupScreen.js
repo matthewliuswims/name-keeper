@@ -65,7 +65,8 @@ class GroupScreen extends Component<Props> {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const groupName = navigation.getParam('getGroupName') || '';
+    // groupName is passed by navigateToScreen in adduserScreen
+    const groupName = navigation.getParam('groupName') || navigation.getParam('getGroupName') || '';
     return {
       title: groupName,
       headerRight: <RightHeaderComponent />,

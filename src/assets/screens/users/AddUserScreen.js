@@ -71,6 +71,16 @@ class AddUserScreen extends Component<Props> {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    // this is when we add a group from addgroupscreen
+    // we need to update selectedGroupName
+    if (this.props.groupsState.focusedGroupName !== prevProps.groupsState.focusedGroupName) {
+      this.setState({
+        selectedGroupName: this.props.groupsState.focusedGroupName,
+      });
+    }
+  }
+
 
   getCircularColorStyle(groupColor) {
     const circularGroupIconNoColor = circularGroupIcon;
@@ -130,19 +140,22 @@ class AddUserScreen extends Component<Props> {
       if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
-        this.navigateToScreen();
+        this.navigateToScreen(this.state.selectedGroupName);
       } // else, we wait for the errModal to popup here
     }
   }
 
-  navigateToScreen = () => {
+  navigateToScreen = (primaryGroupName) => {
     const { navigation } = this.props;
     const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
     if (navigatedFromUsersScreen) {
       navigation.goBack();
       return;
     }
-    navigation.navigate('GroupScreen');
+    this.props.navigation.navigate('GroupScreen',
+      {
+        groupName: primaryGroupName,
+      });
   }
 
 
@@ -172,6 +185,17 @@ class AddUserScreen extends Component<Props> {
     });
   }
 
+  addGroup = () => {
+    this.setState((state) => {
+      return {
+        groupDropdownOpen: !state.groupDropdownOpen,
+      };
+    });
+    this.props.navigation.navigate('AddGroupScreen', {
+      fromAddUserScreen: 'true',
+    });
+  }
+
 
   /**
    * @param {Array<Object>} allGroups - unordered groups from groups redux
@@ -183,24 +207,52 @@ class AddUserScreen extends Component<Props> {
       return null; // if not open, don't show a dropdown
     }
 
+    const addNewGroupOption = {
+      groupID: 'addNewGroupOption',
+      name: 'Add Group',
+    };
+
+    const otherGroupsWithOption = otherGroups.concat(addNewGroupOption);
+
     return (
       <FlatList
-        data={otherGroups}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.otherGroupSelection}
-            onPress={() => { this.otherGroupClick(item); }}
-          >
-            <View style={groupIconNameContainerEditAddUser}>
-              <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
-              <Text numberOfLines={1}> {item.name} </Text>
-            </View>
-            <Icon
-              name='keyboard-arrow-down'
-              color='#F2F2F2'
-            />
-          </TouchableOpacity>)
-        }
+        data={otherGroupsWithOption}
+        renderItem={({ item }) => {
+          if (item.groupID === 'addNewGroupOption') {
+            return (
+              <TouchableOpacity
+                style={styles.otherGroupSelection}
+                onPress={() => { this.addGroup(item); }}
+              >
+                <View style={groupIconNameContainerEditAddUser}>
+                  <Icon
+                    name='add'
+                    size={circularGroupIcon.width}
+                    iconStyle={{
+                      height: circularGroupIcon.height,
+                      width: circularGroupIcon.width,
+                      marginRight: circularGroupIcon.marginRight,
+                      marginLeft: circularGroupIcon.marginLeft,
+                    }
+                    }
+                  />
+                  <Text numberOfLines={1}> {item.name} </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }
+          return (
+            <TouchableOpacity
+              style={styles.otherGroupSelection}
+              onPress={() => { this.otherGroupClick(item); }}
+            >
+              <View style={groupIconNameContainerEditAddUser}>
+                <View style={this.getCircularColorStyle(getGroupColor(item.name, otherGroups))} />
+                <Text numberOfLines={1}> {item.name} </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
         keyExtractor={(item => `${item.groupID}`)}
       />
     );

@@ -17,7 +17,7 @@ export default class Group extends React.Component {
   showUserNamesText(userNamesForGroup) {
     if (userNamesForGroup.length === 0) {
       return (
-        <Text style={groupTextStyle} numberOfLines={1}>{'\t'}No People in Group</Text>
+        <Text style={groupTextStyle} numberOfLines={1}>No People in Group</Text>
       );
     }
     return (

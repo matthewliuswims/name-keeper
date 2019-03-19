@@ -109,6 +109,15 @@ class GroupsScreen extends Component {
     };
   };
 
+  componentDidUpdate(prevProps) {
+    // this is when we add a group from addgroupscreen
+    // we need to update selectedGroupName
+    if (this.props.groupsState.groups.length !== prevProps.groupsState.groups.length) {
+      this.populateFilteredGroupsInitial();
+    }
+  }
+
+
   componentDidMount() {
     const { showingGroups, screenTitle } = this.state;
     this.props.navigation.setParams({ screenTitle });
@@ -116,6 +125,10 @@ class GroupsScreen extends Component {
     this.props.navigation.setParams({ swap: this.swap });
     this.props.navigation.setParams({ getTotalNumberUsers: this.getTotalNumberUsers });
 
+    this.populateFilteredGroupsInitial();
+  }
+
+  populateFilteredGroupsInitial = async () => {
     this.props.listGroups().then(() => {
       this.setState((state) => {
         const { sortOption } = state.sortedFilteredUsersWrapper;
@@ -129,6 +142,7 @@ class GroupsScreen extends Component {
       });
     });
   }
+
 
   updateGroupsList = () => {
     this.props.listGroups();
@@ -391,6 +405,7 @@ class GroupsScreen extends Component {
 
   sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users) {
     const usersCopy = users.slice();
+
     const sortedUsers = this.sortUsers(sortOption, usersCopy);
     const sortAndFilteredUsers = this.filterUsers(selectedFilteredGroups, sortedUsers);
     return sortAndFilteredUsers;
@@ -431,7 +446,6 @@ class GroupsScreen extends Component {
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
       <Fragment>
-        <Text style={styles.usersListText}>All People I Met</Text>
         <SwipeListView
           useFlatList
           ref={ref => this._swipeListUsersView = ref}
@@ -698,12 +712,6 @@ const styles = StyleSheet.create({
     fontSize: RF(4),
     marginTop: hp('1%'),
     textAlign: 'center',
-  },
-  usersListText: {
-    fontWeight: 'bold',
-    fontSize: RF(3),
-    textAlign: 'center',
-    marginBottom: hp('2%'),
   },
   noGroupsOrUsersMessage: {
     fontSize: RF(2.5),

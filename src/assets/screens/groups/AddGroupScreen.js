@@ -72,6 +72,8 @@ class AddGroupScreen extends Component<Props> {
   }
 
   groupSubmit = () => {
+    const { navigation } = this.props;
+    const fromAddUserScreen = navigation.getParam('fromAddUserScreen', '');
     /**
      * Calling getValue will cause the validation of all the fields of the form,
      *  including some side effects like highlighting the errors.
@@ -86,6 +88,12 @@ class AddGroupScreen extends Component<Props> {
         if (!this.props.groupsState.error) {
           this.props.listGroups().then(
             () => {
+              if (fromAddUserScreen) {
+                this.props.focusGroup(groupName);
+                const backAction = NavigationActions.back();
+                this.props.navigation.dispatch(backAction);
+                return;
+              }
               this.props.focusGroup(groupName);
               const resetAction = StackActions.reset({
                 index: 1,
