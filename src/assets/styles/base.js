@@ -236,13 +236,6 @@ export const modalHeaderNormal = {
   marginBottom: hp('2%'),
 };
 
-export const userContainerStyle = {
-  borderWidth: 0,
-  borderBottomWidth: 1,
-  paddingTop: 5,
-  paddingBottom: 5,
-  backgroundColor: colors.containerBackgroundColor,
-};
 
 export const groupContainerStyle = {
   marginBottom: hp('1.5%'),
@@ -311,6 +304,14 @@ export const deleteRightSlotText = {
   fontWeight: 'bold',
 };
 
+export const userContainerStyle = {
+  borderWidth: 0,
+  borderBottomWidth: 1,
+  paddingTop: 5,
+  paddingBottom: 5,
+  backgroundColor: colors.containerBackgroundColor,
+};
+
 export const rowUserBack = {
   flexDirection: 'row',
   justifyContent: 'flex-end',
@@ -318,5 +319,6 @@ export const rowUserBack = {
   borderBottomWidth: 1,
   paddingTop: 5,
   paddingBottom: 5,
-  flex: 1,
+  height: '100%',
+  // flex: 1,
 };

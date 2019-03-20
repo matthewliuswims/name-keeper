@@ -203,7 +203,7 @@ class AddUserScreen extends Component<Props> {
    */
   otherGroupsDropdown(allGroups) {
     const otherGroups = allGroups.filter(group => group.name !== this.state.selectedGroupName);
-    if (otherGroups.length === 0 || !this.state.groupDropdownOpen) {
+    if (!this.state.groupDropdownOpen) {
       return null; // if not open, don't show a dropdown
     }
 
@@ -284,16 +284,16 @@ class AddUserScreen extends Component<Props> {
   }
 
   groupsSection = (allGroups) => {
-    if (allGroups.length === 1) {
-      return (
-        <View style={styles.groupSection}>
-          <View style={groupIconNameContainerEditAddUser}>
-            <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
-            <Text> {this.state.selectedGroupName} </Text>
-          </View>
-        </View>
-      );
-    }
+    // if (allGroups.length === 1) {
+    //   return (
+    //     <View style={styles.groupSection}>
+    //       <View style={groupIconNameContainerEditAddUser}>
+    //         <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
+    //         <Text> {this.state.selectedGroupName} </Text>
+    //       </View>
+    //     </View>
+    //   );
+    // }
     return (
       <View style={styles.groupsSection}>
         {this.selectedGroupUI(allGroups)}

@@ -445,7 +445,7 @@ class GroupsScreen extends Component {
     const { usersState } = this.props;
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
-      <Fragment>
+      <View style={styles.usersListText}>
         <SwipeListView
           useFlatList
           ref={ref => this._swipeListUsersView = ref}
@@ -503,7 +503,7 @@ class GroupsScreen extends Component {
           extraData={usersState}
           disableRightSwipe
         />
-      </Fragment>
+      </View>
     );
   }
 
@@ -691,6 +691,9 @@ class GroupsScreen extends Component {
 const styles = StyleSheet.create({
   // rowGroupBack needs to match grouPContainer style, since rowGroupBack
   // is just the hidden version of groupContainer Style
+  usersList: {
+    marginBottom: hp('0.5%'),
+  },
   rowGroupBack: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
