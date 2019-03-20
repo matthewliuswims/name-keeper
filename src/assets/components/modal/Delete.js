@@ -64,8 +64,8 @@ export default class DeleteModal extends Component {
         </Text>
         <Text style={modalMsg}>
           { this.props.deleteGroup
-            ? 'You will delete this group and all its people. This process cannot be done.'
-            : 'You will delete this person from the group. This process cannot be done.'
+            ? 'You will delete this group and all its people. This process cannot be undone.'
+            : 'You will delete this person from the group. This process cannot be undone.'
           }
         </Text>
         <View style={styles.cancelDeleteContainer}>

@@ -27,18 +27,9 @@ How often do you remember someone's face, but not their name? This is an app tha
     * don't say app
     * don't have to preface quote
     * please let me know what you experience:
-2. + <-- add more for group screen...also make font bigger
-   * for the group screen. have 2 lines.
-  * Corazon <--- big font
-  * Frankling, jessie, and 5 more <--smaller font size, different font text color, less color
-2. have add group work evenwhen only 1 group exists
-3. have search at the top screen? perhaps..
-4. All people I met <-- just remove it. 
 5. General group <-- boostrapped group. Or be able to create a group on the fly...just have "add group" in the seleeciton.
 6. list styleof description. 
-7. delete button moved up. delete button text. right after the group.
 8. this process cannot be undone.
-9. bugwith only 1 person in group <-- replicate by making 1 group and 1 user and going to users screen
 
 ### Manual Regression Testing Process
 
