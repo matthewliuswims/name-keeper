@@ -29,7 +29,7 @@ How often do you remember someone's face, but not their name? This is an app tha
     * please let me know what you experience:
 5. General group <-- boostrapped group. Or be able to create a group on the fly...just have "add group" in the seleeciton.
 6. list styleof description. 
-8. this process cannot be undone.
+7. make adding group part on add and edit user screen prettier
 
 ### Manual Regression Testing Process
 
