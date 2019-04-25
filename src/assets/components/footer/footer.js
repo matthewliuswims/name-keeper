@@ -127,13 +127,13 @@ class Footer extends React.Component {
           <Polygon
             points = {addPolygonHorizontalLine}
             stroke="white"
-            strokeWidth="2"
+            strokeWidth="3"
             fill={colors.appThemeColor}
           />
           <Polygon
             points = {addPolygonVerticalLine}
             stroke="white"
-            strokeWidth="2"
+            strokeWidth="3"
             fill={colors.appThemeColor}
           />
         </Svg>

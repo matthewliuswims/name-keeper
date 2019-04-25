@@ -78,5 +78,14 @@ App Architecture Advising:
 
 * Adrian Cruz
 
+### TODO:
+
+0.001) autosroll?
+0. widgets and actionable items with a person? <-- plus snippets. >
+1. grocery-shopping-list-app-kapil-rajput <-- look at this for inspiration...especially the landing page with the icon.
+2. change header background to be lighter shade of blue (transparency?), and put black text there
+3. https://dribbble.com/shots/3769164-Shopping-List-UI-kit <-- notice padding among slots..notice the color on the left..might just put the color of the item to the left of the slot (always?)
+4. but groupme style can also be inspritation? <-- more similar to what i ahve>
+5. https://undraw.co/search
 # License
 MIT

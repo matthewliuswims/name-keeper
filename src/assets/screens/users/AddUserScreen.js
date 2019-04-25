@@ -1,13 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
+import { pick } from 'lodash';
+
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
 import { focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
+
+import DescriptionTemplate from '../../components/form/Description';
 
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
@@ -21,54 +25,86 @@ type Props = {
 
 const { Form } = tComb.form;
 
-const userForm = tComb.struct({
-  name: tComb.String,
-  location: tComb.maybe(tComb.String),
-  description: tComb.String,
-});
-
-const options = {
-  fields: {
-    name: {
-      placeholder: 'Person\'s name',
-      error: 'Please enter a name',
-    },
-    description: {
-      placeholder: 'Notable impression(s)',
-      error: 'Description is required',
-      multiline: true,
-      stylesheet: {
-        ...Form.stylesheet,
-        textbox: {
-          ...Form.stylesheet.textbox,
-          normal: {
-            ...Form.stylesheet.textbox.normal,
-            height: 60,
-          },
-          error: {
-            ...Form.stylesheet.textbox.error,
-            height: 60,
-          },
-        },
-      },
-    },
-    location: {
-      placeholder: 'Optional',
-    },
-  },
-};
-
-
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
 class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
+      descriptionCounter: 0,
       value: null, // for form
       selectedGroupName: this.props.groupsState.focusedGroupName,
       groupDropdownOpen: false,
+      formFields: { // used for this.userForm()
+        name: tComb.String,
+        location: tComb.maybe(tComb.String),
+        description0: tComb.String,
+      },
+      options: {
+        fields: {
+          name: {
+            placeholder: 'Person\'s name',
+            error: 'Please enter a name',
+          },
+          description0: {
+            template: DescriptionTemplate,
+            placeholder: 'Notable impression(s)',
+            error: 'Description is required',
+            config: {
+              number: 0,
+              onlyDescriptor: true,
+              isLast: true,
+              addDescription: this.addDescription.bind(this),
+            },
+            multiline: true,
+          },
+          location: {
+            placeholder: 'Optional',
+          },
+        },
+      },
     };
+  }
+
+  userForm = () => {
+    return (
+      tComb.struct(this.state.formFields)
+    );
+  }
+
+  addDescription() {
+    this.setState((prevState) => {
+      const descriptionCounter = prevState.descriptionCounter + 1;
+      const prevCounter = prevState.descriptionCounter;
+      const options = Object.assign({}, prevState.options);
+
+      const descriptionField = {
+        template: DescriptionTemplate,
+        placeholder: 'Notable impression(s)',
+        error: 'Description is required',
+        config: {
+          onlyDescriptor: false,
+          isLast: true,
+          number: descriptionCounter,
+          addDescription: this.addDescription.bind(this),
+        },
+        multiline: true,
+      };
+      options.fields[`description${prevCounter}`].config.onlyDescriptor = false;
+      options.fields[`description${prevCounter}`].config.isLast = false;
+
+      options.fields[`description${descriptionCounter}`] = descriptionField;
+      // tell first descriptor it's not the only descriptor
+      options.fields.description0.config.onlyDescriptor = false;
+      const formFields = Object.assign({}, prevState.formFields);
+      formFields[`description${descriptionCounter}`] = tComb.String;
+      console.log('options are', options);
+      return {
+        formFields,
+        options,
+        descriptionCounter,
+      };
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -123,12 +159,17 @@ class AddUserScreen extends Component<Props> {
     if (!this.formRef) return;
 
     if (userStruct) {
-      const { name, location, description } = userStruct;
-      const descriptionAsArray = [description]; // right now we only have 1 string element in the description array, but can potentially add on to this
+      const { name, location } = userStruct;
+      const descriptorsLength = Object.keys(userStruct).length - 2;
+      const descriptions = [];
+      for (let i = 0; i < descriptorsLength; i++) {
+        const description = userStruct[`description${i}`];
+        descriptions.push(description);
+      }
 
       const user = {
         name,
-        description: descriptionAsArray,
+        description: descriptions,
         location,
         primaryGroupName: this.state.selectedGroupName,
       };
@@ -173,6 +214,7 @@ class AddUserScreen extends Component<Props> {
   }
 
   onChange = (value) => {
+    console.log('on change called');
     this.setState({ value });
   }
 
@@ -284,16 +326,6 @@ class AddUserScreen extends Component<Props> {
   }
 
   groupsSection = (allGroups) => {
-    // if (allGroups.length === 1) {
-    //   return (
-    //     <View style={styles.groupSection}>
-    //       <View style={groupIconNameContainerEditAddUser}>
-    //         <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
-    //         <Text> {this.state.selectedGroupName} </Text>
-    //       </View>
-    //     </View>
-    //   );
-    // }
     return (
       <View style={styles.groupsSection}>
         {this.selectedGroupUI(allGroups)}
@@ -305,7 +337,8 @@ class AddUserScreen extends Component<Props> {
   render() {
     const { groups: allGroups, loading } = this.props.groupsState;
     const { loading: usersStateLoading } = this.props.usersState;
-
+    console.log('this.state.options are', this.state.options);
+    console.log('this.state.value are', this.state.value);
     if (loading || usersStateLoading) {
       return (
         <LoadingSpinner />
@@ -330,10 +363,10 @@ class AddUserScreen extends Component<Props> {
             <React.Fragment>
               <Form
                 ref={(c) => { this.formRef = c; }}
-                type={userForm}
+                type={this.userForm()}
                 value={this.state.value}
                 onChange={this.onChange}
-                options={options}
+                options={this.state.options}
               />
               <Text style={styles.groupText}> Group </Text>
               {this.groupsSection(allGroups)}
@@ -347,6 +380,10 @@ class AddUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  test: {
+    borderColor: 'green',
+    borderWidth: 4,
+  },
   groupText: {
     fontWeight: '500',
     fontSize: 17,
