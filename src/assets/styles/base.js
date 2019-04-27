@@ -240,6 +240,7 @@ export const modalHeaderNormal = {
 export const groupContainerStyle = {
   marginBottom: hp('1.5%'),
   borderRadius: 4,
+  borderTopWidth: 1,
   borderWidth: 1,
   backgroundColor: colors.containerBackgroundColor,
 };

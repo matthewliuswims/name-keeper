@@ -87,5 +87,12 @@ App Architecture Advising:
 3. https://dribbble.com/shots/3769164-Shopping-List-UI-kit <-- notice padding among slots..notice the color on the left..might just put the color of the item to the left of the slot (always?)
 4. but groupme style can also be inspritation? <-- more similar to what i ahve>
 5. https://undraw.co/search
+
+new comments
+0.0001) HONESTLY: use sketch. follow the process.
+0. use squares with rounded corners (look at google calendar - could also look at google docs for little things insidethe icon)
+1. sort, filter, and toggle, can all live (flexbox space-evenly) near the top, right below the footer. 
+2. no borders
+3. check typography
 # License
 MIT

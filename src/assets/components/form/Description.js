@@ -61,8 +61,8 @@ const Description = (locals) => {
           style={styles.addContainer}
         >
           { locals.config.onlyDescriptor || locals.config.isLast
-            ? <Ionicons name="ios-remove" size={30} />
-            : <Ionicons name="ios-add" size={30} />
+            ? <Ionicons name="ios-add" size={30} />
+            : <Ionicons name="ios-remove" size={30} />
           }
         </TouchableOpacity>
         <View style={[textboxViewStyle, styles.textBoxOverrides]}>

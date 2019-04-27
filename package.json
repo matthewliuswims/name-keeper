@@ -32,7 +32,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "sentry-expo": "^1.11.0",
-    "tcomb-form-native": "^0.6.20"
+    "tcomb-form-native": "matthewliuswims/tcomb-form-native#should-component-update-removal"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
