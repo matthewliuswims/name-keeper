@@ -50,19 +50,29 @@ const Description = (locals) => {
       </Text>
     ) : null;
 
+  const actionButton = locals.config.isLast
+    ? (
+      <TouchableOpacity
+        onPress={locals.config.addDescription}
+        style={styles.addContainer}
+      >
+        <Ionicons name="ios-add" size={30} />
+      </TouchableOpacity>
+    )
+    : (
+      <TouchableOpacity
+        onPress={() => locals.config.removeDescription(locals.config.id)}
+        style={styles.addContainer}
+      >
+        <Ionicons name="ios-remove" size={30} />
+      </TouchableOpacity>
+    );
+
   return (
     <View style={[formGroupStyle, styles.test]}>
       {locals.config.isFirst && label}
       <View style={styles.descriptionBox}>
-        <TouchableOpacity
-          onPress={locals.config.addDescription}
-          style={styles.addContainer}
-        >
-          { locals.config.isLast
-            ? <Ionicons name="ios-add" size={30} />
-            : <Ionicons name="ios-remove" size={30} />
-          }
-        </TouchableOpacity>
+        {actionButton}
         <View style={[textboxViewStyle, styles.textBoxOverrides]}>
           <TextInput
             accessibilityLabel={locals.label}

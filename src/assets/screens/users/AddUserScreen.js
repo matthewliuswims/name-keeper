@@ -4,7 +4,6 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFee
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { pick } from 'lodash';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
@@ -52,9 +51,11 @@ class AddUserScreen extends Component<Props> {
             placeholder: 'Notable impression(s)',
             error: 'Description is required',
             config: {
+              id: 'description0',
               isFirst: true,
               isLast: true,
               addDescription: this.addDescription.bind(this),
+              removeDescription: this.removeDescription.bind(this),
             },
             multiline: true,
           },
@@ -70,6 +71,36 @@ class AddUserScreen extends Component<Props> {
     return (
       tComb.struct(this.state.formFields)
     );
+  }
+
+  removeDescription(descriptionID) {
+    // if i have a value in a field, and that field gets deleted
+    // that value persists. Luckily in userSubmit, we
+    // iterate over descriptionIDs for the userStruct, so we'll
+    // ignore the unreaped descriptionIds.
+    this.setState((prevState) => {
+      // update options
+      const options = Object.assign({}, prevState.options);
+      delete options.fields[descriptionID];
+
+      // update descriptionIDs
+      const prevDescriptionIDs = prevState.descriptionIDs;
+      const descriptionIDs = prevDescriptionIDs.filter(id => id !== descriptionID);
+      // we make sure firstDescriptionID is the firstOne (in case the 1 we deleted was the firstOne)
+      const [firstID] = descriptionIDs;
+      options.fields[firstID].isFirst = true;
+      if (descriptionIDs.length === 1) options.fields[firstID].isLast = true; 
+
+      // update formFields
+      const formFields = Object.assign({}, prevState.formFields);
+      delete formFields[descriptionID];
+
+      return {
+        formFields,
+        options,
+        descriptionIDs,
+      };
+    });
   }
 
   addDescription() {
@@ -90,6 +121,7 @@ class AddUserScreen extends Component<Props> {
           isLast: true,
           id: descriptionID,
           addDescription: this.addDescription.bind(this),
+          removeDescription: this.removeDescription.bind(this),
         },
         multiline: true,
       };
@@ -175,7 +207,6 @@ class AddUserScreen extends Component<Props> {
         location,
         primaryGroupName: this.state.selectedGroupName,
       };
-      console.log('user to add is', user);
 
       await this.props.addUser(user);
       if (!this.props.usersState.error) {
