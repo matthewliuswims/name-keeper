@@ -12,7 +12,6 @@ import { Icon } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
 const Description = (locals) => {
-  console.log('locals.config is', locals.config);
   if (locals.hidden) {
     return null;
   }
@@ -51,16 +50,15 @@ const Description = (locals) => {
       </Text>
     ) : null;
 
-  const isFirstDescription = locals.config.number === 0;
   return (
     <View style={[formGroupStyle, styles.test]}>
-      {isFirstDescription && label}
+      {locals.config.isFirst && label}
       <View style={styles.descriptionBox}>
         <TouchableOpacity
           onPress={locals.config.addDescription}
           style={styles.addContainer}
         >
-          { locals.config.onlyDescriptor || locals.config.isLast
+          { locals.config.isLast
             ? <Ionicons name="ios-add" size={30} />
             : <Ionicons name="ios-remove" size={30} />
           }

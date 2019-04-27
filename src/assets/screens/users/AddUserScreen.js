@@ -31,7 +31,8 @@ class AddUserScreen extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      descriptionCounter: 0,
+      // should never be less than 1 length
+      descriptionIDs: ['description0'],
       value: null, // for form
       selectedGroupName: this.props.groupsState.focusedGroupName,
       groupDropdownOpen: false,
@@ -51,8 +52,7 @@ class AddUserScreen extends Component<Props> {
             placeholder: 'Notable impression(s)',
             error: 'Description is required',
             config: {
-              number: 0,
-              onlyDescriptor: true,
+              isFirst: true,
               isLast: true,
               addDescription: this.addDescription.bind(this),
             },
@@ -74,35 +74,37 @@ class AddUserScreen extends Component<Props> {
 
   addDescription() {
     this.setState((prevState) => {
-      const descriptionCounter = prevState.descriptionCounter + 1;
-      const prevCounter = prevState.descriptionCounter;
+      // uid would not be good for concurrent users, but we don't deal with that
+      const uid = new Date().valueOf().toString();
+      const descriptionID = `description${uid}`;
       const options = Object.assign({}, prevState.options);
 
+      const prevDescriptionIDs = prevState.descriptionIDs;
+      const prevLastKey = prevDescriptionIDs[prevDescriptionIDs.length - 1];
       const descriptionField = {
         template: DescriptionTemplate,
         placeholder: 'Notable impression(s)',
         error: 'Description is required',
         config: {
-          onlyDescriptor: false,
+          isFirst: false,
           isLast: true,
-          number: descriptionCounter,
+          id: descriptionID,
           addDescription: this.addDescription.bind(this),
         },
         multiline: true,
       };
-      options.fields[`description${prevCounter}`].config.onlyDescriptor = false;
-      options.fields[`description${prevCounter}`].config.isLast = false;
+      // tell prev descriptor it's not last
+      options.fields[prevLastKey].config.isLast = false;
 
-      options.fields[`description${descriptionCounter}`] = descriptionField;
-      // tell first descriptor it's not the only descriptor
-      options.fields.description0.config.onlyDescriptor = false;
+      options.fields[descriptionID] = descriptionField;
       const formFields = Object.assign({}, prevState.formFields);
-      formFields[`description${descriptionCounter}`] = tComb.String;
-      console.log('options are', options);
+      formFields[descriptionID] = tComb.String;
+
+      const descriptionIDs = prevDescriptionIDs.concat(descriptionID);
       return {
         formFields,
         options,
-        descriptionCounter,
+        descriptionIDs,
       };
     });
   }
@@ -160,10 +162,10 @@ class AddUserScreen extends Component<Props> {
 
     if (userStruct) {
       const { name, location } = userStruct;
-      const descriptorsLength = Object.keys(userStruct).length - 2;
       const descriptions = [];
-      for (let i = 0; i < descriptorsLength; i++) {
-        const description = userStruct[`description${i}`];
+      const { descriptionIDs } = this.state;
+      for (const descriptionID of descriptionIDs) {
+        const description = userStruct[descriptionID];
         descriptions.push(description);
       }
 
@@ -173,6 +175,7 @@ class AddUserScreen extends Component<Props> {
         location,
         primaryGroupName: this.state.selectedGroupName,
       };
+      console.log('user to add is', user);
 
       await this.props.addUser(user);
       if (!this.props.usersState.error) {
@@ -214,7 +217,6 @@ class AddUserScreen extends Component<Props> {
   }
 
   onChange = (value) => {
-    console.log('on change called');
     this.setState({ value });
   }
 
@@ -337,8 +339,7 @@ class AddUserScreen extends Component<Props> {
   render() {
     const { groups: allGroups, loading } = this.props.groupsState;
     const { loading: usersStateLoading } = this.props.usersState;
-    console.log('this.state.options are', this.state.options);
-    console.log('this.state.value are', this.state.value);
+
     if (loading || usersStateLoading) {
       return (
         <LoadingSpinner />

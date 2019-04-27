@@ -90,7 +90,6 @@ class GroupScreen extends Component<Props> {
 
   deleteUser = async () => {
     this.closeUserDeleteModal();
-    console.log('this.state.userNameDrawerFocused', this.state.userDrawerFocused);
     await this.props.deleteUser(this.state.userDrawerFocused);
     await this.props.listAllUsers();
     await this.setState({ userDrawerFocused: null });
