@@ -73,25 +73,10 @@ User Testing + UI/UX Critique:
 * Joshua Montgomery
 * Karissa Jobman
 * Relly Jorgenson
+* Nicole Black
 
 App Architecture Advising: 
 
 * Adrian Cruz
-
-### TODO:
-
-0. widgets and actionable items with a person? <-- plus snippets. >
-1. grocery-shopping-list-app-kapil-rajput <-- look at this for inspiration...especially the landing page with the icon.
-2. change header background to be lighter shade of blue (transparency?), and put black text there
-3. https://dribbble.com/shots/3769164-Shopping-List-UI-kit <-- notice padding among slots..notice the color on the left..might just put the color of the item to the left of the slot (always?)
-4. but groupme style can also be inspritation? <-- more similar to what i ahve>
-5. https://undraw.co/search
-6. change sort, delete and filter modals (bottom text especially)
-
-new comments
-0. use squares with rounded corners (look at google calendar - could also look at google docs for little things insidethe icon)
-1. sort, filter, and toggle, can all live (flexbox space-evenly) near the top, right below the footer. 
-2. no borders
-3. check typography
 # License
 MIT
