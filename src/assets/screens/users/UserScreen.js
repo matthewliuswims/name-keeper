@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
     marginTop: hp('3%'),
   },
   description: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    // flexDirection: 'row',
+    // justifyContent: 'center',
 
     paddingLeft: wp('4%'),
     paddingRight: wp('4%'),

@@ -54,7 +54,7 @@ const Description = (locals) => {
     ? (
       <TouchableOpacity
         onPress={locals.config.addDescription}
-        style={styles.addContainer}
+        style={styles.actionContainer}
       >
         <Ionicons name="ios-add" size={30} />
       </TouchableOpacity>
@@ -62,7 +62,7 @@ const Description = (locals) => {
     : (
       <TouchableOpacity
         onPress={() => locals.config.removeDescription(locals.config.id)}
-        style={styles.addContainer}
+        style={styles.actionContainer}
       >
         <Ionicons name="ios-remove" size={30} />
       </TouchableOpacity>
@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   textBoxOverrides: {
     flex: 1,
   },
-  addContainer: {
+  actionContainer: {
     alignContent: 'center',
     justifyContent: 'center',
     marginBottom: 5,
-    marginRight: 5,
+    marginRight: 10,
   },
   descriptionBox: {
     alignContent: 'center',

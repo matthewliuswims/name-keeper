@@ -14,7 +14,17 @@ import { listGroups, focusGroup } from '../../../redux/actions/groups';
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, groupIconNameContainerEditAddUser, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon, deleteContainer, deleteText } from '../../styles/base';
+import {
+  container,
+  groupIconNameContainerEditAddUser,
+  topRightTextButtonContainerSolo,
+  topRightButtonText,
+  circularGroupIcon,
+  deleteContainer,
+  deleteText,
+  initialGroupSelection,
+  otherGroupSelection,
+} from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
 import colors from '../../styles/colors';
 
@@ -62,7 +72,7 @@ const options = {
       },
     },
     location: {
-      placeholder: 'Optional',
+      placeholder: 'Place met',
     },
   },
 };
@@ -230,7 +240,7 @@ class EditUserScreen extends Component<Props> {
   selectedGroupUI(allGroups) {
     return (
       <TouchableOpacity
-        style={styles.initialGroupSelection}
+        style={initialGroupSelection}
         onPress={() => {
           this.setState((state) => {
             return { groupDropdownOpen: !state.groupDropdownOpen };
@@ -285,7 +295,7 @@ class EditUserScreen extends Component<Props> {
           if (item.groupID === 'addNewGroupOption') {
             return (
               <TouchableOpacity
-                style={styles.otherGroupSelection}
+                style={otherGroupSelection}
                 onPress={() => { this.addGroup(item); }}
               >
                 <View style={groupIconNameContainerEditAddUser}>
@@ -307,7 +317,7 @@ class EditUserScreen extends Component<Props> {
           }
           return (
             <TouchableOpacity
-              style={styles.otherGroupSelection}
+              style={otherGroupSelection}
               onPress={() => { this.otherGroupClick(item); }}
             >
               <View style={groupIconNameContainerEditAddUser}>
@@ -461,26 +471,11 @@ const styles = StyleSheet.create({
   groups: {
     marginTop: hp('2%'),
   },
-  initialGroupSelection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderWidth: 0.75,
-    borderColor: 'black',
-  },
   groupSection: {
     marginTop: hp('2%'),
   },
   groupsSection: {
     marginTop: hp('1%'),
-  },
-  otherGroupSelection: {
-    backgroundColor: '#F2F2F2',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderLeftWidth: 0.75,
-    borderRightWidth: 0.75,
-    borderBottomWidth: 0.75,
-    borderColor: colors.borderColor,
   },
 });
 

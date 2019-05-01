@@ -263,8 +263,8 @@ export const groupTextStyle = {
 };
 
 export const addEditInstructionsGroupText = {
-  fontSize: RF(3),
-  fontWeight: 'bold',
+  marginTop: 10,
+  fontSize: RF(2),
 };
 
 export const headerButtonWrapper = {
@@ -322,4 +322,14 @@ export const rowUserBack = {
   paddingBottom: 5,
   height: '100%',
   // flex: 1,
+};
+
+export const initialGroupSelection = {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+};
+
+export const otherGroupSelection = {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
 };

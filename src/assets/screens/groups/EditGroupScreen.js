@@ -194,8 +194,8 @@ class AddGroupScreen extends Component<Props> {
       );
     }
     return (
-      <View style={[container, { justifyContent: 'space-evenly' }]}>
-        <View style={{ flex: 1 }}>
+      <View style={container}>
+        <View>
           <Form
             ref={(c) => { this.formRef = c; }}
             type={group}
@@ -204,7 +204,7 @@ class AddGroupScreen extends Component<Props> {
             onChange={this.onChange}
           />
         </View>
-        <View style={{ flex: 1 }}>
+        <View>
           {this.groupText()}
         </View>
         <TouchableOpacity style={[deleteContainer, { marginBottom: 20 }]} onPress={this.openDeleteModal}>

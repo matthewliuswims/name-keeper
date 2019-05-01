@@ -14,9 +14,16 @@ import DescriptionTemplate from '../../components/form/Description';
 
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
-import { container, groupIconNameContainerEditAddUser, topRightTextButtonContainerSolo, topRightButtonText, circularGroupIcon } from '../../styles/base';
+import {
+  container,
+  groupIconNameContainerEditAddUser,
+  topRightTextButtonContainerSolo,
+  topRightButtonText,
+  circularGroupIcon,
+  initialGroupSelection,
+  otherGroupSelection,
+} from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
-import colors from '../../styles/colors';
 
 type Props = {
   navigation: () => void,
@@ -60,7 +67,7 @@ class AddUserScreen extends Component<Props> {
             multiline: true,
           },
           location: {
-            placeholder: 'Optional',
+            placeholder: 'Place met',
           },
         },
       },
@@ -88,8 +95,8 @@ class AddUserScreen extends Component<Props> {
       const descriptionIDs = prevDescriptionIDs.filter(id => id !== descriptionID);
       // we make sure firstDescriptionID is the firstOne (in case the 1 we deleted was the firstOne)
       const [firstID] = descriptionIDs;
-      options.fields[firstID].isFirst = true;
-      if (descriptionIDs.length === 1) options.fields[firstID].isLast = true; 
+      options.fields[firstID].config.isFirst = true;
+      if (descriptionIDs.length === 1) options.fields[firstID].isLast = true;
 
       // update formFields
       const formFields = Object.assign({}, prevState.formFields);
@@ -296,7 +303,7 @@ class AddUserScreen extends Component<Props> {
           if (item.groupID === 'addNewGroupOption') {
             return (
               <TouchableOpacity
-                style={styles.otherGroupSelection}
+                style={otherGroupSelection}
                 onPress={() => { this.addGroup(item); }}
               >
                 <View style={groupIconNameContainerEditAddUser}>
@@ -318,7 +325,7 @@ class AddUserScreen extends Component<Props> {
           }
           return (
             <TouchableOpacity
-              style={styles.otherGroupSelection}
+              style={otherGroupSelection}
               onPress={() => { this.otherGroupClick(item); }}
             >
               <View style={groupIconNameContainerEditAddUser}>
@@ -339,7 +346,7 @@ class AddUserScreen extends Component<Props> {
   selectedGroupUI(allGroups) {
     return (
       <TouchableOpacity
-        style={styles.initialGroupSelection}
+        style={initialGroupSelection}
         onPress={() => {
           this.setState((state) => {
             return { groupDropdownOpen: !state.groupDropdownOpen };
@@ -425,21 +432,6 @@ const styles = StyleSheet.create({
   },
   groupsSection: {
     marginTop: hp('1%'),
-  },
-  initialGroupSelection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderWidth: 0.75,
-    borderColor: 'black',
-  },
-  otherGroupSelection: {
-    backgroundColor: '#F2F2F2',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderLeftWidth: 0.75,
-    borderRightWidth: 0.75,
-    borderBottomWidth: 0.75,
-    borderColor: colors.borderColor,
   },
   groups: {
     marginTop: hp('2%'),
