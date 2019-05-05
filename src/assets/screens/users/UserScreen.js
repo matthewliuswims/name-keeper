@@ -49,6 +49,16 @@ class UserScreen extends Component {
     return combinedStyle;
   }
 
+  /**
+   * not quite the same as UserBox userDescriptions.
+   * notice the join argument, and the lack of extra space in the map argument
+  */
+  userDescriptions(userDescriptionArray) {
+    const withDashArray = userDescriptionArray.map(descriptor => `- ${descriptor}`);
+    const descriptionString = withDashArray.join('\n');
+    return descriptionString;
+  }
+
   render() {
     const { usersState } = this.props;
     const { groupsState } = this.props;
@@ -98,7 +108,7 @@ class UserScreen extends Component {
               />
             </View>
             <View style={styles.description}>
-              <Text>{user.description}</Text>
+              <Text>{this.userDescriptions(user.description)}</Text>
             </View>
           </View>
         )

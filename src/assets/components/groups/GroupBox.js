@@ -21,9 +21,7 @@ export default class Group extends React.Component {
       );
     }
     return (
-      <React.Fragment>
-        <Text style={groupTextStyle} numberOfLines={1}>{this.usersTextDisplay(userNamesForGroup)}</Text>
-      </React.Fragment>
+      <Text style={groupTextStyle} numberOfLines={1}>{this.usersTextDisplay(userNamesForGroup)}</Text>
     );
   }
 

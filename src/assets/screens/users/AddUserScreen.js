@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -6,13 +5,19 @@ import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { addUser, clearUsersErr, listAllUsers } from '../../../redux/actions/users';
-import { focusGroup } from '../../../redux/actions/groups';
-import ErrorModal from '../../components/modal/Error';
+
+import {
+  addUser,
+  clearUsersErr,
+  listAllUsers,
+} from '../../../redux/actions/users';
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
+import {
+  focusGroup,
+} from '../../../redux/actions/groups';
 
 import DescriptionTemplate from '../../components/form/Description';
-
-import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
+import ErrorModal from '../../components/modal/Error';
 
 import {
   container,
@@ -23,17 +28,14 @@ import {
   initialGroupSelection,
   otherGroupSelection,
 } from '../../styles/base';
-import { getGroupColor } from '../../../lib/groupColors';
 
-type Props = {
-  navigation: () => void,
-};
+import { getGroupColor } from '../../../lib/groupColors';
 
 const { Form } = tComb.form;
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-class AddUserScreen extends Component<Props> {
+class AddUserScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -419,22 +421,12 @@ class AddUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  test: {
-    borderColor: 'green',
-    borderWidth: 4,
-  },
   groupText: {
     fontWeight: '500',
     fontSize: 17,
   },
-  groupSection: {
-    marginTop: hp('1.5%'),
-  },
   groupsSection: {
     marginTop: hp('1%'),
-  },
-  groups: {
-    marginTop: hp('2%'),
   },
 });
 

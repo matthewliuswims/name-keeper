@@ -7,9 +7,18 @@ import { StackActions, NavigationActions } from 'react-navigation';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { editUser, clearUsersErr, listAllUsers, deleteUser, focusUser } from '../../../redux/actions/users';
+import {
+  editUser,
+  clearUsersErr,
+  listAllUsers,
+  deleteUser,
+  focusUser,
+} from '../../../redux/actions/users';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
-import { listGroups, focusGroup } from '../../../redux/actions/groups';
+import {
+  focusGroup,
+  listGroups,
+} from '../../../redux/actions/groups';
 
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
@@ -26,17 +35,9 @@ import {
   otherGroupSelection,
 } from '../../styles/base';
 import { getGroupColor } from '../../../lib/groupColors';
-import colors from '../../styles/colors';
 
 import { parseToLongDate } from '../../../lib/dates';
 
-type Props = {
-  navigation: () => void,
-  groupsState : {
-    groups: Array<Object>,
-    focusedGroupName: String,
-  }
-};
 
 const { Form } = tComb.form;
 

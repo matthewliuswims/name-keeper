@@ -6,14 +6,7 @@ import { getGroupColor } from '../../../lib/groupColors';
 
 import { groupIconNameContainer, circularGroupIcon, groupIconNameDateContainer, userDescriptionText } from '../../styles/base';
 
-type Props = {
-  username: string,
-  userDescription: string,
-  date: string,
-  primaryGroupName: string, // this is optional, if you add it includes the groupColor
-};
-
-class UserBox extends React.Component <Props> {
+class UserBox extends React.Component {
   firstSectionWithGroup(primaryGroupName) {
     return (
       <View style={groupIconNameDateContainer}>
@@ -24,6 +17,12 @@ class UserBox extends React.Component <Props> {
         <Text numberOfLines={1}> {this.props.date} </Text>
       </View>
     );
+  }
+
+  userDescriptions(userDescriptionArray) {
+    const withDashArray = userDescriptionArray.map(descriptor => `- ${descriptor} `);
+    const descriptionString = withDashArray.join('');
+    return descriptionString;
   }
 
   firstSectionWithoutGroup() {
@@ -49,7 +48,7 @@ class UserBox extends React.Component <Props> {
       <React.Fragment>
         {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
         <View style={styles.descriptionAndDate}>
-          <Text numberOfLines={1} style={userDescriptionText}>{this.props.userDescription} </Text>
+          <Text numberOfLines={1} style={userDescriptionText}>{this.userDescriptions(this.props.userDescription)} </Text>
         </View>
       </React.Fragment>
     );
