@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import {
-  editUser,
+  addUser,
   clearUsersErr,
   listAllUsers,
-  deleteUser,
-  focusUser,
 } from '../../../redux/actions/users';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 import {
   focusGroup,
-  listGroups,
 } from '../../../redux/actions/groups';
 
+import DescriptionTemplate from '../../components/form/Description';
 import ErrorModal from '../../components/modal/Error';
-import DeleteModal from '../../components/modal/Delete';
 
 import {
   container,
@@ -29,97 +25,134 @@ import {
   topRightTextButtonContainerSolo,
   topRightButtonText,
   circularGroupIcon,
-  deleteContainer,
-  deleteText,
   initialGroupSelection,
   otherGroupSelection,
 } from '../../styles/base';
+
 import { getGroupColor } from '../../../lib/groupColors';
-
-import { parseToLongDate } from '../../../lib/dates';
-
 
 const { Form } = tComb.form;
 
-const userForm = tComb.struct({
-  name: tComb.String,
-  location: tComb.maybe(tComb.String),
-  description: tComb.String,
-});
-
-const options = {
-  fields: {
-    name: {
-      placeholder: 'Person\'s name',
-      error: 'Please enter a name',
-    },
-    description: {
-      placeholder: 'Notable impression(s)',
-      error: 'Description is required',
-      multiline: true,
-      stylesheet: {
-        ...Form.stylesheet,
-        textbox: {
-          ...Form.stylesheet.textbox,
-          normal: {
-            ...Form.stylesheet.textbox.normal,
-            height: 60,
-          },
-          error: {
-            ...Form.stylesheet.textbox.error,
-            height: 60,
-          },
-        },
-      },
-    },
-    location: {
-      placeholder: 'Place met',
-    },
-  },
-};
-
-
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
-class EditUserScreen extends Component<Props> {
+class EditUserScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // should never be less than 1 length
+      descriptionIDs: ['description0'],
       value: this.getUserValue(),
       selectedGroupName: this.props.groupsState.focusedGroupName,
       groupDropdownOpen: false,
-      deleteModalOpen: false,
+      formFields: { // used for this.userForm()
+        name: tComb.String,
+        location: tComb.maybe(tComb.String),
+        description0: tComb.String,
+      },
+      options: {
+        fields: {
+          name: {
+            placeholder: 'Person\'s name',
+            error: 'Please enter a name',
+          },
+          description0: {
+            template: DescriptionTemplate,
+            placeholder: 'Notable impression(s)',
+            error: 'Description is required',
+            config: {
+              id: 'description0',
+              isFirst: true,
+              isLast: true,
+              addDescription: this.addDescription.bind(this),
+              removeDescription: this.removeDescription.bind(this),
+            },
+            multiline: true,
+          },
+          location: {
+            placeholder: 'Place met',
+          },
+        },
+      },
     };
   }
 
-  /**
-   * @tutorial https://reactnavigation.org/docs/en/header-buttons.html#header-interaction-with-its-screen-component
-   * for onPress we need a noOp, otherwise we'd get an error, because React Navigation does NOT guarantee
-   * that the screen component will be mounted before the header.
-   */
-  static navigationOptions = ({ navigation }) => {
-    const navUserName = navigation.getParam('focusedUserName');
-    const userName = navUserName || '';
-    const titleDisplay = navUserName ? `Edit ${userName}` : '';
+  userForm = () => {
+    return (
+      tComb.struct(this.state.formFields)
+    );
+  }
 
-    return {
-      title: titleDisplay,
-      headerRight: (
-        // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
-        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={topRightTextButtonContainerSolo}>
-          <Text style={topRightButtonText}>Save</Text>
-        </TouchableOpacity>
-      ),
-    };
-  };
+  removeDescription(descriptionID) {
+    // if i have a value in a field, and that field gets deleted
+    // that value persists. Luckily in userSubmit, we
+    // iterate over descriptionIDs for the userStruct, so we'll
+    // ignore the unreaped descriptionIds.
+    this.setState((prevState) => {
+      // update options
+      const options = Object.assign({}, prevState.options);
+      delete options.fields[descriptionID];
+
+      // update descriptionIDs
+      const prevDescriptionIDs = prevState.descriptionIDs;
+      const descriptionIDs = prevDescriptionIDs.filter(id => id !== descriptionID);
+      // we make sure firstDescriptionID is the firstOne (in case the 1 we deleted was the firstOne)
+      const [firstID] = descriptionIDs;
+      options.fields[firstID].config.isFirst = true;
+      if (descriptionIDs.length === 1) options.fields[firstID].isLast = true;
+
+      // update formFields
+      const formFields = Object.assign({}, prevState.formFields);
+      delete formFields[descriptionID];
+
+      return {
+        formFields,
+        options,
+        descriptionIDs,
+      };
+    });
+  }
+
+  addDescription() {
+    this.setState((prevState) => {
+      // uid would not be good for concurrent users, but we don't deal with that
+      const uid = new Date().valueOf().toString();
+      const descriptionID = `description${uid}`;
+      const options = Object.assign({}, prevState.options);
+
+      const prevDescriptionIDs = prevState.descriptionIDs;
+      const prevLastKey = prevDescriptionIDs[prevDescriptionIDs.length - 1];
+      const descriptionField = {
+        template: DescriptionTemplate,
+        placeholder: 'Notable impression(s)',
+        error: 'Description is required',
+        config: {
+          isFirst: false,
+          isLast: true,
+          id: descriptionID,
+          addDescription: this.addDescription.bind(this),
+          removeDescription: this.removeDescription.bind(this),
+        },
+        multiline: true,
+      };
+      // tell prev descriptor it's not last
+      options.fields[prevLastKey].config.isLast = false;
+
+      options.fields[descriptionID] = descriptionField;
+      const formFields = Object.assign({}, prevState.formFields);
+      formFields[descriptionID] = tComb.String;
+
+      const descriptionIDs = prevDescriptionIDs.concat(descriptionID);
+      return {
+        formFields,
+        options,
+        descriptionIDs,
+      };
+    });
+  }
 
   getUserValue() {
     const { location, description, name } = this.props.usersState.focusedUser;
     return Object.assign({}, { location, description, name });
-  }
-
-  componentDidMount() {
-    this.props.navigation.setParams({ userSubmit: this.userSubmit });
   }
 
   componentDidUpdate(prevProps) {
@@ -133,85 +166,87 @@ class EditUserScreen extends Component<Props> {
   }
 
 
-  userSubmit = async () => {
-    const { navigation } = this.props;
-    const navigatedFromUsersScreen = navigation.getParam('editUserFromUsersScreen', '');
-
-    const userStruct = this.formRef.getValue();
-    if (!this.formRef) return;
-
-    if (userStruct) {
-      const { name, location, description } = userStruct;
-      const { userID } = this.props.usersState.focusedUser;
-
-      const descriptionAsArray = [description];
-      const user = {
-        userID,
-        name,
-        description: descriptionAsArray, // right now we only have 1 string element in the description array, but can potentially add on to this
-        location,
-        primaryGroupName: this.state.selectedGroupName,
-      };
-
-      await this.props.editUser(user);
-      if (!this.props.usersState.error) {
-        await this.props.listAllUsers();
-      } // else, we wait for the errModal to popup here
-      if (!this.props.usersState.error) {
-        this.props.focusGroup(this.state.selectedGroupName);
-
-        // it's really bad, but since the DB (upstream where it gets the creationDate) doesn't return the new user
-        // we have to manually jam it here, just to show it one time.
-        const oneTimeDateForUI = Date.now();
-        const userForUI = Object.assign({}, user, {
-          readableCreatedDate: parseToLongDate(oneTimeDateForUI),
-        });
-
-        this.props.focusUser(userForUI);
-        this.navigateToScreen(navigatedFromUsersScreen);
-      } // else, we wait for the errModal to popup here
-    }
-  }
-
-  navigateToScreen = (navigatedFromUsersScreen) => {
-    if (navigatedFromUsersScreen) {
-      this.props.navigation.goBack();
-      return;
-    }
-    const resetAction = StackActions.reset({
-      index: 2,
-      actions: [
-        NavigationActions.navigate({ routeName: 'GroupsScreen' }),
-        NavigationActions.navigate({ routeName: 'GroupScreen' }),
-        NavigationActions.navigate({ routeName: 'UserScreen' }),
-      ],
-    });
-    this.props.navigation.dispatch(resetAction);
-  }
-
-  getColorStyle(groupColor) {
+  getCircularColorStyle(groupColor) {
     const circularGroupIconNoColor = circularGroupIcon;
     const circularGroupIconWithColor = {
       backgroundColor: groupColor,
-      opacity: 1,
     };
     const combinedStyle = StyleSheet.flatten([circularGroupIconNoColor, circularGroupIconWithColor]);
     return combinedStyle;
   }
 
+  /**
+   * @tutorial https://reactnavigation.org/docs/en/header-buttons.html#header-interaction-with-its-screen-component
+   * for onPress we need a noOp, otherwise we'd get an error, because React Navigation does NOT guarantee
+   * that the screen component will be mounted before the header.
+   */
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Add Person',
+      headerRight: (
+        // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
+        <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={topRightTextButtonContainerSolo}>
+          <Text style={topRightButtonText}>Save</Text>
+        </TouchableOpacity>
+      ),
+    };
+  };
 
-  checkErrGrps = (err) => {
-    // don't want err to render if we're not even on the screen
-    if (err) {
-      return (
-        <ErrorModal
-          error={err}
-          clearError={this.props.clearGroupsErr}
-          currentFocusedScreen={this.props.navigation.isFocused()}
-        />
-      );
+  componentDidMount() {
+    this.props.navigation.setParams({ userSubmit: this.userSubmit });
+  }
+
+  resetFormValueState = async () => {
+    this.setState({
+      value: null,
+    });
+  }
+
+  userSubmit = async () => {
+    const userStruct = this.formRef.getValue();
+    if (!this.formRef) return;
+
+    if (userStruct) {
+      const { name, location } = userStruct;
+      const descriptions = [];
+      const { descriptionIDs } = this.state;
+      for (const descriptionID of descriptionIDs) {
+        const description = userStruct[descriptionID];
+        descriptions.push(description);
+      }
+
+      const user = {
+        name,
+        description: descriptions,
+        location,
+        primaryGroupName: this.state.selectedGroupName,
+      };
+
+      await this.props.addUser(user);
+      if (!this.props.usersState.error) {
+        await this.props.listAllUsers();
+      } // else, we wait for the errModal to popup here
+      if (!this.props.usersState.error) {
+        this.props.focusGroup(this.state.selectedGroupName);
+        await this.resetFormValueState();
+        this.navigateToScreen(this.state.selectedGroupName);
+      } // else, we wait for the errModal to popup here
     }
   }
+
+  navigateToScreen = (primaryGroupName) => {
+    const { navigation } = this.props;
+    const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
+    if (navigatedFromUsersScreen) {
+      navigation.goBack();
+      return;
+    }
+    this.props.navigation.navigate('GroupScreen',
+      {
+        groupName: primaryGroupName,
+      });
+  }
+
 
   checkErrUsrs = (err) => {
     // don't want err to render if we're not even on the screen
@@ -226,40 +261,18 @@ class EditUserScreen extends Component<Props> {
     }
   }
 
-  getCircularColorStyle(groupColor) {
-    const circularGroupIconNoColor = circularGroupIcon;
-    const circularGroupIconWithColor = {
-      backgroundColor: groupColor,
-    };
-    const combinedStyle = StyleSheet.flatten([circularGroupIconNoColor, circularGroupIconWithColor]);
-    return combinedStyle;
+  onChange = (value) => {
+    this.setState({ value });
   }
 
-  /**
-   * @param {Array<Object>} allGroups - unordered groups from groups redux
-   */
-  selectedGroupUI(allGroups) {
-    return (
-      <TouchableOpacity
-        style={initialGroupSelection}
-        onPress={() => {
-          this.setState((state) => {
-            return { groupDropdownOpen: !state.groupDropdownOpen };
-          });
-        }
-        }
-      >
-        <View style={groupIconNameContainerEditAddUser}>
-          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
-          <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
-        </View>
-        <Icon
-          name='keyboard-arrow-down'
-        />
-      </TouchableOpacity>
-    );
+  otherGroupClick = (group) => {
+    this.setState((state) => {
+      return {
+        groupDropdownOpen: !state.groupDropdownOpen,
+        selectedGroupName: group.name,
+      };
+    });
   }
-
 
   addGroup = () => {
     this.setState((state) => {
@@ -272,13 +285,14 @@ class EditUserScreen extends Component<Props> {
     });
   }
 
+
   /**
    * @param {Array<Object>} allGroups - unordered groups from groups redux
    * @return selection UI for 'other' groups in the dropdown
    */
   otherGroupsDropdown(allGroups) {
     const otherGroups = allGroups.filter(group => group.name !== this.state.selectedGroupName);
-    if (otherGroups.length === 0 || !this.state.groupDropdownOpen) {
+    if (!this.state.groupDropdownOpen) {
       return null; // if not open, don't show a dropdown
     }
 
@@ -333,72 +347,32 @@ class EditUserScreen extends Component<Props> {
     );
   }
 
-
-  onChange = (value) => {
-    this.setState({ value });
-  }
-
-  otherGroupClick = (group) => {
-    this.setState((state) => {
-      return {
-        groupDropdownOpen: !state.groupDropdownOpen,
-        selectedGroupName: group.name,
-      };
-    });
-  }
-
-  openDeleteModal = () => {
-    this.setState({
-      deleteModalOpen: true,
-    });
-  }
-
-  closeDeleteModal = () => {
-    this.setState({
-      deleteModalOpen: false,
-    });
-  }
-
-  deleteUser = async () => {
-    this.closeDeleteModal();
-    await this.props.deleteUser(this.props.usersState.focusedUser);
-    this.props.listAllUsers();
-
-    const resetAction = StackActions.reset({
-      index: 1,
-      actions: [
-        NavigationActions.navigate({ routeName: 'GroupsScreen' }),
-        NavigationActions.navigate({ routeName: 'GroupScreen' }),
-      ],
-    });
-    this.props.navigation.dispatch(resetAction);
-  }
-
-  deleteModal = () => {
-    if (this.state.deleteModalOpen) {
-      return (
-        <DeleteModal
-          deleteModalOpen={this.state.deleteModalOpen}
-          deleteFunc={this.deleteUser}
-          closeDeleteModal={this.closeDeleteModal}
-          currentFocusedScreen={this.props.navigation.isFocused()}
-          deleteGroup={false}
+  /**
+   * @param {Array<Object>} allGroups - unordered groups from groups redux
+   */
+  selectedGroupUI(allGroups) {
+    return (
+      <TouchableOpacity
+        style={initialGroupSelection}
+        onPress={() => {
+          this.setState((state) => {
+            return { groupDropdownOpen: !state.groupDropdownOpen };
+          });
+        }
+        }
+      >
+        <View style={groupIconNameContainerEditAddUser}>
+          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
+          <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+        </View>
+        <Icon
+          name='keyboard-arrow-down'
         />
-      );
-    }
+      </TouchableOpacity>
+    );
   }
 
   groupsSection = (allGroups) => {
-    if (allGroups.length === 1) {
-      return (
-        <View style={styles.groupSection}>
-          <View style={groupIconNameContainerEditAddUser}>
-            <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
-            <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
-          </View>
-        </View>
-      );
-    }
     return (
       <View style={styles.groupsSection}>
         {this.selectedGroupUI(allGroups)}
@@ -406,7 +380,6 @@ class EditUserScreen extends Component<Props> {
       </View>
     );
   }
-
 
   render() {
     const { groups: allGroups, loading } = this.props.groupsState;
@@ -418,8 +391,6 @@ class EditUserScreen extends Component<Props> {
       );
     }
 
-    // @tutorial: https://stackoverflow.com/questions/29363671/can-i-make-dynamic-styles-in-react-native
-    // diegoprates
     return (
       <KeyboardAvoidingView
         style={container}
@@ -438,19 +409,14 @@ class EditUserScreen extends Component<Props> {
             <React.Fragment>
               <Form
                 ref={(c) => { this.formRef = c; }}
-                type={userForm}
+                type={this.userForm()}
                 value={this.state.value}
                 onChange={this.onChange}
-                options={options}
+                options={this.state.options}
               />
               <Text style={styles.groupText}> Group </Text>
               {this.groupsSection(allGroups)}
-              {this.checkErrGrps(this.props.groupsState.error)}
               {this.checkErrUsrs(this.props.usersState.error)}
-              <TouchableOpacity onPress={this.openDeleteModal} style={deleteContainer}>
-                <Text style={deleteText}> Delete </Text>
-              </TouchableOpacity>
-              {this.deleteModal()}
             </React.Fragment>
           </TouchableWithoutFeedback>
         </ScrollView>
@@ -460,20 +426,9 @@ class EditUserScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  deleteText: {
-    color: 'red',
-    fontSize: 21,
-    textAlign: 'center',
-  },
   groupText: {
     fontWeight: '500',
     fontSize: 17,
-  },
-  groups: {
-    marginTop: hp('2%'),
-  },
-  groupSection: {
-    marginTop: hp('2%'),
   },
   groupsSection: {
     marginTop: hp('1%'),
@@ -489,12 +444,9 @@ const mapStateToProps = state => (
 );
 const mapDispatchToProps = dispatch => (
   {
-    focusUser: user => dispatch(focusUser(user)),
-    focusGroup: groupName => dispatch(focusGroup(groupName)),
-    editUser: user => dispatch(editUser(user)),
-    deleteUser: user => dispatch(deleteUser(user)),
+    addUser: user => dispatch(addUser(user)),
+    focusGroup: grpName => dispatch(focusGroup(grpName)),
     listAllUsers: () => dispatch(listAllUsers()),
-    listGroups: () => dispatch(listGroups()),
     clearUsersErr: () => dispatch(clearUsersErr()),
   }
 );
