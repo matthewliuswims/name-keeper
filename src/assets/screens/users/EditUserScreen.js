@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import {
-  addUser,
+  editUser,
   clearUsersErr,
   listAllUsers,
+  deleteUser,
+  focusUser,
 } from '../../../redux/actions/users';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 import {
@@ -18,6 +21,7 @@ import {
 
 import DescriptionTemplate from '../../components/form/Description';
 import ErrorModal from '../../components/modal/Error';
+import DeleteModal from '../../components/modal/Delete';
 
 import {
   container,
@@ -25,6 +29,8 @@ import {
   topRightTextButtonContainerSolo,
   topRightButtonText,
   circularGroupIcon,
+  deleteContainer,
+  deleteText,
   initialGroupSelection,
   otherGroupSelection,
 } from '../../styles/base';
@@ -220,8 +226,11 @@ class EditUserScreen extends Component {
    * that the screen component will be mounted before the header.
    */
   static navigationOptions = ({ navigation }) => {
+    const navUserName = navigation.getParam('focusedUserName');
+    const userName = navUserName || '';
+    const titleDisplay = navUserName ? `Edit ${userName}` : '';
     return {
-      title: 'Add Person',
+      title: titleDisplay,
       headerRight: (
         // getParam('userSubmit') refers to the 'userSubmit' function in componentDidMount
         <TouchableOpacity onPress={navigation.getParam('userSubmit') || noOp} style={topRightTextButtonContainerSolo}>
@@ -247,6 +256,7 @@ class EditUserScreen extends Component {
 
     if (userStruct) {
       const { name, location } = userStruct;
+      const { userID } = this.props.usersState.focusedUser;
       const descriptions = [];
       const { descriptionIDs } = this.state;
       for (const descriptionID of descriptionIDs) {
@@ -255,13 +265,14 @@ class EditUserScreen extends Component {
       }
 
       const user = {
+        userID,
         name,
         description: descriptions,
         location,
         primaryGroupName: this.state.selectedGroupName,
       };
 
-      await this.props.addUser(user);
+      await this.props.editUser(user);
       if (!this.props.usersState.error) {
         await this.props.listAllUsers();
       } // else, we wait for the errModal to popup here
@@ -420,6 +431,48 @@ class EditUserScreen extends Component {
     );
   }
 
+
+  openDeleteModal = () => {
+    this.setState({
+      deleteModalOpen: true,
+    });
+  }
+
+  closeDeleteModal = () => {
+    this.setState({
+      deleteModalOpen: false,
+    });
+  }
+
+  deleteUser = async () => {
+    this.closeDeleteModal();
+    await this.props.deleteUser(this.props.usersState.focusedUser);
+    this.props.listAllUsers();
+
+    const resetAction = StackActions.reset({
+      index: 1,
+      actions: [
+        NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+        NavigationActions.navigate({ routeName: 'GroupScreen' }),
+      ],
+    });
+    this.props.navigation.dispatch(resetAction);
+  }
+
+  deleteModal = () => {
+    if (this.state.deleteModalOpen) {
+      return (
+        <DeleteModal
+          deleteModalOpen={this.state.deleteModalOpen}
+          deleteFunc={this.deleteUser}
+          closeDeleteModal={this.closeDeleteModal}
+          currentFocusedScreen={this.props.navigation.isFocused()}
+          deleteGroup={false}
+        />
+      );
+    }
+  }
+
   render() {
     const { groups: allGroups, loading } = this.props.groupsState;
     const { loading: usersStateLoading } = this.props.usersState;
@@ -456,6 +509,10 @@ class EditUserScreen extends Component {
               <Text style={styles.groupText}> Group </Text>
               {this.groupsSection(allGroups)}
               {this.checkErrUsrs(this.props.usersState.error)}
+              <TouchableOpacity onPress={this.openDeleteModal} style={deleteContainer}>
+                <Text style={deleteText}> Delete </Text>
+              </TouchableOpacity>
+              {this.deleteModal()}
             </React.Fragment>
           </TouchableWithoutFeedback>
         </ScrollView>
@@ -483,7 +540,9 @@ const mapStateToProps = state => (
 );
 const mapDispatchToProps = dispatch => (
   {
-    addUser: user => dispatch(addUser(user)),
+    focusUser: user => dispatch(focusUser(user)),
+    deleteUser: user => dispatch(deleteUser(user)),
+    editUser: user => dispatch(editUser(user)),
     focusGroup: grpName => dispatch(focusGroup(grpName)),
     listAllUsers: () => dispatch(listAllUsers()),
     clearUsersErr: () => dispatch(clearUsersErr()),
