@@ -40,40 +40,69 @@ class EditUserScreen extends Component {
     super(props);
     this.state = {
       // should never be less than 1 length
-      descriptionIDs: ['description0'],
-      value: this.getUserValue(),
+      descriptionIDs: this.initialDescriptionNames(),
+      value: this.initialUserValue(),
       selectedGroupName: this.props.groupsState.focusedGroupName,
       groupDropdownOpen: false,
-      formFields: { // used for this.userForm()
-        name: tComb.String,
-        location: tComb.maybe(tComb.String),
-        description0: tComb.String,
-      },
-      options: {
-        fields: {
-          name: {
-            placeholder: 'Person\'s name',
-            error: 'Please enter a name',
-          },
-          description0: {
-            template: DescriptionTemplate,
-            placeholder: 'Notable impression(s)',
-            error: 'Description is required',
-            config: {
-              id: 'description0',
-              isFirst: true,
-              isLast: true,
-              addDescription: this.addDescription.bind(this),
-              removeDescription: this.removeDescription.bind(this),
-            },
-            multiline: true,
-          },
-          location: {
-            placeholder: 'Place met',
-          },
+      formFields: this.initialFormFields(), // user for this.userForm()
+      options: this.initialOptionsFields(),
+    };
+  }
+
+  initialFormFields = () => {
+    const formFields = {
+      name: tComb.String,
+      location: tComb.maybe(tComb.String),
+    };
+    this.initialDescriptionNames().forEach((name) => {
+      formFields[name] = tComb.String;
+    });
+    return formFields;
+  }
+
+  /**
+   * example return is
+   * ['description0', 'description1']
+   */
+  initialDescriptionNames = () => {
+    const { description } = this.props.usersState.focusedUser;
+    return description.map((_, i) => `description${i}`);
+  }
+
+  initialOptionsFields = () => {
+    const optionsFields = {
+      fields: {
+        name: {
+          placeholder: 'Person\'s name',
+          error: 'Please enter a name',
+        },
+        location: {
+          placeholder: 'Place met',
         },
       },
     };
+    const descriptionNames = this.initialDescriptionNames();
+
+    descriptionNames.forEach((descriptorName) => {
+      optionsFields.fields[descriptorName] = {
+        template: DescriptionTemplate,
+        placeholder: 'Notable impression(s)',
+        error: 'Description is required',
+        config: {
+          id: descriptorName,
+          isFirst: false, // will update in this function
+          isLast: false, // will update in this function
+          addDescription: this.addDescription.bind(this),
+          removeDescription: this.removeDescription.bind(this),
+        },
+        multiline: true,
+      };
+    });
+    // updating isFirst and is Last;
+    optionsFields.fields[descriptionNames[0]].config.isFirst = true;
+    optionsFields.fields[descriptionNames[descriptionNames.length - 1]].config.isLast = true;
+
+    return optionsFields;
   }
 
   userForm = () => {
@@ -150,9 +179,19 @@ class EditUserScreen extends Component {
     });
   }
 
-  getUserValue() {
+  initialUserValue() {
+    // initialDescriptionNames.
     const { location, description, name } = this.props.usersState.focusedUser;
-    return Object.assign({}, { location, description, name });
+    const initiaUserValue = Object.assign({}, { location, name });
+    const descriptorNames = this.initialDescriptionNames();
+    // can assume description.length === this.initialDescriptionNames();
+    description.forEach((val, index) => {
+      const desName = descriptorNames[index];
+      initiaUserValue[desName] = val;
+    });
+
+    console.log('initiaUserValue is', initiaUserValue);
+    return initiaUserValue;
   }
 
   componentDidUpdate(prevProps) {

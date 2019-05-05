@@ -49,7 +49,13 @@ class AddUserScreen extends Component {
         location: tComb.maybe(tComb.String),
         description0: tComb.String,
       },
-      options: {
+      options: this.optionsFields(),
+    };
+  }
+
+  optionsFields = () => {
+    return (
+      {
         fields: {
           name: {
             placeholder: 'Person\'s name',
@@ -72,8 +78,8 @@ class AddUserScreen extends Component {
             placeholder: 'Place met',
           },
         },
-      },
-    };
+      }
+    );
   }
 
   userForm = () => {
