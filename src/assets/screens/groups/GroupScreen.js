@@ -223,6 +223,7 @@ class GroupScreen extends Component<Props> {
             underlayColor={colors.touchableHighlightUnderlayColor}
           >
             <UserBox
+              primaryGroupName={item.primaryGroupName}
               username={item.name}
               userDescription={item.description}
               date={parseToShortDate(item.createdDate)}
@@ -284,22 +285,11 @@ class GroupScreen extends Component<Props> {
     if (this.props.groupsState.loading || this.props.usersState.loading) {
       return null;
     }
-    const { focusedGroupName, groups } = this.props.groupsState;
+    const { focusedGroupName } = this.props.groupsState;
     const NumUsersForGroup = this.usersForGroup(focusedGroupName).length;
 
-    let groupColor;
-    try {
-      groupColor = getGroupColor(focusedGroupName, groups);
-    } catch (err) {
-      return null; // because we delete the group, there's a time when we re-render this container but the group doesn't exist anymore
-    }
-    const borderColor = {
-      borderColor: groupColor,
-    };
-    const combinedContainerStyle = StyleSheet.flatten([styles.container, borderColor]);
-
     return (
-      <View style={combinedContainerStyle}>
+      <View style={styles.container}>
         <View style={styles.contents}>
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
@@ -328,8 +318,6 @@ const styles = StyleSheet.create({
     backgroundColor: container.backgroundColor,
     paddingLeft: container.paddingLeft,
     paddingRight: container.paddingRight,
-
-    borderTopWidth: hp('2%'),
   },
   noGroupHeader: {
     fontWeight: 'bold',

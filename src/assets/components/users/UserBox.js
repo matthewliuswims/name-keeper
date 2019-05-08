@@ -4,32 +4,27 @@ import { connect } from 'react-redux';
 import { Text, View, StyleSheet } from 'react-native';
 import { getGroupColor } from '../../../lib/groupColors';
 
-import { groupIconNameContainer, circularGroupIcon, groupIconNameDateContainer, userDescriptionText } from '../../styles/base';
+import {
+  circularGroupIcon,
+  groupIconNameDateContainer,
+  userDescriptionText,
+  boxDescription,
+  boxHeaderText,
+  boxDateText,
+} from '../../styles/base';
 
 class UserBox extends React.Component {
-  firstSectionWithGroup(primaryGroupName) {
-    return (
-      <View style={groupIconNameDateContainer}>
-        <View style={groupIconNameContainer}>
-          <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
-          <Text style={styles.headerText} numberOfLines={1}> {this.props.username} </Text>
-        </View>
-        <Text numberOfLines={1}> {this.props.date} </Text>
-      </View>
-    );
-  }
-
   userDescriptions(userDescriptionArray) {
     const withDashArray = userDescriptionArray.map(descriptor => `- ${descriptor} `);
     const descriptionString = withDashArray.join('');
     return descriptionString;
   }
 
-  firstSectionWithoutGroup() {
+  groupDate = () => {
     return (
       <View style={groupIconNameDateContainer}>
-        <Text style={styles.headerText} numberOfLines={1}>{this.props.username} </Text>
-        <Text numberOfLines={1}> {this.props.date} </Text>
+        <Text style={boxHeaderText} numberOfLines={1}>{this.props.username} </Text>
+        <Text style={boxDateText}> {this.props.date} </Text>
       </View>
     );
   }
@@ -44,13 +39,19 @@ class UserBox extends React.Component {
   }
 
   render() {
+    const { primaryGroupName } = this.props;
     return (
-      <React.Fragment>
-        {this.props.primaryGroupName ? this.firstSectionWithGroup(this.props.primaryGroupName) : this.firstSectionWithoutGroup() }
-        <View style={styles.descriptionAndDate}>
-          <Text numberOfLines={1} style={userDescriptionText}>{this.userDescriptions(this.props.userDescription)} </Text>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={{ display: 'flex', justifyContent: 'center' }}>
+          <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
         </View>
-      </React.Fragment>
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          {this.groupDate()}
+          <View style={boxDescription}>
+            <Text numberOfLines={1} style={userDescriptionText}>{this.userDescriptions(this.props.userDescription)} </Text>
+          </View>
+        </View>
+      </View>
     );
   }
 }
@@ -68,14 +69,6 @@ const styles = StyleSheet.create({
     borderRadius: circularGroupIcon.borderRadius,
     marginRight: circularGroupIcon.marginRight,
     // we do NOT get margin left from circularGroupIcon
-  },
-  headerText: {
-    fontWeight: '600',
-  },
-  descriptionAndDate: {
-    flex: 1, // if uncomment, you'll see difference
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
 

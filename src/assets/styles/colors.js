@@ -13,7 +13,7 @@ export default {
 
   touchableHighlightUnderlayColor: '#F5F5DC',
 
-  firstGroupColor: 'red',
+  firstGroupColor: '#BA3636',
   secondGroupColor: 'dodgerblue',
   thirdGroupColor: 'forestgreen',
   fourthGroupColor: 'coral',

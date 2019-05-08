@@ -119,21 +119,46 @@ export const checkBoxBase = {
 export const circularGroupIcon = {
   height: 18,
   width: 18,
-  borderRadius: 10,
-  marginRight: wp('2%'),
-  marginLeft: wp('2%'),
+  borderRadius: 4,
+  marginRight: wp('3%'),
+  marginLeft: wp('3%'),
 };
 
 export const groupIconNameDateContainer = {
   flexDirection: 'row',
-  paddingTop: hp('0.5%'),
   alignItems: 'center',
-  marginBottom: 4,
+  marginBottom: 6,
   justifyContent: 'space-between',
 };
 
+export const boxHeaderText = {
+  fontSize: 16,
+  flex: 1,
+  fontWeight: '600',
+  marginRight: wp('2%'),
+};
+
+
+export const boxDateText = {
+  color: colors.subTextColor,
+};
+
+export const boxDescription = {
+  marginRight: wp('8%'),
+  flex: 1, // if uncomment, you'll see difference
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+};
+
+export const userDescriptionText = {
+  color: colors.subTextColor,
+};
+
+
 export const groupIconNameContainer = {
   flexDirection: 'row',
+  // alignItems: 'center',
+  // flex: 1,
 };
 
 export const groupColorBoxSliverLeftSide = {
@@ -245,11 +270,6 @@ export const groupContainerStyle = {
   backgroundColor: colors.containerBackgroundColor,
 };
 
-export const userDescriptionText = {
-  color: colors.subTextColor,
-};
-
-
 export const groupHeaderTextStyle = {
   fontWeight: '600',
   fontSize: 22,
@@ -306,18 +326,14 @@ export const deleteRightSlotText = {
 };
 
 export const userContainerStyle = {
-  borderWidth: 0,
-  borderBottomWidth: 1,
-  paddingTop: 5,
-  paddingBottom: 5,
+  paddingTop: 10,
+  paddingBottom: 10,
   backgroundColor: colors.containerBackgroundColor,
 };
 
 export const rowUserBack = {
   flexDirection: 'row',
   justifyContent: 'flex-end',
-  borderWidth: 0,
-  borderBottomWidth: 1,
   paddingTop: 5,
   paddingBottom: 5,
   height: '100%',
