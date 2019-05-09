@@ -20,16 +20,18 @@ import {
   deleteRightSlot,
   deleteRightSlotText,
   rowUserBack,
+  sortFilterRow,
 } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
 
 import Footer from '../../components/footer/footer';
 
+import SortIcon from '../../components/icons/SortIcon';
+
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
 import ErrorModal from '../../components/modal/Error';
-import { getGroupColor } from '../../../lib/groupColors';
 
 import DeleteModal from '../../components/modal/Delete';
 
@@ -291,6 +293,9 @@ class GroupScreen extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.contents}>
+          <View style={sortFilterRow}>
+            <SortIcon />
+          </View>
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
         <View style={footerSection}>

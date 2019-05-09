@@ -154,11 +154,8 @@ export const userDescriptionText = {
   color: colors.subTextColor,
 };
 
-
 export const groupIconNameContainer = {
   flexDirection: 'row',
-  // alignItems: 'center',
-  // flex: 1,
 };
 
 export const groupColorBoxSliverLeftSide = {
@@ -348,4 +345,24 @@ export const initialGroupSelection = {
 export const otherGroupSelection = {
   flexDirection: 'row',
   justifyContent: 'space-between',
+};
+
+export const sortFilterWrapper = {
+  flexDirection: 'row',
+  justifyContent: 'start',
+  alignItems: 'center',
+};
+
+
+export const sortFilterIcon = {
+  padding: 4,
+};
+
+export const sortFilterRow = {
+  marginBottom: 10,
+};
+
+export const sortFilterIconText = {
+  color: colors.subTextColor,
+  fontSize: 16,
 };

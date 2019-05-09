@@ -95,17 +95,10 @@ class UserScreen extends Component {
                 name='group'
                 containerStyle={{ marginRight: wp('5%') }}
               />
-              <FlatList
-                data={[primaryGroupName]}
-                renderItem={({ item }) => (
-                  <View style={groupIconNameContainer}>
-                    <View style={this.getCircularColorStyle(getGroupColor(item, groups))} />
-                    <Text numberOfLines={1}> {item} </Text>
-                  </View>
-                )
-                }
-                keyExtractor={(item => item)}
-              />
+              <View style={groupIconNameContainer}>
+                <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, groups))} />
+                <Text numberOfLines={1}> {primaryGroupName} </Text>
+              </View>
             </View>
             <View style={styles.description}>
               <Text>{this.userDescriptions(user.description)}</Text>
