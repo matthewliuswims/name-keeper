@@ -10,19 +10,19 @@ import {
 
 import colors from '../../styles/colors';
 
-export default class SortIcon extends React.Component {
+export default class FilterIcon extends React.Component {
   render() {
     return (
       <TouchableOpacity
-        onPress={this.props.sortCB}
+        onPress={this.props.filterCB}
       >
         <View style={sortFilterWrapper}>
           <Icon
-            name='sort'
+            name='filter-list'
             color={colors.subTextColor}
             containerStyle={sortFilterIcon}
           />
-          <Text style={sortFilterIconText}>Sort</Text>
+          <Text style={sortFilterIconText}>Filter</Text>
         </View>
       </TouchableOpacity>
     );

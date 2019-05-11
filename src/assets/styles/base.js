@@ -348,6 +348,7 @@ export const otherGroupSelection = {
 };
 
 export const sortFilterWrapper = {
+  padding: 5,
   flexDirection: 'row',
   justifyContent: 'start',
   alignItems: 'center',
@@ -360,6 +361,8 @@ export const sortFilterIcon = {
 
 export const sortFilterRow = {
   marginBottom: 10,
+  display: 'flex',
+  flexDirection: 'row',
 };
 
 export const sortFilterIconText = {

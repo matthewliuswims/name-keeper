@@ -1,7 +1,7 @@
 import Sentry from 'sentry-expo';
 import PropTypes from 'prop-types';
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Icon } from 'react-native-elements';
@@ -10,6 +10,9 @@ import { connect } from 'react-redux';
 import RF from 'react-native-responsive-fontsize';
 import { get } from 'lodash';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import SortIcon from '../../components/icons/SortIcon';
+import FilterIcon from '../../components/icons/FilterIcon';
 
 import {
   container,
@@ -23,6 +26,7 @@ import {
   deleteRightSlot,
   deleteRightSlotText,
   rowUserBack,
+  sortFilterRow,
 } from '../../styles/base';
 
 import colors from '../../styles/colors';
@@ -658,6 +662,19 @@ class GroupsScreen extends Component {
     );
   }
 
+  sortFilterHeader = () => {
+    return (
+      <View style={sortFilterRow}>
+        <SortIcon
+          sortCB={this.openSortModal}
+        />
+        <FilterIcon
+          filterCB={this.openFilterModal}
+        />
+      </View>
+    );
+  }
+
   render() {
     const { error: groupsStateErr, groups, loading } = this.props.groupsState;
     const { users, loading: usersStateLoading } = this.props.usersState;
@@ -673,6 +690,7 @@ class GroupsScreen extends Component {
     return (
       <View style={container}>
         <View style={styles.contents}>
+          {!this.state.showingGroups && this.sortFilterHeader()}
           { this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
         </View>
         <View style={footerSection}>

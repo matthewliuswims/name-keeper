@@ -294,7 +294,9 @@ class GroupScreen extends Component<Props> {
       <View style={styles.container}>
         <View style={styles.contents}>
           <View style={sortFilterRow}>
-            <SortIcon />
+            <SortIcon
+              sortCB={this.openSortModal}
+            />
           </View>
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
