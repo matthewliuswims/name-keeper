@@ -449,65 +449,63 @@ class GroupsScreen extends Component {
     const { usersState } = this.props;
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
-      <View style={styles.usersListText}>
-        <SwipeListView
-          useFlatList
-          ref={ref => this._swipeListUsersView = ref}
-          data={sortFilteredUsers}
-          renderItem={({ item }) => (
-            <TouchableHighlight
-              onPress = {() => {
-                this.props.focusUser(item);
-                this.props.focusGroup(item.primaryGroupName);
-                this.props.navigation.navigate('UserScreen');
+      <SwipeListView
+        useFlatList
+        ref={ref => this._swipeListUsersView = ref}
+        data={sortFilteredUsers}
+        renderItem={({ item }) => (
+          <TouchableHighlight
+            onPress = {() => {
+              this.props.focusUser(item);
+              this.props.focusGroup(item.primaryGroupName);
+              this.props.navigation.navigate('UserScreen');
+            }}
+            style={userContainerStyle}
+            activeOpacity={0.5}
+            underlayColor={colors.touchableHighlightUnderlayColor}
+          >
+            <UserBox
+              username={item.name}
+              primaryGroupName={item.primaryGroupName}
+              userDescription={item.description}
+              date={parseToShortDate(item.createdDate)}
+            />
+          </TouchableHighlight>
+        )}
+        renderHiddenItem={(data, rowMap) => (
+          <View style={rowUserBack}>
+            <TouchableOpacity
+              style={editRightSlot}
+              onPress = {async () => {
+                const { item } = data;
+                rowMap[item.userID].closeRow();
+                await this.props.focusUser(item);
+                await this.props.focusGroup(item.primaryGroupName);
+                await this.props.navigation.navigate('EditUserScreen', {
+                  focusedUserName: this.props.usersState.focusedUser.name,
+                  editUserFromUsersScreen: 'true',
+                });
               }}
-              style={userContainerStyle}
-              activeOpacity={0.5}
-              underlayColor={colors.touchableHighlightUnderlayColor}
             >
-              <UserBox
-                username={item.name}
-                primaryGroupName={item.primaryGroupName}
-                userDescription={item.description}
-                date={parseToShortDate(item.createdDate)}
-              />
-            </TouchableHighlight>
-          )}
-          renderHiddenItem={(data, rowMap) => (
-            <View style={rowUserBack}>
-              <TouchableOpacity
-                style={editRightSlot}
-                onPress = {async () => {
-                  const { item } = data;
-                  rowMap[item.userID].closeRow();
-                  await this.props.focusUser(item);
-                  await this.props.focusGroup(item.primaryGroupName);
-                  await this.props.navigation.navigate('EditUserScreen', {
-                    focusedUserName: this.props.usersState.focusedUser.name,
-                    editUserFromUsersScreen: 'true',
-                  });
-                }}
-              >
-                <Text style={editRightSlotText}>EDIT</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={deleteRightSlot}
-                onPress = {() => {
-                  const { item } = data;
-                  this.setState({ userDrawerFocused: item });
-                  this.openUserDeleteModal();
-                }}
-              >
-                <Text style={deleteRightSlotText}>DELETE</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          keyExtractor={(item => `${item.userID}`)}
-          rightOpenValue={rightDrawerOpenValue}
-          extraData={usersState}
-          disableRightSwipe
-        />
-      </View>
+              <Text style={editRightSlotText}>EDIT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={deleteRightSlot}
+              onPress = {() => {
+                const { item } = data;
+                this.setState({ userDrawerFocused: item });
+                this.openUserDeleteModal();
+              }}
+            >
+              <Text style={deleteRightSlotText}>DELETE</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={(item => `${item.userID}`)}
+        rightOpenValue={rightDrawerOpenValue}
+        extraData={usersState}
+        disableRightSwipe
+      />
     );
   }
 
@@ -687,11 +685,14 @@ class GroupsScreen extends Component {
 
     const numberGroups = groups.length;
     const numberUsers = users.length;
+
+    const showFilterSortHeader = !this.state.showingGroups && numberUsers > 0;
+
     return (
       <View style={container}>
         <View style={styles.contents}>
-          {!this.state.showingGroups && this.sortFilterHeader()}
-          { this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
+          {showFilterSortHeader && this.sortFilterHeader()}
+          {this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
         </View>
         <View style={footerSection}>
           { this.renderFooter(numberGroups, numberUsers) }

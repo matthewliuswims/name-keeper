@@ -27,6 +27,8 @@ import UserBox from '../../components/users/UserBox';
 
 import Footer from '../../components/footer/footer';
 
+import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
+
 import SortIcon from '../../components/icons/SortIcon';
 
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
@@ -283,21 +285,29 @@ class GroupScreen extends Component<Props> {
     }
   }
 
+  sortHeader = () => {
+    return (
+      <View style={sortFilterRow}>
+        <SortIcon
+          sortCB={this.openSortModal}
+        />
+      </View>
+    );
+  }
+
   render() {
     if (this.props.groupsState.loading || this.props.usersState.loading) {
-      return null;
+      return (
+        <LoadingSpinner />
+      );
     }
     const { focusedGroupName } = this.props.groupsState;
     const NumUsersForGroup = this.usersForGroup(focusedGroupName).length;
-
+    const showSortHeader = NumUsersForGroup > 0;
     return (
-      <View style={styles.container}>
+      <View style={container}>
         <View style={styles.contents}>
-          <View style={sortFilterRow}>
-            <SortIcon
-              sortCB={this.openSortModal}
-            />
-          </View>
+          {showSortHeader && this.sortHeader()}
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
         <View style={footerSection}>
@@ -318,13 +328,6 @@ class GroupScreen extends Component<Props> {
 const styles = StyleSheet.create({
   contents: {
     flex: 11,
-  },
-  container: {
-    flex: 1,
-    paddingTop: container.paddingTop,
-    backgroundColor: container.backgroundColor,
-    paddingLeft: container.paddingLeft,
-    paddingRight: container.paddingRight,
   },
   noGroupHeader: {
     fontWeight: 'bold',

@@ -362,6 +362,7 @@ export const sortFilterIcon = {
 export const sortFilterRow = {
   marginBottom: 10,
   display: 'flex',
+  // flex: 1,
   flexDirection: 'row',
 };
 
