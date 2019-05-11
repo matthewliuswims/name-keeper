@@ -1,6 +1,7 @@
 /* eslint no-eval: 0 indent: 0 */
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../colors';
+import { footerBottomDimensions } from '../base';
 
 export const addSvgHeightOrWidth = wp('16%');
 
@@ -66,8 +67,8 @@ ${line2XPoint2} ${line2YPoint2}
 `;
 
 export const addContainer = {
-  marginRight: wp('6%'),
-  marginBottom: hp('3%'),
+  marginRight: footerBottomDimensions.marginRight,
+  marginBottom: footerBottomDimensions.marginBottom,
 
   shadowColor: 'black',
   shadowOffset: {

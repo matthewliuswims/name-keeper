@@ -94,6 +94,11 @@ export const horizontalGroupScreenButton = {
   },
 };
 
+export const footerBottomDimensions = {
+  marginRight: wp('6%'),
+  marginBottom: hp('3%'),
+};
+
 // user in conjunction with contents
 export const footerSection = {
   paddingTop: hp('3%'),

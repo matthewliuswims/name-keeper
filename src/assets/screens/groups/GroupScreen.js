@@ -310,13 +310,11 @@ class GroupScreen extends Component<Props> {
           {showSortHeader && this.sortHeader()}
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
-        <View style={footerSection}>
-          <Footer
-            navigateToAddUserScreen={this.navigateToAddUserScreen}
-            sortCB={this.openSortModal}
-            numberUsers={NumUsersForGroup}
-          />
-        </View>
+        <Footer
+          navigateToAddUserScreen={this.navigateToAddUserScreen}
+          sortCB={this.openSortModal}
+          numberUsers={NumUsersForGroup}
+        />
         {this.sortOpen()}
         {this.deleteUserModal()}
         {this.checkErrUsrs(this.props.usersState.error)}

@@ -17,7 +17,7 @@ import FilterIcon from '../../components/icons/FilterIcon';
 import {
   container,
   horizontalGroupScreenButton,
-  footerSection,
+  footerBottomDimensions,
   groupContainerStyle,
   userContainerStyle,
   rightDrawerOpenValue,
@@ -694,9 +694,7 @@ class GroupsScreen extends Component {
           {showFilterSortHeader && this.sortFilterHeader()}
           {this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
         </View>
-        <View style={footerSection}>
-          { this.renderFooter(numberGroups, numberUsers) }
-        </View>
+        { this.renderFooter(numberGroups, numberUsers) }
         {this.sortOpen()}
         {this.filterOpen()}
         {this.deleteGroupModal()}
@@ -750,6 +748,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   button: {
+    marginBottom: footerBottomDimensions.marginBottom,
     flex: 1,
     backgroundColor: colors.addApplyColor,
     justifyContent: 'center',
