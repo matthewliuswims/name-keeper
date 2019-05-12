@@ -305,7 +305,7 @@ class GroupScreen extends Component<Props> {
     const NumUsersForGroup = this.usersForGroup(focusedGroupName).length;
     const showSortHeader = NumUsersForGroup > 0;
     return (
-      <View style={container}>
+      <View style={styles.container}>
         <View style={styles.contents}>
           {showSortHeader && this.sortHeader()}
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
@@ -324,6 +324,11 @@ class GroupScreen extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: container.flex,
+    paddingTop: container.paddingTop,
+    backgroundColor: colors.containerBackgroundColor,
+  },
   contents: {
     flex: 11,
   },

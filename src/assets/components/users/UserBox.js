@@ -11,6 +11,7 @@ import {
   boxDescription,
   boxHeaderText,
   boxDateText,
+  userBoxContainer,
 } from '../../styles/base';
 
 class UserBox extends React.Component {
@@ -20,7 +21,7 @@ class UserBox extends React.Component {
     return descriptionString;
   }
 
-  groupDate = () => {
+  groupAndDate = () => {
     return (
       <View style={groupIconNameDateContainer}>
         <Text style={boxHeaderText} numberOfLines={1}>{this.props.username} </Text>
@@ -41,12 +42,12 @@ class UserBox extends React.Component {
   render() {
     const { primaryGroupName } = this.props;
     return (
-      <View style={{ flexDirection: 'row' }}>
+      <View style={userBoxContainer}>
         <View style={{ display: 'flex', justifyContent: 'center' }}>
           <View style={this.getCircularColorStyle(getGroupColor(primaryGroupName, this.props.groupsState.groups))} />
         </View>
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
-          {this.groupDate()}
+          {this.groupAndDate()}
           <View style={boxDescription}>
             <Text numberOfLines={1} style={userDescriptionText}>{this.userDescriptions(this.props.userDescription)} </Text>
           </View>

@@ -17,9 +17,17 @@ export const container = {
   flex: 1,
   paddingTop: hp('3%'),
   backgroundColor: colors.containerBackgroundColor,
+  paddingLeft: wp('4.5%'),
+  paddingRight: wp('4.5%'),
+};
+
+// used instead of container
+export const userBoxContainer = {
   paddingLeft: wp('3%'),
   paddingRight: wp('3%'),
+  flexDirection: 'row',
 };
+
 
 export const twoItemHeaderContainer = {
   flexDirection: 'row',
@@ -94,6 +102,25 @@ export const horizontalGroupScreenButton = {
   },
 };
 
+export const addGroupButton = {
+  backgroundColor: colors.addApplyColor,
+  padding: wp('3%'),
+  width: wp('80%'),
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 14, // not too hard this?
+  borderColor: '#979797',
+  shadowColor: '#979797',
+  shadowOpacity: 0.8,
+  shadowRadius: 2,
+  shadowOffset: {
+    height: 2,
+    width: 2,
+  },
+};
+
+
 export const footerBottomDimensions = {
   marginRight: wp('6%'),
   marginBottom: hp('3%'),
@@ -129,10 +156,16 @@ export const circularGroupIcon = {
   marginLeft: wp('3%'),
 };
 
+export const addGroupButtonText = {
+  fontSize: hp('2%'),
+  fontWeight: 'bold',
+  color: 'white',
+};
+
 export const groupIconNameDateContainer = {
   flexDirection: 'row',
   alignItems: 'center',
-  marginBottom: 6,
+  marginBottom: 8,
   justifyContent: 'space-between',
 };
 

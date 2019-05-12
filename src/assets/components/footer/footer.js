@@ -1,9 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { Svg } from 'expo';
 import colors from '../../styles/colors';
+
+import {
+  addGroupButtonText,
+  addGroupButton,
+} from '../../styles/base';
 
 import {
   addSvgHeightOrWidth,
@@ -30,6 +35,19 @@ const { Circle, Polygon } = Svg;
  */
 class Footer extends React.Component {
   render() {
+    if (this.props.addGroupCB) {
+      return (
+        <View elevation={5} style={styles.addGroupContainer}>
+          <TouchableOpacity
+            onPress = {this.props.addGroupCB}
+            style={addGroupButton}
+          >
+            <Text style={addGroupButtonText}>Add Group</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <TouchableOpacity
@@ -74,6 +92,14 @@ class Footer extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  addGroupContainer: {
+    width: '100%',
+    position: 'absolute',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    bottom: 20,
+  },
   container: {
     position: 'absolute',
     bottom: 0,

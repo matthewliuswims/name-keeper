@@ -114,9 +114,8 @@ class SearchScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: container.paddingLeft,
-    backgroundColor: container.backgroundColor,
-    paddingRight: container.paddingRight,
+    flex: container.flex,
+    paddingTop: container.paddingTop,
     marginTop: 80,
   },
 });

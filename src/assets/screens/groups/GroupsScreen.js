@@ -597,25 +597,13 @@ class GroupsScreen extends Component {
     });
   }
 
-  footerGroupsList = () => {
-    return (
-      <View elevation={5} style={{ flex: 1 }}>
-        <TouchableOpacity
-          onPress = {() => {
-            if (this._swipeListGroupsView) {
-              this._swipeListGroupsView.safeCloseOpenRow();
-            }
-            this.props.navigation.navigate('AddGroupScreen', {
-              editUserFromUsersScreen: 'true',
-            });
-          }
-          }
-          style={styles.button}
-        >
-          <Text style={styles.groupText}>Add Group</Text>
-        </TouchableOpacity>
-      </View>
-    );
+  addGroupCB = () => {
+    if (this._swipeListGroupsView) {
+      this._swipeListGroupsView.safeCloseOpenRow();
+    }
+    this.props.navigation.navigate('AddGroupScreen', {
+      editUserFromUsersScreen: 'true',
+    });
   }
 
   navigateToAddUserScreen = () => {
@@ -640,18 +628,17 @@ class GroupsScreen extends Component {
   }
 
   renderFooter = (numberGroups, numberUsers) => {
-    if (this.state.showingGroups) {
-      return this.footerGroupsList();
-    }
+    const { showingGroups } = this.state;
 
     // viewing users and there are no groups
-    if (!this.state.showingGroups && !numberGroups) {
+    if (!showingGroups && !numberGroups) {
       return null;
     }
 
     // viewing users
     return (
       <Footer
+        addGroupCB={showingGroups ? this.addGroupCB : null}
         numberUsers={numberUsers}
         navigateToAddUserScreen={this.navigateToAddUserScreen}
         filterCB={this.openFilterModal}
@@ -689,7 +676,9 @@ class GroupsScreen extends Component {
     const showFilterSortHeader = !this.state.showingGroups && numberUsers > 0;
 
     return (
-      <View style={container}>
+      // we have our own type of custom container style (so scrollable list is entire screen)
+      // when we have list of SOMETHING.
+      <View style={numberGroups > 0 ? styles.container : container}>
         <View style={styles.contents}>
           {showFilterSortHeader && this.sortFilterHeader()}
           {this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
@@ -708,6 +697,11 @@ class GroupsScreen extends Component {
 const styles = StyleSheet.create({
   // rowGroupBack needs to match grouPContainer style, since rowGroupBack
   // is just the hidden version of groupContainer Style
+  container: {
+    flex: container.flex,
+    paddingTop: container.paddingTop,
+    backgroundColor: colors.containerBackgroundColor,
+  },
   usersList: {
     marginBottom: hp('0.5%'),
   },
@@ -718,11 +712,6 @@ const styles = StyleSheet.create({
     borderRadius: groupContainerStyle.borderRadius,
     flex: 1,
     marginBottom: groupContainerStyle.marginBottom, // needs to match groupContainerStyle
-  },
-  groupText: {
-    fontSize: hp('2.75%'),
-    fontWeight: 'bold',
-    color: 'white',
   },
   contents: {
     flex: 11,
