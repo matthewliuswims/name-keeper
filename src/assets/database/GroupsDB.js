@@ -4,6 +4,8 @@ import { nextColor } from '../../lib/groupColors';
 
 import UsersDB from './UsersDB';
 
+import { MAXIMUM_GROUP_SIZE } from '../../lib/errors/overrides';
+
 const GROUP_NUMBER_LIMIT = 8;
 // Why do we set a hard limit to the maxmimum number of groups a phone-user can have?
 // because: a) limit clutter b) want control over specific colors
@@ -120,7 +122,7 @@ export default class GroupsDB extends React.Component {
       }
 
       if (groups.length >= GROUP_NUMBER_LIMIT) {
-        throw new Error(`You cannot have more than ${GROUP_NUMBER_LIMIT} groups. You CURRENTLY have ${groups.length} groups. Please delete a group to make another one`);
+        throw new Error(MAXIMUM_GROUP_SIZE.message);
       }
 
       const groupColors = [];

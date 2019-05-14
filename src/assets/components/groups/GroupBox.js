@@ -1,27 +1,27 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-
-import { groupTextStyle, groupIconNameContainer, groupColorBoxSliverLeftSide, groupBoxContainer, rightSideGroupBox, groupHeaderTextStyle } from '../../styles/base';
-
+import { Icon } from 'react-native-elements';
+import { Text, View, StyleSheet } from 'react-native';
 import { getGroupColor } from '../../../lib/groupColors';
 
-export default class Group extends React.Component {
-  getVerticalStrip(groupColor) {
-    const bgColor = {
-      backgroundColor: groupColor,
-    };
-    const combinedStyle = [groupColorBoxSliverLeftSide, bgColor];
-    return combinedStyle;
-  }
+import {
+  circularGroupIcon,
+  groupIconNameDateContainer,
+  userDescriptionText,
+  boxDescription,
+  boxHeaderText,
+  boxDateText,
+  userBoxContainer,
+} from '../../styles/base';
 
-  showUserNamesText(userNamesForGroup) {
+export default class GroupBox extends React.Component {
+  groupDescriptions(userNamesForGroup) {
     if (userNamesForGroup.length === 0) {
       return (
-        <Text style={groupTextStyle} numberOfLines={1}>No People in Group</Text>
+        <Text style={userDescriptionText} numberOfLines={1}>No People in Group</Text>
       );
     }
     return (
-      <Text style={groupTextStyle} numberOfLines={1}>{this.usersTextDisplay(userNamesForGroup)}</Text>
+      <Text style={userDescriptionText} numberOfLines={1}>{this.usersTextDisplay(userNamesForGroup)}</Text>
     );
   }
 
@@ -36,19 +36,54 @@ export default class Group extends React.Component {
     return `${userNamesForGroup[0]}, ${userNamesForGroup[1]} and ${remainderUsers} more`;
   }
 
+  groupAndDate = () => {
+    return (
+      <View style={groupIconNameDateContainer}>
+        <Text style={boxHeaderText} numberOfLines={1}>{this.props.groupName} </Text>
+        <Text style={boxDateText}> {this.props.date} </Text>
+      </View>
+    );
+  }
+
+  getCircularColorStyle(groupColor) {
+    const circularGroupIconNoColor = styles.circularGroupIcon;
+    const circularGroupIconWithColor = {
+      backgroundColor: groupColor,
+    };
+    const combinedStyle = StyleSheet.flatten([circularGroupIconNoColor, circularGroupIconWithColor]);
+    return combinedStyle;
+  }
+
   render() {
     const { groupName, groups, userNamesForGroup } = this.props;
 
     return (
-      <View style={groupBoxContainer}>
-        <View style={this.getVerticalStrip(getGroupColor(groupName, groups))} />
-        <View style={rightSideGroupBox}>
-          <View style={groupIconNameContainer}>
-            <Text style={groupHeaderTextStyle} numberOfLines={1}>{groupName}</Text>
+      <View style={userBoxContainer}>
+        <View style={{ display: 'flex', justifyContent: 'center' }}>
+          <Icon
+            name='group'
+            color={getGroupColor(groupName, groups)}
+            size={circularGroupIcon.height * 1.5}
+            iconStyle={{ marginRight: circularGroupIcon.marginRight }}
+          />
+        </View>
+        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+          {this.groupAndDate()}
+          <View style={boxDescription}>
+            <Text numberOfLines={1} style={userDescriptionText}>{this.groupDescriptions(userNamesForGroup)} </Text>
           </View>
-          {this.showUserNamesText(userNamesForGroup)}
         </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  circularGroupIcon: {
+    height: circularGroupIcon.height,
+    width: circularGroupIcon.width,
+    borderRadius: circularGroupIcon.borderRadius,
+    marginRight: circularGroupIcon.marginRight,
+    // we do NOT get margin left from circularGroupIcon
+  },
+});

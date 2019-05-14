@@ -4,6 +4,10 @@ export const DUPLICATE_GROUP_NAME = {
   errHook: 'UNIQUE CONSTAINT',
 };
 
+export const MAXIMUM_GROUP_SIZE = {
+  message: 'You cannot have more than 8 groups. Please delete a group to make another one',
+};
+
 // convention: anything with default will have default at end
 export const PLACE_HOLDER_DEFAULT = {
   default: true,

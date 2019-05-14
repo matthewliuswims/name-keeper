@@ -296,15 +296,6 @@ export const modalHeaderNormal = {
   marginBottom: hp('2%'),
 };
 
-
-export const groupContainerStyle = {
-  marginBottom: hp('1.5%'),
-  borderRadius: 4,
-  borderTopWidth: 1,
-  borderWidth: 1,
-  backgroundColor: colors.containerBackgroundColor,
-};
-
 export const groupHeaderTextStyle = {
   fontWeight: '600',
   fontSize: 22,
@@ -366,6 +357,12 @@ export const userContainerStyle = {
   backgroundColor: colors.containerBackgroundColor,
 };
 
+export const groupContainerStyle = {
+  paddingTop: userContainerStyle.paddingTop,
+  paddingBottom: userContainerStyle.paddingBottom,
+  backgroundColor: colors.containerBackgroundColor,
+};
+
 export const rowUserBack = {
   flexDirection: 'row',
   justifyContent: 'flex-end',
@@ -394,7 +391,7 @@ export const sortFilterWrapper = {
 
 
 export const sortFilterIcon = {
-  padding: 4,
+  padding: 2,
 };
 
 export const sortFilterRow = {

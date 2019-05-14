@@ -281,6 +281,7 @@ class GroupsScreen extends Component {
           >
             <Group
               groupName={item.name}
+              date={item.date}
               usersLength={users.length}
               userNamesForGroup={this.getUserNamesForGroup(item.name, users)}
               groups={groups}

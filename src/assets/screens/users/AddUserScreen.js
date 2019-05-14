@@ -60,6 +60,7 @@ class AddUserScreen extends Component {
           name: {
             placeholder: 'Person\'s name',
             error: 'Please enter a name',
+            autoCorrect: false,
           },
           description0: {
             template: DescriptionTemplate,
