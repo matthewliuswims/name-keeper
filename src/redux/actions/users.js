@@ -1,5 +1,3 @@
-import Sentry from 'sentry-expo';
-
 import UsersDB from '../../assets/database/UsersDB';
 import { makeAction } from '../../lib/actions';
 import { parseToLongDate, getDayOfWeek } from '../../lib/dates';
@@ -39,7 +37,6 @@ export function addUser(user) {
       dispatch(makeAction(ADD_USER_SUCCESS));
     }).catch((err) => {
       dispatch(makeAction(ADD_USER_FAIL, err));
-      Sentry.captureException(err);
       // no need to throw err in this particular instance because
       // ui won't do anything explictly if this part fails
     });
@@ -58,7 +55,6 @@ export function deleteUser(user) {
       dispatch(makeAction(DELETE_USER_SUCCESS, user));
     } catch (err) {
       dispatch(makeAction(DELETE_USER_FAIL, err));
-      Sentry.captureException(err);
     }
   };
 }
@@ -82,7 +78,6 @@ export function listAllUsers() {
       });
       dispatch(makeAction(LIST_ALL_USERS_SUCCESS, withParsedDates));
     }).catch((error) => {
-      Sentry.captureException(error);
       dispatch(makeAction(LIST_ALL_USERS_FAIL, error));
       // no need to throw err in this particular instance
     });
@@ -98,7 +93,6 @@ export function editUser(user) {
       dispatch(makeAction(EDIT_USER_SUCCESS));
     } catch (err) {
       dispatch(makeAction(EDIT_USER_FAIL, err));
-      Sentry.captureException(err);
     }
   };
 }

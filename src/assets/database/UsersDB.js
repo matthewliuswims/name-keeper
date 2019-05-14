@@ -1,3 +1,5 @@
+import Sentry from 'sentry-expo';
+
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 
@@ -5,6 +7,10 @@ import {
   usersPrimaryGroupNameMatch,
   changeGroupReferences,
 } from '../../lib/actions';
+
+import { getMessage } from '../../lib/errors/errors';
+
+import { PLACE_HOLDER_DEFAULT } from '../../lib/errors/overrides';
 
 /**
  * see GroupsDB for good documentation, as this class mimics GroupsDB structure
@@ -31,6 +37,16 @@ export default class UsersDB extends React.Component {
       });
     }
 
+    parsedSQLError = (err, overrides = null) => {
+      // getMessage will usually just return the default generic messsage
+      // that is unless there's an overrides sql object.
+      const errMsg = getMessage(err, overrides);
+      if (errMsg !== PLACE_HOLDER_DEFAULT) {
+        Sentry.captureException(err);
+      }
+      return new Error(errMsg);
+    }
+
     get dbConnection() {
       return databaseConnection.dbConnection;
     }
@@ -50,7 +66,7 @@ export default class UsersDB extends React.Component {
             );`,
           );
         },
-        err => reject(err),
+        err => reject(this.parsedSQLError(err)),
         () => resolve('success'));
       });
     }
@@ -77,7 +93,7 @@ export default class UsersDB extends React.Component {
               ],
             );
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
@@ -101,7 +117,7 @@ export default class UsersDB extends React.Component {
               'DELETE FROM users WHERE userID = (?)', [userID],
             );
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
@@ -125,7 +141,7 @@ export default class UsersDB extends React.Component {
               'UPDATE users SET primaryGroupName = (?), lastEdit = (?) WHERE userID = (?)', [primaryGroupName, lastEdit, userID],
             );
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
@@ -146,7 +162,7 @@ export default class UsersDB extends React.Component {
               [name, userDescriptionStringified, location, lastEdit, primaryGroupName, userID],
             );
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
@@ -162,7 +178,7 @@ export default class UsersDB extends React.Component {
               resolve(rows._array); //eslint-disable-line 
             });
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });

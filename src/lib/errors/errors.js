@@ -8,7 +8,7 @@ import { PLACE_HOLDER_DEFAULT } from './overrides';
  *  errHook - a space delimited string, which we check to see if anything of the split parts is in the error message
  * @returns {object} message - message from the overrides object or the default message
  */
-export default function getMessage(error, overrides) {
+export function getMessage(error, overrides) {
   if (overrides && overrides.default) {
     return overrides.message;
   }
@@ -28,6 +28,9 @@ export default function getMessage(error, overrides) {
 }
 
 /**
+ * NOTE: should be using getMessage more often than statusCodeMatchesSQLError,
+ * as getMessage calls statusCodeMatchesSQLError;
+ *
  * if we have an overrides object, we need to see if the
  * errCode of said object matches the errCode given by an error.
  * (specifically a sql error)

@@ -1,8 +1,3 @@
-import Sentry from 'sentry-expo';
-
-import { statusCodeMatchesSQLError } from '../../lib/errors/errors';
-import { DUPLICATE_GROUP_NAME } from '../../lib/errors/overrides';
-
 import GroupsDB from '../../assets/database/GroupsDB';
 import { makeAction } from '../../lib/actions';
 
@@ -64,10 +59,6 @@ export function addGroup(groupName) {
     }).then(() => {
       dispatch(addGroupSuccess(groupName));
     }).catch((err) => {
-      // if it's not the err we expect (which is duplicate group name), then capture the exception, 'cause it's an err we did not anticipate
-      if (!statusCodeMatchesSQLError(err, DUPLICATE_GROUP_NAME)) {
-        Sentry.captureException(err);
-      }
       dispatch(addGroupFail(err));
       // no need to throw err in this particular instance because
       // ui won't do anything explictly if this part fails
@@ -84,7 +75,6 @@ export function listGroups() {
       dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
       return groupsList;
     } catch (err) {
-      Sentry.captureException(err);
       dispatch(makeAction(LIST_GROUPS_FAIL, err));
     }
   };
@@ -105,7 +95,6 @@ export function editGroup(currentGroupName, newGroupName) {
       await groupDBInstance.editGroup(currentGroupName, newGroupName); // also updatesUsers
       dispatch(makeAction(EDIT_GROUP_SUCCESS));
     } catch (err) {
-      Sentry.captureException(err);
       dispatch(makeAction(EDIT_GROUP_FAIL, err));
     }
   };
@@ -123,7 +112,6 @@ export function deleteGroup(groupName) {
       await groupDBInstance.deleteGroup(groupName);
       dispatch(makeAction(DELETE_GROUP_SUCCESS));
     } catch (err) {
-      Sentry.captureException(err);
       dispatch(makeAction(DELETE_GROUP_FAIL, err));
     }
   };

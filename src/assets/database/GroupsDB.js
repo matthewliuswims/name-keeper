@@ -1,10 +1,13 @@
+import Sentry from 'sentry-expo';
 import React from 'react';
 import databaseConnection from './DatabaseConnection';
 import { nextColor } from '../../lib/groupColors';
 
 import UsersDB from './UsersDB';
 
-import { MAXIMUM_GROUP_SIZE } from '../../lib/errors/overrides';
+import { getMessage } from '../../lib/errors/errors';
+
+import { MAXIMUM_GROUP_SIZE, DUPLICATE_GROUP_NAME, PLACE_HOLDER_DEFAULT } from '../../lib/errors/overrides';
 
 const GROUP_NUMBER_LIMIT = 8;
 // Why do we set a hard limit to the maxmimum number of groups a phone-user can have?
@@ -64,7 +67,7 @@ export default class GroupsDB extends React.Component {
             );`,
           );
         },
-        err => reject(err),
+        err => reject(this.parsedSQLError(err)),
         () => resolve('successfully created table or successfully did not create table because it was already there'));
       });
     }
@@ -84,7 +87,7 @@ export default class GroupsDB extends React.Component {
               'UPDATE groups SET name = (?), lastEdit = (?) WHERE name = (?)', [newGroupName, lastEdit, currentGroupName],
             );
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
@@ -104,12 +107,21 @@ export default class GroupsDB extends React.Component {
               'DELETE FROM groups WHERE name = (?)', [groupName],
             );
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
     }
 
+    parsedSQLError = (err, overrides = null) => {
+      // getMessage will usually just return the default generic messsage
+      // that is unless there's an overrides sql object.
+      const errMsg = getMessage(err, overrides);
+      if (errMsg !== PLACE_HOLDER_DEFAULT) {
+        Sentry.captureException(err);
+      }
+      return new Error(errMsg);
+    }
 
     async addGroup(groupName) {
       const timeGroupAdded = new Date();
@@ -138,7 +150,8 @@ export default class GroupsDB extends React.Component {
           (tx) => {
             tx.executeSql('INSERT INTO groups (name, lastEdit, createdDate, color) values (?, ?, ?, ?)', [groupName, timeGroupAdded, timeGroupAdded, nextGrpColor]);
           },
-          err => reject(err),
+          // will give custom error if err happens to match DUPLICATE_GROUP_NAME code.
+          err => reject(this.parsedSQLError(err, DUPLICATE_GROUP_NAME)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });
@@ -153,7 +166,7 @@ export default class GroupsDB extends React.Component {
               resolve(rows._array); //eslint-disable-line 
             });
           },
-          err => reject(err),
+          err => reject(this.parsedSQLError(err)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });

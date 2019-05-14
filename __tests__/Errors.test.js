@@ -1,4 +1,4 @@
-import getMessage from '../src/lib/errors/errors';
+import  { getMessage } from '../src/lib/errors/errors';
 import { PLACE_HOLDER_DEFAULT, DUPLICATE_GROUP_NAME } from '../src/lib/errors/overrides';
 
 const errMsgSql = 'Error code 19: UNIQUE constraint failed: groups.name at massageError (blob:http://localhost:19001/8349e760-33ac-4297-9a8d-b1599e3927';

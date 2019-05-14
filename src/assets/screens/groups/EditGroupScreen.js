@@ -15,8 +15,6 @@ import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteC
 import { editGroup, listGroups, clearGroupsErr, deleteGroup, focusGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
 
-import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
-
 type Props = {
   navigation: () => void,
 };
@@ -129,7 +127,6 @@ class AddGroupScreen extends Component<Props> {
         <ErrorModal
           error={err}
           clearError={this.props.clearGroupsErr}
-          overrides={DUPLICATE_GROUP_NAME}
           currentFocusedScreen={this.props.navigation.isFocused()}
         />
       );
@@ -142,7 +139,6 @@ class AddGroupScreen extends Component<Props> {
       return (
         <ErrorModal
           error={err}
-          overrides={DUPLICATE_GROUP_NAME}
           clearError={this.props.clearUsersErr}
           currentFocusedScreen={this.props.navigation.isFocused()}
         />

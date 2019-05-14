@@ -3,13 +3,10 @@ import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { modalMsg, cancelButton, cancelButtonText, modalContentDeleteConfirmation } from '../../styles/base';
-import getErrMsg from '../../../lib/errors/errors';
-import { PLACE_HOLDER_DEFAULT } from '../../../lib/errors/overrides';
 
 type Props = {
   error: Object,
   clearError: Function,
-  overrides?: Object,
   /**
    * we need currentFocusedScreen because react-navigation keeps the screens in the stack
    * mounted - if we didn't check which screen is in focus, all screens will render an err modal
@@ -33,7 +30,7 @@ export default class ErrorModal extends Component<Props> {
 
   renderModalContent = () => {
     if (this.props.error) {
-      const msg = getErrMsg(this.props.error, this.props.overrides);
+      const msg = this.props.error.message;
       return (
         <View style={modalContentDeleteConfirmation}>
           <Text style={modalMsg}>
@@ -71,7 +68,3 @@ const styles = StyleSheet.create({
   button: cancelButton,
   buttonText: cancelButtonText,
 });
-
-ErrorModal.defaultProps = {
-  overrides: PLACE_HOLDER_DEFAULT,
-};

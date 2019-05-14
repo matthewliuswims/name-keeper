@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import RF from 'react-native-responsive-fontsize';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -12,7 +11,6 @@ import LoadingSpinner from '../../components/transitional-states/LoadingSpinner'
 
 import { container, topRightTextButtonContainerSolo, topRightButtonText, addEditInstructionsGroupText } from '../../styles/base';
 import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
-import { DUPLICATE_GROUP_NAME } from '../../../lib/errors/overrides';
 
 type Props = {
   navigation: () => void,
@@ -64,7 +62,6 @@ class AddGroupScreen extends Component<Props> {
         <ErrorModal
           error={err}
           clearError={this.props.clearGroupsErr}
-          overrides={DUPLICATE_GROUP_NAME}
           currentFocusedScreen={this.props.navigation.isFocused()}
         />
       );
