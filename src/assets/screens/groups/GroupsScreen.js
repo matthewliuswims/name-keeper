@@ -677,7 +677,7 @@ class GroupsScreen extends Component {
     const showFilterSortHeader = !this.state.showingGroups && numberUsers > 0;
 
     return (
-      // we have our own type of custom container style (so scrollable list is entire screen)
+      // we have our own type of custom container style (so scrollable list is entire horizontal screen)
       // when we have list of SOMETHING.
       <View style={numberGroups > 0 ? styles.container : container}>
         <View style={styles.contents}>

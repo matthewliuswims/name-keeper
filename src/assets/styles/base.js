@@ -15,6 +15,7 @@ export const sectionHeader = {
 // the overarching container for a screen
 export const container = {
   flex: 1,
+  alignItems: 'center',
   paddingTop: hp('3%'),
   backgroundColor: colors.containerBackgroundColor,
   paddingLeft: wp('4.5%'),
@@ -310,7 +311,7 @@ export const groupTextStyle = {
 
 export const addEditInstructionsGroupText = {
   marginTop: 10,
-  fontSize: RF(2),
+  fontSize: RF(2.5),
 };
 
 export const headerButtonWrapper = {
