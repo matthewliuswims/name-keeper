@@ -12,14 +12,24 @@ export const sectionHeader = {
   headerLayoutPreset: 'center',
 };
 
+export const logoWrapper = {
+  marginBottom: 40,
+};
 // the overarching container for a screen
 export const container = {
   flex: 1,
-  alignItems: 'center',
   paddingTop: hp('3%'),
   backgroundColor: colors.containerBackgroundColor,
   paddingLeft: wp('4.5%'),
   paddingRight: wp('4.5%'),
+};
+
+export const noGroupsContainer = {
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingLeft: container.paddingLeft,
+  paddingRight: container.paddingRight,
 };
 
 // used instead of container
@@ -309,11 +319,6 @@ export const groupTextStyle = {
   color: colors.subTextColor,
 };
 
-export const addEditInstructionsGroupText = {
-  marginTop: 10,
-  fontSize: RF(2.5),
-};
-
 export const headerButtonWrapper = {
   paddingTop: hp('0.5%'),
   paddingBottom: hp('0.5%'),
@@ -405,4 +410,17 @@ export const sortFilterRow = {
 export const sortFilterIconText = {
   color: colors.subTextColor,
   fontSize: 16,
+};
+
+export const addMessage = {
+  fontSize: RF(2.5),
+  textAlign: 'center',
+  marginTop: 30,
+};
+
+export const addHeader = {
+  fontWeight: 'bold',
+  fontSize: RF(4),
+  textAlign: 'center',
+  marginTop: 10,
 };

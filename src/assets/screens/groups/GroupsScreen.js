@@ -2,17 +2,22 @@ import Sentry from 'sentry-expo';
 import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
+
 import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Icon } from 'react-native-elements';
 
 import { connect } from 'react-redux';
-import RF from 'react-native-responsive-fontsize';
+
 import { get } from 'lodash';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import SortIcon from '../../components/icons/SortIcon';
 import FilterIcon from '../../components/icons/FilterIcon';
+
+import Logo from '../../../../assets/undraw_having_fun_iais.svg';
+import LogoPilates from '../../../../assets/undraw_pilates_gpdb.svg';
+
 
 import {
   container,
@@ -27,6 +32,10 @@ import {
   deleteRightSlotText,
   rowUserBack,
   sortFilterRow,
+  logoWrapper,
+  noGroupsContainer,
+  addHeader,
+  addMessage,
 } from '../../styles/base';
 
 import colors from '../../styles/colors';
@@ -172,11 +181,14 @@ class GroupsScreen extends Component {
 
   noGroupsText() {
     return (
-      <View style={styles.noGroupsOrUsersContainer}>
-        <Text style={styles.noGroupsOrUsersHeader}>
+      <View style={noGroupsContainer}>
+        <View style={logoWrapper}>
+          <Logo width={hp('40%')} height={hp('40%')} />
+        </View>
+        <Text style={addHeader}>
           Add a group below
         </Text>
-        <Text style={styles.noGroupsOrUsersMessage}>
+        <Text style={addMessage}>
           A group contains the people you meet.
         </Text>
       </View>
@@ -424,23 +436,26 @@ class GroupsScreen extends Component {
     // so there are no users and no groups
     if (!numberGroups) {
       return (
-        <View style={styles.noGroupsOrUsersContainer}>
-          <Text style={styles.noGroupsOrUsersHeader}>
+        <View style={styles.noUsersContainer}>
+          <Text style={addHeader}>
             {'Click "Groups" at the top-left to create a group'}
           </Text>
-          <Text style={styles.noGroupsOrUsersMessage}>
+          <Text style={addMessage}>
             You need to create a group before you can add a user.
           </Text>
         </View>
       );
     }
     return (
-      <View style={styles.noGroupsOrUsersContainer}>
-        <Text style={styles.noGroupsOrUsersHeader}>
-          Add a person you met below!
+      <View style={noGroupsContainer}>
+        <View style={logoWrapper}>
+          <LogoPilates width={hp('40%')} height={hp('40%')} />
+        </View>
+        <Text style={addHeader}>
+          Add a person below!
         </Text>
-        <Text style={styles.noGroupsOrUsersMessage}>
-          That person will be placed by you into one of the groups you made!
+        <Text style={addMessage}>
+          Hint: the best time to add someone&#39;s name is right after you finish meeting them.
         </Text>
       </View>
     );
@@ -679,7 +694,7 @@ class GroupsScreen extends Component {
     return (
       // we have our own type of custom container style (so scrollable list is entire horizontal screen)
       // when we have list of SOMETHING.
-      <View style={numberGroups > 0 ? styles.container : container}>
+      <View style={numberGroups > 0 ? styles.container : [container, { alignItems: 'center'}]}>
         <View style={styles.contents}>
           {showFilterSortHeader && this.sortFilterHeader()}
           {this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
@@ -717,20 +732,13 @@ const styles = StyleSheet.create({
   contents: {
     flex: 11,
   },
-  noGroupsOrUsersHeader: {
-    fontWeight: 'bold',
-    fontSize: RF(4),
-    marginTop: hp('1%'),
-    textAlign: 'center',
-  },
-  noGroupsOrUsersMessage: {
-    fontSize: RF(2.5),
-    marginTop: hp('2%'),
-    textAlign: 'center',
-  },
-  noGroupsOrUsersContainer: {
-    paddingTop: hp('25%'),
-    paddingBottom: hp('30%'),
+  noUsersContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    // because our container does not have padding bottom
+    // paddingBottom: container.paddingBottom,
   },
   touchHereText: {
     color: 'white',

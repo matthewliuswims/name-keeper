@@ -10,7 +10,14 @@ import LoadingSpinner from '../../components/transitional-states/LoadingSpinner'
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
-import { container, topRightTextButtonContainerSolo, topRightButtonText, deleteContainer, addEditInstructionsGroupText, deleteText } from '../../styles/base';
+import {
+  container,
+  topRightTextButtonContainerSolo,
+  topRightButtonText,
+  deleteContainer,
+  deleteText,
+  addMessage,
+} from '../../styles/base';
 
 import { editGroup, listGroups, clearGroupsErr, deleteGroup, focusGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
@@ -49,7 +56,7 @@ class AddGroupScreen extends Component<Props> {
 
   groupText() {
     return (
-      <Text style={addEditInstructionsGroupText}>
+      <Text style={addMessage}>
         You can rename/delete the group here. BUT, if you want to modify the people within a group, you need to click on a person.
       </Text>
     );
@@ -200,9 +207,7 @@ class AddGroupScreen extends Component<Props> {
             onChange={this.onChange}
           />
         </View>
-        <View>
-          {this.groupText()}
-        </View>
+        {this.groupText()}
         <TouchableOpacity style={[deleteContainer, { marginBottom: 20 }]} onPress={this.openDeleteModal}>
           <Text style={deleteText}> Delete </Text>
         </TouchableOpacity>

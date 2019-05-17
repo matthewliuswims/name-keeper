@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Text, View, TouchableOpacity } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
@@ -9,8 +8,18 @@ import { connect } from 'react-redux';
 import ErrorModal from '../../components/modal/Error';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
-import { container, topRightTextButtonContainerSolo, topRightButtonText, addEditInstructionsGroupText } from '../../styles/base';
-import { addGroup, listGroups, clearGroupsErr, focusGroup } from '../../../redux/actions/groups';
+import {
+  container,
+  topRightTextButtonContainerSolo,
+  topRightButtonText,
+  addMessage,
+} from '../../styles/base';
+import {
+  addGroup,
+  listGroups,
+  clearGroupsErr,
+  focusGroup,
+} from '../../../redux/actions/groups';
 
 type Props = {
   navigation: () => void,
@@ -109,8 +118,8 @@ class AddGroupScreen extends Component<Props> {
 
   groupText() {
     return (
-      <Text style={styles.groupText}>
-        A group is usually a community you are part of (e.g. Work or Church).
+      <Text style={addMessage}>
+        Hint: A group is usually a community you are part of (e.g. Work or Church).
       </Text>
     );
   }
@@ -123,7 +132,7 @@ class AddGroupScreen extends Component<Props> {
       );
     }
     return (
-      <View style={container}>
+      <View style={[container]}>
         <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         {this.groupText()}
         {this.checkErr(error)}
@@ -131,15 +140,6 @@ class AddGroupScreen extends Component<Props> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  groupText: {
-    fontSize: addEditInstructionsGroupText.fontSize,
-    marginTop: hp('22%'),
-    textAlign: 'center',
-    fontWeight: addEditInstructionsGroupText.fontWeight,
-  },
-});
 
 const mapDispatchToProps = dispatch => (
   {

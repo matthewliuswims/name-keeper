@@ -12,7 +12,6 @@ import colors from '../../styles/colors';
 import { listAllUsers, focusUser, deleteUser } from '../../../redux/actions/users';
 import {
   container,
-  footerSection,
   userContainerStyle,
   rightDrawerOpenValue,
   editRightSlot,
@@ -21,6 +20,10 @@ import {
   deleteRightSlotText,
   rowUserBack,
   sortFilterRow,
+  logoWrapper,
+  noGroupsContainer,
+  addMessage,
+  addHeader,
 } from '../../styles/base';
 
 import UserBox from '../../components/users/UserBox';
@@ -38,6 +41,8 @@ import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
 import SortBy from '../../components/modal/SortBy';
+
+import Logo from '../../../../assets/undraw_pilates_gpdb.svg';
 
 type Props = {
   groupsState : {
@@ -197,11 +202,14 @@ class GroupScreen extends Component<Props> {
 
   noGroupContents() {
     return (
-      <View style={styles.noGroupContainer}>
-        <Text style={styles.noGroupHeader}>
+      <View style={noGroupsContainer}>
+        <View style={logoWrapper}>
+          <Logo width={hp('40%')} height={hp('40%')} />
+        </View>
+        <Text style={addHeader}>
           Add a person below!
         </Text>
-        <Text style={styles.noGroupMessage}>
+        <Text style={addMessage}>
           Hint: the best time to add someone&#39;s name is right after you finish meeting them.
         </Text>
       </View>
@@ -332,25 +340,11 @@ const styles = StyleSheet.create({
   contents: {
     flex: 11,
   },
-  noGroupHeader: {
-    fontWeight: 'bold',
-    fontSize: RF(4),
-    marginTop: hp('1%'),
-    textAlign: 'center',
-  },
   buttons: {
     marginBottom: hp('1%'),
   },
   buttonTextSortFilter: {
     color: 'white',
-  },
-  noGroupMessage: {
-    fontSize: RF(2.5),
-    marginTop: hp('2%'),
-    textAlign: 'center',
-  },
-  noGroupContainer: {
-    paddingTop: hp('25%'),
   },
 });
 
