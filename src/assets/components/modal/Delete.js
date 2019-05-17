@@ -1,76 +1,41 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-
-import { Icon } from 'react-native-elements';
 import colors from '../../styles/colors';
 
 import {
-  cancelButton,
-  cancelButtonText,
-  deleteButton,
-  deleteButtonText,
-  modalMsg,
-  modalContentDeleteConfirmation,
-  modalHeaderDelete,
+  modalFooterButton,
+  modalFooterText,
+  modalHeader,
+  modalMessage,
+  modalContainer,
+  modalFooterWrapper,
 } from '../../styles/base';
 
 export default class DeleteModal extends Component {
-  renderCancel = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={cancelButton}>
-        <Text style={cancelButtonText}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  renderDelete = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={deleteButton}>
-        <Text style={deleteButtonText}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  renderCancel = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={cancelButton}>
-        <Text style={cancelButtonText}>{text}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-
-  renderDelete = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={deleteButton}>
-        <Text style={deleteButtonText}>{text}</Text>
-      </View>
+  renderFooterButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress} style={modalFooterButton}>
+      <Text style={[modalFooterText, { color: colors.warningColor }]}>{text}</Text>
     </TouchableOpacity>
   );
 
   renderModalContent = () => {
     return (
-      <View style={modalContentDeleteConfirmation}>
-        <Icon
-          name='warning'
-          color={colors.warningColor}
-          size={wp('16%')}
-        />
-        <Text style={modalHeaderDelete}>
+      <View style={modalContainer}>
+        <Text style={modalHeader}>
           Are you sure?
         </Text>
-        <Text style={modalMsg}>
+        <Text style={modalMessage}>
           { this.props.deleteGroup
             ? 'You will delete this group and all its people. This process cannot be undone.'
             : 'You will delete this person from the group. This process cannot be undone.'
           }
         </Text>
-        <View style={styles.cancelDeleteContainer}>
-          {this.renderCancel('Close', this.props.closeDeleteModal)}
-          {this.renderDelete('Delete', this.props.deleteFunc)}
+        <View style={modalFooterWrapper}>
+          {this.renderFooterButton('Cancel', this.props.closeDeleteModal)}
+          {this.renderFooterButton('Delete', this.props.deleteFunc)}
         </View>
       </View>
     );
@@ -87,13 +52,6 @@ export default class DeleteModal extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  cancelDeleteContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-});
 
 DeleteModal.propTypes = {
   deleteModalOpen: PropTypes.bool.isRequired,

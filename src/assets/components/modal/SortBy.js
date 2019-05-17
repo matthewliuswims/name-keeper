@@ -7,7 +7,15 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { Icon } from 'react-native-elements';
 
 import colors from '../../styles/colors';
-import { cancelButtonText, horizontalGroupScreenButton, modalContentNormal, modalHeaderNormal } from '../../styles/base';
+
+import {
+  modalContainer,
+  modalHeader,
+  modalMessage,
+  modalFooterButton,
+  modalFooterText,
+  modalFooterWrapper,
+} from '../../styles/base';
 
 const sortOptions = [
   { option: 'Date: Old to New (default)' },
@@ -21,10 +29,10 @@ export default class SortByModal extends Component {
     selectedSortOption: this.props.sortOption,
   };
 
-  renderButton = (text, onPress) => (
+  renderFooterButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>{text}</Text>
+      <View style={modalFooterButton}>
+        <Text style={modalFooterText}>{text}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -32,6 +40,7 @@ export default class SortByModal extends Component {
   radioButtons() {
     return (
       <FlatList
+        style={{ marginBottom: (modalHeader.marginBottom * 2) }}
         data={sortOptions}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -47,7 +56,7 @@ export default class SortByModal extends Component {
                 name={
                   item.option === this.state.selectedSortOption ? 'radio-button-checked' : 'radio-button-unchecked'
                 }
-                color={item.option === this.state.selectedSortOption ? 'green' : 'black'}
+                color={item.option === this.state.selectedSortOption ? colors.appThemeColor : 'grey'}
               />
             </View>
           </TouchableOpacity>
@@ -60,27 +69,24 @@ export default class SortByModal extends Component {
 
   renderModalContent = () => {
     return (
-      <View style={modalContentNormal}>
-        <View style={modalHeaderNormal}>
-          <Icon
-            onPress={() => {
-              this.setState({ visibleModal: false });
-              this.props.closeSortModal(); // tell GroupScreen this modal is closed
-            }}
-            name='close'
-            size={wp('8%')}
-            iconStyle={{
-              marginRight: wp('16%'),
-              padding: wp('2%'),
-            }}
-          />
-          <Text style={styles.headerText}> Sort by </Text>
-        </View>
+      <View style={modalContainer}>
+        <Text style={modalHeader}>
+          Sort by
+        </Text>
+        <Text style={modalMessage}>
+          Choose the order you want to see people
+        </Text>
         {this.radioButtons()}
-        {this.renderButton('Apply', () => {
-          this.setState({ visibleModal: false });
-          this.props.applySortModal(this.state.selectedSortOption); // tell GroupScreen this modal is closed
-        })}
+        <View style={modalFooterWrapper}>
+          {this.renderFooterButton('Cancel', () => {
+            this.setState({ visibleModal: false });
+            this.props.closeSortModal(); // tell GroupScreen this modal is closed
+          })}
+          {this.renderFooterButton('Apply', () => {
+            this.setState({ visibleModal: false });
+            this.props.applySortModal(this.state.selectedSortOption); // tell GroupScreen this modal is closed
+          })}
+        </View>
       </View>
     );
   };
@@ -100,33 +106,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: hp('1.5%'),
-    borderBottomWidth: 1,
-    borderColor: 'grey',
-  },
-  headerText: {
-    fontSize: RF(3.5),
-    fontWeight: 'bold',
   },
   styleOption: {
     fontSize: RF(2.5),
   },
-  button: {
-    paddingLeft: wp('7%'),
-    paddingRight: wp('7%'),
-    paddingTop: hp('1%'),
-    paddingBottom: hp('1%'),
-
-    backgroundColor: colors.addApplyColor,
-
-    alignItems: horizontalGroupScreenButton.alignItems,
-    padding: horizontalGroupScreenButton.padding,
-    borderRadius: horizontalGroupScreenButton.borderRadius,
-    borderWidth: horizontalGroupScreenButton.borderWidth,
-    borderColor: horizontalGroupScreenButton.borderColor,
-    shadowColor: horizontalGroupScreenButton.shadowColor,
-    shadowOpacity: horizontalGroupScreenButton.shadowOpacity,
-    shadowRadius: horizontalGroupScreenButton.shadowRadius,
-    shadowOffset: horizontalGroupScreenButton.shadowOffset,
-  },
-  buttonText: cancelButtonText,
 });

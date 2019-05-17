@@ -12,6 +12,21 @@ export const sectionHeader = {
   headerLayoutPreset: 'center',
 };
 
+export const modalHeader = {
+  fontWeight: 'bold',
+  fontSize: 20,
+  marginBottom: 20,
+  textAlign: 'center',
+};
+
+export const modalMessage = {
+  fontSize: 16,
+  borderBottomWidth: 2,
+  marginBottom: 40,
+  textAlign: 'center',
+};
+
+
 export const logoWrapper = {
   marginBottom: 40,
 };
@@ -22,6 +37,12 @@ export const container = {
   backgroundColor: colors.containerBackgroundColor,
   paddingLeft: wp('4.5%'),
   paddingRight: wp('4.5%'),
+};
+
+export const modalContainer = {
+  backgroundColor: 'white',
+  padding: 30,
+  borderRadius: 10,
 };
 
 export const noGroupsContainer = {
@@ -205,6 +226,7 @@ export const userDescriptionText = {
 
 export const groupIconNameContainer = {
   flexDirection: 'row',
+  alignItems: 'center',
 };
 
 export const groupColorBoxSliverLeftSide = {
@@ -237,50 +259,13 @@ export const modalMsg = {
   marginBottom: hp('3%'),
 };
 
-export const cancelButton = {
-  backgroundColor: colors.cancelButtonBackgroundColor,
-  paddingLeft: wp('7%'),
-  paddingRight: wp('7%'),
-  paddingTop: hp('1%'),
-  paddingBottom: hp('1%'),
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: 4,
-  borderColor: 'rgba(0, 0, 0, 0.1)',
-};
-
-export const cancelButtonText = {
-  color: colors.cancelButtonBackgroundText,
-};
-
-/**
- * always is paired with a cancelButton
- */
-export const deleteButton = {
-  backgroundColor: colors.warningColor,
-  paddingLeft: wp('7%'),
-  paddingRight: wp('7%'),
-  paddingTop: hp('1%'),
-  paddingBottom: hp('1%'),
-
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: 4,
-  borderColor: 'rgba(0, 0, 0, 0.1)',
-  marginLeft: wp('2.5%'),
-};
-
-export const deleteButtonText = {
-  color: 'white',
-};
-
-export const modalContentDeleteConfirmation = {
-  backgroundColor: 'white',
+export const modalFooterButton = {
   padding: 16,
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: 4,
-  borderColor: 'rgba(0, 0, 0, 0.1)',
+};
+
+export const modalFooterText = {
+  fontSize: 20,
+  color: colors.appThemeColor,
 };
 
 // e.g. filter and sort
@@ -292,19 +277,10 @@ export const modalContentNormal = {
   borderColor: 'rgba(0, 0, 0, 0.1)',
 };
 
-export const modalHeaderDelete = {
-  fontWeight: 'bold',
-  fontSize: RF(2.5),
-  marginTop: hp('2%'),
-};
 
-// e.g. filter and sort
-export const modalHeaderNormal = {
+export const modalFooterWrapper = {
   flexDirection: 'row',
-  alignItems: 'center',
-  borderBottomWidth: 2,
-  paddingBottom: hp('2%'),
-  marginBottom: hp('2%'),
+  justifyContent: 'space-between',
 };
 
 export const groupHeaderTextStyle = {

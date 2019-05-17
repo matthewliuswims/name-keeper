@@ -5,8 +5,6 @@ export default {
   footerBackgroundColor: '#E5E9EF',
   addApplyColor: '#3D95CE',
   warningColor: 'firebrick',
-  cancelButtonBackgroundColor: '#C1C1C1',
-  cancelButtonBackgroundText: 'white',
   filterSortColor: '#6666ff',
 
   subTextColor: 'darkslategrey',
