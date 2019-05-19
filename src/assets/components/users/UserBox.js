@@ -16,8 +16,8 @@ import {
 
 class UserBox extends React.Component {
   userDescriptions(userDescriptionArray) {
-    const withDashArray = userDescriptionArray.map(descriptor => `- ${descriptor} `);
-    const descriptionString = withDashArray.join('');
+    // const withDashArray = userDescriptionArray.map(descriptor => `- ${descriptor} `);
+    const descriptionString = userDescriptionArray.join(' - ');
     return descriptionString;
   }
 

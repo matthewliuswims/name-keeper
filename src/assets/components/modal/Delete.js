@@ -15,7 +15,13 @@ import {
 } from '../../styles/base';
 
 export default class DeleteModal extends Component {
-  renderFooterButton = (text, onPress) => (
+  renderCancelButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress} style={modalFooterButton}>
+      <Text style={[modalFooterText, { color: colors.appThemeColor }]}>{text}</Text>
+    </TouchableOpacity>
+  );
+
+  renderDeleteButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress} style={modalFooterButton}>
       <Text style={[modalFooterText, { color: colors.warningColor }]}>{text}</Text>
     </TouchableOpacity>
@@ -34,8 +40,8 @@ export default class DeleteModal extends Component {
           }
         </Text>
         <View style={modalFooterWrapper}>
-          {this.renderFooterButton('Cancel', this.props.closeDeleteModal)}
-          {this.renderFooterButton('Delete', this.props.deleteFunc)}
+          {this.renderCancelButton('Cancel', this.props.closeDeleteModal)}
+          {this.renderDeleteButton('Delete', this.props.deleteFunc)}
         </View>
       </View>
     );

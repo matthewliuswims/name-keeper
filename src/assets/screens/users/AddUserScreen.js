@@ -209,12 +209,13 @@ class AddUserScreen extends Component {
     if (!this.formRef) return;
 
     if (userStruct) {
-      const { name, location } = userStruct;
+      const { name: unparsedName, location } = userStruct;
+      const name = unparsedName.trim();
       const descriptions = [];
       const { descriptionIDs } = this.state;
       for (const descriptionID of descriptionIDs) {
         const description = userStruct[descriptionID];
-        descriptions.push(description);
+        descriptions.push(description.trim());
       }
 
       const user = {

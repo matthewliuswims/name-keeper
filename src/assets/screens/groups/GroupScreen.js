@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableHighlight, TouchableOpacity, Text } from 'react-native';
-import RF from 'react-native-responsive-fontsize';
+
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SwipeListView } from 'react-native-swipe-list-view';
 

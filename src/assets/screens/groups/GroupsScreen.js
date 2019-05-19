@@ -189,7 +189,7 @@ class GroupsScreen extends Component {
           Add a group below
         </Text>
         <Text style={addMessage}>
-          A group contains the people you meet.
+          A group contains the names of people you meet.
         </Text>
       </View>
     );
@@ -737,8 +737,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    // because our container does not have padding bottom
-    // paddingBottom: container.paddingBottom,
+    // because our container does not have padding bottom, we make it match paddingTop
+    paddingBottom: container.paddingTop,
   },
   touchHereText: {
     color: 'white',

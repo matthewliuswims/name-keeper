@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { get } from 'lodash';
 
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import noOp from '../../../lib/UIhelpers';
 import { container, groupIconNameContainer, horizontalGroupScreenButton, circularGroupIcon } from '../../styles/base';
@@ -55,7 +55,7 @@ class UserScreen extends Component {
   */
   userDescriptions(userDescriptionArray) {
     const withDashArray = userDescriptionArray.map(descriptor => `- ${descriptor}`);
-    const descriptionString = withDashArray.join('\n');
+    const descriptionString = withDashArray.join('\n\n');
     return descriptionString;
   }
 

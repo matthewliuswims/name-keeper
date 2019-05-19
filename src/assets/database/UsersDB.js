@@ -41,7 +41,7 @@ export default class UsersDB extends React.Component {
       // getMessage will usually just return the default generic messsage
       // that is unless there's an overrides sql object.
       const errMsg = getMessage(err, overrides);
-      if (errMsg !== PLACE_HOLDER_DEFAULT) {
+      if (errMsg !== PLACE_HOLDER_DEFAULT.message) {
         Sentry.captureException(err);
       }
       return new Error(errMsg);

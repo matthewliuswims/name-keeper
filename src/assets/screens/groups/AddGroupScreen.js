@@ -89,7 +89,8 @@ class AddGroupScreen extends Component<Props> {
     const groupStruct = this.formRef.getValue();
     // remember below Form type is group
     if (groupStruct) {
-      const { name: groupName } = groupStruct;
+      const { name: unparsedName } = groupStruct;
+      const groupName = unparsedName.trim();
       this.props.addGroup(groupName).then(() => {
         if (!this.props.groupsState.error) {
           this.props.listGroups().then(

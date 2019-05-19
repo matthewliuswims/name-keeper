@@ -303,6 +303,8 @@ export const headerButtonWrapper = {
 };
 
 export const togglePeopleGroupsWrapper = {
+  flexDirection: 'row',
+  alignItems: 'center',
   paddingLeft: wp('3%'),
   paddingRight: wp('3%'),
 };

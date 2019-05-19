@@ -117,9 +117,13 @@ export default class GroupsDB extends React.Component {
       // getMessage will usually just return the default generic messsage
       // that is unless there's an overrides sql object.
       const errMsg = getMessage(err, overrides);
-      if (errMsg !== PLACE_HOLDER_DEFAULT) {
+      // known error messages for group-related errors.
+      const knownErrorMessages = [MAXIMUM_GROUP_SIZE.message, DUPLICATE_GROUP_NAME.message, PLACE_HOLDER_DEFAULT.message];
+
+      if (!knownErrorMessages.includes(errMsg)) {
         Sentry.captureException(err);
       }
+
       return new Error(errMsg);
     }
 
