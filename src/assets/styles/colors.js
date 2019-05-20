@@ -11,12 +11,13 @@ export default {
 
   touchableHighlightUnderlayColor: '#F5F5DC',
 
-  firstGroupColor: '#BA3636',
-  secondGroupColor: 'dodgerblue',
-  thirdGroupColor: 'forestgreen',
-  fourthGroupColor: 'coral',
-  fifthGroupColor: 'purple',
-  sixthGroupColor: 'yellow',
-  seventhGroupColor: 'violet',
+  // these below colors are supposed to be darker
+  firstGroupColor: 'darkred', // red
+  secondGroupColor: '#512885', // purple
+  thirdGroupColor: 'darkseagreen',
+  fourthGroupColor: 'chocolate',
+  fifthGroupColor: 'goldenrod',
+  sixthGroupColor: 'orchid', // pinkish
+  seventhGroupColor: 'darkorange',
   eighthGroupColor: 'lightsteelblue',
 };

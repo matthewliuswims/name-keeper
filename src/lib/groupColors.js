@@ -1,26 +1,17 @@
 // @tutorial: https://facebook.github.io/react-native/docs/colors
 
-export const colors = [
-  'red',
-  'purple',
-  'forestgreen',
-  'coral',
-  'silver',
-  'yellow',
-  'violet',
-  'mediumvioletred',
-];
+import colorPalette from '../assets/styles/colors';
 
-const colorsToPosition = {
-  red: 0,
-  purple: 1,
-  forestgreen: 2,
-  coral: 3,
-  silver: 4,
-  yellow: 5,
-  violet: 6,
-  mediumvioletred: 7,
-};
+const colors = [
+  colorPalette.firstGroupColor,
+  colorPalette.secondGroupColor,
+  colorPalette.thirdGroupColor,
+  colorPalette.fourthGroupColor,
+  colorPalette.fifthGroupColor,
+  colorPalette.sixthGroupColor,
+  colorPalette.seventhGroupColor,
+  colorPalette.eighthGroupColor,
+];
 
 /**
  * helper func for nextColor()
@@ -30,19 +21,18 @@ const colorsToPosition = {
  *   @example ['red', 'silver', 'yellow']
  */
 function orderColors(groupColors) {
-  const colorsAndPosition = [];
-  for (const color of groupColors) {
-    colorsAndPosition.push({
-      color,
-      position: colorsToPosition[color],
-    });
-  }
   // @example of colorsAndPosition
   //  [
   //   { color: 'yellow', position: 5},
   //   { color: 'red', position: 0},
   //   { color: 'silver', position: 3},
   //  ];
+  const colorsAndPosition = groupColors.map((color) => {
+    return ({
+      color,
+      position: colors.findIndex(colEle => colEle === color),
+    });
+  });
   colorsAndPosition.sort((a, b) => {
     return a.position - b.position;
   });
@@ -84,10 +74,9 @@ export function nextColor(groupColors) {
  * 4) 1 item with id of 3 [3]
  */
 export function getGroupColor(groupName, groups) {
-  for (const group of groups) {
-    if (group.name === groupName) {
-      return group.color;
-    }
-  }
+  const foundGroup = groups.find(group => group.name === groupName);
+
+  if (foundGroup) return foundGroup.color;
+
   throw new Error('Could not get the group color for a group name');
 }
