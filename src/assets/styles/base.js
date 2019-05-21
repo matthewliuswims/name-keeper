@@ -391,7 +391,7 @@ export const sortFilterIconText = {
 };
 
 export const addMessage = {
-  fontSize: RF(2.5),
+  fontSize: RF(2.8),
   textAlign: 'center',
   marginTop: 30,
 };

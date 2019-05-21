@@ -21,22 +21,10 @@ const colors = [
  *   @example ['red', 'silver', 'yellow']
  */
 function orderColors(groupColors) {
-  // @example of colorsAndPosition
-  //  [
-  //   { color: 'yellow', position: 5},
-  //   { color: 'red', position: 0},
-  //   { color: 'silver', position: 3},
-  //  ];
-  const colorsAndPosition = groupColors.map((color) => {
-    return ({
-      color,
-      position: colors.findIndex(colEle => colEle === color),
-    });
+  const orderedColors = groupColors.slice().sort((a, b) => {
+    return colors.findIndex(color => color === a) - colors.findIndex(color => color === b);
   });
-  colorsAndPosition.sort((a, b) => {
-    return a.position - b.position;
-  });
-  const orderedColors = colorsAndPosition.map(colorPosition => colorPosition.color);
+
   return orderedColors;
 }
 
