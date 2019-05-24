@@ -1,6 +1,8 @@
 import Sentry from 'sentry-expo';
 import PropTypes from 'prop-types';
 
+import Toast from 'react-native-easy-toast';
+
 import React, { Component } from 'react';
 
 import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
@@ -36,6 +38,7 @@ import {
   noGroupsContainer,
   addHeader,
   addMessage,
+  toastWrapper,
 } from '../../styles/base';
 
 import colors from '../../styles/colors';
@@ -48,12 +51,15 @@ import DeleteModal from '../../components/modal/Delete';
 
 import { listAllUsers, focusUser, deleteUser } from '../../../redux/actions/users';
 
+import { addToast, clearToast } from '../../../redux/actions/toasts';
+
 import { listGroups, clearGroupsErr, focusGroup, deleteGroup } from '../../../redux/actions/groups';
 import Group from '../../components/groups/GroupBox';
 import RightHeaderComponent from '../../components/headers/RightGroupsHeader';
 import LeftHeaderComponent from '../../components/headers/LeftGroupsHeader';
 
 import { parseToShortDate } from '../../../lib/dates';
+
 import UserBox from '../../components/users/UserBox';
 
 import { usersGroupNamesMatch } from '../../../lib/actions';
@@ -127,6 +133,17 @@ class GroupsScreen extends Component {
     // we need to update selectedGroupName
     if (this.props.groupsState.groups.length !== prevProps.groupsState.groups.length) {
       this.populateFilteredGroupsInitial();
+    }
+    // have to check ref existence, because of https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
+    const showToast = this.props.toastsState.showingToast;
+    if (!showToast) return;
+    const correctScreen = this.props.toastsState.screenName === this.props.navigation.state.routeName;
+    if (showToast && this.toast && correctScreen) {
+      // i have no idea why I need a timeout (and a timeout that is 1000)
+      // but without it, the toast sometimes won't appear (if I go directly to the edit screen)
+      // from the header
+      this.toast.show(this.props.toastsState.message, 2000);
+      setTimeout(() => this.props.clearToast(), 1000);
     }
   }
 
@@ -211,11 +228,12 @@ class GroupsScreen extends Component {
 
   deleteGroup = async () => {
     await this.props.deleteGroup(this.state.groupNameDrawerFocused);
-    await this.props.navigation.navigate('GroupsScreen');
     await this.props.listAllUsers();
     await this.props.listGroups();
     await this.setState({ groupNameDrawerFocused: '' });
     await this.setState({ deleteGroupModalOpen: false });
+    this.props.addToast('Deleted Group', this.props.navigation.state.routeName);
+    await this.props.navigation.navigate('GroupsScreen');
   }
 
   deleteGroupModal = () => {
@@ -555,6 +573,7 @@ class GroupsScreen extends Component {
       sortByModalOpen: false,
     });
     this.setSortOption(sortOption);
+    this.props.addToast(`Sorting by ${sortOption}`, this.props.navigation.state.routeName);
   }
 
   setSortOption(sortOption) {
@@ -599,6 +618,7 @@ class GroupsScreen extends Component {
       filterModalOpen: false,
     });
     this.setNewFilteredGroups(filteredGroups);
+    this.props.addToast('Applied Groups Filter', this.props.navigation.state.routeName);
   }
 
   setNewFilteredGroups(changedGroups) {
@@ -705,6 +725,10 @@ class GroupsScreen extends Component {
         {this.deleteGroupModal()}
         {this.deleteUserModal()}
         {this.checkErr(groupsStateErr)}
+        <Toast
+          ref={ele => this.toast = ele}
+          style={toastWrapper}
+        />
       </View>
     );
   }
@@ -763,10 +787,13 @@ const mapStateToProps = state => (
   {
     groupsState: state.groups,
     usersState: state.users,
+    toastsState: state.toasts,
   }
 );
 const mapDispatchToProps = dispatch => (
   {
+    clearToast: () => dispatch(clearToast()),
+    addToast: (message, screenName) => dispatch(addToast(message, screenName)),
     listGroups: () => dispatch(listGroups()),
     deleteGroup: user => dispatch(deleteGroup(user)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),
@@ -780,6 +807,8 @@ const mapDispatchToProps = dispatch => (
 GroupsScreen.propTypes = {
   navigation: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 
+  addToast: PropTypes.func.isRequired,
+  clearToast: PropTypes.func.isRequired,
   listGroups: PropTypes.func.isRequired,
   clearGroupsErr: PropTypes.func.isRequired,
   focusGroup: PropTypes.func.isRequired,
@@ -787,6 +816,10 @@ GroupsScreen.propTypes = {
   listAllUsers: PropTypes.func.isRequired,
   focusUser: PropTypes.func.isRequired,
 
+  toastsState: PropTypes.shape({
+    showingToast: PropTypes.bool.isRequired,
+    message: PropTypes.string.isRequired,
+  }).isRequired,
   groupsState: PropTypes.shape({
     groups: PropTypes.array,
     error: PropTypes.object,

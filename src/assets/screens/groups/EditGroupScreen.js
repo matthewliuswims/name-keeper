@@ -19,6 +19,10 @@ import {
   addMessage,
 } from '../../styles/base';
 
+import {
+  addToast,
+} from '../../../redux/actions/toasts';
+
 import { editGroup, listGroups, clearGroupsErr, deleteGroup, focusGroup } from '../../../redux/actions/groups';
 import { listAllUsers, clearUsersErr } from '../../../redux/actions/users';
 
@@ -123,6 +127,7 @@ class AddGroupScreen extends Component<Props> {
             NavigationActions.navigate({ routeName: 'GroupScreen' }),
           ],
         });
+        this.props.addToast('Edited Group', 'GroupScreen');
         this.props.navigation.dispatch(resetAction);
       } // else, we wait for the errModal to popup herea
     }
@@ -169,10 +174,11 @@ class AddGroupScreen extends Component<Props> {
 
   deleteGroup = async () => {
     await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
-    await this.props.navigation.navigate('GroupsScreen');
     this.props.listAllUsers();
     this.props.listGroups();
     this.setState({ deleteModalOpen: false });
+    this.props.addToast('Deleted Group', 'GroupsScreen');
+    await this.props.navigation.navigate('GroupsScreen');
   }
 
   deleteModal = () => {
@@ -222,6 +228,7 @@ class AddGroupScreen extends Component<Props> {
 
 const mapDispatchToProps = dispatch => (
   {
+    addToast: (message, screenName) => dispatch(addToast(message, screenName)),
     focusGroup: groupName => dispatch(focusGroup(groupName)),
     deleteGroup: user => dispatch(deleteGroup(user)),
     clearGroupsErr: () => dispatch(clearGroupsErr()),

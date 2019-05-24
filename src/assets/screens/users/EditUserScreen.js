@@ -15,6 +15,11 @@ import {
   focusUser,
 } from '../../../redux/actions/users';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
+
+import {
+  addToast,
+} from '../../../redux/actions/toasts';
+
 import {
   focusGroup,
 } from '../../../redux/actions/groups';
@@ -196,7 +201,6 @@ class EditUserScreen extends Component {
       initiaUserValue[desName] = val;
     });
 
-    console.log('initiaUserValue is', initiaUserValue);
     return initiaUserValue;
   }
 
@@ -280,6 +284,7 @@ class EditUserScreen extends Component {
       if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
+        this.props.addToast('Edited Person', 'GroupScreen');
         this.navigateToScreen(this.state.selectedGroupName);
       } // else, we wait for the errModal to popup here
     }
@@ -541,6 +546,7 @@ const mapStateToProps = state => (
 );
 const mapDispatchToProps = dispatch => (
   {
+    addToast: (message, screenName) => dispatch(addToast(message, screenName)),
     focusUser: user => dispatch(focusUser(user)),
     deleteUser: user => dispatch(deleteUser(user)),
     editUser: user => dispatch(editUser(user)),

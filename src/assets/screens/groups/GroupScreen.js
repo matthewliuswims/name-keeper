@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableHighlight, TouchableOpacity, Text } from 'react-native';
+import Toast from 'react-native-easy-toast';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -24,7 +25,13 @@ import {
   noGroupsContainer,
   addMessage,
   addHeader,
+  toastWrapper,
 } from '../../styles/base';
+
+import {
+  clearToast,
+  addToast,
+} from '../../../redux/actions/toasts';
 
 import UserBox from '../../components/users/UserBox';
 
@@ -73,6 +80,21 @@ class GroupScreen extends Component<Props> {
     this.props.navigation.setParams({ groupSubmit: this.groupSubmit });
   }
 
+  componentDidUpdate() {
+    // for toasts
+    const showToast = this.props.toastsState.showingToast;
+    if (!showToast) return;
+    const correctScreen = this.props.toastsState.screenName === this.props.navigation.state.routeName;
+    // have to check ref existence, because of https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
+    if (showToast && this.toasteroni && correctScreen) {
+      this.toasteroni.show(this.props.toastsState.message, 2000);
+      // i have no idea why I need a timeout (and a timeout that is 1000)
+      // but without it, the toast sometimes won't appear (if I go directly to the edit screen)
+      // from the header
+      setTimeout(() => this.props.clearToast(), 1000);
+    }
+  }
+
   static navigationOptions = ({ navigation }) => {
     // groupName is passed by navigateToScreen in adduserScreen
     const groupName = navigation.getParam('groupName') || navigation.getParam('getGroupName') || '';
@@ -103,6 +125,8 @@ class GroupScreen extends Component<Props> {
     await this.props.listAllUsers();
     await this.setState({ userDrawerFocused: null });
     await this.setState({ deleteUserModalOpen: false });
+
+    this.props.addToast('Deleted Person', this.props.navigation.state.routeName);
   }
 
   deleteUserModal = () => {
@@ -165,6 +189,7 @@ class GroupScreen extends Component<Props> {
     this.setState({
       sortByModalOpen: false,
     });
+    this.props.addToast(`Sorting by ${sortOption}`, this.props.navigation.state.routeName);
     this.setSortOption(sortOption);
   }
 
@@ -326,6 +351,11 @@ class GroupScreen extends Component<Props> {
         {this.sortOpen()}
         {this.deleteUserModal()}
         {this.checkErrUsrs(this.props.usersState.error)}
+        <Toast
+          amGroupScreen='zomggroupscreen'
+          ref={ele => this.toasteroni = ele}
+          style={toastWrapper}
+        />
       </View>
     );
   }
@@ -352,11 +382,14 @@ const mapStateToProps = state => (
   {
     groupsState: state.groups,
     usersState: state.users,
+    toastsState: state.toasts,
   }
 );
 
 const mapDispatchToProps = dispatch => (
   {
+    addToast: (message, screenName) => dispatch(addToast(message, screenName)),
+    clearToast: () => dispatch(clearToast()),
     listAllUsers: () => dispatch(listAllUsers()),
     deleteUser: user => dispatch(deleteUser(user)),
     focusUser: user => dispatch(focusUser(user)),

@@ -12,6 +12,15 @@ export const sectionHeader = {
   headerLayoutPreset: 'center',
 };
 
+export const toastWrapper = {
+  width: wp('96%'),
+  bottom: hp('14%'),
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  padding: 8,
+};
+
 export const modalHeader = {
   fontWeight: 'bold',
   fontSize: 20,
@@ -78,7 +87,7 @@ export const loadingContainer = {
 
 export const deleteContainer = {
   marginTop: hp('5%'),
-  backgroundColor: 'red',
+  backgroundColor: colors.warningColor,
   justifyContent: 'center',
   alignItems: 'center',
   padding: 10,
