@@ -114,7 +114,7 @@ export default class GroupsDB extends React.Component {
     }
 
     parsedSQLError = (err, overrides = null) => {
-      // getMessage will usually just return the default generic messsage
+      // 0 will usually just return the default generic messsage
       // that is unless there's an overrides sql object.
       const errMsg = getMessage(err, overrides);
       // known error messages for group-related errors.
@@ -130,24 +130,21 @@ export default class GroupsDB extends React.Component {
     async addGroup(groupName) {
       const timeGroupAdded = new Date();
       let groups;
+      let nextGrpColor;
 
       try {
         groups = await this.listGroups();
+        const groupColors = groups.map(group => group.color);
+        nextGrpColor = nextColor(groupColors);
       } catch (e) {
-        throw e;
+        // get correct super fatal error and log it.
+        Sentry.captureException(e);
+        throw Error(PLACE_HOLDER_DEFAULT.message);
       }
 
       if (groups.length >= GROUP_NUMBER_LIMIT) {
         throw new Error(MAXIMUM_GROUP_SIZE.message);
       }
-
-      const groupColors = [];
-
-      for (const group of groups) {
-        groupColors.push(group.color);
-      }
-
-      const nextGrpColor = nextColor(groupColors);
 
       return new Promise((resolve, reject) => {
         GroupsDB.singletonInstance.dbConnection.transaction(

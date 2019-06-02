@@ -2,6 +2,9 @@
 
 import colorPalette from '../assets/styles/colors';
 
+// NOTE: anytime I make one change to the colors,
+// I need to create a new version!
+
 const colors = [
   colorPalette.firstGroupColor,
   colorPalette.secondGroupColor,
@@ -13,16 +16,35 @@ const colors = [
   colorPalette.eighthGroupColor,
 ];
 
+const versionOneColors = [
+  colorPalette.versionOneFirstGroupColor,
+  colorPalette.versionOneSecondGroupColor,
+  colorPalette.versionOneThirdGroupColor,
+  colorPalette.versionOneFourthGroupColor,
+  colorPalette.versionOneFifthGroupColor,
+  colorPalette.versionOneSixthGroupColor,
+  colorPalette.versionOneSeventhGroupColor,
+  colorPalette.versionOneEighthGroupColor,
+];
+
+// NOTE: order matters. Most recent version should always be first
+export const arrayOfVersions = [
+  colors,
+  versionOneColors,
+];
+
 /**
- * helper func for nextColor()
+ * helper func for nextColor().
  * @param {string[]} groupColors - CURRENT colors of all the groups (unordered from redux)
  *   @example ['silver','red','yellow']
+ * @param {string[]} colorVersion - the 8 colors of all the groups
+ *   @example versionOneColors or coloors
  * @return {string[]} - groupColors are now ordered by position (based on above colorsToPosition mapping)
  *   @example ['red', 'silver', 'yellow']
  */
-function orderColors(groupColors) {
+function orderColors(groupColors, colorVersion) {
   const orderedColors = groupColors.slice().sort((a, b) => {
-    return colors.findIndex(color => color === a) - colors.findIndex(color => color === b);
+    return colorVersion.findIndex(color => color === a) - colorVersion.findIndex(color => color === b);
   });
 
   return orderedColors;
@@ -37,10 +59,23 @@ function orderColors(groupColors) {
  * @returns {string} next group color for a NEW group
  */
 export function nextColor(groupColors) {
-  const groupColorsOrdered = orderColors(groupColors);
-  for (let i = 0; i < colors.length; i++) {
-    if (colors[i] !== groupColorsOrdered[i]) {
-      return colors[i];
+  // colorVersion is an array @example versionOneColors
+  // if groupsColors is empty, then we'll take the first arrayOfVersions
+  const colorVersion = arrayOfVersions.find((colVersion) => {
+    // check to see if colVersion includes all the groupColors
+    return groupColors.every(grpColor => colVersion.includes(grpColor));
+  });
+
+  if (!colorVersion) {
+    // UI should not actually see this message
+    throw Error(`FATAL: Color version could not be determined with these versions: ${arrayOfVersions}; and these group colors: ${groupColors}`);
+  }
+
+  const groupColorsOrdered = orderColors(groupColors, colorVersion);
+
+  for (let i = 0; i < colorVersion.length; i++) {
+    if (colorVersion[i] !== groupColorsOrdered[i]) {
+      return colorVersion[i];
     }
   }
 }

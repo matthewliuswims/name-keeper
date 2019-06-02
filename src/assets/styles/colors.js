@@ -20,4 +20,14 @@ export default {
   sixthGroupColor: 'orchid', // pinkish
   seventhGroupColor: 'darkorange',
   eighthGroupColor: 'lightsteelblue',
+
+  // old colors
+  versionOneFirstGroupColor: 'red',
+  versionOneSecondGroupColor: 'purple',
+  versionOneThirdGroupColor: 'forestgreen',
+  versionOneFourthGroupColor: 'coral',
+  versionOneFifthGroupColor: 'silver',
+  versionOneSixthGroupColor: 'yellow',
+  versionOneSeventhGroupColor: 'violet',
+  versionOneEighthGroupColor: 'mediumvioletred',
 };
