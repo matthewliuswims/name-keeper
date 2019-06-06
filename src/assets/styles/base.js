@@ -100,24 +100,41 @@ export const deleteText = {
   fontWeight: 'bold',
 };
 
-export const topRightTextButtonContainer = {
-  paddingTop: hp('0.5%'),
-  paddingBottom: hp('0.5%'),
-  paddingLeft: wp('1%'),
-  paddingRight: wp('1%'),
+
+export const topRightTextButtonContainerSolo = {
+  paddingTop: 8,
+  paddingBottom: 8,
+  paddingLeft: 16,
+  paddingRight: 16,
 
   backgroundColor: '#00000000',
   color: 'white',
 };
 
-export const topRightTextButtonContainerSolo = {
-  paddingTop: hp('0.5%'),
-  paddingBottom: hp('0.5%'),
-  paddingLeft: wp('3%'),
-  paddingRight: wp('3%'),
+export const togglePeopleGroupsWrapper = {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingTop: 2,
+  paddingBottom: 2,
+  paddingLeft: 16,
+  paddingRight: 16,
+};
+
+export const topRightTextButtonContainer = {
+  paddingTop: 2,
+  paddingBottom: 2,
+  paddingLeft: 8,
+  paddingRight: 8,
 
   backgroundColor: '#00000000',
   color: 'white',
+};
+
+export const headerButtonWrapper = {
+  paddingTop: 8,
+  paddingBottom: 8,
+  paddingLeft: 8,
+  paddingRight: 8,
 };
 
 export const topRightButtonText = {
@@ -145,7 +162,7 @@ export const horizontalGroupScreenButton = {
 
 export const addGroupButton = {
   backgroundColor: colors.addApplyColor,
-  padding: wp('3%'),
+  padding: 14,
   width: wp('80%'),
   flexDirection: 'row',
   justifyContent: 'center',
@@ -167,12 +184,6 @@ export const footerBottomDimensions = {
   marginBottom: hp('3%'),
 };
 
-// user in conjunction with contents
-export const footerSection = {
-  paddingTop: hp('3%'),
-  paddingBottom: hp('3%'),
-  flex: 1,
-};
 
 export const innardsStyleContainer = {
   flex: 1,
@@ -198,7 +209,6 @@ export const circularGroupIcon = {
 };
 
 export const addGroupButtonText = {
-  fontSize: hp('2%'),
   fontWeight: 'bold',
   color: 'white',
 };
@@ -304,20 +314,6 @@ export const groupTextStyle = {
   color: colors.subTextColor,
 };
 
-export const headerButtonWrapper = {
-  paddingTop: hp('0.5%'),
-  paddingBottom: hp('0.5%'),
-  paddingLeft: wp('3%'),
-  paddingRight: wp('3%'),
-};
-
-export const togglePeopleGroupsWrapper = {
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingLeft: wp('3%'),
-  paddingRight: wp('3%'),
-};
-
 export const rightDrawerOpenValue = -140;
 
 export const editRightSlot = {
@@ -376,15 +372,10 @@ export const otherGroupSelection = {
 };
 
 export const sortFilterWrapper = {
-  padding: 5,
+  padding: 10,
   flexDirection: 'row',
   justifyContent: 'start',
   alignItems: 'center',
-};
-
-
-export const sortFilterIcon = {
-  padding: 2,
 };
 
 export const sortFilterRow = {

@@ -20,7 +20,6 @@ export default class SortIcon extends React.Component {
           <Icon
             name='sort'
             color={colors.subTextColor}
-            containerStyle={sortFilterIcon}
           />
           <Text style={sortFilterIconText}>Sort</Text>
         </View>

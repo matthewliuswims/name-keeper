@@ -65,8 +65,12 @@ class EditUserScreen extends Component {
       name: tComb.String,
       location: tComb.maybe(tComb.String),
     };
-    this.initialDescriptionNames().forEach((name) => {
-      formFields[name] = tComb.String;
+    this.initialDescriptionNames().forEach((name, index) => {
+      if (index === 0) {
+        formFields[name] = tComb.String;
+      } else {
+        formFields[name] = tComb.maybe(tComb.String);
+      }
     });
     return formFields;
   }
@@ -101,8 +105,8 @@ class EditUserScreen extends Component {
         error: 'Description is required',
         config: {
           id: descriptorName,
-          isFirst: false, // will update in this function
-          isLast: false, // will update in this function
+          isFirst: false, // will update at the end of this function
+          isLast: false, // will update at the end of this function
           addDescription: this.addDescription.bind(this),
           removeDescription: this.removeDescription.bind(this),
         },
@@ -142,6 +146,8 @@ class EditUserScreen extends Component {
 
       // update formFields
       const formFields = Object.assign({}, prevState.formFields);
+      // make the first formFormDescriptionId required
+      formFields[firstID] = tComb.String;
       delete formFields[descriptionID];
 
       return {
@@ -179,7 +185,7 @@ class EditUserScreen extends Component {
 
       options.fields[descriptionID] = descriptionField;
       const formFields = Object.assign({}, prevState.formFields);
-      formFields[descriptionID] = tComb.String;
+      formFields[descriptionID] = tComb.maybe(tComb.String); // notice here it's a maybe
 
       const descriptionIDs = prevDescriptionIDs.concat(descriptionID);
       return {
@@ -266,7 +272,8 @@ class EditUserScreen extends Component {
       const { descriptionIDs } = this.state;
       for (const descriptionID of descriptionIDs) {
         const description = userStruct[descriptionID];
-        descriptions.push(description.trim());
+        // cause it's possible for a description to a blank field, we make a check to not include those
+        if (description) descriptions.push(description.trim());
       }
 
       const user = {

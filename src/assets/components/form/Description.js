@@ -56,7 +56,7 @@ const Description = (locals) => {
         onPress={locals.config.addDescription}
         style={styles.actionContainer}
       >
-        <Ionicons name="ios-add" size={30} />
+        <Icon name="add" size={24} />
       </TouchableOpacity>
     )
     : (
@@ -64,12 +64,12 @@ const Description = (locals) => {
         onPress={() => locals.config.removeDescription(locals.config.id)}
         style={styles.actionContainer}
       >
-        <Ionicons name="ios-remove" size={30} />
+        <Icon name="remove" size={24} />
       </TouchableOpacity>
     );
 
   return (
-    <View style={[formGroupStyle, styles.test]}>
+    <View style={formGroupStyle}>
       {locals.config.isFirst && label}
       <View style={styles.descriptionBox}>
         {actionButton}
@@ -127,13 +127,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   actionContainer: {
+    paddingTop: 10,
+    paddingBottom: 12,
+    paddingLeft: 8,
+    paddingRight: 14,
     alignContent: 'center',
     justifyContent: 'center',
-    marginBottom: 5,
-    marginRight: 10,
   },
   descriptionBox: {
-    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
   },
 });

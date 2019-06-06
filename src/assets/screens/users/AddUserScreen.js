@@ -114,6 +114,8 @@ class AddUserScreen extends Component {
       // update formFields
       const formFields = Object.assign({}, prevState.formFields);
       delete formFields[descriptionID];
+      // make the first formFormDescriptionId required
+      formFields[firstID] = tComb.String;
 
       return {
         formFields,
@@ -150,7 +152,7 @@ class AddUserScreen extends Component {
 
       options.fields[descriptionID] = descriptionField;
       const formFields = Object.assign({}, prevState.formFields);
-      formFields[descriptionID] = tComb.String;
+      formFields[descriptionID] = tComb.maybe(tComb.String); // notice here it's a maybe
 
       const descriptionIDs = prevDescriptionIDs.concat(descriptionID);
       return {
@@ -219,7 +221,8 @@ class AddUserScreen extends Component {
       const { descriptionIDs } = this.state;
       for (const descriptionID of descriptionIDs) {
         const description = userStruct[descriptionID];
-        descriptions.push(description.trim());
+        // cause it's possible for a description to a blank field, we make a check to not include those
+        if (description) descriptions.push(description.trim());
       }
 
       const user = {

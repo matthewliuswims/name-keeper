@@ -20,7 +20,6 @@ export default class FilterIcon extends React.Component {
           <Icon
             name='filter-list'
             color={colors.subTextColor}
-            containerStyle={sortFilterIcon}
           />
           <Text style={sortFilterIconText}>Filter</Text>
         </View>

@@ -17,7 +17,7 @@ export default class GroupMenu extends React.Component {
           <Icon
             name='more-vert'
             color='white'
-            iconStyle={headerButtonWrapper}
+            iconStyle={[headerButtonWrapper, { marginLeft: 8, marginRight: 6 }]}
           />
         </MenuTrigger>
         <MenuOptions>
