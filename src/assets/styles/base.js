@@ -167,7 +167,7 @@ export const addGroupButton = {
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  borderRadius: 14, // not too hard this?
+  borderRadius: 14,
   borderColor: '#979797',
   shadowColor: '#979797',
   shadowOpacity: 0.8,
@@ -381,7 +381,6 @@ export const sortFilterWrapper = {
 export const sortFilterRow = {
   marginBottom: 10,
   display: 'flex',
-  // flex: 1,
   flexDirection: 'row',
 };
 
