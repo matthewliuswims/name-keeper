@@ -1,5 +1,4 @@
 // @tutorial https://medium.com/@tommylackemann/managing-styles-in-react-native-3546d3482d73
-
 // @tutorial https://medium.com/react-native-training/build-responsive-react-native-views-for-any-device-and-support-orientation-change-1c8beba5bc23
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import RF from 'react-native-responsive-fontsize';
