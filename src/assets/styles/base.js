@@ -1,7 +1,6 @@
 // @tutorial https://medium.com/@tommylackemann/managing-styles-in-react-native-3546d3482d73
 // @tutorial https://medium.com/react-native-training/build-responsive-react-native-views-for-any-device-and-support-orientation-change-1c8beba5bc23
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import RF from 'react-native-responsive-fontsize';
 
 import colors from './colors';
 
@@ -266,8 +265,8 @@ export const groupBoxContainer = {
 };
 
 export const groupIconNameContainerEditAddUser = {
-  paddingTop: hp('0.5%'),
-  paddingBottom: hp('0.5%'),
+  paddingTop: 15,
+  paddingBottom: 15,
   flexDirection: groupIconNameContainer.flexDirection,
 };
 
@@ -334,11 +333,6 @@ export const deleteRightSlot = {
   alignItems: 'center',
 };
 
-export const deleteRightSlotText = {
-  color: 'white',
-  fontWeight: 'bold',
-};
-
 export const userContainerStyle = {
   paddingTop: 10,
   paddingBottom: 10,
@@ -389,14 +383,14 @@ export const sortFilterIconText = {
 };
 
 export const addMessage = {
-  fontSize: RF(2.8),
+  fontSize: 18,
   textAlign: 'center',
   marginTop: 30,
 };
 
 export const addHeader = {
   fontWeight: 'bold',
-  fontSize: RF(4),
+  fontSize: 22,
   textAlign: 'center',
   marginTop: 10,
 };

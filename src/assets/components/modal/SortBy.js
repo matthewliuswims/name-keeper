@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
-import RF from 'react-native-responsive-fontsize';
 
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Icon } from 'react-native-elements';
 
 import colors from '../../styles/colors';
@@ -106,8 +105,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: hp('1.5%'),
-  },
-  styleOption: {
-    fontSize: RF(2.5),
   },
 });

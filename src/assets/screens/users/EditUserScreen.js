@@ -414,6 +414,7 @@ class EditUserScreen extends Component {
    * @param {Array<Object>} allGroups - unordered groups from groups redux
    */
   selectedGroupUI(allGroups) {
+    const { groupDropdownOpen } = this.state;
     return (
       <TouchableOpacity
         style={initialGroupSelection}
@@ -424,13 +425,15 @@ class EditUserScreen extends Component {
         }
         }
       >
-        <View style={groupIconNameContainerEditAddUser}>
-          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
-          <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+        <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+          <View style={groupIconNameContainerEditAddUser}>
+            <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
+            <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+          </View>
+          <Icon
+            name={groupDropdownOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+          />
         </View>
-        <Icon
-          name='keyboard-arrow-down'
-        />
       </TouchableOpacity>
     );
   }
@@ -503,7 +506,9 @@ class EditUserScreen extends Component {
         enabled
         keyboardVerticalOffset={80}
       >
-        <ScrollView>
+        <ScrollView
+          keyboardShouldPersistTaps='handled'
+        >
           <TouchableWithoutFeedback
             onPress={() => {
               this.setState({

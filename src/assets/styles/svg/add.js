@@ -1,9 +1,9 @@
 /* eslint no-eval: 0 indent: 0 */
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../colors';
 import { footerBottomDimensions } from '../base';
 
-export const addSvgHeightOrWidth = wp('16%');
+export const addSvgHeightOrWidth = wp('18%') > 100 ? 100 : wp('18%');
 
 // CIRCLE
 const circlecxAsNum = eval(`0.5 * ${addSvgHeightOrWidth}`);

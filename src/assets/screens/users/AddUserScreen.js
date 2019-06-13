@@ -302,8 +302,10 @@ class AddUserScreen extends Component {
    * @return selection UI for 'other' groups in the dropdown
    */
   otherGroupsDropdown(allGroups) {
-    const otherGroups = allGroups.filter(group => group.name !== this.state.selectedGroupName);
-    if (!this.state.groupDropdownOpen) {
+    const { groupDropdownOpen, selectedGroupName } = this.state;
+
+    const otherGroups = allGroups.filter(group => group.name !== selectedGroupName);
+    if (!groupDropdownOpen) {
       return null; // if not open, don't show a dropdown
     }
 
@@ -362,6 +364,7 @@ class AddUserScreen extends Component {
    * @param {Array<Object>} allGroups - unordered groups from groups redux
    */
   selectedGroupUI(allGroups) {
+    const { groupDropdownOpen } = this.state;
     return (
       <TouchableOpacity
         style={initialGroupSelection}
@@ -372,13 +375,15 @@ class AddUserScreen extends Component {
         }
         }
       >
-        <View style={groupIconNameContainerEditAddUser}>
-          <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
-          <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+        <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', flex: 1 }}>
+          <View style={groupIconNameContainerEditAddUser}>
+            <View style={this.getCircularColorStyle(getGroupColor(this.state.selectedGroupName, allGroups))} />
+            <Text numberOfLines={1}> {this.state.selectedGroupName} </Text>
+          </View>
+          <Icon
+            name={groupDropdownOpen ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
+          />
         </View>
-        <Icon
-          name='keyboard-arrow-down'
-        />
       </TouchableOpacity>
     );
   }
@@ -409,7 +414,9 @@ class AddUserScreen extends Component {
         enabled
         keyboardVerticalOffset={80}
       >
-        <ScrollView>
+        <ScrollView
+          keyboardShouldPersistTaps='handled'
+        >
           <TouchableWithoutFeedback
             onPress={() => {
               this.setState({
@@ -424,6 +431,7 @@ class AddUserScreen extends Component {
                 value={this.state.value}
                 onChange={this.onChange}
                 options={this.state.options}
+                keyboardShouldPersistTaps='handled'
               />
               <Text style={styles.groupText}> Group </Text>
               {this.groupsSection(allGroups)}

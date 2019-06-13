@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import RF from 'react-native-responsive-fontsize';
 
 import nameOfApp from '../../../lib/variables';
 
@@ -56,12 +55,11 @@ const styles = StyleSheet.create({
   },
   headerQuestionText: {
     fontWeight: 'bold',
-    fontSize: RF(3),
+    fontSize: 18,
     marginBottom: hp('3%'),
     marginTop: hp('3%'),
   },
   AnswerText: {
-    fontSize: RF(2),
     marginBottom: hp('1%'),
   },
 });

@@ -29,9 +29,7 @@ import {
   userContainerStyle,
   rightDrawerOpenValue,
   editRightSlot,
-  editRightSlotText,
   deleteRightSlot,
-  deleteRightSlotText,
   rowUserBack,
   sortFilterRow,
   logoWrapper,
@@ -521,7 +519,14 @@ class GroupsScreen extends Component {
                 });
               }}
             >
-              <Text style={editRightSlotText}>EDIT</Text>
+              <Icon
+                name='edit'
+                color='white'
+                size={35}
+                iconStyle={{
+                  padding: 10,
+                }}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={deleteRightSlot}
@@ -531,7 +536,14 @@ class GroupsScreen extends Component {
                 this.openUserDeleteModal();
               }}
             >
-              <Text style={deleteRightSlotText}>DELETE</Text>
+              <Icon
+                name='delete'
+                color='white'
+                size={35}
+                iconStyle={{
+                  padding: 10,
+                }}
+              />
             </TouchableOpacity>
           </View>
         )}

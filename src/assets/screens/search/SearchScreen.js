@@ -87,7 +87,9 @@ class SearchScreen extends React.Component {
         enabled
         style={{ flex: 1 }}
       >
-        <ScrollView>
+        <ScrollView
+          keyboardShouldPersistTaps='handled'
+        >
           <SearchBar
             ref={function (ref) {
               this.searchBar = ref;

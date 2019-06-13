@@ -5,6 +5,8 @@ import Toast from 'react-native-easy-toast';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
+import { Icon } from 'react-native-elements';
+
 import { connect } from 'react-redux';
 
 import { parseToShortDate } from '../../../lib/dates';
@@ -16,9 +18,7 @@ import {
   userContainerStyle,
   rightDrawerOpenValue,
   editRightSlot,
-  editRightSlotText,
   deleteRightSlot,
-  deleteRightSlotText,
   rowUserBack,
   sortFilterRow,
   logoWrapper,
@@ -280,7 +280,14 @@ class GroupScreen extends Component<Props> {
                 });
               }}
             >
-              <Text style={editRightSlotText}>EDIT</Text>
+              <Icon
+                name='edit'
+                color='white'
+                size={35}
+                iconStyle={{
+                  padding: 10,
+                }}
+              />
             </TouchableOpacity>
             <TouchableOpacity
               style={deleteRightSlot}
@@ -290,7 +297,14 @@ class GroupScreen extends Component<Props> {
                 this.openUserDeleteModal();
               }}
             >
-              <Text style={deleteRightSlotText}>DELETE</Text>
+              <Icon
+                name='delete'
+                color='white'
+                size={35}
+                iconStyle={{
+                  padding: 10,
+                }}
+              />
             </TouchableOpacity>
           </View>
         )}

@@ -108,7 +108,7 @@ const Description = (locals) => {
             onChangeText={value => locals.onChange(value)}
             onChange={locals.onChangeNative}
             placeholder={locals.placeholder}
-            style={textboxStyle}
+            style={[textboxStyle, styles.textboxstyle]}
             value={locals.value}
             testID={locals.testID}
             textContentType={locals.textContentType}
@@ -127,10 +127,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   actionContainer: {
-    paddingTop: 10,
-    paddingBottom: 12,
-    paddingLeft: 8,
-    paddingRight: 14,
+    paddingTop: 16,
+    paddingBottom: 20,
+    paddingLeft: 12,
+    paddingRight: 18,
     alignContent: 'center',
     justifyContent: 'center',
   },
