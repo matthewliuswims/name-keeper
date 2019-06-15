@@ -39,6 +39,7 @@ class SearchScreen extends React.Component {
   users() {
     return (
       <FlatList
+        keyboardShouldPersistTaps='always'
         data={this.state.results}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -88,7 +89,7 @@ class SearchScreen extends React.Component {
         style={{ flex: 1 }}
       >
         <ScrollView
-          keyboardShouldPersistTaps='handled'
+          keyboardShouldPersistTaps='always'
         >
           <SearchBar
             ref={function (ref) {
