@@ -12,12 +12,12 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^33.0.0",
+    "expo": "^32.0.0",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
-    "react": "16.8.3",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-easy-toast": "^1.2.0",
     "react-native-elements": "^1.0.0-beta7",
     "react-native-modal": "^9.0.0",
@@ -26,12 +26,12 @@
     "react-native-searchbar": "^1.15.0",
     "react-native-swipe-list-view": "^1.5.3",
     "react-native-vector-icons": "^6.1.0",
-    "react-navigation": "^3.11.0",
+    "react-navigation": "^3.0.9",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "sentry-expo": "~1.13.0",
+    "sentry-expo": "^1.11.0",
     "tcomb-form-native": "matthewliuswims/tcomb-form-native#should-component-update-removal"
   },
   "devDependencies": {
@@ -42,7 +42,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
-    "jest-expo": "^33.0.0",
+    "jest-expo": "^33.0.2",
     "react-native-svg-transformer": "^0.13.0"
   },
   "private": true
