@@ -4,6 +4,29 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 
 import colors from './colors';
 
+export const addSvgHeightOrWidth = wp('14%') > 100 ? 100 : wp('14%');
+
+export const footerBottomDimensions = {
+  marginRight: wp('6%'),
+  marginBottom: hp('3%'),
+};
+
+export const addContainer = {
+  borderRadius: 0.71 * addSvgHeightOrWidth, // @TODO: how to make it circular?
+  padding: 0.14 * addSvgHeightOrWidth,
+  backgroundColor: colors.appThemeColor,
+  marginRight: footerBottomDimensions.marginRight,
+  marginBottom: footerBottomDimensions.marginBottom,
+
+  shadowColor: 'black',
+  shadowOffset: {
+    width: 0,
+    height: 6,
+  },
+  shadowRadius: 2.5,
+  shadowOpacity: 0.5,
+};
+
 export const sectionHeader = {
   color: 'white',
   backgroundColor: colors.appThemeColor,
@@ -177,12 +200,6 @@ export const addGroupButton = {
 };
 
 
-export const footerBottomDimensions = {
-  marginRight: wp('6%'),
-  marginBottom: hp('3%'),
-};
-
-
 export const innardsStyleContainer = {
   flex: 1,
   flexDirection: 'row',
@@ -190,7 +207,8 @@ export const innardsStyleContainer = {
 };
 
 export const groupIconContainer = {
-  marginTop: hp('1%'),
+  marginTop: 6,
+  padding: 2,
 };
 
 export const checkBoxBase = {

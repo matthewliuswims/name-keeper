@@ -2,16 +2,23 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
+
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+
 import { Svg } from 'expo';
+
+
+import AddGroup from '../../../../assets/add-group.svg';
+import AddUser from '../../../../assets/add-user.svg';
+
 import colors from '../../styles/colors';
 
 import {
-  addGroupButtonText,
-  addGroupButton,
+  addSvgHeightOrWidth,
+  addContainer,
 } from '../../styles/base';
 
 import {
-  addSvgHeightOrWidth,
   // circle
   circlecx,
   circlecy,
@@ -25,7 +32,6 @@ import {
   addPolygonHorizontalLine,
   addPolygonVerticalLine,
 
-  addContainer,
 } from '../../styles/svg/add';
 
 const { Circle, Polygon } = Svg;
@@ -37,12 +43,12 @@ class Footer extends React.Component {
   render() {
     if (this.props.addGroupCB) {
       return (
-        <View elevation={5} style={styles.addGroupContainer}>
+        <View style={styles.container}>
           <TouchableOpacity
+            style={addContainer}
             onPress = {this.props.addGroupCB}
-            style={addGroupButton}
           >
-            <Text style={addGroupButtonText}>Add Group</Text>
+            <AddGroup width={addSvgHeightOrWidth} height={addSvgHeightOrWidth} />
           </TouchableOpacity>
         </View>
       );
@@ -54,37 +60,7 @@ class Footer extends React.Component {
           style={addContainer}
           onPress = {this.props.navigateToAddUserScreen}
         >
-          <Svg
-            height={addSvgHeightOrWidth}
-            width={addSvgHeightOrWidth}
-          >
-            <Circle
-              cx={circlecx}
-              cy={circlecy}
-              r={radiusCircle}
-              fill={circleFill}
-            />
-            <Circle
-              cx={circlecx}
-              cy={circlecy}
-              r={radiusCircle}
-              stroke={circleBorderStroke}
-              fill={cirlceBorderfill} // transparent
-              stroke-width={circleBorderStrokeWidth}
-            />
-            <Polygon
-              points = {addPolygonHorizontalLine}
-              stroke="white"
-              strokeWidth="3"
-              fill={colors.appThemeColor}
-            />
-            <Polygon
-              points = {addPolygonVerticalLine}
-              stroke="white"
-              strokeWidth="3"
-              fill={colors.appThemeColor}
-            />
-          </Svg>
+          <AddUser width={addSvgHeightOrWidth} height={addSvgHeightOrWidth} />
         </TouchableOpacity>
       </View>
     );

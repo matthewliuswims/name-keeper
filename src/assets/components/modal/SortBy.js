@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, TouchableOpacity, StyleSheet, View, FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Icon } from 'react-native-elements';
 
 import colors from '../../styles/colors';
@@ -104,6 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: hp('1.5%'),
+    marginTop: 6,
+    padding: 2,
   },
 });

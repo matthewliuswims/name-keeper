@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>Add Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Add-Group" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="plus" transform="translate(23.000000, 25.000000)" fill="#FFFFFF" stroke="#FFFFFF" stroke-linecap="round">
+            <polygon id="Path-2" transform="translate(27.000000, 26.500000) rotate(90.000000) translate(-27.000000, -26.500000) " points="24 0 30 0 30 53 24 53"></polygon>
+            <polygon id="Path-2" points="24 0 30 0 30 53 24 53"></polygon>
+        </g>
+        <g id="person" transform="translate(63.000000, 12.000000)" fill="#FFFFFF" stroke="#FFFFFF">
+            <ellipse id="Oval" cx="10.4761905" cy="6.52173913" rx="6.28571429" ry="6.52173913"></ellipse>
+            <path d="M11,25 C17.0751322,25 22,25 22,25 C22,25 17.0751322,14.1304348 11,14.1304348 C4.92486775,14.1304348 0,25 0,25 C0,25 4.92486775,25 11,25 Z" id="Oval"></path>
+        </g>
+        <g id="faded-person" transform="translate(83.000000, 12.000000)" fill="#FFFFFF" stroke="#FFFFFF">
+            <path d="M2.28571429,13.0434783 C6.07280971,13.0434783 9.14285714,10.1235962 9.14285714,6.52173913 C9.14285714,2.91988207 6.07280971,0 2.28571429,0 C-1.50138114,0 3.24330357,3.13430122 3.24330357,6.73615829 C3.24330357,10.3380154 -1.50138114,13.0434783 2.28571429,13.0434783 Z" id="Oval"></path>
+            <path d="M7.21428571,25 C14.8822223,25 14.9188058,25 14.9188058,25 C14.9188058,25 12.9514187,15.8349079 5.28348214,15.8349079 C3.69883813,15.8349079 2.52916601,15.6818435 2.85714286,16.2666653 C2.528889,16.742077 4.8115481,17.6599452 5.71428571,19.5652174 C6.76721752,21.7874818 6.51613636,25 6.85714286,25 C6.85714286,25 7.47073274,25 8.45762013,25 C15.4977679,25 2.64886149,25 7.21428571,25 Z" id="Oval"></path>
+        </g>
+    </g>
+</svg>

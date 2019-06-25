@@ -67,13 +67,16 @@ ${line2XPoint2} ${line2YPoint2}
 `;
 
 export const addContainer = {
+  borderRadius: wp('10%'), // @TODO: how to make it circular?
+  padding: wp('2%'),
+  backgroundColor: colors.appThemeColor,
   marginRight: footerBottomDimensions.marginRight,
   marginBottom: footerBottomDimensions.marginBottom,
 
   shadowColor: 'black',
   shadowOffset: {
     width: 0,
-    height: 3,
+    height: 6,
   },
   shadowRadius: 2.5,
   shadowOpacity: 0.5,
