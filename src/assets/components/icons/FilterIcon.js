@@ -5,7 +5,6 @@ import { Icon } from 'react-native-elements';
 import {
   sortFilterWrapper,
   sortFilterIconText,
-  sortFilterIcon,
 } from '../../styles/base';
 
 import colors from '../../styles/colors';

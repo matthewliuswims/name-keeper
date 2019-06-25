@@ -366,7 +366,6 @@ class GroupScreen extends Component<Props> {
         {this.deleteUserModal()}
         {this.checkErrUsrs(this.props.usersState.error)}
         <Toast
-          amGroupScreen='zomggroupscreen'
           ref={ele => this.toasteroni = ele}
           style={toastWrapper}
         />

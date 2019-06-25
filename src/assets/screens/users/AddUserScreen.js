@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFee
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
+import { cloneDeep } from 'lodash';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -65,6 +66,7 @@ class AddUserScreen extends Component {
             placeholder: 'Person\'s name',
             error: 'Please enter a name',
             autoCorrect: false,
+            stylesheet: tCombFormStyleSheetClone,
           },
           description0: {
             template: DescriptionTemplate,
@@ -239,7 +241,11 @@ class AddUserScreen extends Component {
       if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
-        this.props.addToast('Added Person', 'GroupScreen');
+
+        const { navigation } = this.props;
+        const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
+
+        this.props.addToast('Added Person', navigatedFromUsersScreen ? 'GroupsScreen' : 'GroupScreen');
         this.navigateToScreen(this.state.selectedGroupName);
       } // else, we wait for the errModal to popup here
     }

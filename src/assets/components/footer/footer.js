@@ -1,40 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-
-
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-
-import { Svg } from 'expo';
-
 
 import AddGroup from '../../../../assets/add-group.svg';
 import AddUser from '../../../../assets/add-user.svg';
 
-import colors from '../../styles/colors';
 
 import {
   addSvgHeightOrWidth,
   addContainer,
 } from '../../styles/base';
 
-import {
-  // circle
-  circlecx,
-  circlecy,
-  radiusCircle,
-  circleFill,
-  // circle border
-  circleBorderStroke,
-  cirlceBorderfill,
-  circleBorderStrokeWidth,
-
-  addPolygonHorizontalLine,
-  addPolygonVerticalLine,
-
-} from '../../styles/svg/add';
-
-const { Circle, Polygon } = Svg;
 
 /**
  * this footer always assumes there will always be a sort and add button. only the filter button is optional
