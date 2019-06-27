@@ -69,6 +69,15 @@ export const container = {
   paddingRight: wp('4.5%'),
 };
 
+export const containerNoList = {
+  flex: container.flex,
+  paddingTop: container.paddingTop,
+  backgroundColor: container.backgroundColorpaddingTop,
+  paddingLeft: container.paddingLeft,
+  paddingRight: container.paddingRight,
+  paddingBottom: container.paddingTop,
+};
+
 export const modalContainer = {
   backgroundColor: 'white',
   padding: 30,

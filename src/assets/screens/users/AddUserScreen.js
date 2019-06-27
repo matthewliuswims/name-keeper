@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView, TextInput } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { cloneDeep } from 'lodash';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -25,7 +33,7 @@ import DescriptionTemplate from '../../components/form/Description';
 import ErrorModal from '../../components/modal/Error';
 
 import {
-  container,
+  containerNoList,
   groupIconNameContainerEditAddUser,
   topRightTextButtonContainerSolo,
   topRightButtonText,
@@ -43,6 +51,7 @@ const noOp = () => { console.log('please try again in a second'); }; // eslint-d
 class AddUserScreen extends Component {
   constructor(props) {
     super(props);
+    this.optionsFields = this.optionsFields.bind(this);
     this.state = {
       // should never be less than 1 length
       descriptionIDs: ['description0'],
@@ -58,7 +67,7 @@ class AddUserScreen extends Component {
     };
   }
 
-  optionsFields = () => {
+  optionsFields() {
     return (
       {
         fields: {
@@ -66,7 +75,6 @@ class AddUserScreen extends Component {
             placeholder: 'Person\'s name',
             error: 'Please enter a name',
             autoCorrect: false,
-            stylesheet: tCombFormStyleSheetClone,
           },
           description0: {
             template: DescriptionTemplate,
@@ -414,16 +422,16 @@ class AddUserScreen extends Component {
     }
 
     return (
-      <KeyboardAvoidingView
-        style={container}
+      <KeyboardAwareScrollView
+        contentContainerStyle={containerNoList}
         behavior="padding"
-        enabled
-        keyboardVerticalOffset={80}
       >
         <ScrollView
+          style={{ flex: 1 }}
           keyboardShouldPersistTaps='handled'
         >
           <TouchableWithoutFeedback
+            style={{ flex: 1 }}
             onPress={() => {
               this.setState({
                 groupDropdownOpen: false,
@@ -445,7 +453,7 @@ class AddUserScreen extends Component {
             </React.Fragment>
           </TouchableWithoutFeedback>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     );
   }
 }
