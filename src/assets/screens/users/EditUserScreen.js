@@ -1,11 +1,21 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, FlatList, TouchableWithoutFeedback, KeyboardAvoidingView, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  FlatList,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import {
   editUser,
@@ -29,7 +39,7 @@ import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
 
 import {
-  container,
+  containerNoList,
   groupIconNameContainerEditAddUser,
   topRightTextButtonContainerSolo,
   topRightButtonText,
@@ -500,16 +510,16 @@ class EditUserScreen extends Component {
     }
 
     return (
-      <KeyboardAvoidingView
-        style={container}
+      <KeyboardAwareScrollView
+        contentContainerStyle={containerNoList}
         behavior="padding"
-        enabled
-        keyboardVerticalOffset={80}
       >
         <ScrollView
+          style={{ flex: 1 }}
           keyboardShouldPersistTaps='handled'
         >
           <TouchableWithoutFeedback
+            style={{ flex: 1 }}
             onPress={() => {
               this.setState({
                 groupDropdownOpen: false,
@@ -534,7 +544,7 @@ class EditUserScreen extends Component {
             </React.Fragment>
           </TouchableWithoutFeedback>
         </ScrollView>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     );
   }
 }

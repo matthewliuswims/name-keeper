@@ -6,6 +6,9 @@ import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
 
 import ErrorModal from '../../components/modal/Error';
+
+import FadeInOut from '../../components/animations/fade-in-out';
+
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 
 import {
@@ -133,11 +136,11 @@ class AddGroupScreen extends Component<Props> {
       );
     }
     return (
-      <View style={[container]}>
+      <FadeInOut style={container}>
         <Form ref={(c) => { this.formRef = c; }} type={group} options={options} />
         {this.groupText()}
         {this.checkErr(error)}
-      </View>
+      </FadeInOut>
     );
   }
 }

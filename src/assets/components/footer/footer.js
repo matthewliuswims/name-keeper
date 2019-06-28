@@ -16,7 +16,12 @@ import {
  * this footer always assumes there will always be a sort and add button. only the filter button is optional
  */
 class Footer extends React.Component {
+  static defaultProps = {
+    showAddUserButton: true,
+  }
+
   render() {
+    const { showAddUserButton } = this.props;
     if (this.props.addGroupCB) {
       return (
         <View style={styles.container}>
@@ -32,12 +37,14 @@ class Footer extends React.Component {
 
     return (
       <View style={styles.container}>
+        { showAddUserButton && (
         <TouchableOpacity
           style={addContainer}
           onPress = {this.props.navigateToAddUserScreen}
         >
           <AddUser width={addSvgHeightOrWidth} height={addSvgHeightOrWidth} />
         </TouchableOpacity>
+        )}
       </View>
     );
   }
@@ -61,6 +68,7 @@ const styles = StyleSheet.create({
 
 Footer.propTypes = {
   navigateToAddUserScreen: PropTypes.func.isRequired,
+  showAddUserButton: PropTypes.bool,
 };
 
 export default Footer;

@@ -65,6 +65,8 @@ import { usersGroupNamesMatch } from '../../../lib/actions';
 import SortBy from '../../components/modal/SortBy';
 import Filter from '../../components/modal/Filter';
 
+import FadeInOut from '../../components/animations/fade-in-out';
+
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
 class GroupsScreen extends Component {
@@ -75,6 +77,7 @@ class GroupsScreen extends Component {
     super(props);
     this.props.listGroups(); // also called in compoenntDidMount, but this is used so we can see groups quicker on screen
     this.props.listAllUsers();
+    this.offset = 0;
     this.state = {
       groupNameDrawerFocused: '',
       deleteGroupModalOpen: false,
@@ -91,6 +94,7 @@ class GroupsScreen extends Component {
         sortOption: 'Date: Old to New (default)',
         selectedFilteredGroups: [], // populated in componentDidMount
       },
+      direction: 'up',
     };
   }
 
@@ -285,12 +289,40 @@ class GroupsScreen extends Component {
   }
   // logic for  delete modal user ends
 
+  onScroll = (e) => {
+    const { layoutMeasurement, contentOffset, contentSize } = e.nativeEvent;
+    // @tutorial: https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
+    const currentOffset = contentOffset.y; // offset is how far we've come from top of the list (e.g. 212 at end of list, 0 at start)
+    const layoutMeasurementHeight = layoutMeasurement.height; // just the list height itself (e.g. 433)
+    const contentSizeHeight = contentSize.height; // end-end scroll height (e.g. 645)
+
+    const listIsNotFilled = contentSizeHeight < layoutMeasurementHeight;
+
+    const pastEnd = layoutMeasurementHeight + currentOffset + 10 > contentSizeHeight; // to account for the ability to scroll past the end (i.e. the bounce);
+    const pastTop = (currentOffset || this.offset) < 0;
+    const movingDown = currentOffset > this.offset;
+    let direction = 'up';
+    if (movingDown || pastEnd) {
+      direction = 'down';
+    }
+    if (pastTop || listIsNotFilled) {
+      direction = 'up';
+    }
+
+    this.offset = currentOffset;
+    this.setState({
+      direction,
+    });
+  }
+
 
   groups = (users) => {
     const { groups } = this.props.groupsState;
     const { usersState } = this.props;
     return (
       <SwipeListView
+        scrollEventThrottle={120}
+        onScroll={this.onScroll}
         useFlatList
         ref={ref => this._swipeListGroupsView = ref}
         data={groups}
@@ -481,77 +513,81 @@ class GroupsScreen extends Component {
     const { usersState } = this.props;
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
     return (
-      <SwipeListView
-        useFlatList
-        ref={ref => this._swipeListUsersView = ref}
-        data={sortFilteredUsers}
-        renderItem={({ item }) => (
-          <TouchableHighlight
-            onPress = {() => {
-              this.props.focusUser(item);
-              this.props.focusGroup(item.primaryGroupName);
-              this.props.navigation.navigate('UserScreen');
-            }}
-            style={userContainerStyle}
-            activeOpacity={0.5}
-            underlayColor={colors.touchableHighlightUnderlayColor}
-          >
-            <UserBox
-              username={item.name}
-              primaryGroupName={item.primaryGroupName}
-              userDescription={item.description}
-              date={parseToShortDate(item.createdDate)}
-            />
-          </TouchableHighlight>
-        )}
-        renderHiddenItem={(data, rowMap) => (
-          <View style={rowUserBack}>
-            <TouchableOpacity
-              style={editRightSlot}
-              onPress = {async () => {
-                const { item } = data;
-                rowMap[item.userID].closeRow();
-                await this.props.focusUser(item);
-                await this.props.focusGroup(item.primaryGroupName);
-                await this.props.navigation.navigate('EditUserScreen', {
-                  focusedUserName: this.props.usersState.focusedUser.name,
-                  editUserFromUsersScreen: 'true',
-                });
-              }}
-            >
-              <Icon
-                name='edit'
-                color='white'
-                size={35}
-                iconStyle={{
-                  padding: 10,
-                }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={deleteRightSlot}
+      <FadeInOut style={{ flex: 1 }}>
+        <SwipeListView
+          scrollEventThrottle={120}
+          onScroll={this.onScroll}
+          useFlatList
+          ref={ref => this._swipeListUsersView = ref}
+          data={sortFilteredUsers}
+          renderItem={({ item }) => (
+            <TouchableHighlight
               onPress = {() => {
-                const { item } = data;
-                this.setState({ userDrawerFocused: item });
-                this.openUserDeleteModal();
+                this.props.focusUser(item);
+                this.props.focusGroup(item.primaryGroupName);
+                this.props.navigation.navigate('UserScreen');
               }}
+              style={userContainerStyle}
+              activeOpacity={0.5}
+              underlayColor={colors.touchableHighlightUnderlayColor}
             >
-              <Icon
-                name='delete'
-                color='white'
-                size={35}
-                iconStyle={{
-                  padding: 10,
-                }}
+              <UserBox
+                username={item.name}
+                primaryGroupName={item.primaryGroupName}
+                userDescription={item.description}
+                date={parseToShortDate(item.createdDate)}
               />
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item => `${item.userID}`)}
-        rightOpenValue={rightDrawerOpenValue}
-        extraData={usersState}
-        disableRightSwipe
-      />
+            </TouchableHighlight>
+          )}
+          renderHiddenItem={(data, rowMap) => (
+            <View style={rowUserBack}>
+              <TouchableOpacity
+                style={editRightSlot}
+                onPress = {async () => {
+                  const { item } = data;
+                  rowMap[item.userID].closeRow();
+                  await this.props.focusUser(item);
+                  await this.props.focusGroup(item.primaryGroupName);
+                  await this.props.navigation.navigate('EditUserScreen', {
+                    focusedUserName: this.props.usersState.focusedUser.name,
+                    editUserFromUsersScreen: 'true',
+                  });
+                }}
+              >
+                <Icon
+                  name='edit'
+                  color='white'
+                  size={35}
+                  iconStyle={{
+                    padding: 10,
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={deleteRightSlot}
+                onPress = {() => {
+                  const { item } = data;
+                  this.setState({ userDrawerFocused: item });
+                  this.openUserDeleteModal();
+                }}
+              >
+                <Icon
+                  name='delete'
+                  color='white'
+                  size={35}
+                  iconStyle={{
+                    padding: 10,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={(item => `${item.userID}`)}
+          rightOpenValue={rightDrawerOpenValue}
+          extraData={usersState}
+          disableRightSwipe
+        />
+      </FadeInOut>
     );
   }
 
@@ -676,16 +712,18 @@ class GroupsScreen extends Component {
   }
 
   renderFooter = (numberGroups, numberUsers) => {
-    const { showingGroups } = this.state;
+    const { showingGroups, direction } = this.state;
 
     // viewing users and there are no groups
     if (!showingGroups && !numberGroups) {
       return null;
     }
-
+  
+    const showFooterButton = direction === 'up';
     // viewing users
     return (
       <Footer
+        showAddUserButton={showFooterButton}
         addGroupCB={showingGroups ? this.addGroupCB : null}
         numberUsers={numberUsers}
         navigateToAddUserScreen={this.navigateToAddUserScreen}
@@ -726,7 +764,7 @@ class GroupsScreen extends Component {
     return (
       // we have our own type of custom container style (so scrollable list is entire horizontal screen)
       // when we have list of SOMETHING.
-      <View style={numberGroups > 0 ? styles.container : [container, { alignItems: 'center'}]}>
+      <View style={numberGroups > 0 ? styles.container : [container, { alignItems: 'center' }]}>
         <View style={styles.contents}>
           {showFilterSortHeader && this.sortFilterHeader()}
           {this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}

@@ -67,10 +67,11 @@ class GroupScreen extends Component<Props> {
     super(props);
     this.props.navigation.setParams({ getGroupName: this.props.groupsState.focusedGroupName });
     this.props.listAllUsers();
+    this.offset = 0;
     this.state = {
       sortByModalOpen: false,
       sortOption: 'Date: Old to New (default)',
-
+      direction: 'up',
       userDrawerFocused: null,
       deleteUserModalOpen: false,
     };
@@ -241,14 +242,42 @@ class GroupScreen extends Component<Props> {
     );
   }
 
+  onScroll = (e) => {
+    const { layoutMeasurement, contentOffset, contentSize } = e.nativeEvent;
+    // @tutorial: https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
+    const currentOffset = contentOffset.y; // offset is how far we've come from top of the list (e.g. 212 at end of list, 0 at start)
+    const layoutMeasurementHeight = layoutMeasurement.height; // just the list height itself (e.g. 433)
+    const contentSizeHeight = contentSize.height; // end-end scroll height (e.g. 645)
+
+    const listIsNotFilled = contentSizeHeight < layoutMeasurementHeight;
+
+    const pastEnd = layoutMeasurementHeight + currentOffset + 10 > contentSizeHeight; // to account for the ability to scroll past the end (i.e. the bounce);
+    const pastTop = (currentOffset || this.offset) < 0;
+    const movingDown = currentOffset > this.offset;
+    let direction = 'up';
+    if (movingDown || pastEnd) {
+      direction = 'down';
+    }
+    if (pastTop || listIsNotFilled) {
+      direction = 'up';
+    }
+
+    this.offset = currentOffset;
+    this.setState({
+      direction,
+    });
+  }
+
   groupContents(groupName) {
     const userForGroup = this.usersForGroup(groupName);
     const sortedUsers = this.sortUsers(this.state.sortOption, userForGroup);
     return (
       <SwipeListView
+        scrollEventThrottle={120}
         useFlatList
         data={sortedUsers}
         ref={ref => this._swipeListUsersView = ref}
+        onScroll={this.onScroll}
         renderItem={({ item }) => (
           <TouchableHighlight
             onPress = {() => {
@@ -351,6 +380,8 @@ class GroupScreen extends Component<Props> {
     const { focusedGroupName } = this.props.groupsState;
     const NumUsersForGroup = this.usersForGroup(focusedGroupName).length;
     const showSortHeader = NumUsersForGroup > 0;
+    const showFooterButton = this.state.direction === 'up';
+
     return (
       <View style={styles.container}>
         <View style={styles.contents}>
@@ -358,6 +389,7 @@ class GroupScreen extends Component<Props> {
           {NumUsersForGroup ? this.groupContents(focusedGroupName) : this.noGroupContents()}
         </View>
         <Footer
+          showAddUserButton={showFooterButton}
           navigateToAddUserScreen={this.navigateToAddUserScreen}
           sortCB={this.openSortModal}
           numberUsers={NumUsersForGroup}
