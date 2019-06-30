@@ -254,24 +254,10 @@ class AddUserScreen extends Component {
         const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
 
         this.props.addToast('Added Person', navigatedFromUsersScreen ? 'GroupsScreen' : 'GroupScreen');
-        this.navigateToScreen(this.state.selectedGroupName);
+        this.props.navigation.pop(1);
       } // else, we wait for the errModal to popup here
     }
   }
-
-  navigateToScreen = (primaryGroupName) => {
-    const { navigation } = this.props;
-    const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
-    if (navigatedFromUsersScreen) {
-      navigation.goBack();
-      return;
-    }
-    this.props.navigation.navigate('GroupScreen',
-      {
-        groupName: primaryGroupName,
-      });
-  }
-
 
   checkErrUsrs = (err) => {
     // don't want err to render if we're not even on the screen
@@ -438,7 +424,7 @@ class AddUserScreen extends Component {
               });
             }}
           >
-            <React.Fragment>
+            <View style={{ flex: 1 }}>
               <Form
                 ref={(c) => { this.formRef = c; }}
                 type={this.userForm()}
@@ -450,7 +436,7 @@ class AddUserScreen extends Component {
               <Text style={styles.groupText}> Group </Text>
               {this.groupsSection(allGroups)}
               {this.checkErrUsrs(this.props.usersState.error)}
-            </React.Fragment>
+            </View>
           </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAwareScrollView>

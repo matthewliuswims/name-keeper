@@ -1,3 +1,4 @@
+import { Animated } from 'react-native';
 import UsersDB from '../../assets/database/UsersDB';
 import { makeAction } from '../../lib/actions';
 import { parseToLongDate, getDayOfWeek } from '../../lib/dates';
@@ -60,19 +61,25 @@ export function deleteUser(user) {
 }
 
 export function listAllUsers() {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(makeAction(LIST_ALL_USERS_START));
     return UsersDB.getInstance().then((usersDBInstance) => {
       return usersDBInstance.listAllUsers();
     }).then((usersList) => {
+      const oldUsersList = getState().users.users;
+      const oldUsersListIds = oldUsersList.map(user => user.userID);
+
       // this is so when we do searches, the search can find parsed dates as a substring
       const withParsedDates = usersList.map((user) => {
         const userDescriptionArray = JSON.parse(user.description);
         const newUser = Object.assign({}, user, {
           description: userDescriptionArray,
+          // below 2 created for search purposes, see getDayOfWeek for more info
           readableCreatedDate: parseToLongDate(user.createdDate),
           createdDayOfWeek: getDayOfWeek(user.createdDate),
-          // created for search purposes, see getDayOfWeek for more info
+          // below created for animation purposes
+          // note: if it's already created, we have to give it animation 0, because it's already mounted somewhere.
+          animatedSlotOpacity: oldUsersListIds.includes(user.userID) ? new Animated.Value(1) : new Animated.Value(0),
         });
         return newUser;
       });

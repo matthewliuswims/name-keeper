@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Animated } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
@@ -9,6 +9,8 @@ import LoadingSpinner from '../../components/transitional-states/LoadingSpinner'
 
 import ErrorModal from '../../components/modal/Error';
 import DeleteModal from '../../components/modal/Delete';
+
+import { SLOT_FADE_OUT_DURATION } from '../../components/animations/DURATIONS';
 
 import {
   container,
@@ -109,6 +111,8 @@ class AddGroupScreen extends Component<Props> {
       const { name: unparsedName } = groupStruct;
       const newGroupName = unparsedName.trim();
       await this.props.editGroup(this.props.groupsState.focusedGroupName, newGroupName);
+      this.props.focusGroup(newGroupName);
+      // here is a good opportunity to do an error boundary though
 
       if (!this.props.groupsState.error) {
         await this.props.listGroups();
@@ -119,7 +123,6 @@ class AddGroupScreen extends Component<Props> {
       } // else, we wait for the errModal to popup here
 
       if (!this.props.groupsState.error && !this.props.usersState.error) {
-        this.props.focusGroup(newGroupName);
         const resetAction = StackActions.reset({
           index: 1,
           actions: [
@@ -173,12 +176,19 @@ class AddGroupScreen extends Component<Props> {
   }
 
   deleteGroup = async () => {
-    await this.props.deleteGroup(this.props.groupsState.focusedGroupName);
-    this.props.listAllUsers();
-    this.props.listGroups();
-    this.setState({ deleteModalOpen: false });
-    this.props.addToast('Deleted Group', 'GroupsScreen');
-    await this.props.navigation.navigate('GroupsScreen');
+    const { focusedGroupName } = this.props.groupsState;
+    const focusedGroup = this.props.groupsState.groups.find(_group => _group.name === focusedGroupName);
+    this.closeDeleteModal();
+    Animated.timing(focusedGroup.animatedSlotOpacity, {
+      toValue: 0,
+      duration: SLOT_FADE_OUT_DURATION,
+    }).start(async () => {
+      await this.props.deleteGroup(focusedGroupName);
+      this.props.listAllUsers();
+      this.props.listGroups();
+      this.props.addToast('Deleted Group', 'GroupsScreen');
+    });
+    this.props.navigation.pop(2);
   }
 
   deleteModal = () => {

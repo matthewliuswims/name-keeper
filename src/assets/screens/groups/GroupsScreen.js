@@ -5,7 +5,7 @@ import Toast from 'react-native-easy-toast';
 
 import React, { Component } from 'react';
 
-import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight, Animated } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Icon } from 'react-native-elements';
 
@@ -21,6 +21,10 @@ import Logo from '../../../../assets/undraw_having_fun_iais.svg';
 import LogoPilates from '../../../../assets/undraw_pilates_gpdb.svg';
 
 
+import { SLOT_FADE_OUT_DURATION } from '../../components/animations/DURATIONS';
+import FadeInOut from '../../components/animations/fade-in-out-slot';
+
+
 import {
   container,
   horizontalGroupScreenButton,
@@ -28,7 +32,6 @@ import {
   groupContainerStyle,
   userContainerStyle,
   rightDrawerOpenValue,
-  editRightSlot,
   deleteRightSlot,
   rowUserBack,
   sortFilterRow,
@@ -65,7 +68,7 @@ import { usersGroupNamesMatch } from '../../../lib/actions';
 import SortBy from '../../components/modal/SortBy';
 import Filter from '../../components/modal/Filter';
 
-import FadeInOut from '../../components/animations/fade-in-out';
+import FadeIn from '../../components/animations/fade-in';
 
 const noOp = () => { console.log('please try again in a second'); }; // eslint-disable-line no-console
 
@@ -79,7 +82,7 @@ class GroupsScreen extends Component {
     this.props.listAllUsers();
     this.offset = 0;
     this.state = {
-      groupNameDrawerFocused: '',
+      groupDrawerFocused: null,
       deleteGroupModalOpen: false,
 
       userDrawerFocused: null,
@@ -198,11 +201,11 @@ class GroupsScreen extends Component {
     return parsedUsers.map(user => user.name);
   }
 
-  noGroupsText() {
+  noGroupsText = () => {
     return (
-      <View style={noGroupsContainer}>
+      <FadeIn style={noGroupsContainer}>
         <View style={logoWrapper}>
-          <Logo width={hp('40%')} height={hp('40%')} />
+          <Logo width={hp('40%')} height={hp('30%')} />
         </View>
         <Text style={addHeader}>
           Add a group below
@@ -210,7 +213,15 @@ class GroupsScreen extends Component {
         <Text style={addMessage}>
           A group contains the names of people you meet.
         </Text>
-      </View>
+        <Footer
+          showAddUserButton={false}
+          addGroupCB={this.addGroupCB}
+          numberUsers={0}
+          navigateToAddUserScreen={this.navigateToAddUserScreen}
+          filterCB={this.openFilterModal}
+          sortCB={this.openSortModal}
+        />
+      </FadeIn>
     );
   }
 
@@ -229,13 +240,18 @@ class GroupsScreen extends Component {
   }
 
   deleteGroup = async () => {
-    await this.props.deleteGroup(this.state.groupNameDrawerFocused);
-    await this.props.listAllUsers();
-    await this.props.listGroups();
-    await this.setState({ groupNameDrawerFocused: '' });
-    await this.setState({ deleteGroupModalOpen: false });
-    this.props.addToast('Deleted Group', this.props.navigation.state.routeName);
-    await this.props.navigation.navigate('GroupsScreen');
+    await this.closeGroupDeleteModal();
+    Animated.timing(this.state.groupDrawerFocused.animatedSlotOpacity, {
+      toValue: 0,
+      duration: SLOT_FADE_OUT_DURATION,
+    }).start(async () => {
+      await this.props.deleteGroup(this.state.groupDrawerFocused.name);
+      await this.props.listAllUsers();
+      await this.props.listGroups();
+      await this.setState({ groupDrawerFocused: null });
+      this.props.addToast('Deleted Group', this.props.navigation.state.routeName);
+      await this.props.navigation.navigate('GroupsScreen');
+    });
   }
 
   deleteGroupModal = () => {
@@ -266,12 +282,17 @@ class GroupsScreen extends Component {
     });
   }
 
-  deleteUser = async () => {
+  deleteUser = () => {
     this.closeUserDeleteModal();
-    await this.props.deleteUser(this.state.userDrawerFocused);
-    await this.props.listAllUsers();
-    await this.setState({ userDrawerFocused: null });
-    await this.setState({ deleteUserModalOpen: false });
+    Animated.timing(this.state.userDrawerFocused.animatedSlotOpacity, {
+      toValue: 0,
+      duration: SLOT_FADE_OUT_DURATION,
+    }).start(async () => {
+      await this.props.deleteUser(this.state.userDrawerFocused);
+      await this.props.listAllUsers();
+      await this.setState({ userDrawerFocused: null });
+      await this.setState({ deleteUserModalOpen: false });
+    });
   }
 
   deleteUserModal = () => {
@@ -316,80 +337,74 @@ class GroupsScreen extends Component {
   }
 
 
-  groups = (users) => {
+  groups = (users, numberGroups, numberUsers) => {
     const { groups } = this.props.groupsState;
     const { usersState } = this.props;
+    // the outer viewer wrap (for w/e reason) is necessary for the child FadeIn (now made back into a View) to work when toggling back and forth between the users and groups screen
     return (
-      <SwipeListView
-        scrollEventThrottle={120}
-        onScroll={this.onScroll}
-        useFlatList
-        ref={ref => this._swipeListGroupsView = ref}
-        data={groups}
-        renderItem={({ item }) => (
-          <TouchableHighlight
-            onPress = {() => {
-              this.props.focusGroup(item.name);
-              this.props.navigation.navigate('GroupScreen',
-                {
-                  groupName: item.name,
-                });
-            }}
-            style={groupContainerStyle}
-            activeOpacity={0.5}
-            underlayColor={colors.touchableHighlightUnderlayColor}
-          >
-            <Group
-              groupName={item.name}
-              date={item.date}
-              usersLength={users.length}
-              userNamesForGroup={this.getUserNamesForGroup(item.name, users)}
-              groups={groups}
-              />
-          </TouchableHighlight>
-        )}
-        renderHiddenItem={({ item }) => (
-          <View style={styles.rowGroupBack}>
-            <TouchableOpacity
-              style={editRightSlot}
-              onPress = {async () => {
-                this._swipeListGroupsView.safeCloseOpenRow();
-                await this.props.focusGroup(item.name);
-                await this.props.navigation.navigate('EditGroupScreen');
-              }}
-            >
-              <Icon
-                name='edit'
-                color='white'
-                size={35}
-                iconStyle={{
-                  padding: 10,
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <SwipeListView
+            scrollEventThrottle={120}
+            onScroll={this.onScroll}
+            useFlatList
+            ref={ref => this._swipeListGroupsView = ref}
+            data={groups}
+            renderItem={({ item }) => (
+              <TouchableHighlight
+                onPress = {() => {
+                  this.props.focusGroup(item.name);
+                  this.props.navigation.navigate('GroupScreen',
+                    {
+                      groupName: item.name,
+                    });
                 }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={deleteRightSlot}
-              onPress = {() => {
-                this.setState({ groupNameDrawerFocused: item.name });
-                this.openGroupDeleteModal();
-              }}
-            >
-              <Icon
-                name='delete'
-                color='white'
-                size={35}
-                iconStyle={{
-                  padding: 10,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item => `${item.groupID}`)}
-        rightOpenValue={rightDrawerOpenValue}
-        extraData={usersState}
-        disableRightSwipe
-      />
+                style={groupContainerStyle}
+                activeOpacity={0.5}
+                underlayColor={colors.touchableHighlightUnderlayColor}
+              >
+                <FadeInOut
+                  style={{ flex: 1 }}
+                  _animated={item.animatedSlotOpacity}
+                >
+                  <Group
+                    groupName={item.name}
+                    date={item.date}
+                    usersLength={users.length}
+                    userNamesForGroup={this.getUserNamesForGroup(item.name, users)}
+                    groups={groups}
+                  />
+                </FadeInOut>
+              </TouchableHighlight>
+            )}
+            renderHiddenItem={({ item }) => (
+              <View style={styles.rowGroupBack}>
+                <TouchableOpacity
+                  style={deleteRightSlot}
+                  onPress = {() => {
+                    this.setState({ groupDrawerFocused: item });
+                    this.openGroupDeleteModal();
+                  }}
+                >
+                  <Icon
+                    name='delete'
+                    color='white'
+                    size={35}
+                    iconStyle={{
+                      padding: 10,
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+            keyExtractor={(item => `${item.groupID}`)}
+            rightOpenValue={rightDrawerOpenValue}
+            extraData={usersState}
+            disableRightSwipe
+          />
+          { this.renderFooter(numberGroups, numberUsers) }
+        </View>
+      </View>
     );
   }
 
@@ -425,8 +440,8 @@ class GroupsScreen extends Component {
     });
   }
 
-  groupsList = (numberGroups, users) => {
-    return numberGroups ? this.groups(users) : this.noGroupsText();
+  groupsList = (numberGroups, users, numberUsers) => {
+    return numberGroups ? this.groups(users, numberGroups, numberUsers) : this.noGroupsText();
   }
 
   sortUsers(sortOption, users) {
@@ -477,7 +492,7 @@ class GroupsScreen extends Component {
   }
 
   usersList = (numberGroups, numberUsers, sortOption, selectedFilteredGroups, users) => {
-    return numberUsers ? this.usersListWithUsers(sortOption, selectedFilteredGroups, users) : this.noUsersText(numberGroups);
+    return numberUsers ? this.usersListWithUsers(sortOption, selectedFilteredGroups, users, numberGroups, numberUsers) : this.noUsersText(numberGroups);
   }
 
   noUsersText(numberGroups) {
@@ -497,7 +512,7 @@ class GroupsScreen extends Component {
     return (
       <View style={noGroupsContainer}>
         <View style={logoWrapper}>
-          <LogoPilates width={hp('40%')} height={hp('40%')} />
+          <LogoPilates width={hp('40%')} height={hp('30%')} />
         </View>
         <Text style={addHeader}>
           Add a person below!
@@ -505,15 +520,26 @@ class GroupsScreen extends Component {
         <Text style={addMessage}>
           Hint: the best time to add someone&#39;s name is right after you finish meeting them.
         </Text>
+        <Footer
+          showAddUserButton
+          addGroupCB={null}
+          numberUsers={0}
+          navigateToAddUserScreen={this.navigateToAddUserScreen}
+          filterCB={this.openFilterModal}
+          sortCB={this.openSortModal}
+        />
       </View>
     );
   }
 
-  usersListWithUsers = (sortOption, selectedFilteredGroups, users) => {
+  usersListWithUsers = (sortOption, selectedFilteredGroups, users, numberGroups, numberUsers) => {
     const { usersState } = this.props;
     const sortFilteredUsers = this.sortedAndFilteredUsers(sortOption, selectedFilteredGroups, users);
+    const showFilterSortHeader = !this.state.showingGroups && numberUsers > 0;
+
     return (
-      <FadeInOut style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        {showFilterSortHeader && this.sortFilterHeader()}
         <SwipeListView
           scrollEventThrottle={120}
           onScroll={this.onScroll}
@@ -525,44 +551,29 @@ class GroupsScreen extends Component {
               onPress = {() => {
                 this.props.focusUser(item);
                 this.props.focusGroup(item.primaryGroupName);
-                this.props.navigation.navigate('UserScreen');
+                this.props.navigation.navigate('UserScreen', {
+                  fromGroupsScreen: 'true',
+                });
               }}
               style={userContainerStyle}
               activeOpacity={0.5}
               underlayColor={colors.touchableHighlightUnderlayColor}
             >
-              <UserBox
-                username={item.name}
-                primaryGroupName={item.primaryGroupName}
-                userDescription={item.description}
-                date={parseToShortDate(item.createdDate)}
-              />
+              <FadeInOut
+                style={{ flex: 1 }}
+                _animated={item.animatedSlotOpacity}
+              >
+                <UserBox
+                  username={item.name}
+                  primaryGroupName={item.primaryGroupName}
+                  userDescription={item.description}
+                  date={parseToShortDate(item.createdDate)}
+                />
+              </FadeInOut>
             </TouchableHighlight>
           )}
-          renderHiddenItem={(data, rowMap) => (
+          renderHiddenItem={data => (
             <View style={rowUserBack}>
-              <TouchableOpacity
-                style={editRightSlot}
-                onPress = {async () => {
-                  const { item } = data;
-                  rowMap[item.userID].closeRow();
-                  await this.props.focusUser(item);
-                  await this.props.focusGroup(item.primaryGroupName);
-                  await this.props.navigation.navigate('EditUserScreen', {
-                    focusedUserName: this.props.usersState.focusedUser.name,
-                    editUserFromUsersScreen: 'true',
-                  });
-                }}
-              >
-                <Icon
-                  name='edit'
-                  color='white'
-                  size={35}
-                  iconStyle={{
-                    padding: 10,
-                  }}
-                />
-              </TouchableOpacity>
               <TouchableOpacity
                 style={deleteRightSlot}
                 onPress = {() => {
@@ -587,7 +598,8 @@ class GroupsScreen extends Component {
           extraData={usersState}
           disableRightSwipe
         />
-      </FadeInOut>
+        { this.renderFooter(numberGroups, numberUsers) }
+      </View>
     );
   }
 
@@ -685,9 +697,7 @@ class GroupsScreen extends Component {
     if (this._swipeListGroupsView) {
       this._swipeListGroupsView.safeCloseOpenRow();
     }
-    this.props.navigation.navigate('AddGroupScreen', {
-      editUserFromUsersScreen: 'true',
-    });
+    this.props.navigation.navigate('AddGroupScreen');
   }
 
   navigateToAddUserScreen = () => {
@@ -706,7 +716,7 @@ class GroupsScreen extends Component {
 
   renderContents = (numberGroups, users, numberUsers, sortOption, selectedFilteredGroups) => {
     if (this.state.showingGroups) {
-      return this.groupsList(numberGroups, users);
+      return this.groupsList(numberGroups, users, numberUsers);
     }
     return this.usersList(numberGroups, numberUsers, sortOption, selectedFilteredGroups, users);
   }
@@ -759,17 +769,13 @@ class GroupsScreen extends Component {
     const numberGroups = groups.length;
     const numberUsers = users.length;
 
-    const showFilterSortHeader = !this.state.showingGroups && numberUsers > 0;
-
     return (
       // we have our own type of custom container style (so scrollable list is entire horizontal screen)
       // when we have list of SOMETHING.
-      <View style={numberGroups > 0 ? styles.container : [container, { alignItems: 'center' }]}>
+      <View style={container}>
         <View style={styles.contents}>
-          {showFilterSortHeader && this.sortFilterHeader()}
           {this.renderContents(numberGroups, users, numberUsers, sortOption, selectedFilteredGroups)}
         </View>
-        { this.renderFooter(numberGroups, numberUsers) }
         {this.sortOpen()}
         {this.filterOpen()}
         {this.deleteGroupModal()}
@@ -785,13 +791,8 @@ class GroupsScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  // rowGroupBack needs to match grouPContainer style, since rowGroupBack
+  // rowGroupBack needs to match groupContainer style, since rowGroupBack
   // is just the hidden version of groupContainer Style
-  container: {
-    flex: container.flex,
-    paddingTop: container.paddingTop,
-    backgroundColor: colors.containerBackgroundColor,
-  },
   usersList: {
     marginBottom: hp('0.5%'),
   },

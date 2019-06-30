@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import AddGroup from '../../../../assets/add-group.svg';
 import AddUser from '../../../../assets/add-user.svg';
+
+import FadeInOut from '../animations/fade-in-out-add-button';
 
 
 import {
@@ -21,45 +23,38 @@ class Footer extends React.Component {
   }
 
   render() {
-    const { showAddUserButton } = this.props;
+    const { showAddUserButton, navigateToAddUserScreen } = this.props;
     if (this.props.addGroupCB) {
       return (
-        <View style={styles.container}>
+        <FadeInOut style={styles.container}>
           <TouchableOpacity
             style={addContainer}
             onPress = {this.props.addGroupCB}
           >
             <AddGroup width={addSvgHeightOrWidth} height={addSvgHeightOrWidth} />
           </TouchableOpacity>
-        </View>
+        </FadeInOut>
       );
     }
-
     return (
-      <View style={styles.container}>
-        { showAddUserButton && (
+      <FadeInOut
+        style={styles.container}
+        showAddUserButton={showAddUserButton}
+      >
         <TouchableOpacity
           style={addContainer}
-          onPress = {this.props.navigateToAddUserScreen}
+          onPress = {navigateToAddUserScreen}
         >
           <AddUser width={addSvgHeightOrWidth} height={addSvgHeightOrWidth} />
         </TouchableOpacity>
-        )}
-      </View>
+      </FadeInOut>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  addGroupContainer: {
-    width: '100%',
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    bottom: 40,
-  },
   container: {
+    flex: 1,
     position: 'absolute',
     bottom: 0,
     right: 0,

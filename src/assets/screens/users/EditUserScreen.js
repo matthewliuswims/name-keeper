@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   View,
   StyleSheet,
@@ -7,11 +8,12 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   ScrollView,
+  Animated,
 } from 'react-native';
+
 import { Icon } from 'react-native-elements';
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -51,6 +53,9 @@ import {
 } from '../../styles/base';
 
 import { getGroupColor } from '../../../lib/groupColors';
+
+import { SLOT_FADE_OUT_DURATION } from '../../components/animations/DURATIONS';
+
 
 const { Form } = tComb.form;
 
@@ -295,31 +300,21 @@ class EditUserScreen extends Component {
       };
 
       await this.props.editUser(user);
+      this.props.focusGroup(this.state.selectedGroupName);
       if (!this.props.usersState.error) {
         await this.props.listAllUsers();
       } // else, we wait for the errModal to popup here
       if (!this.props.usersState.error) {
-        this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
-        this.props.addToast('Edited Person', 'GroupScreen');
-        this.navigateToScreen(this.state.selectedGroupName);
+        if (this.props.navigation.getParam('groupScreenToUserScreen', '')) {
+          this.props.addToast('Edited User', 'GroupScreen');
+        } else {
+          this.props.addToast('Edited User', 'GroupsScreen');
+        }
+        this.props.navigation.pop(2);
       } // else, we wait for the errModal to popup here
     }
   }
-
-  navigateToScreen = (primaryGroupName) => {
-    const { navigation } = this.props;
-    const navigatedFromUsersScreen = navigation.getParam('addUserFromUsersScreen', '');
-    if (navigatedFromUsersScreen) {
-      navigation.goBack();
-      return;
-    }
-    this.props.navigation.navigate('GroupScreen',
-      {
-        groupName: primaryGroupName,
-      });
-  }
-
 
   checkErrUsrs = (err) => {
     // don't want err to render if we're not even on the screen
@@ -472,17 +467,23 @@ class EditUserScreen extends Component {
 
   deleteUser = async () => {
     this.closeDeleteModal();
-    await this.props.deleteUser(this.props.usersState.focusedUser);
-    this.props.listAllUsers();
-
-    const resetAction = StackActions.reset({
-      index: 1,
-      actions: [
-        NavigationActions.navigate({ routeName: 'GroupsScreen' }),
-        NavigationActions.navigate({ routeName: 'GroupScreen' }),
-      ],
+    Animated.timing(this.props.usersState.focusedUser.animatedSlotOpacity, {
+      toValue: 0,
+      duration: SLOT_FADE_OUT_DURATION,
+    }).start(async () => {
+      this.props.addToast('Deleted User', 'GroupScreen');
+      await this.props.deleteUser(this.props.usersState.focusedUser);
+      this.props.listAllUsers();
     });
-    this.props.navigation.dispatch(resetAction);
+    // below code called before animation finishes.
+    const navigatedFromUsersScreen = this.props.navigation.getParam('addUserFromUsersScreen', '');
+    if (navigatedFromUsersScreen) {
+      // from users screen you can user the drawer edit.
+      this.props.navigation.goBack();
+    } else {
+      // will pop back to user screen, (group screen/groups screen)
+      this.props.navigation.pop(2);
+    }
   }
 
   deleteModal = () => {

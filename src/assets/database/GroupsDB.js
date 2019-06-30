@@ -87,7 +87,7 @@ export default class GroupsDB extends React.Component {
               'UPDATE groups SET name = (?), lastEdit = (?) WHERE name = (?)', [newGroupName, lastEdit, currentGroupName],
             );
           },
-          err => reject(this.parsedSQLError(err)),
+          err => reject(this.parsedSQLError(err, DUPLICATE_GROUP_NAME)),
           () => resolve('success'), // executeSql doesn't requre anything, so we can't resolve with anything meaningful
         );
       });

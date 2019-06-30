@@ -7,12 +7,12 @@ import colors from './colors';
 export const addSvgHeightOrWidth = wp('14%') > 100 ? 100 : wp('14%');
 
 export const footerBottomDimensions = {
-  marginRight: wp('6%'),
-  marginBottom: hp('3%'),
+  marginRight: 20,
+  marginBottom: 24,
 };
 
 export const addContainer = {
-  borderRadius: 0.71 * addSvgHeightOrWidth, // @TODO: how to make it circular?
+  borderRadius: 0.71 * addSvgHeightOrWidth,
   padding: 0.14 * addSvgHeightOrWidth,
   backgroundColor: colors.appThemeColor,
   marginRight: footerBottomDimensions.marginRight,
@@ -85,11 +85,13 @@ export const modalContainer = {
 };
 
 export const noGroupsContainer = {
+  flex: 1,
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
   paddingLeft: container.paddingLeft,
   paddingRight: container.paddingRight,
+  paddingBottom: hp('12%'),
 };
 
 // used instead of container
@@ -341,18 +343,6 @@ export const groupTextStyle = {
 
 export const rightDrawerOpenValue = -140;
 
-export const editRightSlot = {
-  backgroundColor: '#cccc00',
-  width: 70,
-  justifyContent: 'center',
-  alignItems: 'center',
-};
-
-export const editRightSlotText = {
-  color: 'white',
-  fontWeight: 'bold',
-};
-
 export const deleteRightSlot = {
   backgroundColor: colors.warningColor,
   width: 70,
@@ -412,7 +402,7 @@ export const sortFilterIconText = {
 export const addMessage = {
   fontSize: 18,
   textAlign: 'center',
-  marginTop: 30,
+  marginTop: 20,
 };
 
 export const addHeader = {

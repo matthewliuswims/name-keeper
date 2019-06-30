@@ -37,6 +37,7 @@ class UserScreen extends Component {
   editClick = () => {
     this.props.navigation.navigate('EditUserScreen', {
       focusedUserName: this.props.usersState.focusedUser.name,
+      groupScreenToUserScreen: this.props.navigation.getParam('fromGroupScreen', ''),
     });
   }
 

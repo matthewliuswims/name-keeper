@@ -1,3 +1,5 @@
+import { Animated } from 'react-native';
+
 import GroupsDB from '../../assets/database/GroupsDB';
 import { makeAction } from '../../lib/actions';
 
@@ -67,12 +69,21 @@ export function addGroup(groupName) {
 }
 
 export function listGroups() {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
       dispatch(makeAction(LIST_GROUPS_START));
       const groupDBInstance = await GroupsDB.getInstance();
       const groupsList = await groupDBInstance.listGroups();
-      dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsList));
+      const oldGroupsListIds = getState().groups.groups.map(group => group.groupID);
+      const groupsListWithOpacity = groupsList.map((group) => {
+        const newGroup = Object.assign({}, group, {
+          // below created for animation purposes
+          // note: if it's already created, we have to give it animation 0, because it's already mounted somewhere.
+          animatedSlotOpacity: oldGroupsListIds.includes(group.groupID) ? new Animated.Value(1) : new Animated.Value(0),
+        });
+        return newGroup;
+      });
+      dispatch(makeAction(LIST_GROUPS_SUCCESS, groupsListWithOpacity));
       return groupsList;
     } catch (err) {
       dispatch(makeAction(LIST_GROUPS_FAIL, err));
