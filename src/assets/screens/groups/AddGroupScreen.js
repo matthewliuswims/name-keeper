@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 import tComb from 'tcomb-form-native';
 import { connect } from 'react-redux';
@@ -15,12 +14,18 @@ import {
   topRightButtonText,
   addMessage,
 } from '../../styles/base';
+
 import {
   addGroup,
   listGroups,
   clearGroupsErr,
   focusGroup,
 } from '../../../redux/actions/groups';
+
+
+import {
+  addToast,
+} from '../../../redux/actions/toasts';
 
 type Props = {
   navigation: () => void,
@@ -78,9 +83,7 @@ class AddGroupScreen extends Component<Props> {
     }
   }
 
-  groupSubmit = () => {
-    const { navigation } = this.props;
-    const fromAddUserScreen = navigation.getParam('fromAddUserScreen', '');
+  groupSubmit = async () => {
     /**
      * Calling getValue will cause the validation of all the fields of the form,
      *  including some side effects like highlighting the errors.
@@ -92,29 +95,13 @@ class AddGroupScreen extends Component<Props> {
     if (groupStruct) {
       const { name: unparsedName } = groupStruct;
       const groupName = unparsedName.trim();
-      this.props.addGroup(groupName).then(() => {
-        if (!this.props.groupsState.error) {
-          this.props.listGroups().then(
-            () => {
-              if (fromAddUserScreen) {
-                this.props.focusGroup(groupName);
-                const backAction = NavigationActions.back();
-                this.props.navigation.dispatch(backAction);
-                return;
-              }
-              this.props.focusGroup(groupName);
-              const resetAction = StackActions.reset({
-                index: 1,
-                actions: [
-                  NavigationActions.navigate({ routeName: 'GroupsScreen' }),
-                  NavigationActions.navigate({ routeName: 'GroupScreen' }),
-                ],
-              });
-              this.props.navigation.dispatch(resetAction);
-            },
-          ); // update redux from sql
-        }
-      });
+      await this.props.addGroup(groupName);
+
+      if (!this.props.groupsState.error) {
+        this.props.listGroups();
+        this.props.addToast('Added Group', 'GroupsScreen');
+        this.props.navigation.pop(1);
+      }
     }
   }
 
@@ -145,6 +132,7 @@ class AddGroupScreen extends Component<Props> {
 
 const mapDispatchToProps = dispatch => (
   {
+    addToast: (message, screenName) => dispatch(addToast(message, screenName)),
     addGroup: groupName => dispatch(addGroup(groupName)),
     listGroups: () => dispatch(listGroups()),
     focusGroup: groupName => dispatch(focusGroup(groupName)),

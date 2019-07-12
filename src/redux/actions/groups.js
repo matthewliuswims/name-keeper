@@ -78,7 +78,7 @@ export function listGroups() {
       const groupsListWithOpacity = groupsList.map((group) => {
         const newGroup = Object.assign({}, group, {
           // below created for animation purposes
-          // note: if it's already created, we have to give it animation 0, because it's already mounted somewhere.
+          // note: if it's already created, we have to give it animation 1, because it's already mounted somewhere.
           animatedSlotOpacity: oldGroupsListIds.includes(group.groupID) ? new Animated.Value(1) : new Animated.Value(0),
         });
         return newGroup;

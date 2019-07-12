@@ -78,7 +78,7 @@ export function listAllUsers() {
           readableCreatedDate: parseToLongDate(user.createdDate),
           createdDayOfWeek: getDayOfWeek(user.createdDate),
           // below created for animation purposes
-          // note: if it's already created, we have to give it animation 0, because it's already mounted somewhere.
+          // note: if it's already created, we have to give it animation 1, because it's already mounted somewhere.
           animatedSlotOpacity: oldUsersListIds.includes(user.userID) ? new Animated.Value(1) : new Animated.Value(0),
         });
         return newUser;

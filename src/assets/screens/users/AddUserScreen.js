@@ -245,8 +245,6 @@ class AddUserScreen extends Component {
       await this.props.addUser(user);
       if (!this.props.usersState.error) {
         await this.props.listAllUsers();
-      } // else, we wait for the errModal to popup here
-      if (!this.props.usersState.error) {
         this.props.focusGroup(this.state.selectedGroupName);
         await this.resetFormValueState();
 
