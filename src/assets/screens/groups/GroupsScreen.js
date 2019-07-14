@@ -101,13 +101,13 @@ class GroupsScreen extends Component {
   }
 
   /**
-   * CALLED in constructor and in componentDidMount
    * @param groupsOriginal - this.props.groups, redux state of groups
    * @return takes on form of Array of objects - where each object is a redux group WITH added fields
-   * the added fields can be of form: added: true, opacity: 1, isFocusedGroup: true.
+   * the added fields can be of form: added: true, opacity: 1, isFocusedGroup: true. we need these key/value
+   * pairs for Filter.js
    *
    */
-  filteredGroupsInitial(groups) {
+  withFilterProperties(groups) {
     let focusedGroup;
 
     const addedGroups = groups.map((group) => {
@@ -160,7 +160,7 @@ class GroupsScreen extends Component {
     this.props.listGroups().then(() => {
       this.setState((state) => {
         const { sortOption } = state.sortedFilteredUsersWrapper;
-        const selectedFilteredGroups = this.filteredGroupsInitial(this.props.groupsState.groups);
+        const selectedFilteredGroups = this.withFilterProperties(this.props.groupsState.groups);
         return {
           sortedFilteredUsersWrapper: {
             sortOption,
@@ -404,6 +404,7 @@ class GroupsScreen extends Component {
   swap = () => {
     this.setState((state) => {
       const showingGroups = !state.showingGroups;
+    
       this.props.navigation.setParams({
         showingGroups,
       });
@@ -422,7 +423,9 @@ class GroupsScreen extends Component {
         screenTitle: 'People',
       });
       const sortOption = 'Date: Old to New (default)';
-      const selectedFilteredGroups = this.filteredGroupsInitial(this.props.groupsState.groups);
+
+      const selectedFilteredGroups = this.withFilterProperties(this.props.groupsState.groups); // need this in case have a new group created
+
       return {
         sortedFilteredUsersWrapper: {
           sortOption,
