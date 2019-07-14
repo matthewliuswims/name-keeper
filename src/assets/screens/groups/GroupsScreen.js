@@ -78,7 +78,6 @@ class GroupsScreen extends Component {
       level: 'info', // one of 'info', 'warning', or 'error'
     });
     super(props);
-    this.props.listGroups(); // also called in compoenntDidMount, but this is used so we can see groups quicker on screen
     this.props.listAllUsers();
     this.offset = 0;
     this.state = {
@@ -133,13 +132,7 @@ class GroupsScreen extends Component {
     };
   };
 
-  componentDidUpdate(prevProps) {
-    // this is when we add a group from addgroupscreen
-    // we need to update selectedGroupName
-    if (this.props.groupsState.groups.length !== prevProps.groupsState.groups.length) {
-      this.populateFilteredGroupsInitial();
-    }
-    // have to check ref existence, because of https://stackoverflow.com/questions/44074747/componentdidmount-called-before-ref-callback
+  componentDidUpdate() {
     const showToast = this.props.toastsState.showingToast;
     if (!showToast) return;
     const correctScreen = this.props.toastsState.screenName === this.props.navigation.state.routeName;
