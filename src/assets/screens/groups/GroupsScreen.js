@@ -285,6 +285,7 @@ class GroupsScreen extends Component {
       await this.props.listAllUsers();
       await this.setState({ userDrawerFocused: null });
       await this.setState({ deleteUserModalOpen: false });
+      this.props.addToast('Deleted Person', this.props.navigation.state.routeName);
     });
   }
 

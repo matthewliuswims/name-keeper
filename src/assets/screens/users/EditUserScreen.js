@@ -300,13 +300,16 @@ class EditUserScreen extends Component {
       };
 
       await this.props.editUser(user);
+      await this.props.focusUser(user);
       this.props.focusGroup(this.state.selectedGroupName);
       if (!this.props.usersState.error) {
         await this.props.listAllUsers();
       } // else, we wait for the errModal to popup here
       if (!this.props.usersState.error) {
         await this.resetFormValueState();
-        if (this.props.navigation.getParam('groupScreenToUserScreen', '')) {
+        const goingToGroupScreen = this.props.navigation.getParam('groupScreenToUserScreen', '');
+
+        if (goingToGroupScreen) {
           this.props.addToast('Edited User', 'GroupScreen');
         } else {
           this.props.addToast('Edited User', 'GroupsScreen');

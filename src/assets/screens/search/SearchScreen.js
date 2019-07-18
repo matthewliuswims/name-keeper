@@ -36,7 +36,26 @@ class SearchScreen extends React.Component {
     return 'Search ALL users by name, location, descrption...';
   }
 
-  users() {
+  users(groupName) {
+    const actions = groupName ? [
+      NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+      NavigationActions.navigate({ routeName: 'GroupScreen' }),
+      NavigationActions.navigate({
+        routeName: 'UserScreen',
+        params: {
+          fromSearchGroupScreen: true,
+        },
+      }),
+    ] : [
+      NavigationActions.navigate({ routeName: 'GroupsScreen' }),
+      NavigationActions.navigate({
+        routeName: 'UserScreen',
+        params: {
+          fromSearchGroupScreen: '',
+        },
+      }),
+    ];
+
     return (
       <FlatList
         keyboardShouldPersistTaps='always'
@@ -47,12 +66,8 @@ class SearchScreen extends React.Component {
               this.props.focusUser(item);
               this.props.focusGroup(item.primaryGroupName);
               const resetAction = StackActions.reset({
-                index: 2,
-                actions: [
-                  NavigationActions.navigate({ routeName: 'GroupsScreen' }),
-                  NavigationActions.navigate({ routeName: 'GroupScreen' }),
-                  NavigationActions.navigate({ routeName: 'UserScreen' }),
-                ],
+                index: groupName ? 2 : 1,
+                actions,
               });
               this.props.navigation.dispatch(resetAction);
             }}
@@ -107,7 +122,7 @@ class SearchScreen extends React.Component {
           />
           <View style={styles.container}>
             {/* Search bar source code seems to be hard-coded height, so i can get hard-coded marginTop */}
-            {this.users()}
+            {this.users(groupName)}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

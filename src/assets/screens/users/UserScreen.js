@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import Toast from 'react-native-easy-toast';
+
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -7,9 +10,17 @@ import { get } from 'lodash';
 import { Text, View, StyleSheet } from 'react-native';
 
 import noOp from '../../../lib/UIhelpers';
-import { container, groupIconNameContainer, horizontalGroupScreenButton, circularGroupIcon } from '../../styles/base';
+import {
+  container,
+  groupIconNameContainer,
+  horizontalGroupScreenButton,
+  circularGroupIcon,
+  toastWrapper,
+} from '../../styles/base';
 import RightHeaderComponent from '../../components/headers/RightTextHeader';
 import { getGroupColor } from '../../../lib/groupColors';
+
+import { clearToast } from '../../../redux/actions/toasts';
 
 
 class UserScreen extends Component {
@@ -19,7 +30,7 @@ class UserScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => {
-    const username = navigation.getParam('username') || '';
+    const username = navigation.getParam('username') || ''; // not being updated!!!
     return {
       title: username,
       headerRight: <RightHeaderComponent
@@ -32,12 +43,28 @@ class UserScreen extends Component {
 
   componentDidMount() {
     this.props.navigation.setParams({ editClick: this.editClick });
+    this.props.navigation.setParams({ swap: this.swap });
+  }
+
+  componentDidUpdate() {
+    const showToast = this.props.toastsState.showingToast;
+    if (!showToast) return;
+    const correctScreen = this.props.toastsState.screenName === this.props.navigation.state.routeName;
+    if (showToast && this.toast && correctScreen) {
+      // i have no idea why I need a timeout (and a timeout that is 1000)
+      // but without it, the toast sometimes won't appear (if I go directly to the edit screen)
+      // from the header
+      this.toast.show(this.props.toastsState.message, 2000);
+      setTimeout(() => this.props.clearToast(), 1000);
+    }
   }
 
   editClick = () => {
     this.props.navigation.navigate('EditUserScreen', {
       focusedUserName: this.props.usersState.focusedUser.name,
-      groupScreenToUserScreen: this.props.navigation.getParam('fromGroupScreen', ''),
+      groupScreenToUserScreen:
+        this.props.navigation.getParam('fromGroupScreen', '')
+        || this.props.navigation.getParam('fromSearchGroupScreen', ''),
     });
   }
 
@@ -107,6 +134,10 @@ class UserScreen extends Component {
           </View>
         )
           }
+        <Toast
+          ref={ele => this.toast = ele}
+          style={toastWrapper}
+        />
       </View>
     );
   }
@@ -156,9 +187,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => (
   {
+    toastsState: state.toasts,
     usersState: state.users,
     groupsState: state.groups,
   }
 );
 
-export default connect(mapStateToProps)(UserScreen);
+const mapDispatchToProps = dispatch => (
+  {
+    clearToast: () => dispatch(clearToast()),
+  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserScreen);
