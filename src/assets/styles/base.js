@@ -306,7 +306,7 @@ export const modalMsg = {
 };
 
 export const modalFooterButton = {
-  padding: 16,
+  padding: 34,
 };
 
 export const modalFooterText = {
@@ -368,7 +368,6 @@ export const rowUserBack = {
   paddingTop: 5,
   paddingBottom: 5,
   height: '100%',
-  // flex: 1,
 };
 
 export const initialGroupSelection = {

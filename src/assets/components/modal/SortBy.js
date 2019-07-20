@@ -28,10 +28,11 @@ export default class SortByModal extends Component {
   };
 
   renderFooterButton = (text, onPress) => (
-    <TouchableOpacity onPress={onPress}>
-      <View style={modalFooterButton}>
-        <Text style={modalFooterText}>{text}</Text>
-      </View>
+    <TouchableOpacity
+      onPress={onPress}
+      style={modalFooterButton}
+    >
+      <Text style={modalFooterText}>{text}</Text>
     </TouchableOpacity>
   );
 
