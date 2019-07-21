@@ -9,8 +9,6 @@ import {
 
 import { Icon } from 'react-native-elements';
 
-import { Ionicons } from '@expo/vector-icons';
-
 const Description = (locals) => {
   if (locals.hidden) {
     return null;

@@ -409,6 +409,7 @@ class AddUserScreen extends Component {
       <KeyboardAwareScrollView
         contentContainerStyle={containerNoList}
         behavior="padding"
+        keyboardShouldPersistTaps='handled'
       >
         <ScrollView
           style={{ flex: 1 }}
