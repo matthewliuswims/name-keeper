@@ -306,10 +306,12 @@ export const modalMsg = {
 };
 
 export const modalFooterButton = {
-  padding: 34,
+  width: 110,
+  padding: 20,
 };
 
 export const modalFooterText = {
+  textAlign: 'center',
   fontSize: 20,
   color: colors.appThemeColor,
 };

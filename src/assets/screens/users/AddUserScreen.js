@@ -65,6 +65,7 @@ class AddUserScreen extends Component {
       },
       options: this.optionsFields(),
     };
+    this.scrollViewContentOffset = 0;
   }
 
   optionsFields() {
@@ -135,7 +136,9 @@ class AddUserScreen extends Component {
     });
   }
 
-  addDescription() {
+  addDescription(e) {
+    this.scrollViewRef.props.scrollToPosition(0, this.scrollViewContentOffset + 70);
+
     this.setState((prevState) => {
       // uid would not be good for concurrent users, but we don't deal with that
       const uid = new Date().valueOf().toString();
@@ -221,6 +224,9 @@ class AddUserScreen extends Component {
   }
 
   userSubmit = async () => {
+    // even if there's an error, then it's fine (and actually good), because
+    // the error will only ever be with the name (aka at the top), so the user will see it
+    this.scrollViewRef.props.scrollToPosition(0, 0);
     const userStruct = this.formRef.getValue();
     if (!this.formRef) return;
 
@@ -395,6 +401,11 @@ class AddUserScreen extends Component {
     );
   }
 
+  handleScroll = (event) => {
+    // get the content offset
+    this.scrollViewContentOffset = event.nativeEvent.contentOffset.y;
+  }
+
   render() {
     const { groups: allGroups, loading } = this.props.groupsState;
     const { loading: usersStateLoading } = this.props.usersState;
@@ -407,9 +418,13 @@ class AddUserScreen extends Component {
 
     return (
       <KeyboardAwareScrollView
+        onScroll={this.handleScroll}
         contentContainerStyle={containerNoList}
         behavior="padding"
         keyboardShouldPersistTaps='handled'
+        innerRef={ref => {
+          this.scrollViewRef = ref
+        }}
       >
         <ScrollView
           style={{ flex: 1 }}

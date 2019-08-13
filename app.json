@@ -11,7 +11,7 @@
     "packagerOpts": {
       "config": "metro.config.js"
     },
-    "version": "3.2.12",
+    "version": "3.2.14",
     "orientation": "portrait",
     "icon": "./assets/name-keeper-app-icon.png",
     "updates": {
