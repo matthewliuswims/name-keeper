@@ -1,4 +1,4 @@
-import { SQLite } from 'expo';
+import { SQLite } from 'expo-sqlite';
 
 const db = SQLite.openDatabase('db.db');
 /**

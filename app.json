@@ -3,14 +3,12 @@
     "name": "Name Keeper",
     "slug": "name-keeper",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android"
     ],
-    "packagerOpts": {
-      "config": "metro.config.js"
-    },
+    "packagerOpts": { "config": "metro.config.js", "sourceExts": ["js", "jsx", "svg", "svgx"] },
     "version": "3.2.14",
     "orientation": "portrait",
     "icon": "./assets/name-keeper-app-icon.png",

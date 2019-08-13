@@ -71,6 +71,7 @@ export function listAllUsers() {
 
       // this is so when we do searches, the search can find parsed dates as a substring
       const withParsedDates = usersList.map((user) => {
+        console.log('user here is', user)
         const userDescriptionArray = JSON.parse(user.description);
         const newUser = Object.assign({}, user, {
           description: userDescriptionArray,
