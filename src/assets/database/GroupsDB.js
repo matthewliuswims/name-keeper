@@ -79,7 +79,7 @@ export default class GroupsDB extends React.Component {
     }
 
     async editGroupName(currentGroupName, newGroupName) {
-      const lastEdit = new Date();
+      const lastEdit = new Date().toISOString();
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
@@ -128,7 +128,7 @@ export default class GroupsDB extends React.Component {
     }
 
     async addGroup(groupName) {
-      const timeGroupAdded = new Date();
+      const timeGroupAdded = new Date().toISOString();
       let groups;
       let nextGrpColor;
 

@@ -73,7 +73,7 @@ export default class UsersDB extends React.Component {
 
 
     addUser(user) {
-      const timeUserAdded = new Date();
+      const timeUserAdded = new Date().toISOString();
       const { primaryGroupName } = user;
 
       // user.description is an array of descriptions (right now we only have 1 element)
@@ -133,7 +133,7 @@ export default class UsersDB extends React.Component {
 
     editUserGroupNames(user) {
       const { userID, primaryGroupName } = user;
-      const lastEdit = new Date();
+      const lastEdit = new Date().toISOString();
       return new Promise((resolve, reject) => {
         UsersDB.singletonInstance.dbConnection.transaction(
           (tx) => {
@@ -150,7 +150,7 @@ export default class UsersDB extends React.Component {
 
     editUser(user) {
       const { userID, name, description, location, primaryGroupName } = user;
-      const lastEdit = new Date();
+      const lastEdit = new Date().toISOString();
 
       const userDescriptionStringified = JSON.stringify(description);
 
