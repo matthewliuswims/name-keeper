@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableHighlight, TouchableOpacity, Text, Animated } from 'react-native';
 import Toast from 'react-native-easy-toast';
-
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { SwipeListView } from 'react-native-swipe-list-view';
-
 import { Icon } from 'react-native-elements';
-
 import { connect } from 'react-redux';
 
 import { parseToShortDate } from '../../../lib/dates';
 import colors from '../../styles/colors';
 
-import { listAllUsers, focusUser, deleteUser } from '../../../redux/actions/users';
+import {
+  listAllUsers,
+  focusUser,
+  deleteUser,
+} from '../../../redux/actions/users';
+
 import {
   container,
   userContainerStyle,
@@ -33,43 +35,29 @@ import {
 } from '../../../redux/actions/toasts';
 
 import UserBox from '../../components/users/UserBox';
-
 import Footer from '../../components/footer/footer';
-
-
 import { SLOT_FADE_OUT_DURATION } from '../../components/animations/DURATIONS';
-
-
-import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
-
 import SortIcon from '../../components/icons/SortIcon';
-
 import RightHeaderComponent from '../../components/headers/RightGroupHeader';
 
 import ErrorModal from '../../components/modal/Error';
-
 import DeleteModal from '../../components/modal/Delete';
-
 import SortBy from '../../components/modal/SortBy';
+
+import FadeInOut from '../../components/animations/fade-in-out-slot';
+import FadeIn from '../../components/animations/fade-in';
+
+
+import {
+  OLD_TO_NEW,
+  NEW_TO_OLD,
+  ALPHABETICAL,
+} from '../../components/modal/constants';
 
 import Logo from '../../../../assets/undraw_pilates_gpdb.svg';
 
-import FadeInOut from '../../components/animations/fade-in-out-slot';
 
-import FadeIn from '../../components/animations/fade-in';
-
-type Props = {
-  groupsState : {
-    focusedGroupName: String,
-  },
-  usersState: {
-    users: Array<Object>,
-    focusedGroupName: String,
-  },
-  listAllUsers: () => Promise<Object>,
-};
-
-class GroupScreen extends Component<Props> {
+class GroupScreen extends Component {
   constructor(props) {
     super(props);
     this.props.navigation.setParams({ getGroupName: this.props.groupsState.focusedGroupName });
@@ -77,7 +65,7 @@ class GroupScreen extends Component<Props> {
     this.offset = 0;
     this.state = {
       sortByModalOpen: false,
-      sortOption: 'Date: Old to New (default)',
+      sortOption: NEW_TO_OLD,
       direction: 'up',
       userDrawerFocused: null,
       deleteUserModalOpen: false,
@@ -159,7 +147,7 @@ class GroupScreen extends Component<Props> {
 
   sortUsers(sortOption, users) {
     let sortedUsers;
-    if (sortOption === 'Date: Old to New (default)') {
+    if (sortOption === OLD_TO_NEW) {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
@@ -169,7 +157,7 @@ class GroupScreen extends Component<Props> {
       });
     }
 
-    if (sortOption === 'Date: New to Old') {
+    if (sortOption === NEW_TO_OLD) {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
@@ -177,7 +165,7 @@ class GroupScreen extends Component<Props> {
       });
     }
 
-    if (sortOption === 'Alphabetical') {
+    if (sortOption === ALPHABETICAL) {
       sortedUsers = users.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
@@ -248,7 +236,7 @@ class GroupScreen extends Component<Props> {
           Add a person below!
         </Text>
         <Text style={addMessage}>
-          Hint: the best time to add someone&#39;s name is right after you finish meeting them.
+          Hint: The best time to add someone&#39;s name is right after you meet them.
         </Text>
       </FadeIn>
     );

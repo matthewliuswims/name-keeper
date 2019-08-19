@@ -7,6 +7,12 @@ import { Icon } from 'react-native-elements';
 import colors from '../../styles/colors';
 
 import {
+  OLD_TO_NEW,
+  NEW_TO_OLD,
+  ALPHABETICAL,
+} from './constants';
+
+import {
   modalContainer,
   modalHeader,
   modalMessage,
@@ -16,9 +22,9 @@ import {
 } from '../../styles/base';
 
 const sortOptions = [
-  { option: 'Date: Old to New (default)' },
-  { option: 'Date: New to Old' },
-  { option: 'Alphabetical' },
+  { option: NEW_TO_OLD },
+  { option: OLD_TO_NEW },
+  { option: ALPHABETICAL },
 ];
 
 export default class SortByModal extends Component {

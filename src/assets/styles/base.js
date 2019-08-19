@@ -78,6 +78,11 @@ export const containerNoList = {
   paddingBottom: container.paddingTop,
 };
 
+export const aboutContainer = {
+  ...containerNoList,
+  paddingBottom: hp('6%'),
+};
+
 export const modalContainer = {
   backgroundColor: 'white',
   padding: 30,

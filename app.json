@@ -9,7 +9,7 @@
       "android"
     ],
     "packagerOpts": { "config": "metro.config.js", "sourceExts": ["js", "jsx", "svg", "svgx"] },
-    "version": "3.2.14",
+    "version": "3.2.15",
     "orientation": "portrait",
     "icon": "./assets/name-keeper-app-icon.png",
     "updates": {

@@ -1,16 +1,11 @@
 import Sentry from 'sentry-expo';
 import PropTypes from 'prop-types';
-
 import Toast from 'react-native-easy-toast';
-
 import React, { Component } from 'react';
-
 import { Text, View, StyleSheet, TouchableOpacity, TouchableHighlight, Animated } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { Icon } from 'react-native-elements';
-
 import { connect } from 'react-redux';
-
 import { get } from 'lodash';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -47,14 +42,12 @@ import colors from '../../styles/colors';
 import Footer from '../../components/footer/footer';
 import LoadingSpinner from '../../components/transitional-states/LoadingSpinner';
 import ErrorModal from '../../components/modal/Error';
-
 import DeleteModal from '../../components/modal/Delete';
 
 import { listAllUsers, focusUser, deleteUser } from '../../../redux/actions/users';
-
 import { addToast, clearToast } from '../../../redux/actions/toasts';
-
 import { listGroups, clearGroupsErr, focusGroup, deleteGroup } from '../../../redux/actions/groups';
+
 import Group from '../../components/groups/GroupBox';
 import RightHeaderComponent from '../../components/headers/RightGroupsHeader';
 import LeftHeaderComponent from '../../components/headers/LeftGroupsHeader';
@@ -67,6 +60,11 @@ import { usersGroupNamesMatch } from '../../../lib/actions';
 
 import SortBy from '../../components/modal/SortBy';
 import Filter from '../../components/modal/Filter';
+import {
+  OLD_TO_NEW,
+  NEW_TO_OLD,
+  ALPHABETICAL,
+} from '../../components/modal/constants';
 
 import FadeIn from '../../components/animations/fade-in';
 
@@ -93,7 +91,7 @@ class GroupsScreen extends Component {
       screenTitle: 'Groups',
       sortedFilteredUsersWrapper: {
         // computed data shouldn't be stored in the state of the object, which is why sortedFiltererdUsers isn't here
-        sortOption: 'Date: Old to New (default)',
+        sortOption: NEW_TO_OLD,
         selectedFilteredGroups: [], // populated in componentDidMount
       },
       direction: 'up',
@@ -190,8 +188,11 @@ class GroupsScreen extends Component {
   }
 
   getUserNamesForGroup(groupName, users) {
-    const parsedUsers = users.filter(user => user.primaryGroupName === groupName);
-    return parsedUsers.map(user => user.name);
+    const groupUsers = users.filter(user => user.primaryGroupName === groupName);
+    const newestToOldest = groupUsers.sort((a, b) => {
+      return new Date(b.createdDate) - new Date(a.createdDate);
+    });
+    return newestToOldest.map(user => user.name);
   }
 
   noGroupsText = () => {
@@ -405,7 +406,7 @@ class GroupsScreen extends Component {
   swap = () => {
     this.setState((state) => {
       const showingGroups = !state.showingGroups;
-    
+
       this.props.navigation.setParams({
         showingGroups,
       });
@@ -423,7 +424,8 @@ class GroupsScreen extends Component {
       this.props.navigation.setParams({
         screenTitle: 'People',
       });
-      const sortOption = 'Date: Old to New (default)';
+      // default option when swapping from groups to people
+      const sortOption = NEW_TO_OLD;
 
       const selectedFilteredGroups = this.withFilterProperties(this.props.groupsState.groups); // need this in case have a new group created
 
@@ -443,7 +445,7 @@ class GroupsScreen extends Component {
 
   sortUsers(sortOption, users) {
     let sortedUsers;
-    if (sortOption === 'Date: Old to New (default)') {
+    if (sortOption === OLD_TO_NEW) {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
@@ -453,7 +455,7 @@ class GroupsScreen extends Component {
       });
     }
 
-    if (sortOption === 'Date: New to Old') {
+    if (sortOption === NEW_TO_OLD) {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
@@ -461,7 +463,7 @@ class GroupsScreen extends Component {
       });
     }
 
-    if (sortOption === 'Alphabetical') {
+    if (sortOption === ALPHABETICAL) {
       sortedUsers = users.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
@@ -515,7 +517,7 @@ class GroupsScreen extends Component {
           Add a person below!
         </Text>
         <Text style={addMessage}>
-          Hint: the best time to add someone&#39;s name is right after you finish meeting them.
+          Hint: The best time to add someone&#39;s name is right after you meet them.
         </Text>
         <Footer
           showAddUserButton
@@ -725,7 +727,7 @@ class GroupsScreen extends Component {
     if (!showingGroups && !numberGroups) {
       return null;
     }
-  
+
     const showFooterButton = direction === 'up';
     // viewing users
     return (

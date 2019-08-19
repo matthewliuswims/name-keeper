@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import nameOfApp from '../../../lib/variables';
 
-import { container } from '../../styles/base';
+import { aboutContainer } from '../../styles/base';
 
 export default class About extends Component {
   static navigationOptions = {
@@ -13,7 +13,7 @@ export default class About extends Component {
 
   render() {
     return (
-      <View style={container}>
+      <View style={aboutContainer}>
         <ScrollView>
           <View style={styles.HeaderQuestion}>
             <Text style={styles.headerQuestionText}>What&apos;s the problem <Text style={{ fontStyle: 'italic' }}>{nameOfApp}</Text> is solving?</Text>
@@ -38,11 +38,11 @@ export default class About extends Component {
           </View>
           <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 1. </Text> You volunteer weekly at an after-school program.</Text>
           <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 2. </Text> You notice a shy kid with red spiky hair sitting in the corner.</Text>
-          <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 3. </Text> Talking to him, you learn Andrew moved here a couple days ago and enjoys playing chess.</Text>
-          <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 4. </Text> A minute after the conversation, you write down Andrew&apos;s name along with the description &ldquo;new guy with red spiky hair who likes chess.&rdquo;</Text>
+          <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 3. </Text> Talking to him, you learn Andrew moved here a couple of days ago and enjoys playing chess.</Text>
+          <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 4. </Text> A minute after the conversation, you write down Andrew&apos;s name along with the description, &ldquo;new guy with red spiky hair who likes chess.&rdquo;</Text>
           <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 5. </Text> Right before you volunteer next week, you realize you forgot the name of that new-red-hair-guy-who-plays-chess.</Text>
           <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 6. </Text> No fear: using <Text style={{ fontStyle: 'italic' }}>{nameOfApp}</Text> you are able to quickly remember his name: Andrew!</Text>
-          <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 7. </Text> You greet Andrew using his name. He feels loved and estatic that you remembered his name.</Text>
+          <Text style={styles.AnswerText}><Text style={{ fontWeight: 'bold' }}> 7. </Text> You greet Andrew using his name. He feels loved and ecstatic that you remembered his name.</Text>
         </ScrollView>
       </View>
     );
