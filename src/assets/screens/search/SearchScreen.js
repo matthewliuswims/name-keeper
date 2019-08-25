@@ -116,7 +116,7 @@ class SearchScreen extends React.Component {
             placeholder={this.placeHolderText(groupName)}
             heightAdjust={Platform.OS === 'ios' ? 0 : hp('3%')}
             onBack={() => {
-              this.props.navigation.navigate('GroupsScreen');
+              this.props.navigation.goBack();
             }}
             autoCorrect={false}
           />

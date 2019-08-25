@@ -108,7 +108,7 @@ class AddGroupScreen extends Component<Props> {
   groupText() {
     return (
       <Text style={addMessage}>
-        Hint: A group is usually a community you are part of (e.g. Work or Church).
+        Hint: a group is usually a community you are part of (e.g. Work or Church).
       </Text>
     );
   }

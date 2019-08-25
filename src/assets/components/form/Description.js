@@ -74,7 +74,7 @@ const Description = (locals) => {
         <View style={[textboxViewStyle, styles.textBoxOverrides]}>
           <TextInput
             accessibilityLabel={locals.label}
-            ref="input"
+            ref={(ref) => locals.config.setRef(ref, locals.config.id)}
             allowFontScaling={locals.allowFontScaling}
             autoCapitalize={locals.autoCapitalize}
             autoCorrect={locals.autoCorrect}

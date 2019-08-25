@@ -66,8 +66,27 @@ class AddUserScreen extends Component {
       options: this.optionsFields(),
     };
     this.scrollViewContentOffset = 0;
+    this.arraysRefWrapper = [];
   }
 
+  setRef = (ref, refId) => {
+    const {
+      arraysRefWrapper,
+    } = this;
+
+    // already contains the refID
+    if (arraysRefWrapper.some(({ id }) => id === refId)) return;
+
+    this.arraysRefWrapper.push({
+      ref,
+      id: refId,
+    });
+  }
+
+  /**
+   * only used for initialization (and NOT for add description).
+   * code duplicated in addDescription method
+   */
   optionsFields() {
     return (
       {
@@ -87,6 +106,7 @@ class AddUserScreen extends Component {
               isLast: true,
               addDescription: this.addDescription.bind(this),
               removeDescription: this.removeDescription.bind(this),
+              setRef: this.setRef.bind(this),
             },
             multiline: true,
           },
@@ -133,12 +153,14 @@ class AddUserScreen extends Component {
         options,
         descriptionIDs,
       };
+    }, () => {
+      const updatedArraysRefWrapper = this.arraysRefWrapper.filter(({ id }) => id !== descriptionID);
+      this.arraysRefWrapper = updatedArraysRefWrapper;
     });
   }
 
   addDescription(e) {
     this.scrollViewRef.props.scrollToPosition(0, this.scrollViewContentOffset + 70);
-
     this.setState((prevState) => {
       // uid would not be good for concurrent users, but we don't deal with that
       const uid = new Date().valueOf().toString();
@@ -157,6 +179,7 @@ class AddUserScreen extends Component {
           id: descriptionID,
           addDescription: this.addDescription.bind(this),
           removeDescription: this.removeDescription.bind(this),
+          setRef: this.setRef.bind(this),
         },
         multiline: true,
       };
@@ -170,9 +193,19 @@ class AddUserScreen extends Component {
       const descriptionIDs = prevDescriptionIDs.concat(descriptionID);
       return {
         formFields,
-        options,
+        options, // Form relies on this --> options={this.state.options}
         descriptionIDs,
       };
+    }, () => {
+      const {
+        arraysRefWrapper,
+      } = this;
+
+      const latestTextinputRefWrapper = arraysRefWrapper[arraysRefWrapper.length - 1];
+      const {
+        ref,
+      } = latestTextinputRefWrapper;
+      ref.focus();
     });
   }
 

@@ -124,15 +124,16 @@ export const loadingContainer = {
 
 export const deleteContainer = {
   marginTop: hp('5%'),
-  backgroundColor: colors.warningColor,
+  borderColor: colors.warningColor,
   justifyContent: 'center',
   alignItems: 'center',
   padding: 10,
   borderRadius: 10,
+  borderWidth: 1,
 };
 
 export const deleteText = {
-  color: 'white',
+  color: colors.warningColor,
   fontSize: 14,
   fontWeight: 'bold',
 };
