@@ -189,7 +189,7 @@ class GroupsScreen extends Component {
   getUserNamesForGroup(groupName, users) {
     const groupUsers = users.filter(user => user.primaryGroupName === groupName);
     const newestToOldest = groupUsers.sort((a, b) => {
-      return new Date(b.createdDate) - new Date(a.createdDate);
+      return new Date(b.lastEdit) - new Date(a.lastEdit);
     });
     return newestToOldest.map(user => user.name);
   }
@@ -305,6 +305,8 @@ class GroupsScreen extends Component {
 
   groups = (users, numberGroups, numberUsers) => {
     const { groups } = this.props.groupsState;
+    // by create date (NOT last edit) --> otherwise it'd be really jarring for it order to change after every time a user is added
+    const groupsNewestToOldest = groups.sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate));
     const { usersState } = this.props;
     // the outer viewer wrap (for w/e reason) is necessary for the child FadeIn (now made back into a View) to work when toggling back and forth between the users and groups screen
     return (
@@ -313,7 +315,7 @@ class GroupsScreen extends Component {
           <SwipeListView
             useFlatList
             ref={ref => this._swipeListGroupsView = ref}
-            data={groups}
+            data={groupsNewestToOldest}
             renderItem={({ item }) => (
               <TouchableHighlight
                 onPress = {() => {
@@ -418,9 +420,9 @@ class GroupsScreen extends Component {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
-        const aCreatedDate = new Date(a.createdDate);
-        const bCreatedDate = new Date(b.createdDate);
-        return aCreatedDate - bCreatedDate;
+        const aLastEdit = new Date(a.lastEdit);
+        const bLastEdit = new Date(b.lastEdit);
+        return aLastEdit - bLastEdit;
       });
     }
 
@@ -428,7 +430,7 @@ class GroupsScreen extends Component {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
-        return new Date(b.createdDate) - new Date(a.createdDate);
+        return new Date(b.lastEdit) - new Date(a.lastEdit);
       });
     }
 
@@ -531,7 +533,7 @@ class GroupsScreen extends Component {
                   username={item.name}
                   primaryGroupName={item.primaryGroupName}
                   userDescription={item.description}
-                  date={parseToShortDate(item.createdDate)}
+                  date={parseToShortDate(item.lastEdit)}
                 />
               </FadeInOut>
             </TouchableHighlight>

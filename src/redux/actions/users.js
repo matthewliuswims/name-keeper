@@ -75,8 +75,8 @@ export function listAllUsers() {
         const newUser = Object.assign({}, user, {
           description: userDescriptionArray,
           // below 2 created for search purposes, see getDayOfWeek for more info
-          readableCreatedDate: parseToLongDate(user.createdDate),
-          createdDayOfWeek: getDayOfWeek(user.createdDate),
+          readableLastEditedDate: parseToLongDate(user.lastEdit),
+          editedDateOfWeek: getDayOfWeek(user.lastEdit),
           // below created for animation purposes
           // note: if it's already created, we have to give it animation 1, because it's already mounted somewhere.
           animatedSlotOpacity: oldUsersListIds.includes(user.userID) ? new Animated.Value(1) : new Animated.Value(0),

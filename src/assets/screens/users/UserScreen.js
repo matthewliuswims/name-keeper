@@ -105,7 +105,7 @@ class UserScreen extends Component {
                 name='date-range'
                 containerStyle={{ marginRight: wp('5%') }}
               />
-              <Text numberOfLines={1} style={styles.rightColumn}>{user.readableCreatedDate}</Text>
+              <Text numberOfLines={1} style={styles.rightColumn}>{user.readableLastEditedDate}</Text>
             </View>
             {user.location
             && (

@@ -150,9 +150,9 @@ class GroupScreen extends Component {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
-        const aCreatedDate = new Date(a.createdDate);
-        const bCreatedDate = new Date(b.createdDate);
-        return aCreatedDate - bCreatedDate;
+        const aLastEdit = new Date(a.lastEdit);
+        const bLastEdit = new Date(b.lastEdit);
+        return aLastEdit - bLastEdit;
       });
     }
 
@@ -160,7 +160,7 @@ class GroupScreen extends Component {
       sortedUsers = users.sort((a, b) => {
         // Turn strings into dates, and then subtract them
         // to get a value that is either negative, positive, or zero.
-        return new Date(b.createdDate) - new Date(a.createdDate);
+        return new Date(b.lastEdit) - new Date(a.lastEdit);
       });
     }
 
@@ -267,7 +267,7 @@ class GroupScreen extends Component {
                 primaryGroupName={item.primaryGroupName}
                 username={item.name}
                 userDescription={item.description}
-                date={parseToShortDate(item.createdDate)}
+                date={parseToShortDate(item.lastEdit)}
               />
             </FadeInOut>
           </TouchableHighlight>

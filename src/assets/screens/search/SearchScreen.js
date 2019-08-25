@@ -77,7 +77,7 @@ class SearchScreen extends React.Component {
               primaryGroupName={item.primaryGroupName}
               username={item.name}
               userDescription={item.description}
-              date={parseToShortDate(item.createdDate)}
+              date={parseToShortDate(item.lastEdit)}
             />
           </TouchableOpacity>
         )}
@@ -86,10 +86,9 @@ class SearchScreen extends React.Component {
     );
   }
 
-  usersForGroup(groupName) {
-    const { users } = this.props.usersState;
-    if (!users) return [];
-    const usersInGroup = this.props.usersState.users.filter((user) => {
+  usersForGroup(usersWithoutAnimatedSlotOpacity, groupName) {
+    if (!usersWithoutAnimatedSlotOpacity) return [];
+    const usersInGroup = usersWithoutAnimatedSlotOpacity.filter((user) => {
       return user.primaryGroupName === groupName;
     });
     return usersInGroup;
@@ -97,6 +96,13 @@ class SearchScreen extends React.Component {
 
   render() {
     const groupName = this.props.navigation.getParam('groupName');
+    const usersWithoutAnimatedSlotOpacity = this.props.usersState.users.map((user) => {
+      const userCopy = {
+        ...user,
+      };
+      delete userCopy.animatedSlotOpacity; // has a lot of crap potentially (can be super nested)
+      return userCopy;
+    });
     return (
       <KeyboardAvoidingView
         behavior="padding"
@@ -110,7 +116,7 @@ class SearchScreen extends React.Component {
             ref={function (ref) {
               this.searchBar = ref;
             }}
-            data={groupName ? this.usersForGroup(groupName) : this.props.usersState.users} // if no group name, show ALL USERS
+            data={groupName ? this.usersForGroup(usersWithoutAnimatedSlotOpacity, groupName) : usersWithoutAnimatedSlotOpacity} // if no group name, show ALL USERS
             handleResults={this.handleResults}
             showOnLoad
             placeholder={this.placeHolderText(groupName)}
