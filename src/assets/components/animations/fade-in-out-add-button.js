@@ -9,36 +9,6 @@ export default class FadeInOut extends React.Component {
     visible: true,
   }
 
-  componentDidUpdate(prevProps) {
-    const buttonDisappearing = prevProps.showAddUserButton === true && this.props.showAddUserButton === false;
-    const buttonReappears = prevProps.showAddUserButton === false && this.props.showAddUserButton === true;
-    if (buttonDisappearing) {
-      Animated.timing(
-        this.state.fadeAnim,
-        {
-          toValue: 0,
-          duration: DURATIONS.SIMPLE_FADE_OUT_DURATION,
-        },
-      ).start(() => {
-        this.setState({
-          visible: false,
-        });
-      });
-    }
-
-    if (buttonReappears) {
-      Animated.timing(
-        this.state.fadeAnim,
-        {
-          toValue: 1,
-          duration: DURATIONS.SIMPLE_FADE_IN_DURATION,
-        },
-      ).start(this.setState({
-        visible: true,
-      }));
-    }
-  }
-
   componentDidMount() {
     Animated.timing(
       this.state.fadeAnim,

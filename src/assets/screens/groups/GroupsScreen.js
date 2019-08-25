@@ -94,7 +94,6 @@ class GroupsScreen extends Component {
         sortOption: NEW_TO_OLD,
         selectedFilteredGroups: [], // populated in componentDidMount
       },
-      direction: 'up',
     };
   }
 
@@ -208,7 +207,6 @@ class GroupsScreen extends Component {
           A group contains the names of people you meet.
         </Text>
         <Footer
-          showAddUserButton={false}
           addGroupCB={this.addGroupCB}
           numberUsers={0}
           navigateToAddUserScreen={this.navigateToAddUserScreen}
@@ -305,33 +303,6 @@ class GroupsScreen extends Component {
   }
   // logic for  delete modal user ends
 
-  onScroll = (e) => {
-    const { layoutMeasurement, contentOffset, contentSize } = e.nativeEvent;
-    // @tutorial: https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
-    const currentOffset = contentOffset.y; // offset is how far we've come from top of the list (e.g. 212 at end of list, 0 at start)
-    const layoutMeasurementHeight = layoutMeasurement.height; // just the list height itself (e.g. 433)
-    const contentSizeHeight = contentSize.height; // end-end scroll height (e.g. 645)
-
-    const listIsNotFilled = contentSizeHeight < layoutMeasurementHeight;
-
-    const pastEnd = layoutMeasurementHeight + currentOffset + 10 > contentSizeHeight; // to account for the ability to scroll past the end (i.e. the bounce);
-    const pastTop = (currentOffset || this.offset) < 0;
-    const movingDown = currentOffset > this.offset;
-    let direction = 'up';
-    if (movingDown || pastEnd) {
-      direction = 'down';
-    }
-    if (pastTop || listIsNotFilled) {
-      direction = 'up';
-    }
-
-    this.offset = currentOffset;
-    this.setState({
-      direction,
-    });
-  }
-
-
   groups = (users, numberGroups, numberUsers) => {
     const { groups } = this.props.groupsState;
     const { usersState } = this.props;
@@ -340,8 +311,6 @@ class GroupsScreen extends Component {
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           <SwipeListView
-            scrollEventThrottle={120}
-            onScroll={this.onScroll}
             useFlatList
             ref={ref => this._swipeListGroupsView = ref}
             data={groups}
@@ -520,8 +489,6 @@ class GroupsScreen extends Component {
           Hint: The best time to add someone&#39;s name is right after you meet them.
         </Text>
         <Footer
-          showAddUserButton
-          addGroupCB={null}
           numberUsers={0}
           navigateToAddUserScreen={this.navigateToAddUserScreen}
           filterCB={this.openFilterModal}
@@ -540,8 +507,6 @@ class GroupsScreen extends Component {
       <View style={{ flex: 1 }}>
         {showFilterSortHeader && this.sortFilterHeader()}
         <SwipeListView
-          scrollEventThrottle={120}
-          onScroll={this.onScroll}
           useFlatList
           ref={ref => this._swipeListUsersView = ref}
           data={sortFilteredUsers}
@@ -721,18 +686,16 @@ class GroupsScreen extends Component {
   }
 
   renderFooter = (numberGroups, numberUsers) => {
-    const { showingGroups, direction } = this.state;
+    const { showingGroups } = this.state;
 
     // viewing users and there are no groups
     if (!showingGroups && !numberGroups) {
       return null;
     }
 
-    const showFooterButton = direction === 'up';
     // viewing users
     return (
       <Footer
-        showAddUserButton={showFooterButton}
         addGroupCB={showingGroups ? this.addGroupCB : null}
         numberUsers={numberUsers}
         navigateToAddUserScreen={this.navigateToAddUserScreen}
