@@ -7,7 +7,7 @@ import { Text } from '../components/Themed';
 // @TODO: try safeareaview?
 export default function PeopleListScreen({
   navigation
-}: any) {
+}) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>PeopleList Screen</Text>

@@ -4,7 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 function Onboard1Screen({
   navigation,
-}: any) {
+}) {
 
   return (
     <View style={styles.container}>

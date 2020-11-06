@@ -6,22 +6,23 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Onboard2Screen({
   navigation,
-}: any) {
+}) {
   const [ showTip, setTip ] = useState(true)
 
   return (
     <View style={styles.container}>
       <Tooltip
-        contentStyle={{ width: 200 }}
+        // contentStyle={{ width: 200 }}
         isVisible={showTip}
         content={(
           <Text>Groups contain people that are related in some way</Text>
         )}
-        placement="bottom"
+        placement="top"
         onClose={() => setTip(false)}
       >
         <Text style={styles.title}>Onboard screen 2</Text>
       </Tooltip>
+      <Text style={styles.title}>Onboard screen 2</Text>
       <TouchableOpacity onPress={() => navigation.replace('Home')} style={styles.link}>
         <Text style={styles.linkText}>Go to home screen!</Text>
       </TouchableOpacity>
