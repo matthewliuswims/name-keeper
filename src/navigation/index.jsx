@@ -1,7 +1,4 @@
 import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
   getFocusedRouteNameFromRoute
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -27,24 +24,14 @@ function getHeaderTitle(route) {
   }
 }
 
-// If you are not familiar with React Navigation, we recommend going through the
-// "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
-export default function Navigation({ colorScheme }) {
-  return (
-    <NavigationContainer
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
-    </NavigationContainer>
-  );
-}
-
 // A root stack navigator is often used for displaying modals on top of all other content
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator();
 
-function RootNavigator() {
+function Navigation() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    >
       <Stack.Screen options={{headerShown: false}} name="Onboarding" component={OnboardingNavigator} />
       <Stack.Screen
         name="Home"
@@ -57,3 +44,5 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
+export default Navigation
