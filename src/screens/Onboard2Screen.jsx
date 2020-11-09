@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack'
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { TextInput } from 'react-native-paper';
@@ -25,9 +26,15 @@ import Paragraph from '../elements/Paragraph'
 // Constants
 import { CONTAINER } from '../constants/Styles'
 
+// Redux
+import {
+  selectGroup,
+} from '../store/groups';
+
 export default function Onboard2Screen({
   navigation,
 }) {
+  const group = useSelector(selectGroup);
   const headerHeight = useHeaderHeight();
   const [ showTip, setTip ] = useState(false)
 

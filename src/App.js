@@ -1,4 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
+import { registerRootComponent } from 'expo';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -14,11 +15,15 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 
-import useCachedResources from './src/hooks/useCachedResources';
-import useColorScheme from './src/hooks/useColorScheme';
-import Navigation from './src/navigation';
+import { Provider as StoreProvider } from 'react-redux';
 
-export default function App() {
+import store from './store';
+
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import Navigation from './navigation';
+
+function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
@@ -51,15 +56,19 @@ export default function App() {
   const theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme
 
   return (
-    <PaperProvider theme={theme}>
-      <SafeAreaProvider>
-        <NavigationContainer
-          theme={theme}
-        >
-          <Navigation />
-        </NavigationContainer>
-        <StatusBar />
-      </SafeAreaProvider>
-    </PaperProvider>
+    <StoreProvider store={store}>
+      <PaperProvider theme={theme}>
+        <SafeAreaProvider>
+          <NavigationContainer
+            theme={theme}
+          >
+            <Navigation />
+          </NavigationContainer>
+          <StatusBar />
+        </SafeAreaProvider>
+      </PaperProvider>
+    </StoreProvider>
   );
 }
+
+export default registerRootComponent(App)
