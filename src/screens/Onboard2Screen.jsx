@@ -40,7 +40,7 @@ export default function Onboard2Screen({
   }, [])
 
   return (
-    <ViewContainer styles={styles.container}>
+    <ViewContainer style={styles.container}>
       <Tooltip
         isVisible={showTip}
         content={

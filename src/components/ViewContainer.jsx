@@ -9,41 +9,35 @@ import {
   Keyboard
 } from 'react-native';
 
+// import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+
 // Constants
 import { CONTAINER } from '../constants/Styles'
 
 export default function ViewContainer({
   children,
-  styles: stylesParam,
+  style: styleParam,
   haveKeyboardAvoidingView = true,
 }) {
   const headerHeight = useHeaderHeight();
   if (haveKeyboardAvoidingView) {
     return (
       <KeyboardAvoidingView
+        style={{ flex: 1 }}
         // need below from https://medium.com/@nickyang0501/keyboardavoidingview-not-working-properly-c413c0a200d4
         behavior={Platform.OS === "ios" ? "padding" : null}
-        style={{ flex: 1 }}
         // need below from https://stackoverflow.com/a/51169574 
         keyboardVerticalOffset={headerHeight}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={[CONTAINER, stylesParam]}>
-              {children}
-            </View>
-          </TouchableWithoutFeedback>
+        <SafeAreaView style={[CONTAINER, styleParam]}>
+          {children}
         </SafeAreaView>
       </KeyboardAvoidingView>
     )
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={[CONTAINER, stylesParam]}>
-          {children}
-        </View>
-      </TouchableWithoutFeedback>
+    <SafeAreaView style={[CONTAINER, stylesParam]}>
+      {children}
     </SafeAreaView>
   );
 }
