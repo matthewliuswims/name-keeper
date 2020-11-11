@@ -3,8 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
 import PeopleListScreen from '../screens/PeopleListScreen';
 import PersonScreen from '../screens/PersonScreen';
 import GroupsListScreen from '../screens/GroupsListScreen';
@@ -15,12 +13,11 @@ const BottomTab = createBottomTabNavigator();
 // https://reactnavigation.org/docs/material-bottom-tab-navigator
 
 export default function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
   return (
     <BottomTab.Navigator
       // The name of the route to render on first load of the navigator.
       initialRouteName="People"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+    >
       <BottomTab.Screen
         name="People"
         component={PeopleNavigator}

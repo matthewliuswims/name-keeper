@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHeaderHeight } from '@react-navigation/stack'
 import Tooltip from 'react-native-walkthrough-tooltip';
 import { TextInput } from 'react-native-paper';
+import { useForm, Controller } from "react-hook-form";
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -28,13 +29,20 @@ import { CONTAINER } from '../constants/Styles'
 
 // Redux
 import {
-  selectGroup,
+  addGroupAsync,
 } from '../store/groups';
 
 export default function Onboard2Screen({
   navigation,
 }) {
-  const group = useSelector(selectGroup);
+  const dispatch = useDispatch();
+  const { control, handleSubmit, errors } = useForm();
+  const onSubmit = async data => {
+    const { group } = data
+    await dispatch(addGroupAsync(group))
+    navigation.replace('Home')
+  }
+
   const headerHeight = useHeaderHeight();
   const [ showTip, setTip ] = useState(false)
 
@@ -68,17 +76,35 @@ export default function Onboard2Screen({
             placement="bottom"
             onClose={() => setTip(false)}
           >
-            <TextInput
-              onFocus={() => setTip(false)}
-              mode="outlined"
-              placeholder="Name (e.g. Work)"
-              style={{ width: "100%"}} // need this for whatever reason.
+            <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={value => onChange(value)}
+                  value={value}
+
+                  onFocus={() => setTip(false)}
+                  mode="outlined"
+                  placeholder="Name (e.g. Work)"
+                  style={{ width: "100%"}} // need this for whatever reason.
+                />
+              )}
+              name="group"
+              rules={{ required: true }}
+              defaultValue=""
             />
+            {errors.group && <Paragraph color='error'>This is required.</Paragraph>}
           </Tooltip>
             <View style={{ flex : 1 }} />
             <View>
               <ProgressBar progress={0.33} />
-              <ButtonPrimary onPress={() => navigation.replace('Home')}>
+              <ButtonPrimary
+                onPress={
+                  handleSubmit(onSubmit)
+                }
+              >
                 Save
               </ButtonPrimary>
             </View>

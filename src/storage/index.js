@@ -75,7 +75,7 @@ export const getItem = async ({ key, resource: resourceParam }) => {
  * @param {string} resource 
  */
 export const addItem = async ({ item, resource: resourceParam }) => {
-  validateAsString(resourceParam) && validateAsObject(itemParam)
+  validateAsString(resourceParam) && validateAsObject(item)
 
   const resource = await getResource(resourceParam)
   const resourceNew = [...resource, item]

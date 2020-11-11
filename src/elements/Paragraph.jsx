@@ -3,11 +3,29 @@ import * as React from 'react';
 
 import { StyleSheet } from 'react-native';
 
-import { Paragraph as PaperParagraph } from 'react-native-paper';
+import { Paragraph as PaperParagraph, useTheme } from 'react-native-paper';
 
-const Paragraph = ({ children, style }) => {
+const Paragraph = ({
+  children,
+  style = {},
+  color: colorParam = 'text' }
+) => {
+  const { colors } = useTheme();
+  
   return (
-    <PaperParagraph style={[styles.paragraph, style]}>{children}</PaperParagraph>
+    <PaperParagraph
+      style={
+        [
+          styles.paragraph,
+          {
+            ...style,
+            color: colors[colorParam]
+          }
+        ]
+      }
+    >
+      {children}
+    </PaperParagraph>
   )
 }
 

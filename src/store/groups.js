@@ -5,7 +5,14 @@ export const groupsSlice = createSlice({
   name: 'groups',
   initialState: {
     error: null,
-    group: null,
+    group: {
+      id: null,
+      name: '',
+      users: [],
+      updatedAt: null,
+      createdAt: null,
+      colorIndex: null
+    },
     groups: []
   },
   reducers: {
@@ -19,10 +26,11 @@ export const groupsSlice = createSlice({
   },
 });
 
-export const { addGroup, addGroupFail } = groupsSlice.actions;
+const { addGroup, addGroupFail } = groupsSlice.actions;
 
 // Thunks
-export const addGroupAsync = (groupName, color) => async dispatch => {
+export const addGroupAsync = (groupName) => async dispatch => {
+  // @TODO: see if we can get the colors from getState - https://redux-toolkit.js.org/api/createAsyncThunk#payloadcreator
   try {
     const group = {
       name: groupName,
@@ -30,10 +38,10 @@ export const addGroupAsync = (groupName, color) => async dispatch => {
       users: [],
       updatedAt: Date.now(),
       createdAt: Date.now(),
-      color
+      colorIndex: 0
     }
   
-    await addItem({ group, resource: 'groups' })
+    await addItem({ item: group, resource: 'groups' })
     dispatch(addGroup(group));
   } catch (err) {
     dispatch(addGroupFail(err.toString()))

@@ -2,7 +2,9 @@ import * as React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { Text } from '../components/Themed';
+// Elements
+import Paragraph from '../elements/Paragraph'
+import Title from '../elements/Title'
 
 // @TODO: try safeareaview?
 export default function PeopleListScreen({
@@ -10,12 +12,12 @@ export default function PeopleListScreen({
 }) {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>PeopleList Screen</Text>
+      <Title style={styles.title}>PeopleList Screen</Title>
       <TouchableOpacity
         onPress={() => navigation.navigate('Person')}
         style={styles.link}
       >
-        <Text style={styles.linkText}>Go to Person Screen!</Text>
+        <Paragraph style={styles.linkText}>Go to Person Screen!</Paragraph>
       </TouchableOpacity>
     </SafeAreaView>
   );

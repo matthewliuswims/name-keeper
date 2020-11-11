@@ -2,12 +2,13 @@ import * as React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Text } from '../components/Themed';
+// Elements
+import Title from '../elements/Title'
 
 export default function PersonScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Person Screen</Text>
+      <Title style={styles.title}>Person Screen</Title>
     </SafeAreaView>
   );
 }

@@ -30,6 +30,7 @@
     "expo-web-browser": "~8.5.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-hook-form": "^6.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-color-picker": "^0.6.0",
     "react-native-gesture-handler": "~1.7.0",
