@@ -16,7 +16,7 @@ import {
 // Components
 import ButtonPrimary from '../components/ButtonPrimary'
 import ProgressBar from '../components/ProgressBar'
-import ViewContainerScrollable from '../components/ViewContainerScrollable'
+import ViewContainer from '../components/ViewContainer'
 
 // Elements
 import Title from '../elements/Title'
@@ -69,7 +69,7 @@ export default function Onboard3Screen({
   }, [])
 
   return (
-    <View style={styles.container}>
+    <ViewContainer style={styles.container}>
       <View style={{ flex: 2}}>
         <Tooltip
           isVisible={showTip}
@@ -147,7 +147,6 @@ export default function Onboard3Screen({
           )}
         />
       </View>
-      <View style={{flex: 1}}/>
       <View style={{flex: 1}}>
           <ProgressBar progress={0.66} />
           <ButtonPrimary
@@ -167,13 +166,12 @@ export default function Onboard3Screen({
             Save
           </ButtonPrimary>
       </View>
-    </View>
+    </ViewContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'space-around'
   }
 });
