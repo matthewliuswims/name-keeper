@@ -11,7 +11,7 @@ const Paragraph = ({
   color: colorParam = 'text' }
 ) => {
   const { colors } = useTheme();
-  
+
   return (
     <PaperParagraph
       style={

@@ -5,9 +5,18 @@ import { StyleSheet } from 'react-native';
 
 import { Button } from 'react-native-paper';
 
-const ButtonPrimary = ({ children, style, onPress, loading = false }) => {
+const ButtonPrimary = (
+    {
+        children,
+        style,
+        onPress,
+        loading = false,
+        disabled = false
+    }
+) => {
     return (
         <Button
+            disabled={disabled}
             loading={loading}
             mode="contained"
             onPress={onPress}

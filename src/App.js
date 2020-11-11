@@ -38,7 +38,8 @@ function App() {
       // react native paper
       primary: '#007AFF', // this changes contained button color text
       accent: '#9013FE',
-    
+      
+      black: '#000000',
       // navigation
       card: '#007AFF', // e background color of card-like elements, such as headers, tab bars etc.
     },
