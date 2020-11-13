@@ -69,65 +69,47 @@ export default function Onboard3Screen({
   }, [])
 
   return (
-    <ViewContainer style={styles.container}>
-      <View style={{ flex: 2}}>
-        <Tooltip
-          isVisible={showTip}
-          content={
-            <>
-              <Title style={{ color: 'black' }}>Nearly There...</Title>
-              <Paragraph color={'black'}>
-                We need to add a person to the group we just made
-              </Paragraph>
-            </>
-          }
-          placement="bottom"
-          onClose={() => setTip(false)}
-        >
-          <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
-
-                onFocus={() => setTip(false)}
-                mode="outlined"
-                placeholder="Name (e.g. Joe)"
-                style={{ width: "100%"}} // need this for whatever reason.
-              />
-            )}
-            name="name"
-            rules={{ required: true }}
-            defaultValue=""
-          />
-          {errors.name && <Paragraph color='error'>This is required.</Paragraph>}
-        </Tooltip>
-           <Controller
-            control={control}
-            render={({ onChange, onBlur, value }) => (
-              <TextInput
-                style={{ marginTop: 10, width: "100%"}}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
-
-                onFocus={() => setTip(false)}
-                mode="outlined"
-                placeholder="Location"
-              />
-            )}
-            name="location"
-            rules={{ required: false }}
-            defaultValue=""
-        />
-        <FlatList
-          style={{flex: 1}}
-          data={fields}
-          renderItem={({item, index}) => (
+    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1}}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <View style={{ flex: 4}}>
+          <Tooltip
+            isVisible={showTip}
+            content={
+              <>
+                <Title style={{ color: 'black' }}>Nearly There...</Title>
+                <Paragraph color={'black'}>
+                  We need to add a person to the group we just made
+                </Paragraph>
+              </>
+            }
+            placement="bottom"
+            onClose={() => setTip(false)}
+          >
             <Controller
+              control={control}
+              render={({ onChange, onBlur, value }) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={value => onChange(value)}
+                  value={value}
+
+                  onFocus={() => setTip(false)}
+                  mode="outlined"
+                  placeholder="Name (e.g. Joe)"
+                  style={{ width: "100%"}} // need this for whatever reason.
+                />
+              )}
+              name="name"
+              rules={{ required: true }}
+              defaultValue=""
+            />
+            {errors.name && <Paragraph color='error'>This is required.</Paragraph>}
+          </Tooltip>
+            <Controller
+              control={control}
               render={({ onChange, onBlur, value }) => (
                 <TextInput
                   style={{ marginTop: 10, width: "100%"}}
@@ -137,41 +119,57 @@ export default function Onboard3Screen({
 
                   onFocus={() => setTip(false)}
                   mode="outlined"
-                  placeholder="Description"
+                  placeholder="Location"
                 />
               )}
-              control={control}
-              name={`description[${index}].descriptor`}
-              defaultValue={item.descriptor} // make sure to set up defaultValue
-            />
-          )}
-        />
-      </View>
-      <View style={{flex: 1}}>
-          <ProgressBar progress={0.66} />
-          <ButtonPrimary
-            onPress={
-              () => {
-                  append({ descriptor: "some description"});
+              name="location"
+              rules={{ required: false }}
+              defaultValue=""
+          />
+          <FlatList
+            data={fields}
+            style={{ flexGrow: 1}}
+            renderItem={({item, index}) => (
+              <Controller
+                render={({ onChange, onBlur, value }) => (
+                  <TextInput
+                    style={{ marginTop: 10, width: "100%"}}
+                    onBlur={onBlur}
+                    onChangeText={value => onChange(value)}
+                    value={value}
+
+                    onFocus={() => setTip(false)}
+                    mode="outlined"
+                    placeholder="Description"
+                  />
+                )}
+                control={control}
+                name={`description[${index}].descriptor`}
+                defaultValue={item.descriptor} // make sure to set up defaultValue
+              />
+            )}
+            ListFooterComponent={ <Paragraph> 'Right below list'</Paragraph>}
+          />
+        </View>
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+            <ProgressBar progress={0.66} />
+            <ButtonPrimary
+              onPress={
+                () => {
+                    append({ descriptor: "some description"});
+                  }
                 }
-              }
-            >
-              Add Descriptor
-          </ButtonPrimary>
-          <ButtonPrimary
-            onPress={
-              handleSubmit(onSubmit)
-            }
-          >
-            Save
-          </ButtonPrimary>
-      </View>
-    </ViewContainer>
+              >
+                Add Descriptor
+            </ButtonPrimary>
+        </View>
+      </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-around'
-  }
+  // container: {
+  //   justifyContent: 'space-around'
+  // }
 });
