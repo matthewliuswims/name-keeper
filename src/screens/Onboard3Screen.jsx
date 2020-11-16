@@ -1,22 +1,21 @@
 
 import React, { useState, useEffect } from 'react'
-import { KeyboardAwareScrollView, KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import { TextInput } from 'react-native-paper';
+import { TextInput, useTheme } from 'react-native-paper';
 import { useForm, Controller, useFieldArray, } from "react-hook-form";
 import {
   StyleSheet,
   View,
   FlatList,
-  Text,
   ScrollView
 } from 'react-native';
 
 // Components
 import ButtonPrimary from '../components/ButtonPrimary'
 import ProgressBar from '../components/ProgressBar'
-import ViewContainer from '../components/ViewContainer'
+import InputWithIcon from '../components/InputWithIcon'
 
 // Elements
 import Title from '../elements/Title'
@@ -27,6 +26,11 @@ import {
   addGroupAsync,
 } from '../store/groups';
 
+// Other
+import {
+  isPlus
+} from '../utils/ui'
+
 // @TODO: have a transition to 100 after hitting save?
 // @TODO: need to get the group from the 
 
@@ -35,11 +39,17 @@ export default function Onboard3Screen({
   route
 }) {
   const dispatch = useDispatch();
+  const { colors } = useTheme();
+
   const {
     control,
     handleSubmit,
     errors
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      description: [{ descriptor: ''}]
+    }
+  });
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
@@ -53,11 +63,13 @@ export default function Onboard3Screen({
   } = route.params
 
   const onSubmit = async data => {
-    const { name, group } = data
-    await dispatch(addGroupAsync(group))
+    console.log('data are', data)
+    // console.log('data.description[0]', data.description[0].descriptor)
+
+    // await dispatch(addGroupAsync(group))
     // @TODO: add person from group here too.
     // @TODO: see flag to storage saying that tutorial is over. 
-    navigation.replace('Home')
+    // navigation.replace('Home')
   }
 
   const [ showTip, setTip ] = useState(false)
@@ -68,8 +80,15 @@ export default function Onboard3Screen({
     setTimeout(() => setTip(true), 500)
   }, [])
 
+  const fieldsParsed = fields.map((field, index) => {
+    return {
+      ...field,
+      isPlus: isPlus(index, fields.length) 
+    }
+  })
+
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1}}>
+    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, padding: 20}}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
       >
@@ -90,7 +109,7 @@ export default function Onboard3Screen({
             <Controller
               control={control}
               render={({ onChange, onBlur, value }) => (
-                <TextInput
+                 <TextInput
                   style={styles.input}
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
@@ -127,20 +146,21 @@ export default function Onboard3Screen({
               defaultValue=""
           />
           <FlatList
-            data={fields}
+            data={fieldsParsed}
             style={{ flexGrow: 1}}
             renderItem={({item, index}) => (
               <Controller
                 render={({ onChange, onBlur, value }) => (
-                  <TextInput
-                    style={{ marginTop: 10, width: "100%"}}
+                  <InputWithIcon
+                    onChange={onChange}
                     onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
                     value={value}
-
-                    onFocus={() => setTip(false)}
-                    mode="outlined"
-                    placeholder="Description"
+                    placeholder='Notable Impression'
+                    isPlus={item.isPlus}
+                    append={append}
+                    // remove={remove}
+                    setTip={setTip}
+                    // index={index}
                   />
                 )}
                 control={control}
@@ -148,19 +168,18 @@ export default function Onboard3Screen({
                 defaultValue={item.descriptor} // make sure to set up defaultValue
               />
             )}
-            ListFooterComponent={ <Paragraph> 'Right below list'</Paragraph>}
+            ListFooterComponent={ <Paragraph> {group} Right below list</Paragraph>}
           />
         </View>
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
             <ProgressBar progress={0.66} />
             <ButtonPrimary
               onPress={
-                () => {
-                    append({ descriptor: "some description"});
-                  }
-                }
-              >
-                Add Descriptor
+                handleSubmit(onSubmit)
+              }
+              // disabled={groupValue === ''}
+            >
+              Save
             </ButtonPrimary>
         </View>
       </ScrollView>

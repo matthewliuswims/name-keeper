@@ -35,13 +35,8 @@ function App() {
     colors: {
       ...PaperDefaultTheme.colors,
       ...NavigationDefaultTheme.colors,
-      // react native paper
-      primary: '#007AFF', // this changes contained button color text
-      accent: '#9013FE',
-      
-      black: '#000000',
       // navigation
-      card: '#007AFF', // e background color of card-like elements, such as headers, tab bars etc.
+      // card: '#007AFF', // e background color of card-like elements, such as headers, tab bars etc.
     },
   };
 
@@ -56,12 +51,28 @@ function App() {
 
   const theme = colorScheme === 'dark' ? CombinedDarkTheme : CombinedDefaultTheme
 
+  const themeParsed = {
+    ...theme,
+    colors: {
+      ...theme.colors,
+      // react native paper
+      primary: '#007AFF', // this changes contained button color text
+      accent: '#9013FE',
+      
+      black: '#000000',
+      card: '#007AFF',
+      green: '#2E8B57',
+      red: '#CC293C'
+    }
+  }
+
+  console.log('themeParsed is', themeParsed)
   return (
     <StoreProvider store={store}>
-      <PaperProvider theme={theme}>
+      <PaperProvider theme={themeParsed}>
         <SafeAreaProvider>
           <NavigationContainer
-            theme={theme}
+            theme={themeParsed}
           >
             <Navigation />
           </NavigationContainer>
