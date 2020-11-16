@@ -17,28 +17,27 @@ import { CONTAINER } from '../constants/Styles'
 export default function ViewContainer({
   children,
   style: styleParam,
-  haveKeyboardAvoidingView = true,
   keyboardVerticalOffset,
 }) {
   const headerHeight = useHeaderHeight();
-  if (haveKeyboardAvoidingView) {
     return (
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        // need below from https://medium.com/@nickyang0501/keyboardavoidingview-not-working-properly-c413c0a200d4
-        behavior={Platform.OS === "ios" ? "height" : null}
-        // need below from https://stackoverflow.com/a/51169574 
-        keyboardVerticalOffset={keyboardVerticalOffset || headerHeight}
-      >
-        <SafeAreaView style={[CONTAINER, styleParam]}>
-          {children}
-        </SafeAreaView>
-      </KeyboardAvoidingView>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          console.log('dismissal')
+          Keyboard.dismiss()
+        }}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          // need below from https://medium.com/@nickyang0501/keyboardavoidingview-not-working-properly-c413c0a200d4
+          behavior={Platform.OS === "ios" ? "height" : null}
+          // need below from https://stackoverflow.com/a/51169574 
+          keyboardVerticalOffset={keyboardVerticalOffset || headerHeight}
+        >
+          <SafeAreaView style={[CONTAINER, styleParam]}>
+                {children}
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     )
-  }
-  return (
-    <SafeAreaView style={[CONTAINER, styleParam]}>
-      {children}
-    </SafeAreaView>
-  );
 }
+

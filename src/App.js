@@ -66,7 +66,6 @@ function App() {
     }
   }
 
-  console.log('themeParsed is', themeParsed)
   return (
     <StoreProvider store={store}>
       <PaperProvider theme={themeParsed}>

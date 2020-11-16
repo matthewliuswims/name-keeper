@@ -3,19 +3,18 @@ import React, { useState, useEffect } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useDispatch } from 'react-redux';
 import Tooltip from 'react-native-walkthrough-tooltip';
-import { TextInput, useTheme } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { useForm, Controller, useFieldArray, } from "react-hook-form";
 import {
-  StyleSheet,
   View,
-  FlatList,
-  ScrollView
+  ScrollView,
+  TouchableOpacity // @delete eventually
 } from 'react-native';
 
 // Components
 import ButtonPrimary from '../components/ButtonPrimary'
 import ProgressBar from '../components/ProgressBar'
-import InputWithIcon from '../components/InputWithIcon'
+import DescriptionFields from '../components/DescriptionFields'
 
 // Elements
 import Title from '../elements/Title'
@@ -39,7 +38,6 @@ export default function Onboard3Screen({
   route
 }) {
   const dispatch = useDispatch();
-  const { colors } = useTheme();
 
   const {
     control,
@@ -88,9 +86,10 @@ export default function Onboard3Screen({
   })
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, padding: 20}}>
+    <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1, padding: 20}} keyboardShouldPersistTaps='handled'>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps='handled'
       >
         <View style={{ flex: 4}}>
           <Tooltip
@@ -110,7 +109,6 @@ export default function Onboard3Screen({
               control={control}
               render={({ onChange, onBlur, value }) => (
                  <TextInput
-                  style={styles.input}
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}
@@ -145,30 +143,15 @@ export default function Onboard3Screen({
               rules={{ required: false }}
               defaultValue=""
           />
-          <FlatList
+          <DescriptionFields
+            control={control}
             data={fieldsParsed}
             style={{ flexGrow: 1}}
-            renderItem={({item, index}) => (
-              <Controller
-                render={({ onChange, onBlur, value }) => (
-                  <InputWithIcon
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    placeholder='Notable Impression'
-                    isPlus={item.isPlus}
-                    append={append}
-                    // remove={remove}
-                    setTip={setTip}
-                    // index={index}
-                  />
-                )}
-                control={control}
-                name={`description[${index}].descriptor`}
-                defaultValue={item.descriptor} // make sure to set up defaultValue
-              />
-            )}
-            ListFooterComponent={ <Paragraph> {group} Right below list</Paragraph>}
+            groups={[group]}
+            placeholder='Notable Impression'
+            append={append}
+            remove={remove}
+            setTip={setTip}
           />
         </View>
         <View style={{flex: 1, justifyContent: 'flex-end'}}>
@@ -184,11 +167,50 @@ export default function Onboard3Screen({
         </View>
       </ScrollView>
     </KeyboardAwareScrollView>
+
+
+
+
+    // <ScrollView
+    //     contentContainerStyle={{ flexGrow: 1 }}
+    //     keyboardShouldPersistTaps='handled'
+    //   >
+    //     <View style={{ flex: 4}}>
+
+    //       <TextInput
+    //         mode="outlined"
+    //         placeholder="Name (e.g. Joe)"
+    //         style={{ width: "100%"}} // need this for whatever reason.
+    //       />
+    //       <TouchableOpacity
+    //         style={{ backgroundColor: 'red'}}
+    //         onPress={() => console.log('perasdadasda')}
+    //       >
+    //         <Paragraph>Press Here</Paragraph>
+    //       </TouchableOpacity>
+    //     </View>
+    // </ScrollView>
+
+    // <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+    //     <ScrollView
+    //     contentContainerStyle={{ flexGrow: 1 }}
+    //     keyboardShouldPersistTaps='handled'
+    //     >
+    //     <View style={{ flex: 4}}>
+
+    //       <TextInput
+    //         mode="outlined"
+    //         placeholder="Name (e.g. Joe)"
+    //         style={{ width: "100%"}} // need this for whatever reason.
+    //       />
+    //       <TouchableOpacity
+    //         style={{ backgroundColor: 'red'}}
+    //         onPress={() => console.log('perasdadasda')}
+    //       >
+    //         <Paragraph>Press Here</Paragraph>
+    //       </TouchableOpacity>
+    //     </View>
+    //     </ScrollView>
+    // </KeyboardAwareScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  // container: {
-  //   justifyContent: 'space-around'
-  // }
-});

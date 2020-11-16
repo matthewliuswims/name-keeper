@@ -6,6 +6,8 @@ import { useForm, Controller } from "react-hook-form";
 import {
   StyleSheet,
   View,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
 // Components
