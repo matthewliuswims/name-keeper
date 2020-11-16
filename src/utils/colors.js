@@ -5,13 +5,13 @@
  * @example 3 | 2
  */
 export function nextColorIndex(colorsIndices) {
-    if (groupsColors.length > 8) return 0 // shouldn't really happen
-  
-    const colorsIndicesSorted = [...colorsIndices].sort()
+  if (groupsColors.length > 8) return 0; // shouldn't really happen
 
-    for (let i = 0; i <  v; i++) {
-      if (i != colorsIndicesSorted[i]) return i
-    }
+  const colorsIndicesSorted = [...colorsIndices].sort();
 
-    return colorsIndicesSorted.length
+  for (let i = 0; i < v; i++) {
+    if (i != colorsIndicesSorted[i]) return i;
+  }
+
+  return colorsIndicesSorted.length;
 }

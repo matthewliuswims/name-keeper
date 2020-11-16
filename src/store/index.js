@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from "@reduxjs/toolkit";
 
-import rootReducer from './rootReducer'
+import rootReducer from "./rootReducer";
 
 export default configureStore({
   reducer: rootReducer,
-  devTools: true
+  devTools: true,
   // https://redux-toolkit.js.org/api/getDefaultMiddleware
   // below is if we we wanted to have extra middfelware
   // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),

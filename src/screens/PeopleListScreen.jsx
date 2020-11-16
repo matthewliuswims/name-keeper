@@ -1,20 +1,18 @@
-import * as React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import * as React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 // Elements
-import Paragraph from '../elements/Paragraph'
-import Title from '../elements/Title'
+import Paragraph from "../elements/Paragraph";
+import Title from "../elements/Title";
 
 // @TODO: try safeareaview?
-export default function PeopleListScreen({
-  navigation
-}) {
+export default function PeopleListScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Title style={styles.title}>PeopleList Screen</Title>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Person')}
+        onPress={() => navigation.navigate("Person")}
         style={styles.link}
       >
         <Paragraph style={styles.linkText}>Go to Person Screen!</Paragraph>
@@ -35,15 +33,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   linkText: {
     fontSize: 14,
-    color: '#2e78b7',
-  }
+    color: "#2e78b7",
+  },
 });

@@ -1,45 +1,42 @@
-
-import React, { useState, useEffect } from 'react'
-import Tooltip from 'react-native-walkthrough-tooltip';
-import { TextInput } from 'react-native-paper';
+import React, { useState, useEffect } from "react";
+import Tooltip from "react-native-walkthrough-tooltip";
+import { TextInput } from "react-native-paper";
 import { useForm, Controller } from "react-hook-form";
 import {
   StyleSheet,
   View,
   TouchableWithoutFeedback,
-  Keyboard
-} from 'react-native';
+  Keyboard,
+} from "react-native";
 
 // Components
-import ButtonPrimary from '../components/ButtonPrimary'
-import ProgressBar from '../components/ProgressBar'
-import ViewContainer from '../components/ViewContainer'
+import ButtonPrimary from "../components/ButtonPrimary";
+import ProgressBar from "../components/ProgressBar";
+import ViewContainer from "../components/ViewContainer";
 
 // Elements
-import Title from '../elements/Title'
-import Paragraph from '../elements/Paragraph'
+import Title from "../elements/Title";
+import Paragraph from "../elements/Paragraph";
 
 // @TODO: disable button until some1 writes something for name?
 
-export default function Onboard2Screen({
-  navigation,
-}) {
+export default function Onboard2Screen({ navigation }) {
   const { control, handleSubmit, errors } = useForm();
-  const defaultValue = ''
-  const [groupValue, setGroupValue] = useState(defaultValue)
+  const defaultValue = "";
+  const [groupValue, setGroupValue] = useState(defaultValue);
 
-  const onSubmit = async data => {
-    const { group } = data
-    navigation.replace('Onboard3', { group })
-  }
+  const onSubmit = async (data) => {
+    const { group } = data;
+    navigation.replace("Onboard3", { group });
+  };
 
-  const [ showTip, setTip ] = useState(false)
+  const [showTip, setTip] = useState(false);
 
   useEffect(() => {
     // we can't just do useState(true), because there's some weird timing issue
     // so we need to do this stupid hack to let everything mount first
-    setTimeout(() => setTip(true), 500)
-  }, [])
+    setTimeout(() => setTip(true), 500);
+  }, []);
 
   return (
     <ViewContainer style={styles.container}>
@@ -47,8 +44,8 @@ export default function Onboard2Screen({
         isVisible={showTip}
         content={
           <>
-            <Title style={{ color: 'black' }}>Add a Group</Title>
-            <Paragraph color={'black'}>
+            <Title style={{ color: "black" }}>Add a Group</Title>
+            <Paragraph color={"black"}>
               Groups contain people that are related in some way
             </Paragraph>
           </>
@@ -61,32 +58,29 @@ export default function Onboard2Screen({
           render={({ onChange, onBlur, value }) => (
             <TextInput
               onBlur={onBlur}
-              onChangeText={value => {
-                onChange(value)
-                setGroupValue(value)
+              onChangeText={(value) => {
+                onChange(value);
+                setGroupValue(value);
               }}
               value={value}
-
               onFocus={() => setTip(false)}
               mode="outlined"
               placeholder="Name (e.g. Work)"
-              style={{ width: "100%"}} // need this for whatever reason.
+              style={{ width: "100%" }} // need this for whatever reason.
             />
           )}
           name="group"
           rules={{ required: true }}
           defaultValue={defaultValue}
         />
-        {errors.group && <Paragraph color='error'>This is required.</Paragraph>}
+        {errors.group && <Paragraph color="error">This is required.</Paragraph>}
       </Tooltip>
-      <View style={{ flex : 1 }} />
+      <View style={{ flex: 1 }} />
       <>
         <ProgressBar progress={0.33} />
         <ButtonPrimary
-          onPress={
-            handleSubmit(onSubmit)
-          }
-          disabled={groupValue === ''}
+          onPress={handleSubmit(onSubmit)}
+          disabled={groupValue === ""}
         >
           Save
         </ButtonPrimary>
@@ -97,6 +91,6 @@ export default function Onboard2Screen({
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'space-around'
-  }
+    justifyContent: "space-around",
+  },
 });

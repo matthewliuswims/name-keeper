@@ -1,9 +1,9 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Elements
-import Title from '../elements/Title'
+import Title from "../elements/Title";
 
 export default function PersonScreen() {
   return (
@@ -14,15 +14,14 @@ export default function PersonScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });

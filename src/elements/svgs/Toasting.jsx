@@ -1,5 +1,5 @@
-import * as React from "react"
-import Svg, { Path, Circle, Rect, G, Ellipse } from "react-native-svg"
+import * as React from "react";
+import Svg, { Path, Circle, Rect, G, Ellipse } from "react-native-svg";
 
 function Toasting(props) {
   return (
@@ -249,7 +249,7 @@ function Toasting(props) {
         />
       </G>
     </Svg>
-  )
+  );
 }
 
-export default Toasting
+export default Toasting;

@@ -1,9 +1,10 @@
-
 ## Development
+
 Follow instructions here
 https://github.com/jhen0409/react-native-debugger/blob/master/docs/getting-started.md
 
 ### To run app locally:
+
 ```
 # Make sure RNDebugger is open and wait state. then run the below command to start app
 

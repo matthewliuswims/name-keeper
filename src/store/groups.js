@@ -1,27 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { addItem } from '../storage'
+import { createSlice } from "@reduxjs/toolkit";
+import { addItem } from "../storage";
 
 export const groupsSlice = createSlice({
-  name: 'groups',
+  name: "groups",
   initialState: {
     error: null,
     group: {
       id: null,
-      name: '',
+      name: "",
       users: [],
       updatedAt: null,
       createdAt: null,
-      colorIndex: null
+      colorIndex: null,
     },
-    groups: []
+    groups: [],
   },
   reducers: {
     addGroup: (state, { payload }) => {
-      state.group = payload
-      state.error = null
+      state.group = payload;
+      state.error = null;
     },
     addGroupFail: (state, { payload }) => {
-      state.error = payload
+      state.error = payload;
     },
   },
 });
@@ -29,7 +29,7 @@ export const groupsSlice = createSlice({
 const { addGroup, addGroupFail } = groupsSlice.actions;
 
 // Thunks
-export const addGroupAsync = (groupName) => async dispatch => {
+export const addGroupAsync = (groupName) => async (dispatch) => {
   // @TODO: see if we can get the colors from getState - https://redux-toolkit.js.org/api/createAsyncThunk#payloadcreator
   try {
     const group = {
@@ -38,19 +38,19 @@ export const addGroupAsync = (groupName) => async dispatch => {
       users: [],
       updatedAt: Date.now(),
       createdAt: Date.now(),
-      colorIndex: 0
-    }
-  
-    await addItem({ item: group, resource: 'groups' })
+      colorIndex: 0,
+    };
+
+    await addItem({ item: group, resource: "groups" });
     dispatch(addGroup(group));
   } catch (err) {
-    dispatch(addGroupFail(err.toString()))
+    dispatch(addGroupFail(err.toString()));
   }
 };
 
 // Selectors
 export const selectGroup = ({ groupsState }) => {
-  return groupsState.group
+  return groupsState.group;
 };
 
 export default groupsSlice.reducer;

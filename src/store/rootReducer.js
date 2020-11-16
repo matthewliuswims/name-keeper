@@ -1,9 +1,9 @@
-import { combineReducers } from '@reduxjs/toolkit'
+import { combineReducers } from "@reduxjs/toolkit";
 
-import groups from './groups';
+import groups from "./groups";
 
 const rootReducer = combineReducers({
-  groupsState: groups
-})
+  groupsState: groups,
+});
 
-export default rootReducer
+export default rootReducer;

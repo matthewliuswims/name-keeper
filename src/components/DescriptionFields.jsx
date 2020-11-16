@@ -5,7 +5,7 @@ import { TextInput, useTheme } from "react-native-paper";
 import { Controller } from "react-hook-form";
 
 // Elements
-import Paragraph from '../elements/Paragraph'
+import Paragraph from "../elements/Paragraph";
 
 const DescriptionFields = ({
   append,
@@ -21,10 +21,10 @@ const DescriptionFields = ({
 
   return (
     <FlatList
-      keyboardShouldPersistTaps='handled'
+      keyboardShouldPersistTaps="handled"
       data={data}
-      style={{ flexGrow: 1}}
-      renderItem={({item, index}) => (
+      style={{ flexGrow: 1 }}
+      renderItem={({ item, index }) => (
         <Controller
           render={({ onChange, onBlur, value }) => (
             <View style={{ flex: 1, flexDirection: "row", marginTop: 10 }}>
@@ -106,7 +106,7 @@ const DescriptionFields = ({
           defaultValue={item.descriptor} // make sure to set up defaultValue
         />
       )}
-      ListFooterComponent={ <Paragraph> {groups[0]} Right below list</Paragraph>}
+      ListFooterComponent={<Paragraph> {groups[0]} Right below list</Paragraph>}
     />
   );
 };

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { useHeaderHeight } from '@react-navigation/stack'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import * as React from "react";
+import { useHeaderHeight } from "@react-navigation/stack";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
   View,
@@ -8,12 +8,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
-  Text
-} from 'react-native';
+  Text,
+} from "react-native";
 
 // Constants
-import { CONTAINER } from '../constants/Styles'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { CONTAINER } from "../constants/Styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function ViewContainerScrollable({
   children,
@@ -22,18 +22,16 @@ export default function ViewContainerScrollable({
   const headerHeight = useHeaderHeight();
   return (
     <KeyboardAwareScrollView
-        behavior="padding"
-        keyboardShouldPersistTaps='handled'
-        contentContainerStyle={
-          { flex: 1}
-        }
+      behavior="padding"
+      keyboardShouldPersistTaps="handled"
+      contentContainerStyle={{ flex: 1 }}
     >
-        <ScrollView
-          contentContainerStyle={[CONTAINER, styleParam]}
-          keyboardShouldPersistTaps='handled'
-        >
-            {children}
-        </ScrollView>
+      <ScrollView
+        contentContainerStyle={[CONTAINER, styleParam]}
+        keyboardShouldPersistTaps="handled"
+      >
+        {children}
+      </ScrollView>
     </KeyboardAwareScrollView>
   );
 }
