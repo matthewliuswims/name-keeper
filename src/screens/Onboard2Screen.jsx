@@ -27,16 +27,10 @@ export default function Onboard2Screen({ navigation }) {
 
   const onSubmit = async (data) => {
     const { group } = data;
-    navigation.replace("Onboard3", { group });
+    navigation.navigate("Onboard3", { group });
   };
 
-  const [showTip, setTip] = useState(false);
-
-  useEffect(() => {
-    // we can't just do useState(true), because there's some weird timing issue
-    // so we need to do this stupid hack to let everything mount first
-    setTimeout(() => setTip(true), 500);
-  }, []);
+  const [showTip, setTip] = useState(true);
 
   return (
     <ViewContainer style={styles.container}>
@@ -52,6 +46,7 @@ export default function Onboard2Screen({ navigation }) {
         }
         placement="bottom"
         onClose={() => setTip(false)}
+        useInteractionManager={true}
       >
         <Controller
           control={control}

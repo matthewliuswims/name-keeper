@@ -27,7 +27,7 @@ function Onboard1Screen({ navigation }) {
         <ProgressBar progress={0} />
         <ButtonPrimary
           onPress={() =>
-            navigation.replace("Onboarding", { screen: "Onboard2" })
+            navigation.navigate("Onboarding", { screen: "Onboard2" })
           }
         >
           Create a Group

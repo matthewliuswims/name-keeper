@@ -30,7 +30,9 @@ function Navigation() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+        }}
         name="Onboarding"
         component={OnboardingNavigator}
       />

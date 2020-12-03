@@ -20,12 +20,12 @@ export default function OnboardingNavigator() {
         component={Onboard1Screen}
       />
       <Stack.Screen
-        options={{ title: "Add Group" }}
+        options={{ title: "Add Group", headerBackTitleVisible: false }}
         name="Onboard2"
         component={Onboard2Screen}
       />
       <Stack.Screen
-        options={{ title: "Add Person" }}
+        options={{ title: "Add Person", headerBackTitleVisible: false }}
         name="Onboard3"
         component={Onboard3Screen}
       />

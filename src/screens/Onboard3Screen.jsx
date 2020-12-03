@@ -56,13 +56,7 @@ export default function Onboard3Screen({ navigation, route }) {
     // navigation.replace('Home')
   };
 
-  const [showTip, setTip] = useState(false);
-
-  useEffect(() => {
-    // we can't just do useState(true), because there's some weird timing issue
-    // so we need to do this stupid hack to let everything mount first
-    setTimeout(() => setTip(true), 500);
-  }, []);
+  const [showTip, setTip] = useState(true);
 
   const fieldsParsed = fields.map((field, index) => {
     return {
@@ -92,6 +86,7 @@ export default function Onboard3Screen({ navigation, route }) {
               </>
             }
             placement="bottom"
+            useInteractionManager={true}
             onClose={() => setTip(false)}
           >
             <Controller
