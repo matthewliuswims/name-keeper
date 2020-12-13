@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-namekeeper-dev-235225-authRole",
+      "UnauthRoleArn": "arn:aws:iam::279618820239:role/amplify-namekeeper-dev-235225-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::279618820239:role/amplify-namekeeper-dev-235225-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-namekeeper-dev-235225-deployment",
+      "UnauthRoleName": "amplify-namekeeper-dev-235225-unauthRole",
+      "StackName": "amplify-namekeeper-dev-235225",
+      "StackId": "arn:aws:cloudformation:us-east-1:279618820239:stack/amplify-namekeeper-dev-235225/e5a35f80-3aab-11eb-a983-0a49a141397d",
+      "AmplifyAppId": "d23u6wu0srd894"
+    }
+  }
+}

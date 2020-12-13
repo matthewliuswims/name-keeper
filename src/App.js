@@ -23,6 +23,17 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 
+// amplify stuff
+import Amplify from "aws-amplify";
+// filled out using https://techinscribed.com/passwordless-phone-number-authentication-using-aws-amplify-cognito/
+Amplify.configure({
+  Auth: {
+    region: "us-east-1",
+    userPoolId: "us-east-1_hDBaCrJOP",
+    userPoolWebClientId: "3bf0gp4eppuhaomog7caagipam",
+  },
+});
+
 function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();

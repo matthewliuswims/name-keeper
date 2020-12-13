@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Tooltip from "react-native-walkthrough-tooltip";
-import { TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper"; // @TODO replace with my customer element
 import { useForm, Controller } from "react-hook-form";
 import {
   StyleSheet,
