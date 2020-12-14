@@ -1,9 +1,15 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, View, TextInput as TextInputVanilla } from "react-native";
-import parsePhoneNumber from "libphonenumber-js";
 import Amplify, { Auth } from "aws-amplify";
+import CountryPicker, {
+  DARK_THEME,
+  DEFAULT_THEME,
+} from "react-native-country-picker-modal";
 
 // @TODO: upgrade expo version
+
+// Hooks
+import useColorScheme from "../hooks/useColorScheme";
 
 // Components
 import ButtonPrimary from "../components/ButtonPrimary";
@@ -16,6 +22,8 @@ import Paragraph from "../elements/Paragraph";
 import TextInput from "../elements/TextInput";
 
 // @TODO: https://stackoverflow.com/a/61547869 use localization
+
+// try with https://www.npmjs.com/package/react-native-country-picker-modal
 
 const format = (value) => {
   // return nothing if no value
@@ -47,58 +55,120 @@ const deFormat = (formatted) => {
 };
 
 function SignUpScreen({ navigation }) {
+  const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState();
-  const cognitoUserRef = useRef();
+  const [country, setCountry] = useState({
+    callingCode: "1", // default is US
+  });
+  console.log("country is", country);
+  const colorScheme = useColorScheme();
+  const countryPickerTheme =
+    colorScheme === "dark" ? DARK_THEME : DEFAULT_THEME;
 
-  // const onPress = () => {
-  //   const phoneNumber = '5129941006'
-  //   try {
-  //     // sign up
-  //     const { user } = await Auth.signUp({
-  //       username: phoneNumber,
-  //       password: Date.now().toString(),
-  //       attributes: {
-  //         phone_number: phoneNumber
-  //     }
-  //     });
-  //     console.log('user is', user)
-  //   } catch {
-  //     console.log('error signing up:', error);
-  //   }
+  const [countryCode, setCountryCode] = useState("US");
+  const onSelectCountry = (country) => {
+    console.log("country is", country);
+    setCountryCode(country.cca2);
+    setCountry(country);
+  };
 
-  //   try {
-  //     // sign in
-  //     const cognitoUser = await Auth.signIn(phoneNumber);
-  //     cognitoUserRef.current = cognitoUser
-  //   } catch {
-  //     console.log('error signing in', error);
-  //   }
-  // }
-  // use https://www.npmjs.com/package/awesome-phonenumber
+  const onPress = async () => {
+    // function validE164PhoneNumber(phoneNumber) {
+    //   const regEx = /^\+[1-9]\d{10,14}$/;
+    //   return regEx.test(phoneNumber);
+    // }
+    // const numberAssembled = `+${country.callingCode[0]}${value}`;
+    // console.log("numberAssembled is", numberAssembled);
+    // if (!validE164PhoneNumber(numberAssembled)) {
+    //   setErrorMessage("Please set a valid number");
+    //   return;
+    // }
+    // try {
+    //   // sign up
+    //   const { user } = await Auth.signUp({
+    //     username: numberAssembled,
+    //     password: Date.now().toString(),
+    //     attributes: {
+    //       phone_number: numberAssembled,
+    //     },
+    //   });
+    //   console.log("user is", user);
+    // } catch {
+    //   console.log("error signing up:", error);
+    //   setErrorMessage("Oops - there was an issue with your number. Try again!");
+    // }
+    // try {
+    //   // sign in - will initiate authentication flow/challenge
+    //   const cognitoUser = await Auth.signIn(numberAssembled);
+    //   console.log("cognitoUser is", cognitoUser);
+    // } catch {
+    //   console.log("error signing in and initiating auth flow challenge", error);
+    //   setErrorMessage("Oops - there was an issue with your number. Try again!");
+    // }
+  };
+
   return (
     <ViewContainer>
       <View style={styles.top}>
-        {/* <Toasting /> */}
-        <Title style={styles.title}>Enter Your Phone Number to Start</Title>
+        <Title style={styles.title}>Verify Your Phone Number to Start</Title>
         <Paragraph style={styles.subText}>
           An activation code will be sent
         </Paragraph>
-        <TextInput
-          autoFocus={true}
-          mode="outlined"
-          placeholder="Phone Number"
-          keyboardType="number-pad"
-          style={{ width: "100%" }} // need this for whatever reason.
-          onChangeText={(text) => {
-            const deFormatted = deFormat(text);
-            setValue(deFormatted);
-          }}
-          value={format(value)}
-        />
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "grey",
+              position: "relative",
+              left: 2,
+              height: "91%",
+              top: 6,
+              borderRadius: 4,
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+
+              flex: 1,
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CountryPicker
+              countryCode={countryCode}
+              onSelect={onSelectCountry}
+              withCallingCode={true}
+              withCallingCodeButton={true}
+              theme={countryPickerTheme}
+            />
+          </View>
+          <TextInput
+            autoFocus={true}
+            mode="outlined"
+            placeholder="Phone Number"
+            keyboardType="number-pad"
+            style={{ flex: 3 }}
+            onChangeText={(text) => {
+              setErrorMessage(""); // clear any previous error message
+              const deFormatted = deFormat(text);
+              setValue(deFormatted);
+            }}
+            value={format(value)}
+          />
+        </View>
+        {errorMessage ? (
+          <Paragraph color="error">{errorMessage}</Paragraph>
+        ) : null}
       </View>
       <View style={styles.bottom}>
         <ProgressBar progress={0} />
-        <ButtonPrimary onPress={() => console.log("do stuff")}>
+        <ButtonPrimary
+          onPress={async () => {
+            await onPress();
+            console.log("sup");
+            navigation.navigate("Verify");
+          }}
+        >
           Next
         </ButtonPrimary>
       </View>
