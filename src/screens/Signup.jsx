@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, View, TextInput as TextInputVanilla } from "react-native";
-import Amplify, { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import CountryPicker, {
   DARK_THEME,
   DEFAULT_THEME,
@@ -24,6 +24,8 @@ import TextInput from "../elements/TextInput";
 // @TODO: https://stackoverflow.com/a/61547869 use localization
 
 // try with https://www.npmjs.com/package/react-native-country-picker-modal
+
+// @TODO: set loading/disabled state when submitting
 
 const format = (value) => {
   // return nothing if no value
@@ -54,6 +56,17 @@ const deFormat = (formatted) => {
   return digits;
 };
 
+function generateRandom(length = 16) {
+  var result = "";
+  var characters = "abcdefghijklmnopqrstu";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  const password = `A${result}10@`; // include an uppercase and a number and symbol
+  return password;
+}
+
 function SignUpScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState();
@@ -73,38 +86,58 @@ function SignUpScreen({ navigation }) {
   };
 
   const onPress = async () => {
-    // function validE164PhoneNumber(phoneNumber) {
-    //   const regEx = /^\+[1-9]\d{10,14}$/;
-    //   return regEx.test(phoneNumber);
-    // }
-    // const numberAssembled = `+${country.callingCode[0]}${value}`;
-    // console.log("numberAssembled is", numberAssembled);
-    // if (!validE164PhoneNumber(numberAssembled)) {
-    //   setErrorMessage("Please set a valid number");
-    //   return;
-    // }
-    // try {
-    //   // sign up
-    //   const { user } = await Auth.signUp({
-    //     username: numberAssembled,
-    //     password: Date.now().toString(),
-    //     attributes: {
-    //       phone_number: numberAssembled,
-    //     },
-    //   });
-    //   console.log("user is", user);
-    // } catch {
-    //   console.log("error signing up:", error);
-    //   setErrorMessage("Oops - there was an issue with your number. Try again!");
-    // }
-    // try {
-    //   // sign in - will initiate authentication flow/challenge
-    //   const cognitoUser = await Auth.signIn(numberAssembled);
-    //   console.log("cognitoUser is", cognitoUser);
-    // } catch {
-    //   console.log("error signing in and initiating auth flow challenge", error);
-    //   setErrorMessage("Oops - there was an issue with your number. Try again!");
-    // }
+    function validE164PhoneNumber(phoneNumber) {
+      const regEx = /^\+[1-9]\d{10,14}$/;
+      return regEx.test(phoneNumber);
+    }
+    const numberAssembled = `+${country.callingCode[0]}${value}`;
+    console.log("numberAssembled is", numberAssembled);
+    if (!validE164PhoneNumber(numberAssembled)) {
+      setErrorMessage("Please set a valid number");
+      return;
+    }
+    try {
+      // sign up
+      const { user } = await Auth.signUp({
+        username: numberAssembled,
+        // aws just always needs a password, so just giving one
+        password: generateRandom(),
+        attributes: {
+          phone_number: numberAssembled, // need this for create-auth-challenge userAttributes
+        },
+      });
+      console.log("user is", user);
+    } catch (error) {
+      // unknown bad error signing up
+      if (
+        error["code"] !== "UsernameExistsException" &&
+        error["name"] !== "UsernameExistsException"
+      ) {
+        console.log("unknown error signing up", error);
+        setErrorMessage(
+          "Oops - there was an issue with your number. Try again!"
+        );
+        return;
+      }
+      // user is just trying to sign up with existing number
+      // let user sign in next code block
+      // https://stackoverflow.com/a/51286982
+      console.log(
+        "user trying to sign up with existing number",
+        numberAssembled
+      );
+    }
+    try {
+      // sign in - will initiate authentication flow/challenge
+      const cognitoUser = await Auth.signIn(numberAssembled);
+      console.log("cognitoUser is", cognitoUser);
+      // go to verifiy page. i am passing a complex object with methods
+      // react native will usually complain https://stackoverflow.com/a/60968348
+      navigation.navigate("Verify", { cognitoUser: cognitoUser });
+    } catch (error) {
+      console.log("error signing in and initiating auth flow challenge", error);
+      setErrorMessage("Oops - there was an issue with your number. Try again!");
+    }
   };
 
   return (
@@ -165,8 +198,6 @@ function SignUpScreen({ navigation }) {
         <ButtonPrimary
           onPress={async () => {
             await onPress();
-            console.log("sup");
-            navigation.navigate("Verify");
           }}
         >
           Next

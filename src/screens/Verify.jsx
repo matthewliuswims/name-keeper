@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { Auth } from "aws-amplify";
 
 import {
   CodeField,
@@ -22,9 +23,10 @@ import useTheme from "../hooks/useTheme";
 
 const CELL_COUNT = 6;
 
-function Verify({ navigation }) {
+function Verify({ route, navigation }) {
   const [value, setValue] = useState("");
   const theme = useTheme();
+  const { cognitoUser: cognitoUserFromSignUp } = route.params;
 
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -34,6 +36,19 @@ function Verify({ navigation }) {
 
   const borderColorStyles = {
     borderColor: theme.colors.border,
+  };
+
+  const onPress = async () => {
+    try {
+      const cognitoUser = await Auth.sendCustomChallengeAnswer(
+        cognitoUserFromSignUp,
+        value
+      );
+      console.log("SUCCESS: i will store this user somewhere", cognitoUser);
+    } catch (error) {
+      console.log("error sending challenge is", error);
+      // Handle error thrown for >12 incorrect attempts.
+    }
   };
 
   return (
@@ -75,7 +90,7 @@ function Verify({ navigation }) {
       </View>
       <View style={styles.bottom}>
         <ProgressBar progress={0.25} />
-        <ButtonPrimary onPress={() => console.log("hello")}>Next</ButtonPrimary>
+        <ButtonPrimary onPress={onPress}>Next</ButtonPrimary>
       </View>
     </ViewContainer>
   );

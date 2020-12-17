@@ -15,6 +15,11 @@ import useCachedResources from "./hooks/useCachedResources";
 import useTheme from "./hooks/useTheme";
 import Navigation from "./navigation";
 
+import { LogBox } from "react-native";
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+]);
+
 // amplify stuff
 import Amplify from "aws-amplify";
 // filled out using https://techinscribed.com/passwordless-phone-number-authentication-using-aws-amplify-cognito/
