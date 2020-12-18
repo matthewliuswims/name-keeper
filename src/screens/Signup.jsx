@@ -65,14 +65,12 @@ function SignUpScreen({ navigation }) {
   const [country, setCountry] = useState({
     callingCode: "1", // default is US
   });
-  console.log("country is", country);
   const colorScheme = useColorScheme();
   const countryPickerTheme =
     colorScheme === "dark" ? DARK_THEME : DEFAULT_THEME;
 
   const [countryCode, setCountryCode] = useState("US");
   const onSelectCountry = (country) => {
-    console.log("country is", country);
     setCountryCode(country.cca2);
     setCountry(country);
   };
@@ -92,6 +90,8 @@ function SignUpScreen({ navigation }) {
       setSubmitting(false);
       return;
     }
+
+    navigation.navigate("Verify");
 
     try {
       // sign up

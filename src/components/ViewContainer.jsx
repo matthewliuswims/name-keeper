@@ -23,7 +23,6 @@ export default function ViewContainer({
   return (
     <TouchableWithoutFeedback
       onPress={() => {
-        console.log("dismissal");
         Keyboard.dismiss();
       }}
     >

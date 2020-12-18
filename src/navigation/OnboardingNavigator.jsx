@@ -17,27 +17,28 @@ export default function OnboardingNavigator() {
       }}
     >
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ title: "Verify" }}
         name="Signup"
         component={Signup}
       />
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ title: "Activate" }}
+        // options={{ headerShown: false }}
         name="Verify"
         component={Verify}
       />
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ headerBackTitleVisible: false }}
         name="Onboard1"
         component={Onboard1Screen}
       />
       <Stack.Screen
-        options={{ title: "Add Group", headerBackTitleVisible: false }}
+        options={{ title: "Add Group" }}
         name="Onboard2"
         component={Onboard2Screen}
       />
       <Stack.Screen
-        options={{ title: "Add Person", headerBackTitleVisible: false }}
+        options={{ title: "Add Person" }}
         name="Onboard3"
         component={Onboard3Screen}
       />

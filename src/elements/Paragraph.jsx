@@ -4,7 +4,12 @@ import { StyleSheet } from "react-native";
 
 import { Paragraph as PaperParagraph, useTheme } from "react-native-paper";
 
-const Paragraph = ({ children, style = {}, color: colorParam = "text" }) => {
+const Paragraph = ({
+  children,
+  style = {},
+  color: colorParam = "text",
+  marginTop = false,
+}) => {
   const { colors } = useTheme();
 
   return (
@@ -14,6 +19,7 @@ const Paragraph = ({ children, style = {}, color: colorParam = "text" }) => {
         {
           ...style,
           color: colors[colorParam],
+          ...(marginTop && { marginTop: 20 }),
         },
       ]}
     >

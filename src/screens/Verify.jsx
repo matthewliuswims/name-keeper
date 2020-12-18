@@ -24,9 +24,12 @@ import useTheme from "../hooks/useTheme";
 const CELL_COUNT = 6;
 
 function Verify({ route, navigation }) {
+  const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
   const theme = useTheme();
-  const { cognitoUser: cognitoUserFromSignUp } = route.params;
+  const { cognitoUser: cognitoUserFromSignUp } = route.params || {};
 
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -40,14 +43,28 @@ function Verify({ route, navigation }) {
 
   const onPress = async () => {
     try {
+      setSubmitting(true);
       const cognitoUser = await Auth.sendCustomChallengeAnswer(
         cognitoUserFromSignUp,
         value
       );
+      // @TODO: also make the call to the api wtih this user and then set it
       console.log("SUCCESS: i will store this user somewhere", cognitoUser);
+      // @TODO: navigate below if the user doesn't have any previous groups or users
+      navigation.navigate("Onboard1", { cognitoUser: cognitoUser });
     } catch (error) {
       console.log("error sending challenge is", error);
-      // Handle error thrown for >12 incorrect attempts.
+      if (error.code === "NotAuthorizedException") {
+        setErrorMessage(
+          "That code didn't work - make sure the code is correct"
+        );
+      } else {
+        setErrorMessage(
+          "Something went wrong. Try again, or try a new phone number if the problem persists"
+        );
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -61,7 +78,11 @@ function Verify({ route, navigation }) {
           ref={ref}
           {...props}
           value={value}
-          onChangeText={setValue}
+          onChangeText={(text) => {
+            setErrorMessage(""); // clear any previous error message
+            setValue(text);
+          }}
+          editable={!submitting}
           cellCount={CELL_COUNT}
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
@@ -87,10 +108,17 @@ function Verify({ route, navigation }) {
             );
           }}
         />
+        {errorMessage ? (
+          <Paragraph color="error" marginTop>
+            {errorMessage}
+          </Paragraph>
+        ) : null}
       </View>
       <View style={styles.bottom}>
         <ProgressBar progress={0.25} />
-        <ButtonPrimary onPress={onPress}>Next</ButtonPrimary>
+        <ButtonPrimary onPress={onPress} disabled={submitting}>
+          Next
+        </ButtonPrimary>
       </View>
     </ViewContainer>
   );

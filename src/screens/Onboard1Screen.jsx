@@ -1,5 +1,4 @@
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet, View } from "react-native";
 
 // Components
@@ -17,14 +16,14 @@ function Onboard1Screen({ navigation }) {
     <ViewContainer>
       <View style={styles.top}>
         <Toasting />
-        <Title style={styles.title}>Welcome</Title>
+        <Title style={styles.title}>Welcome!</Title>
         <Paragraph>
           We remember names by associating people with descriptions and a group.
           For our first step, we will create a group.
         </Paragraph>
       </View>
       <View style={styles.bottom}>
-        <ProgressBar progress={0} />
+        <ProgressBar progress={0.4} />
         <ButtonPrimary
           onPress={() =>
             navigation.navigate("Onboarding", { screen: "Onboard2" })

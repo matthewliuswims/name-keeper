@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { TextInput } from "react-native-paper"; // @TODO replace with my customer element
 import { useForm, Controller } from "react-hook-form";
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 // Components
 import ButtonPrimary from "../components/ButtonPrimary";
