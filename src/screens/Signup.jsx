@@ -1,12 +1,10 @@
-import React, { useRef, useState } from "react";
-import { StyleSheet, View, TextInput as TextInputVanilla } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Keyboard } from "react-native";
 import { Auth } from "aws-amplify";
 import CountryPicker, {
   DARK_THEME,
   DEFAULT_THEME,
 } from "react-native-country-picker-modal";
-
-// @TODO: upgrade expo version
 
 // Hooks
 import useColorScheme from "../hooks/useColorScheme";
@@ -20,12 +18,6 @@ import ViewContainer from "../components/ViewContainer";
 import Title from "../elements/Title";
 import Paragraph from "../elements/Paragraph";
 import TextInput from "../elements/TextInput";
-
-// @TODO: https://stackoverflow.com/a/61547869 use localization
-
-// try with https://www.npmjs.com/package/react-native-country-picker-modal
-
-// @TODO: set loading/disabled state when submitting
 
 const format = (value) => {
   // return nothing if no value
@@ -47,7 +39,6 @@ const format = (value) => {
       6,
       10
     )}`;
-
   return digits;
 };
 
@@ -70,6 +61,7 @@ function generateRandom(length = 16) {
 function SignUpScreen({ navigation }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState();
+  const [submitting, setSubmitting] = useState(false);
   const [country, setCountry] = useState({
     callingCode: "1", // default is US
   });
@@ -90,12 +82,17 @@ function SignUpScreen({ navigation }) {
       const regEx = /^\+[1-9]\d{10,14}$/;
       return regEx.test(phoneNumber);
     }
+    setSubmitting(true);
+    Keyboard.dismiss();
     const numberAssembled = `+${country.callingCode[0]}${value}`;
     console.log("numberAssembled is", numberAssembled);
+
     if (!validE164PhoneNumber(numberAssembled)) {
       setErrorMessage("Please set a valid number");
+      setSubmitting(false);
       return;
     }
+
     try {
       // sign up
       const { user } = await Auth.signUp({
@@ -117,6 +114,7 @@ function SignUpScreen({ navigation }) {
         setErrorMessage(
           "Oops - there was an issue with your number. Try again!"
         );
+        setSubmitting(false);
         return;
       }
       // user is just trying to sign up with existing number
@@ -137,7 +135,10 @@ function SignUpScreen({ navigation }) {
     } catch (error) {
       console.log("error signing in and initiating auth flow challenge", error);
       setErrorMessage("Oops - there was an issue with your number. Try again!");
+      setSubmitting(false);
     }
+
+    setSubmitting(false);
   };
 
   return (
@@ -176,7 +177,8 @@ function SignUpScreen({ navigation }) {
             />
           </View>
           <TextInput
-            autoFocus={true}
+            // autoFocus={true}
+            disabled={submitting}
             mode="outlined"
             placeholder="Phone Number"
             keyboardType="number-pad"
@@ -199,6 +201,7 @@ function SignUpScreen({ navigation }) {
           onPress={async () => {
             await onPress();
           }}
+          disabled={submitting}
         >
           Next
         </ButtonPrimary>
