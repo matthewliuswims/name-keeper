@@ -1,8 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import Signup from "../screens/Signup";
-import Verify from "../screens/Verify";
+import CreateAccount from "../screens/CreateAccount";
 import Onboard1Screen from "../screens/Onboard1Screen";
 import Onboard2Screen from "../screens/Onboard2Screen";
 import Onboard3Screen from "../screens/Onboard3Screen";
@@ -17,15 +16,10 @@ export default function OnboardingNavigator() {
       }}
     >
       <Stack.Screen
-        options={{ title: "Verify" }}
-        name="Signup"
-        component={Signup}
-      />
-      <Stack.Screen
         options={{ title: "Activate" }}
-        // options={{ headerShown: false }}
-        name="Verify"
-        component={Verify}
+        options={{ headerShown: false }}
+        name="CreateAccount"
+        component={CreateAccount}
       />
       <Stack.Screen
         options={{ headerBackTitleVisible: false }}

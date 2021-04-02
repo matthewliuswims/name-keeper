@@ -21,8 +21,6 @@
     "@react-navigation/native": "^5.7.3",
     "@react-navigation/stack": "^5.9.0",
     "@reduxjs/toolkit": "^1.4.0",
-    "aws-amplify": "^3.3.12",
-    "aws-amplify-react-native": "^4.2.10",
     "expo": "^40.0.0",
     "expo-asset": "~8.2.1",
     "expo-constants": "~9.3.3",
@@ -35,8 +33,6 @@
     "react-dom": "16.13.1",
     "react-hook-form": "^6.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.0.tar.gz",
-    "react-native-confirmation-code-field": "^6.5.1",
-    "react-native-country-picker-modal": "^2.0.0",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-paper": "^4.3.1",
@@ -45,8 +41,7 @@
     "react-native-svg": "12.1.0",
     "react-native-walkthrough-tooltip": "^1.1.11",
     "react-native-web": "~0.13.12",
-    "react-redux": "^7.2.2",
-    "remote-redux-devtools": "^0.5.16"
+    "react-redux": "^7.2.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
@@ -55,7 +50,8 @@
     "jest-expo": "^40.0.0",
     "prettier": "2.1.2",
     "react-devtools": "^4.9.0",
-    "typescript": "~4.0.0"
+    "typescript": "~4.0.0",
+    "remote-redux-devtools": "^0.5.16"
   },
   "private": true,
   "engines": {

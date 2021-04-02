@@ -3,6 +3,10 @@
 Follow instructions here
 https://github.com/jhen0409/react-native-debugger/blob/master/docs/getting-started.md
 
+### Setup
+```
+yarn
+```
 ### To run app locally:
 
 ```

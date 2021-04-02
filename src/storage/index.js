@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// @TODO: delete this and the dependencies?
+
 /***
  * @param {string} resourceType
  * @return {Promise<Array>}
