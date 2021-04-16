@@ -10,12 +10,13 @@ const ButtonPrimary = ({
   onPress,
   loading = false,
   disabled = false,
+  mode = "contained",
 }) => {
   return (
     <Button
       disabled={disabled}
       loading={loading}
-      mode="contained"
+      mode={mode}
       onPress={onPress}
       contentStyle={styles.buttonContent}
       style={[styles.button, style]}
