@@ -9,6 +9,7 @@ const Paragraph = ({
   style = {},
   color: colorParam = "text",
   marginTop = false,
+  ...rest
 }) => {
   const { colors } = useTheme();
 
@@ -22,6 +23,7 @@ const Paragraph = ({
           ...(marginTop && { marginTop: 20 }),
         },
       ]}
+      {...rest}
     >
       {children}
     </PaperParagraph>

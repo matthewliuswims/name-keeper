@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Pressable, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -13,12 +13,12 @@ import Paragraph from "../elements/Paragraph";
 import TextInput from "../elements/TextInput";
 import Logo from "../elements/svgs/Logo";
 
-function CreateAccount({ route, navigation }) {
+function Login({ route, navigation }) {
   const { control, handleSubmit, errors } = useForm();
   const [submitting] = useState(false);
 
   const onPress = async (data) => {
-    console.log("data is", data);
+    console.log("data is when logging", data);
     navigation.navigate("Onboard1");
   };
 
@@ -26,7 +26,7 @@ function CreateAccount({ route, navigation }) {
     <ViewContainerScrollable style={{ justifyContent: "center" }}>
       <View style={styles.top}>
         <Logo />
-        <Header style={styles.header}>Create Account!</Header>
+        <Header style={styles.header}>Welcome Back</Header>
       </View>
       <View style={styles.bottom}>
         <Controller
@@ -66,36 +66,27 @@ function CreateAccount({ route, navigation }) {
           <Paragraph color="error">This is required.</Paragraph>
         )}
         <Paragraph
+          onPress={() => console.log("forgot your password clicked")}
+          color="primary"
           style={{
+            fontWeight: "bold",
             alignSelf: "flex-end",
             marginBottom: 30,
             marginTop: 5,
-            alignItems: "center",
           }}
         >
-          Already have an account?{" "}
-          <Paragraph
-            onPress={() => {
-              console.log("login clicked");
-              navigation.navigate("Login");
-            }}
-            color="primary"
-            style={{ fontWeight: "bold" }}
-          >
-            Login
-          </Paragraph>
+          Forgot your password?
         </Paragraph>
-        <Text> Hello </Text>
 
         <ButtonPrimary onPress={handleSubmit(onPress)} disabled={submitting}>
-          Sign up
+          Login
         </ButtonPrimary>
       </View>
     </ViewContainerScrollable>
   );
 }
 
-export default CreateAccount;
+export default Login;
 
 const styles = StyleSheet.create({
   top: {
