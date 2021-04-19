@@ -3,6 +3,9 @@ import { View, StyleSheet, Pressable, Text } from "react-native";
 
 import { useForm, Controller } from "react-hook-form";
 
+// Helpers
+import { request } from "../utils/requests";
+
 // Components
 import ButtonPrimary from "../components/ButtonPrimary";
 import ViewContainerScrollable from "../components/ViewContainerScrollable";
@@ -18,9 +21,18 @@ function CreateAccount({ route, navigation }) {
   const [submitting] = useState(false);
 
   const onPress = async (data) => {
+    if (errors.password || errors.email) return;
     console.log("data is", data);
+    const response = await request("/accounts/", {
+      method: "POST",
+      body: data,
+    });
+    // take token and put it into persistent storage for phone\
+    console.log("response is", response);
+
     navigation.navigate("Onboard1");
   };
+  console.log("errors.email is", errors.email);
 
   return (
     <ViewContainerScrollable style={{ justifyContent: "center" }}>
@@ -38,14 +50,24 @@ function CreateAccount({ route, navigation }) {
               value={value}
               mode="outlined"
               placeholder="Email"
-              style={{ width: "100%", marginBottom: 10 }} // need this for whatever reason.
+              style={{ width: "100%" }} // need this for whatever reason.
             />
           )}
           name="email"
-          rules={{ required: true }}
+          rules={{
+            pattern: {
+              value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              message: "Not a valid email",
+            },
+            required: true,
+          }}
           defaultValue=""
         />
-        {errors.email && <Paragraph color="error">This is required.</Paragraph>}
+        {errors.email && (
+          <Paragraph color="error" style={{ margin: 0, marginBottom: 10 }}>
+            {errors.email.message || "A valid email is required"}
+          </Paragraph>
+        )}
         <Controller
           control={control}
           render={({ onChange, onBlur, value }) => (
@@ -59,11 +81,20 @@ function CreateAccount({ route, navigation }) {
             />
           )}
           name="password"
-          rules={{ required: true }}
+          rules={{
+            pattern: {
+              value: /^.{8,}$/,
+              message: "Not a valid password: need at least 8 characters",
+            },
+            required: true,
+          }}
           defaultValue=""
         />
         {errors.password && (
-          <Paragraph color="error">This is required.</Paragraph>
+          <Paragraph color="error" style={{ margin: 0 }}>
+            {errors.password.message ||
+              "Not a valid password: need at least 8 characters"}
+          </Paragraph>
         )}
         <Paragraph
           style={{
