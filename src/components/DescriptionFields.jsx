@@ -1,11 +1,13 @@
 import * as React from "react";
 import { View, Text, Pressable, FlatList } from "react-native";
 import { TextInput, useTheme } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
 
 import { Controller } from "react-hook-form";
 
 // Elements
 import Paragraph from "../elements/Paragraph";
+import Title from "../elements/Title";
 
 const DescriptionFields = ({
   append,
@@ -15,7 +17,7 @@ const DescriptionFields = ({
   data,
 
   setTip = () => {},
-  groups,
+  groups = [],
 }) => {
   const { colors } = useTheme();
 
@@ -106,7 +108,37 @@ const DescriptionFields = ({
           defaultValue={item.descriptor} // make sure to set up defaultValue
         />
       )}
-      ListFooterComponent={<Paragraph> {groups[0]} Right below list</Paragraph>}
+      ListFooterComponent={
+        <View style={{ marginTop: 30 }}>
+          <Title style={{ margin: 0 }}>
+            {groups.length === 1 ? "Group" : "Groups"}
+          </Title>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Paragraph style={{ margin: 0, marginTop: 10 }}>
+              {groups[0]}
+            </Paragraph>
+            <Pressable
+              onPress={() => {
+                console.log("chevron pressed");
+              }}
+              style={({ pressed }) => {
+                return {
+                  opacity: pressed ? 0.5 : 1,
+                };
+              }}
+            >
+              <Ionicons name="chevron-down-sharp" size={24} color="black" />
+            </Pressable>
+          </View>
+        </View>
+      }
     />
   );
 };

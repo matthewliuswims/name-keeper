@@ -1,8 +1,7 @@
 {
   "main": "src/App.js",
   "scripts": {
-    "start": "./dev.sh",
-    "expoStart": "expo start",
+    "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -35,13 +34,15 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.0.tar.gz",
     "react-native-gesture-handler": "~1.8.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
+    "react-native-modal": "^11.10.0",
     "react-native-paper": "^4.3.1",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
     "react-native-svg": "12.1.0",
     "react-native-walkthrough-tooltip": "^1.1.11",
     "react-native-web": "~0.13.12",
-    "react-redux": "^7.2.2"
+    "react-redux": "^7.2.2",
+    "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
@@ -50,8 +51,8 @@
     "jest-expo": "^40.0.0",
     "prettier": "2.1.2",
     "react-devtools": "^4.9.0",
-    "typescript": "~4.0.0",
-    "remote-redux-devtools": "^0.5.16"
+    "remote-redux-devtools": "^0.5.16",
+    "typescript": "~4.0.0"
   },
   "private": true,
   "engines": {

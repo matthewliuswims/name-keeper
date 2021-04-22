@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Pressable, Text } from "react-native";
-
+import { View, StyleSheet } from "react-native";
+import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 
 // Helpers
 import { request } from "../utils/requests";
+import { setInStorage } from "../storage";
+import { JWT_USER, TYPE_STRING } from "../storage/constants";
 
 // Components
 import ButtonPrimary from "../components/ButtonPrimary";
@@ -16,24 +18,51 @@ import Paragraph from "../elements/Paragraph";
 import TextInput from "../elements/TextInput";
 import Logo from "../elements/svgs/Logo";
 
+// Redux
+import { addModalAsync } from "../store/modal";
+
 function CreateAccount({ route, navigation }) {
+  const dispatch = useDispatch();
   const { control, handleSubmit, errors } = useForm();
   const [submitting] = useState(false);
 
   const onPress = async (data) => {
     if (errors.password || errors.email) return;
-    console.log("data is", data);
+
     const response = await request("/accounts/", {
       method: "POST",
       body: data,
     });
-    // take token and put it into persistent storage for phone\
-    console.log("response is", response);
+    const body = response.body;
+    const status = response.status;
 
+    if (!body.token) {
+      console.error(
+        "could not get the token for some reason with response",
+        response
+      );
+
+      console.log("response is", response);
+      return dispatch(
+        addModalAsync({
+          props: {
+            text:
+              status === 403
+                ? "That email is already in use - please login to your existing account."
+                : "There was an issue creating your account",
+          },
+          type: "warning",
+          actionCB: () => console.log("action"),
+        })
+      );
+    }
+    setInStorage({
+      key: JWT_USER,
+      value: body.token,
+      type: TYPE_STRING,
+    });
     navigation.navigate("Onboard1");
   };
-  console.log("errors.email is", errors.email);
-
   return (
     <ViewContainerScrollable style={{ justifyContent: "center" }}>
       <View style={styles.top}>
@@ -116,7 +145,6 @@ function CreateAccount({ route, navigation }) {
             Login
           </Paragraph>
         </Paragraph>
-        <Text> Hello </Text>
 
         <ButtonPrimary onPress={handleSubmit(onPress)} disabled={submitting}>
           Sign up

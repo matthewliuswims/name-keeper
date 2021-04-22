@@ -4,11 +4,7 @@ import { useDispatch } from "react-redux";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { TextInput } from "react-native-paper";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import {
-  View,
-  ScrollView,
-  TouchableOpacity, // @delete eventually
-} from "react-native";
+import { View, ScrollView } from "react-native";
 
 // Components
 import ButtonPrimary from "../components/ButtonPrimary";
@@ -16,7 +12,6 @@ import ProgressBar from "../components/ProgressBar";
 import DescriptionFields from "../components/DescriptionFields";
 
 // Elements
-import Title from "../elements/Title";
 import Paragraph from "../elements/Paragraph";
 
 // Redux
@@ -27,6 +22,7 @@ import { isPlus } from "../utils/ui";
 
 // @TODO: have a transition to 100 after hitting save?
 // @TODO: need to get the group from the
+// @TODO: change "add person" + green button to match UI
 
 export default function Onboard3Screen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -79,9 +75,8 @@ export default function Onboard3Screen({ navigation, route }) {
             isVisible={showTip}
             content={
               <>
-                <Title style={{ color: "black" }}>Nearly There...</Title>
                 <Paragraph color={"black"}>
-                  We need to add a person to the group we just made
+                  Add a name of someone you want to remember
                 </Paragraph>
               </>
             }

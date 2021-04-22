@@ -2,7 +2,7 @@ import Constants from "expo-constants";
 
 // https://docs.expo.io/distribution/release-channels/ <-- 1st way
 // https://docs.expo.io/workflow/configuration/ <-- 2nd way
-function getEnvironment() {
+export function getEnvironment() {
   let releaseChannel = Constants.manifest.releaseChannel;
 
   if (releaseChannel === undefined) {

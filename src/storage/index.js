@@ -1,93 +1,55 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// @TODO: delete this and the dependencies?
+import * as CONSTANTS from "./constants";
 
 /***
- * @param {string} resourceType
- * @return {Promise<Array>}
+ * @param {Object} obj - An object.
+ * @param {string} obj.key - key in async storage
+ * @param {string} obj.type - type of key (enum)
+ * @return {Promise} - resolves to be string or null
  */
-const getResource = async (resourceType) => {
-  const resource = await AsyncStorage.getItem(resourceType);
-  if (!resource) return [];
-  return JSON.parse(resource);
+export const getFromStorage = async ({ key, type = CONSTANTS.TYPE_OBJECT }) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    if (type === CONSTANTS.TYPE_OBJECT) {
+      return value != null ? JSON.parse(value) : null;
+    }
+    // otherwise is string, number, etc...
+    return value;
+  } catch (e) {
+    console.error(
+      "could not get item from storage with type",
+      type,
+      "and error",
+      e
+    );
+  }
 };
 
 /***
- * @param {string} resourceType
+ * @param {Object} obj - An object.
+ * @param {string} obj.key - key in async storage
+ * @param {any} obj.value - value in async storage
+ * @param {string} obj.type - type of key (enum)
  * @return {Promise}
  */
-const setResource = async (resourceType, resource) => {
-  const resourceStringified = JSON.stringify(resource);
-  return await AsyncStorage.setItem(resourceType, resourceStringified);
-};
-
-const validateAsString = (input) => {
-  const validString = input && typeof input == "string";
-  if (!validString)
-    throw Error(`expected input to be valid string, got ${input}`);
-  return true;
-};
-
-const validateAsObject = (input) => {
-  const validItem =
-    input && typeof input == "object" && input.hasOwnProperty("id");
-  if (!validItem)
-    throw Error(`expected input to be valid object, got ${input}`);
-  return true;
-};
-
-/**
- * @param {string} key
- * @param {string} resource
- */
-export const deleteResource = async ({ key, resource: resourceParam }) => {
-  validateAsString(key) && validateAsString(resourceParam);
-
-  const resource = await getResource(resourceParam);
-  const resourceUpdated = resource.filter((item) => item.id !== key);
-  return await setResource(resourceParam, resourceUpdated);
-};
-
-/**
- * @param {string} key
- * @param {object} item
- * @param {string} resource
- */
-export const editItem = async ({
+export const setInStorage = async ({
   key,
-  item: itemParam,
-  resource: resourceParam,
+  value,
+  type = CONSTANTS.TYPE_OBJECT,
 }) => {
-  validateAsString(key) &&
-    validateAsString(resourceParam) &&
-    validateAsObject(itemParam);
-
-  const resource = await getResource(resourceParam);
-  const resourceUpdated = resource.map((item) => {
-    if (item.id === key) return itemParam;
-    return item;
-  });
-  return await setResource(resourceParam, resourceUpdated);
-};
-/***
- * @param {string} key
- * @param {string} resource
- */
-export const getItem = async ({ key, resource: resourceParam }) => {
-  validateAsString(key) && validateAsString(resourceParam);
-
-  const resource = await getResource(resourceParam);
-  return resource.find((item) => item.id === key);
-};
-
-/***
- * @param {object} item
- * @param {string} resource
- */
-export const addItem = async ({ item, resource: resourceParam }) => {
-  validateAsString(resourceParam) && validateAsObject(item);
-
-  const resource = await getResource(resourceParam);
-  const resourceNew = [...resource, item];
-  return await setResource(resourceParam, resourceNew);
+  try {
+    if (type === CONSTANTS.TYPE_OBJECT) {
+      const jsonValue = JSON.stringify(value);
+      return await AsyncStorage.setItem(key, jsonValue);
+    }
+    // otherwise is string, number, etc...
+    return await AsyncStorage.setItem(key, value);
+  } catch (e) {
+    console.error(
+      "could not set item to storage with type",
+      type,
+      "and error",
+      e
+    );
+  }
 };

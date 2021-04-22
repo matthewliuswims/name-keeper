@@ -23,7 +23,7 @@ function Onboard1Screen({ navigation }) {
         </Paragraph>
       </View>
       <View style={styles.bottom}>
-        <ProgressBar progress={0.4} />
+        <ProgressBar progress={0} />
         <ButtonPrimary
           onPress={() =>
             navigation.navigate("Onboarding", { screen: "Onboard2" })

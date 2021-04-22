@@ -22,7 +22,7 @@ function getHeaderTitle(route) {
   }
 }
 
-// A root stack navigator is often used for displaying modals on top of all other content
+// A root stack navigator is often used for displaying modal on top of all other content
 // Read more here: https://reactnavigation.org/docs/modal
 const Stack = createStackNavigator();
 

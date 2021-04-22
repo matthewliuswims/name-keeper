@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addItem } from "../storage";
 
+// @TODO: change to not use localstorage
+// @TODO: change to have all the groups load on launch to homescreen
+
 export const groupsSlice = createSlice({
   name: "groups",
   initialState: {
